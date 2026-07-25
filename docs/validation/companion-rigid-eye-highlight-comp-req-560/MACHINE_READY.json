@@ -1,0 +1,108 @@
+{
+  "schema": "companion.comp_req_560.rigid_eye_highlight.machine_ready.v1",
+  "requirements": [
+    "COMP-REQ-540",
+    "COMP-REQ-554",
+    "COMP-REQ-560"
+  ],
+  "status": "MACHINE_READY_OWNER_PENDING",
+  "implementation_commits": [
+    "297333363470c6f84e932f23877632e8a956f3cd",
+    "d2401cc17ec2cb64cc9d99509cad8d2274934f48"
+  ],
+  "page_repo_path": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html",
+  "page_sha256": "FA10F976507C4372AEC17172367DA4B1663B32396ECBB55ED2E80ECEDCEEA658",
+  "rigid_eye_highlight": {
+    "status": "PASS",
+    "artifact_sha256": "7A6A60C0B5809DCCFA8B8C0FB46742E05268148E06A689793F7483F549EDC5D1",
+    "verifier_sha256": "973844CDB1991A4CC016EB81AD9DC702B3FE649EF110518ED932C2275D728F50",
+    "families": 10,
+    "family_steps": 60,
+    "direction_samples": 5,
+    "clusters_per_open_frame": 2,
+    "components_per_cluster": 2,
+    "rigid_relative_geometry": true,
+    "equal_two_eye_displacement": true,
+    "boundary_inset_px": 1,
+    "residual_source_pixels": 0,
+    "closed_eye_cluster_absent": true,
+    "unsafe_displacement_clamped": true,
+    "contradictory_source_negative_rejected": true,
+    "exact_baseline_return": true
+  },
+  "recording_choreography": {
+    "status": "PASS",
+    "artifact_sha256": "C2E0BA29628AE655B4DE04654A66FC7E13267A359BB9A5C978167B4E0F5A6DB4",
+    "idle_distinct_face_hashes": 5,
+    "recording_distinct_face_hashes": 4,
+    "recording_distinct_meter_steps": 6,
+    "underlying_face_sequence_equal_off_on": true,
+    "meter_layers_active": 1,
+    "meter_visible_after_exit": false
+  },
+  "interaction_regression": {
+    "status": "PASS",
+    "artifact_sha256": "B9A244529BDA7DEF3AD83D1446B5915C7F78BEF15B0FA508955C0E5D2FE6F735",
+    "successor_verifier_sha256": "073ADBC601484128AD009B966C30F3979D4CC57979E9D6A54CDBA87735CA7BC9",
+    "combinations": 6,
+    "scenarios": 42,
+    "failed": 0,
+    "recording_indicator_layers": 0,
+    "recording_meter_layers": 1,
+    "recording_entries": 1,
+    "progress_nodes": 0,
+    "microphone_requests": 0
+  },
+  "browser_device_parity": {
+    "status": "PASS",
+    "artifact_sha256": "EB57AD0F269E5CD4DA80570BAF8014EBEE47CCC86D0C6D118C0AB9067D07E38D",
+    "states": 111,
+    "unique_frames": 77,
+    "frame_bytes": 5000,
+    "browser_to_c_pixel_diff": 0,
+    "default_off": true
+  },
+  "main_visual_review": {
+    "status": "PASS",
+    "direction_contact_sheet_sha256": "7E8F261D6E61CDF1AC5B2CF5512309647BB3C38FF29217C84C3AD7A4D9E25A52",
+    "idle_recording_contact_sheet_sha256": "CFBDC50CF583CC562EE7DAE76F246E4726B51401E21285B9B2056EF80048F810",
+    "five_directions_inspected": true,
+    "open_eye_clusters_coherent": true,
+    "closed_eye_highlight_absent": true,
+    "stale_highlight_absent": true,
+    "recording_face_not_frozen": true
+  },
+  "protected_lower": {
+    "driver_sha256": "F52A7E853BFE2E66680F08420941265CFF163FB579B2D3870128FC72C79E035F",
+    "driver_git_blob": "f856d7ce0b8915e5059620c3faa97aa06b06eb4e",
+    "frame_header_sha256": "9571CF9F896B6C14451BAA7348CB717643B4963AE834B0A554E0C2ED2C7E8D35",
+    "frame_header_git_blob": "2220da0c1113a5cdad7028aeae578d9fe26e936f",
+    "changed": false
+  },
+  "protected_owner_acceptance": {
+    "repo_path": "docs/validation/companion-pet-special-system-owner-acceptance-20260717.json",
+    "sha256": "8A3BDF4BD1254B0D0F4DE13A7F293C3D74587C800339ABD4C61FEB0B7737E227",
+    "changed": false
+  },
+  "source_bound_verification": {
+    "verifier_sha256": "E44CD9A2FB9BDBEAE60F257EB01179CFE5B6A4817C0E6A05E094C31D666E6AB1",
+    "negative_verifier_sha256": "65FDE772CAF1D4A46F58A1E043620E6B891D12A4CC7D3DCE4E66BD3A147E994E",
+    "negative_artifact_sha256": "BA510F1417F9A7D298BAA0CAB3814CDC6B35504411174E401A8F6902227F7C1E",
+    "negative_cases": 5
+  },
+  "checkonly": {
+    "hardware_contact": 0,
+    "programmer": 0,
+    "serial": 0,
+    "write": 0,
+    "reset": 0,
+    "refresh": 0,
+    "popup": 0,
+    "retry": 0,
+    "microphone": 0,
+    "production": 0,
+    "push": 0
+  },
+  "owner_review": "pending",
+  "owner_prompt_opened": false
+}

@@ -1,0 +1,472 @@
+{
+  "schema": "companion.comp_req_560.rigid_eye_highlight.v1",
+  "status": "PASS",
+  "page_sha256": "FA10F976507C4372AEC17172367DA4B1663B32396ECBB55ED2E80ECEDCEEA658",
+  "directions": [
+    {
+      "name": "center",
+      "key": "1,0,1,0",
+      "pass": true,
+      "story": "calm_presence",
+      "frame": "calm_presence-04-calm_blink_settle.png",
+      "open_eye_count": 2,
+      "eye_rows": [
+        {
+          "eye": "left",
+          "complete": true,
+          "primary_components": 1,
+          "sparkle_components": 1,
+          "primary_pixels": 145,
+          "sparkle_pixels": 31,
+          "primary_shift": {
+            "dx": 0,
+            "dy": 0
+          },
+          "sparkle_shift": {
+            "dx": 0,
+            "dy": 0
+          },
+          "relative_vector_before": {
+            "dx": 11.220244716351509,
+            "dy": 10.725695216907681
+          },
+          "relative_vector_after": {
+            "dx": 11.220244716351509,
+            "dy": 10.725695216907681
+          },
+          "counts_match": true,
+          "rigid": true,
+          "relative_vector_preserved": true
+        },
+        {
+          "eye": "right",
+          "complete": true,
+          "primary_components": 1,
+          "sparkle_components": 1,
+          "primary_pixels": 151,
+          "sparkle_pixels": 33,
+          "primary_shift": {
+            "dx": 0,
+            "dy": 0
+          },
+          "sparkle_shift": {
+            "dx": 0,
+            "dy": 0
+          },
+          "relative_vector_before": {
+            "dx": 11.599438089504304,
+            "dy": 10.856913505920119
+          },
+          "relative_vector_after": {
+            "dx": 11.599438089504304,
+            "dy": 10.856913505920119
+          },
+          "counts_match": true,
+          "rigid": true,
+          "relative_vector_preserved": true
+        }
+      ],
+      "cluster_count": 2,
+      "component_count": 4,
+      "sparkle_components": 2,
+      "paired_sparkles": true,
+      "paired_clusters": true,
+      "primary_highlight_mismatch_pixels": 0,
+      "rigid_cluster_mismatch": 0,
+      "relative_vector_mismatch": 0,
+      "component_mismatch": 0,
+      "boundary_mismatch_pixels": 0,
+      "residual_source_pixels": 0,
+      "changed_pixels": 0,
+      "silhouette_mismatch_pixels": 0,
+      "max_changed_pixels": 1024,
+      "exact_baseline": true,
+      "desired_dx": 0,
+      "desired_dy": 0,
+      "applied_dx": 0,
+      "applied_dy": 0,
+      "clamped": false,
+      "moving_component": "rigid_primary_plus_sparkle_clusters",
+      "eye_body_silhouette_fixed": true,
+      "screenshot": "docs\\validation\\companion-rigid-eye-highlight-comp-req-560\\screenshots\\center.png"
+    },
+    {
+      "name": "left",
+      "key": "-2,0,-6,0",
+      "pass": true,
+      "story": "calm_presence",
+      "frame": "calm_presence-04-calm_blink_settle.png",
+      "open_eye_count": 2,
+      "eye_rows": [
+        {
+          "eye": "left",
+          "complete": true,
+          "primary_components": 1,
+          "sparkle_components": 1,
+          "primary_pixels": 145,
+          "sparkle_pixels": 31,
+          "primary_shift": {
+            "dx": -3,
+            "dy": 0
+          },
+          "sparkle_shift": {
+            "dx": -3.000000000000007,
+            "dy": 0
+          },
+          "relative_vector_before": {
+            "dx": 11.220244716351509,
+            "dy": 10.725695216907681
+          },
+          "relative_vector_after": {
+            "dx": 11.220244716351502,
+            "dy": 10.725695216907681
+          },
+          "counts_match": true,
+          "rigid": true,
+          "relative_vector_preserved": true
+        },
+        {
+          "eye": "right",
+          "complete": true,
+          "primary_components": 1,
+          "sparkle_components": 1,
+          "primary_pixels": 151,
+          "sparkle_pixels": 33,
+          "primary_shift": {
+            "dx": -3,
+            "dy": 0
+          },
+          "sparkle_shift": {
+            "dx": -3,
+            "dy": 0
+          },
+          "relative_vector_before": {
+            "dx": 11.599438089504304,
+            "dy": 10.856913505920119
+          },
+          "relative_vector_after": {
+            "dx": 11.599438089504304,
+            "dy": 10.856913505920119
+          },
+          "counts_match": true,
+          "rigid": true,
+          "relative_vector_preserved": true
+        }
+      ],
+      "cluster_count": 2,
+      "component_count": 4,
+      "sparkle_components": 2,
+      "paired_sparkles": true,
+      "paired_clusters": true,
+      "primary_highlight_mismatch_pixels": 0,
+      "rigid_cluster_mismatch": 0,
+      "relative_vector_mismatch": 0,
+      "component_mismatch": 0,
+      "boundary_mismatch_pixels": 0,
+      "residual_source_pixels": 0,
+      "changed_pixels": 266,
+      "silhouette_mismatch_pixels": 0,
+      "max_changed_pixels": 1024,
+      "exact_baseline": true,
+      "desired_dx": -3,
+      "desired_dy": 0,
+      "applied_dx": -3,
+      "applied_dy": 0,
+      "clamped": false,
+      "moving_component": "rigid_primary_plus_sparkle_clusters",
+      "eye_body_silhouette_fixed": true,
+      "screenshot": "docs\\validation\\companion-rigid-eye-highlight-comp-req-560\\screenshots\\left.png"
+    },
+    {
+      "name": "up",
+      "key": "1,-3,1,-6",
+      "pass": true,
+      "story": "calm_presence",
+      "frame": "calm_presence-04-calm_blink_settle.png",
+      "open_eye_count": 2,
+      "eye_rows": [
+        {
+          "eye": "left",
+          "complete": true,
+          "primary_components": 1,
+          "sparkle_components": 1,
+          "primary_pixels": 145,
+          "sparkle_pixels": 31,
+          "primary_shift": {
+            "dx": 0,
+            "dy": -3
+          },
+          "sparkle_shift": {
+            "dx": 0,
+            "dy": -3
+          },
+          "relative_vector_before": {
+            "dx": 11.220244716351509,
+            "dy": 10.725695216907681
+          },
+          "relative_vector_after": {
+            "dx": 11.220244716351509,
+            "dy": 10.725695216907681
+          },
+          "counts_match": true,
+          "rigid": true,
+          "relative_vector_preserved": true
+        },
+        {
+          "eye": "right",
+          "complete": true,
+          "primary_components": 1,
+          "sparkle_components": 1,
+          "primary_pixels": 151,
+          "sparkle_pixels": 33,
+          "primary_shift": {
+            "dx": 0,
+            "dy": -3
+          },
+          "sparkle_shift": {
+            "dx": 0,
+            "dy": -3
+          },
+          "relative_vector_before": {
+            "dx": 11.599438089504304,
+            "dy": 10.856913505920119
+          },
+          "relative_vector_after": {
+            "dx": 11.599438089504304,
+            "dy": 10.856913505920119
+          },
+          "counts_match": true,
+          "rigid": true,
+          "relative_vector_preserved": true
+        }
+      ],
+      "cluster_count": 2,
+      "component_count": 4,
+      "sparkle_components": 2,
+      "paired_sparkles": true,
+      "paired_clusters": true,
+      "primary_highlight_mismatch_pixels": 0,
+      "rigid_cluster_mismatch": 0,
+      "relative_vector_mismatch": 0,
+      "component_mismatch": 0,
+      "boundary_mismatch_pixels": 0,
+      "residual_source_pixels": 0,
+      "changed_pixels": 224,
+      "silhouette_mismatch_pixels": 0,
+      "max_changed_pixels": 1024,
+      "exact_baseline": true,
+      "desired_dx": 0,
+      "desired_dy": -3,
+      "applied_dx": 0,
+      "applied_dy": -3,
+      "clamped": false,
+      "moving_component": "rigid_primary_plus_sparkle_clusters",
+      "eye_body_silhouette_fixed": true,
+      "screenshot": "docs\\validation\\companion-rigid-eye-highlight-comp-req-560\\screenshots\\up.png"
+    },
+    {
+      "name": "right",
+      "key": "5,0,5,0",
+      "pass": true,
+      "story": "calm_presence",
+      "frame": "calm_presence-04-calm_blink_settle.png",
+      "open_eye_count": 2,
+      "eye_rows": [
+        {
+          "eye": "left",
+          "complete": true,
+          "primary_components": 1,
+          "sparkle_components": 1,
+          "primary_pixels": 145,
+          "sparkle_pixels": 31,
+          "primary_shift": {
+            "dx": 4,
+            "dy": 0
+          },
+          "sparkle_shift": {
+            "dx": 4,
+            "dy": 0
+          },
+          "relative_vector_before": {
+            "dx": 11.220244716351509,
+            "dy": 10.725695216907681
+          },
+          "relative_vector_after": {
+            "dx": 11.220244716351509,
+            "dy": 10.725695216907681
+          },
+          "counts_match": true,
+          "rigid": true,
+          "relative_vector_preserved": true
+        },
+        {
+          "eye": "right",
+          "complete": true,
+          "primary_components": 1,
+          "sparkle_components": 1,
+          "primary_pixels": 151,
+          "sparkle_pixels": 33,
+          "primary_shift": {
+            "dx": 4,
+            "dy": 0
+          },
+          "sparkle_shift": {
+            "dx": 4,
+            "dy": 0
+          },
+          "relative_vector_before": {
+            "dx": 11.599438089504304,
+            "dy": 10.856913505920119
+          },
+          "relative_vector_after": {
+            "dx": 11.599438089504304,
+            "dy": 10.856913505920119
+          },
+          "counts_match": true,
+          "rigid": true,
+          "relative_vector_preserved": true
+        }
+      ],
+      "cluster_count": 2,
+      "component_count": 4,
+      "sparkle_components": 2,
+      "paired_sparkles": true,
+      "paired_clusters": true,
+      "primary_highlight_mismatch_pixels": 0,
+      "rigid_cluster_mismatch": 0,
+      "relative_vector_mismatch": 0,
+      "component_mismatch": 0,
+      "boundary_mismatch_pixels": 0,
+      "residual_source_pixels": 0,
+      "changed_pixels": 344,
+      "silhouette_mismatch_pixels": 0,
+      "max_changed_pixels": 1024,
+      "exact_baseline": true,
+      "desired_dx": 4,
+      "desired_dy": 0,
+      "applied_dx": 4,
+      "applied_dy": 0,
+      "clamped": false,
+      "moving_component": "rigid_primary_plus_sparkle_clusters",
+      "eye_body_silhouette_fixed": true,
+      "screenshot": "docs\\validation\\companion-rigid-eye-highlight-comp-req-560\\screenshots\\right.png"
+    },
+    {
+      "name": "down",
+      "key": "1,4,1,6",
+      "pass": true,
+      "story": "calm_presence",
+      "frame": "calm_presence-04-calm_blink_settle.png",
+      "open_eye_count": 2,
+      "eye_rows": [
+        {
+          "eye": "left",
+          "complete": true,
+          "primary_components": 1,
+          "sparkle_components": 1,
+          "primary_pixels": 145,
+          "sparkle_pixels": 31,
+          "primary_shift": {
+            "dx": 0,
+            "dy": 4
+          },
+          "sparkle_shift": {
+            "dx": 0,
+            "dy": 4
+          },
+          "relative_vector_before": {
+            "dx": 11.220244716351509,
+            "dy": 10.725695216907681
+          },
+          "relative_vector_after": {
+            "dx": 11.220244716351509,
+            "dy": 10.725695216907681
+          },
+          "counts_match": true,
+          "rigid": true,
+          "relative_vector_preserved": true
+        },
+        {
+          "eye": "right",
+          "complete": true,
+          "primary_components": 1,
+          "sparkle_components": 1,
+          "primary_pixels": 151,
+          "sparkle_pixels": 33,
+          "primary_shift": {
+            "dx": 0,
+            "dy": 4
+          },
+          "sparkle_shift": {
+            "dx": 0,
+            "dy": 4
+          },
+          "relative_vector_before": {
+            "dx": 11.599438089504304,
+            "dy": 10.856913505920119
+          },
+          "relative_vector_after": {
+            "dx": 11.599438089504304,
+            "dy": 10.856913505920119
+          },
+          "counts_match": true,
+          "rigid": true,
+          "relative_vector_preserved": true
+        }
+      ],
+      "cluster_count": 2,
+      "component_count": 4,
+      "sparkle_components": 2,
+      "paired_sparkles": true,
+      "paired_clusters": true,
+      "primary_highlight_mismatch_pixels": 0,
+      "rigid_cluster_mismatch": 0,
+      "relative_vector_mismatch": 0,
+      "component_mismatch": 0,
+      "boundary_mismatch_pixels": 0,
+      "residual_source_pixels": 0,
+      "changed_pixels": 290,
+      "silhouette_mismatch_pixels": 0,
+      "max_changed_pixels": 1024,
+      "exact_baseline": true,
+      "desired_dx": 0,
+      "desired_dy": 4,
+      "applied_dx": 0,
+      "applied_dy": 4,
+      "clamped": false,
+      "moving_component": "rigid_primary_plus_sparkle_clusters",
+      "eye_body_silhouette_fixed": true,
+      "screenshot": "docs\\validation\\companion-rigid-eye-highlight-comp-req-560\\screenshots\\down.png"
+    }
+  ],
+  "families": 10,
+  "family_steps": 6,
+  "family_checks": 60,
+  "unsafe_displacement_clamp": {
+    "pass": true,
+    "requested": {
+      "dx": 80,
+      "dy": 80
+    },
+    "applied": {
+      "dx": 3,
+      "dy": 3
+    },
+    "clamped": true,
+    "fits": true
+  },
+  "contradictory_source_negative_rejected": true,
+  "closed_eye_cluster_absent": true,
+  "contact_sheet": "docs\\validation\\companion-rigid-eye-highlight-comp-req-560\\screenshots\\contact-sheet.png",
+  "page_errors": [],
+  "contract": {
+    "moving_component": "rigid_primary_plus_sparkle_clusters",
+    "max_sparkle_pixels": 36,
+    "expected_open_eye_clusters": 2,
+    "components_per_cluster": 2,
+    "primary_highlight": "rigid_with_sparkle",
+    "eye_body_silhouette": "fixed_outside_highlight_union",
+    "boundary_inset_px": 1,
+    "max_changed_pixels": 1024
+  }
+}

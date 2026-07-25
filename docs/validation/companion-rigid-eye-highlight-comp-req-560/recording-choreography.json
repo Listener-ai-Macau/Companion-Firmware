@@ -1,0 +1,1340 @@
+{
+  "schema": "companion.comp_req_553_554.coordinated_face_recording.v1",
+  "status": "PASS",
+  "page_sha256": "FA10F976507C4372AEC17172367DA4B1663B32396ECBB55ED2E80ECEDCEEA658",
+  "cadence_ms": 480,
+  "steps": [
+    0,
+    2,
+    4,
+    6,
+    8,
+    9
+  ],
+  "idle_distinct_face_hashes": 5,
+  "idle_live_distinct_face_hashes": 5,
+  "recording_live_distinct_face_hashes": 4,
+  "recording_live_distinct_meter_steps": 6,
+  "recording_underlying_face_sequence_equal": true,
+  "paired_eye_steps": 6,
+  "recording_meter_layers": 1,
+  "recording_exit_meter_visible": false,
+  "off": [
+    {
+      "mode": "idle",
+      "step": 0,
+      "face_sha256": "305866713B63C679449838BF15F20B8CE369DF5D9F91DB06C6ABEEB97EA1A699",
+      "screenshot": "docs/validation/companion-rigid-eye-highlight-comp-req-560/recording-screenshots/idle-step-0.png",
+      "screenshot_sha256": "06EF853685448CC82B84FAAFAE42515EB627B896D93C146CF772B1B54C495011",
+      "family_step": 1,
+      "family_cycle": 0,
+      "family_active": false,
+      "recording_active": false,
+      "recording_level_nodes": 1,
+      "meter_step": -1,
+      "eye": {
+        "pass": true,
+        "story": "calm_presence",
+        "frame": "calm_presence-04-calm_blink_settle.png",
+        "open_eye_count": 2,
+        "eye_rows": [
+          {
+            "eye": "left",
+            "complete": true,
+            "primary_components": 1,
+            "sparkle_components": 1,
+            "primary_pixels": 145,
+            "sparkle_pixels": 31,
+            "primary_shift": {
+              "dx": 0,
+              "dy": 0
+            },
+            "sparkle_shift": {
+              "dx": 0,
+              "dy": 0
+            },
+            "relative_vector_before": {
+              "dx": 11.220244716351509,
+              "dy": 10.725695216907681
+            },
+            "relative_vector_after": {
+              "dx": 11.220244716351509,
+              "dy": 10.725695216907681
+            },
+            "counts_match": true,
+            "rigid": true,
+            "relative_vector_preserved": true
+          },
+          {
+            "eye": "right",
+            "complete": true,
+            "primary_components": 1,
+            "sparkle_components": 1,
+            "primary_pixels": 151,
+            "sparkle_pixels": 33,
+            "primary_shift": {
+              "dx": 0,
+              "dy": 0
+            },
+            "sparkle_shift": {
+              "dx": 0,
+              "dy": 0
+            },
+            "relative_vector_before": {
+              "dx": 11.599438089504304,
+              "dy": 10.856913505920119
+            },
+            "relative_vector_after": {
+              "dx": 11.599438089504304,
+              "dy": 10.856913505920119
+            },
+            "counts_match": true,
+            "rigid": true,
+            "relative_vector_preserved": true
+          }
+        ],
+        "cluster_count": 2,
+        "component_count": 4,
+        "sparkle_components": 2,
+        "paired_sparkles": true,
+        "paired_clusters": true,
+        "primary_highlight_mismatch_pixels": 0,
+        "rigid_cluster_mismatch": 0,
+        "relative_vector_mismatch": 0,
+        "component_mismatch": 0,
+        "boundary_mismatch_pixels": 0,
+        "residual_source_pixels": 0,
+        "changed_pixels": 0,
+        "silhouette_mismatch_pixels": 0,
+        "max_changed_pixels": 1024,
+        "exact_baseline": true,
+        "desired_dx": 0,
+        "desired_dy": 0,
+        "applied_dx": 0,
+        "applied_dy": 0,
+        "clamped": false,
+        "moving_component": "rigid_primary_plus_sparkle_clusters",
+        "eye_body_silhouette_fixed": true
+      }
+    },
+    {
+      "mode": "idle",
+      "step": 2,
+      "face_sha256": "4F130F3A8C67C709D5FE00F82B09B4DE531D393457113FC5521C4B7F0FAE7528",
+      "screenshot": "docs/validation/companion-rigid-eye-highlight-comp-req-560/recording-screenshots/idle-step-2.png",
+      "screenshot_sha256": "E74191116FFF6B1488021885E64DE8207456B196E807D4F34F7C65DCFA83EFA2",
+      "family_step": 2,
+      "family_cycle": 0,
+      "family_active": false,
+      "recording_active": false,
+      "recording_level_nodes": 1,
+      "meter_step": -1,
+      "eye": {
+        "pass": true,
+        "story": "calm_presence",
+        "frame": "calm_presence-04-calm_blink_settle.png",
+        "open_eye_count": 2,
+        "eye_rows": [
+          {
+            "eye": "left",
+            "complete": true,
+            "primary_components": 1,
+            "sparkle_components": 1,
+            "primary_pixels": 145,
+            "sparkle_pixels": 31,
+            "primary_shift": {
+              "dx": -3,
+              "dy": 0
+            },
+            "sparkle_shift": {
+              "dx": -3.000000000000007,
+              "dy": 0
+            },
+            "relative_vector_before": {
+              "dx": 11.220244716351509,
+              "dy": 10.725695216907681
+            },
+            "relative_vector_after": {
+              "dx": 11.220244716351502,
+              "dy": 10.725695216907681
+            },
+            "counts_match": true,
+            "rigid": true,
+            "relative_vector_preserved": true
+          },
+          {
+            "eye": "right",
+            "complete": true,
+            "primary_components": 1,
+            "sparkle_components": 1,
+            "primary_pixels": 151,
+            "sparkle_pixels": 33,
+            "primary_shift": {
+              "dx": -3,
+              "dy": 0
+            },
+            "sparkle_shift": {
+              "dx": -3,
+              "dy": 0
+            },
+            "relative_vector_before": {
+              "dx": 11.599438089504304,
+              "dy": 10.856913505920119
+            },
+            "relative_vector_after": {
+              "dx": 11.599438089504304,
+              "dy": 10.856913505920119
+            },
+            "counts_match": true,
+            "rigid": true,
+            "relative_vector_preserved": true
+          }
+        ],
+        "cluster_count": 2,
+        "component_count": 4,
+        "sparkle_components": 2,
+        "paired_sparkles": true,
+        "paired_clusters": true,
+        "primary_highlight_mismatch_pixels": 0,
+        "rigid_cluster_mismatch": 0,
+        "relative_vector_mismatch": 0,
+        "component_mismatch": 0,
+        "boundary_mismatch_pixels": 0,
+        "residual_source_pixels": 0,
+        "changed_pixels": 448,
+        "silhouette_mismatch_pixels": 0,
+        "max_changed_pixels": 1024,
+        "exact_baseline": true,
+        "desired_dx": -3,
+        "desired_dy": 0,
+        "applied_dx": -3,
+        "applied_dy": 0,
+        "clamped": false,
+        "moving_component": "rigid_primary_plus_sparkle_clusters",
+        "eye_body_silhouette_fixed": true
+      }
+    },
+    {
+      "mode": "idle",
+      "step": 4,
+      "face_sha256": "E7FF80C01E485D5A5A37A1FF8F32D1CB50C51E0F2DC6F43A02AA4CC04F3FE1FA",
+      "screenshot": "docs/validation/companion-rigid-eye-highlight-comp-req-560/recording-screenshots/idle-step-4.png",
+      "screenshot_sha256": "1E8FFFBC1FC5D87F4CAF245CA381ED77C6DEA90A7B34464A123E40C6DE33767F",
+      "family_step": 4,
+      "family_cycle": 0,
+      "family_active": false,
+      "recording_active": false,
+      "recording_level_nodes": 1,
+      "meter_step": -1,
+      "eye": {
+        "pass": true,
+        "story": "calm_presence",
+        "frame": "calm_presence-04-calm_blink_settle.png",
+        "open_eye_count": 2,
+        "eye_rows": [
+          {
+            "eye": "left",
+            "complete": true,
+            "primary_components": 1,
+            "sparkle_components": 1,
+            "primary_pixels": 145,
+            "sparkle_pixels": 31,
+            "primary_shift": {
+              "dx": 4,
+              "dy": 0
+            },
+            "sparkle_shift": {
+              "dx": 4,
+              "dy": 0
+            },
+            "relative_vector_before": {
+              "dx": 11.220244716351509,
+              "dy": 10.725695216907681
+            },
+            "relative_vector_after": {
+              "dx": 11.220244716351509,
+              "dy": 10.725695216907681
+            },
+            "counts_match": true,
+            "rigid": true,
+            "relative_vector_preserved": true
+          },
+          {
+            "eye": "right",
+            "complete": true,
+            "primary_components": 1,
+            "sparkle_components": 1,
+            "primary_pixels": 151,
+            "sparkle_pixels": 33,
+            "primary_shift": {
+              "dx": 4,
+              "dy": 0
+            },
+            "sparkle_shift": {
+              "dx": 4,
+              "dy": 0
+            },
+            "relative_vector_before": {
+              "dx": 11.599438089504304,
+              "dy": 10.856913505920119
+            },
+            "relative_vector_after": {
+              "dx": 11.599438089504304,
+              "dy": 10.856913505920119
+            },
+            "counts_match": true,
+            "rigid": true,
+            "relative_vector_preserved": true
+          }
+        ],
+        "cluster_count": 2,
+        "component_count": 4,
+        "sparkle_components": 2,
+        "paired_sparkles": true,
+        "paired_clusters": true,
+        "primary_highlight_mismatch_pixels": 0,
+        "rigid_cluster_mismatch": 0,
+        "relative_vector_mismatch": 0,
+        "component_mismatch": 0,
+        "boundary_mismatch_pixels": 0,
+        "residual_source_pixels": 0,
+        "changed_pixels": 867,
+        "silhouette_mismatch_pixels": 0,
+        "max_changed_pixels": 1024,
+        "exact_baseline": true,
+        "desired_dx": 4,
+        "desired_dy": 0,
+        "applied_dx": 4,
+        "applied_dy": 0,
+        "clamped": false,
+        "moving_component": "rigid_primary_plus_sparkle_clusters",
+        "eye_body_silhouette_fixed": true
+      }
+    },
+    {
+      "mode": "idle",
+      "step": 6,
+      "face_sha256": "BBB442635BA710C1EA615F36B890E86C3171A1B54CDA73A7B5C7690119579B78",
+      "screenshot": "docs/validation/companion-rigid-eye-highlight-comp-req-560/recording-screenshots/idle-step-6.png",
+      "screenshot_sha256": "D95B026AC0D4795ACE58162BE23636A9935393E67E60FC6FDA38BC74246A2025",
+      "family_step": 6,
+      "family_cycle": 0,
+      "family_active": false,
+      "recording_active": false,
+      "recording_level_nodes": 1,
+      "meter_step": -1,
+      "eye": {
+        "pass": true,
+        "story": "calm_presence",
+        "frame": "calm_presence-04-calm_blink_settle.png",
+        "open_eye_count": 2,
+        "eye_rows": [
+          {
+            "eye": "left",
+            "complete": true,
+            "primary_components": 1,
+            "sparkle_components": 1,
+            "primary_pixels": 145,
+            "sparkle_pixels": 31,
+            "primary_shift": {
+              "dx": 0,
+              "dy": 4
+            },
+            "sparkle_shift": {
+              "dx": 0,
+              "dy": 4
+            },
+            "relative_vector_before": {
+              "dx": 11.220244716351509,
+              "dy": 10.725695216907681
+            },
+            "relative_vector_after": {
+              "dx": 11.220244716351509,
+              "dy": 10.725695216907681
+            },
+            "counts_match": true,
+            "rigid": true,
+            "relative_vector_preserved": true
+          },
+          {
+            "eye": "right",
+            "complete": true,
+            "primary_components": 1,
+            "sparkle_components": 1,
+            "primary_pixels": 151,
+            "sparkle_pixels": 33,
+            "primary_shift": {
+              "dx": 0,
+              "dy": 4
+            },
+            "sparkle_shift": {
+              "dx": 0,
+              "dy": 4
+            },
+            "relative_vector_before": {
+              "dx": 11.599438089504304,
+              "dy": 10.856913505920119
+            },
+            "relative_vector_after": {
+              "dx": 11.599438089504304,
+              "dy": 10.856913505920119
+            },
+            "counts_match": true,
+            "rigid": true,
+            "relative_vector_preserved": true
+          }
+        ],
+        "cluster_count": 2,
+        "component_count": 4,
+        "sparkle_components": 2,
+        "paired_sparkles": true,
+        "paired_clusters": true,
+        "primary_highlight_mismatch_pixels": 0,
+        "rigid_cluster_mismatch": 0,
+        "relative_vector_mismatch": 0,
+        "component_mismatch": 0,
+        "boundary_mismatch_pixels": 0,
+        "residual_source_pixels": 0,
+        "changed_pixels": 631,
+        "silhouette_mismatch_pixels": 0,
+        "max_changed_pixels": 1024,
+        "exact_baseline": true,
+        "desired_dx": 0,
+        "desired_dy": 4,
+        "applied_dx": 0,
+        "applied_dy": 4,
+        "clamped": false,
+        "moving_component": "rigid_primary_plus_sparkle_clusters",
+        "eye_body_silhouette_fixed": true
+      }
+    },
+    {
+      "mode": "idle",
+      "step": 8,
+      "face_sha256": "BAFF6A8ABCEAB6A161DC142C7CCE7B5887E1F8B9B244585660B376AB05F08CEA",
+      "screenshot": "docs/validation/companion-rigid-eye-highlight-comp-req-560/recording-screenshots/idle-step-8.png",
+      "screenshot_sha256": "D345BD4DB6EC5A8E3196D06CFCA036A84AC68C6B80BAFB4EBA8A0C759064B4DA",
+      "family_step": 8,
+      "family_cycle": 0,
+      "family_active": false,
+      "recording_active": false,
+      "recording_level_nodes": 1,
+      "meter_step": -1,
+      "eye": {
+        "pass": true,
+        "story": "calm_presence",
+        "frame": "calm_presence-04-calm_blink_settle.png",
+        "open_eye_count": 2,
+        "eye_rows": [
+          {
+            "eye": "left",
+            "complete": true,
+            "primary_components": 1,
+            "sparkle_components": 1,
+            "primary_pixels": 145,
+            "sparkle_pixels": 31,
+            "primary_shift": {
+              "dx": -1,
+              "dy": 0
+            },
+            "sparkle_shift": {
+              "dx": -1,
+              "dy": 0
+            },
+            "relative_vector_before": {
+              "dx": 11.220244716351509,
+              "dy": 10.725695216907681
+            },
+            "relative_vector_after": {
+              "dx": 11.220244716351509,
+              "dy": 10.725695216907681
+            },
+            "counts_match": true,
+            "rigid": true,
+            "relative_vector_preserved": true
+          },
+          {
+            "eye": "right",
+            "complete": true,
+            "primary_components": 1,
+            "sparkle_components": 1,
+            "primary_pixels": 151,
+            "sparkle_pixels": 33,
+            "primary_shift": {
+              "dx": -1,
+              "dy": 0
+            },
+            "sparkle_shift": {
+              "dx": -1,
+              "dy": 0
+            },
+            "relative_vector_before": {
+              "dx": 11.599438089504304,
+              "dy": 10.856913505920119
+            },
+            "relative_vector_after": {
+              "dx": 11.599438089504304,
+              "dy": 10.856913505920119
+            },
+            "counts_match": true,
+            "rigid": true,
+            "relative_vector_preserved": true
+          }
+        ],
+        "cluster_count": 2,
+        "component_count": 4,
+        "sparkle_components": 2,
+        "paired_sparkles": true,
+        "paired_clusters": true,
+        "primary_highlight_mismatch_pixels": 0,
+        "rigid_cluster_mismatch": 0,
+        "relative_vector_mismatch": 0,
+        "component_mismatch": 0,
+        "boundary_mismatch_pixels": 0,
+        "residual_source_pixels": 0,
+        "changed_pixels": 186,
+        "silhouette_mismatch_pixels": 0,
+        "max_changed_pixels": 1024,
+        "exact_baseline": true,
+        "desired_dx": -1,
+        "desired_dy": 0,
+        "applied_dx": -1,
+        "applied_dy": 0,
+        "clamped": false,
+        "moving_component": "rigid_primary_plus_sparkle_clusters",
+        "eye_body_silhouette_fixed": true
+      }
+    },
+    {
+      "mode": "idle",
+      "step": 9,
+      "face_sha256": "305866713B63C679449838BF15F20B8CE369DF5D9F91DB06C6ABEEB97EA1A699",
+      "screenshot": "docs/validation/companion-rigid-eye-highlight-comp-req-560/recording-screenshots/idle-step-9.png",
+      "screenshot_sha256": "06EF853685448CC82B84FAAFAE42515EB627B896D93C146CF772B1B54C495011",
+      "family_step": 9,
+      "family_cycle": 0,
+      "family_active": false,
+      "recording_active": false,
+      "recording_level_nodes": 1,
+      "meter_step": -1,
+      "eye": {
+        "pass": true,
+        "story": "calm_presence",
+        "frame": "calm_presence-04-calm_blink_settle.png",
+        "open_eye_count": 2,
+        "eye_rows": [
+          {
+            "eye": "left",
+            "complete": true,
+            "primary_components": 1,
+            "sparkle_components": 1,
+            "primary_pixels": 145,
+            "sparkle_pixels": 31,
+            "primary_shift": {
+              "dx": 0,
+              "dy": 0
+            },
+            "sparkle_shift": {
+              "dx": 0,
+              "dy": 0
+            },
+            "relative_vector_before": {
+              "dx": 11.220244716351509,
+              "dy": 10.725695216907681
+            },
+            "relative_vector_after": {
+              "dx": 11.220244716351509,
+              "dy": 10.725695216907681
+            },
+            "counts_match": true,
+            "rigid": true,
+            "relative_vector_preserved": true
+          },
+          {
+            "eye": "right",
+            "complete": true,
+            "primary_components": 1,
+            "sparkle_components": 1,
+            "primary_pixels": 151,
+            "sparkle_pixels": 33,
+            "primary_shift": {
+              "dx": 0,
+              "dy": 0
+            },
+            "sparkle_shift": {
+              "dx": 0,
+              "dy": 0
+            },
+            "relative_vector_before": {
+              "dx": 11.599438089504304,
+              "dy": 10.856913505920119
+            },
+            "relative_vector_after": {
+              "dx": 11.599438089504304,
+              "dy": 10.856913505920119
+            },
+            "counts_match": true,
+            "rigid": true,
+            "relative_vector_preserved": true
+          }
+        ],
+        "cluster_count": 2,
+        "component_count": 4,
+        "sparkle_components": 2,
+        "paired_sparkles": true,
+        "paired_clusters": true,
+        "primary_highlight_mismatch_pixels": 0,
+        "rigid_cluster_mismatch": 0,
+        "relative_vector_mismatch": 0,
+        "component_mismatch": 0,
+        "boundary_mismatch_pixels": 0,
+        "residual_source_pixels": 0,
+        "changed_pixels": 0,
+        "silhouette_mismatch_pixels": 0,
+        "max_changed_pixels": 1024,
+        "exact_baseline": true,
+        "desired_dx": 0,
+        "desired_dy": 0,
+        "applied_dx": 0,
+        "applied_dy": 0,
+        "clamped": false,
+        "moving_component": "rigid_primary_plus_sparkle_clusters",
+        "eye_body_silhouette_fixed": true
+      }
+    }
+  ],
+  "live_idle": [
+    {
+      "mode": "日常实时时钟",
+      "step": 0,
+      "face_sha256": "305866713B63C679449838BF15F20B8CE369DF5D9F91DB06C6ABEEB97EA1A699",
+      "screenshot": "docs/validation/companion-rigid-eye-highlight-comp-req-560/recording-screenshots/idle-live-0.png",
+      "screenshot_sha256": "06EF853685448CC82B84FAAFAE42515EB627B896D93C146CF772B1B54C495011",
+      "family_step": 1,
+      "family_cycle": 0
+    },
+    {
+      "mode": "日常实时时钟",
+      "step": 1,
+      "face_sha256": "4F130F3A8C67C709D5FE00F82B09B4DE531D393457113FC5521C4B7F0FAE7528",
+      "screenshot": "docs/validation/companion-rigid-eye-highlight-comp-req-560/recording-screenshots/idle-live-1.png",
+      "screenshot_sha256": "E74191116FFF6B1488021885E64DE8207456B196E807D4F34F7C65DCFA83EFA2",
+      "family_step": 2,
+      "family_cycle": 0
+    },
+    {
+      "mode": "日常实时时钟",
+      "step": 2,
+      "face_sha256": "4F130F3A8C67C709D5FE00F82B09B4DE531D393457113FC5521C4B7F0FAE7528",
+      "screenshot": "docs/validation/companion-rigid-eye-highlight-comp-req-560/recording-screenshots/idle-live-2.png",
+      "screenshot_sha256": "E74191116FFF6B1488021885E64DE8207456B196E807D4F34F7C65DCFA83EFA2",
+      "family_step": 3,
+      "family_cycle": 0
+    },
+    {
+      "mode": "日常实时时钟",
+      "step": 3,
+      "face_sha256": "E7FF80C01E485D5A5A37A1FF8F32D1CB50C51E0F2DC6F43A02AA4CC04F3FE1FA",
+      "screenshot": "docs/validation/companion-rigid-eye-highlight-comp-req-560/recording-screenshots/idle-live-3.png",
+      "screenshot_sha256": "1E8FFFBC1FC5D87F4CAF245CA381ED77C6DEA90A7B34464A123E40C6DE33767F",
+      "family_step": 4,
+      "family_cycle": 0
+    },
+    {
+      "mode": "日常实时时钟",
+      "step": 4,
+      "face_sha256": "E7FF80C01E485D5A5A37A1FF8F32D1CB50C51E0F2DC6F43A02AA4CC04F3FE1FA",
+      "screenshot": "docs/validation/companion-rigid-eye-highlight-comp-req-560/recording-screenshots/idle-live-4.png",
+      "screenshot_sha256": "D95B026AC0D4795ACE58162BE23636A9935393E67E60FC6FDA38BC74246A2025",
+      "family_step": 5,
+      "family_cycle": 0
+    },
+    {
+      "mode": "日常实时时钟",
+      "step": 5,
+      "face_sha256": "BBB442635BA710C1EA615F36B890E86C3171A1B54CDA73A7B5C7690119579B78",
+      "screenshot": "docs/validation/companion-rigid-eye-highlight-comp-req-560/recording-screenshots/idle-live-5.png",
+      "screenshot_sha256": "D95B026AC0D4795ACE58162BE23636A9935393E67E60FC6FDA38BC74246A2025",
+      "family_step": 7,
+      "family_cycle": 0
+    },
+    {
+      "mode": "日常实时时钟",
+      "step": 6,
+      "face_sha256": "BAFF6A8ABCEAB6A161DC142C7CCE7B5887E1F8B9B244585660B376AB05F08CEA",
+      "screenshot": "docs/validation/companion-rigid-eye-highlight-comp-req-560/recording-screenshots/idle-live-6.png",
+      "screenshot_sha256": "D345BD4DB6EC5A8E3196D06CFCA036A84AC68C6B80BAFB4EBA8A0C759064B4DA",
+      "family_step": 8,
+      "family_cycle": 0
+    },
+    {
+      "mode": "日常实时时钟",
+      "step": 7,
+      "face_sha256": "305866713B63C679449838BF15F20B8CE369DF5D9F91DB06C6ABEEB97EA1A699",
+      "screenshot": "docs/validation/companion-rigid-eye-highlight-comp-req-560/recording-screenshots/idle-live-7.png",
+      "screenshot_sha256": "06EF853685448CC82B84FAAFAE42515EB627B896D93C146CF772B1B54C495011",
+      "family_step": 9,
+      "family_cycle": 0
+    },
+    {
+      "mode": "日常实时时钟",
+      "step": 8,
+      "face_sha256": "305866713B63C679449838BF15F20B8CE369DF5D9F91DB06C6ABEEB97EA1A699",
+      "screenshot": "docs/validation/companion-rigid-eye-highlight-comp-req-560/recording-screenshots/idle-live-8.png",
+      "screenshot_sha256": "06EF853685448CC82B84FAAFAE42515EB627B896D93C146CF772B1B54C495011",
+      "family_step": 0,
+      "family_cycle": 1
+    },
+    {
+      "mode": "日常实时时钟",
+      "step": 9,
+      "face_sha256": "4F130F3A8C67C709D5FE00F82B09B4DE531D393457113FC5521C4B7F0FAE7528",
+      "screenshot": "docs/validation/companion-rigid-eye-highlight-comp-req-560/recording-screenshots/idle-live-9.png",
+      "screenshot_sha256": "E74191116FFF6B1488021885E64DE8207456B196E807D4F34F7C65DCFA83EFA2",
+      "family_step": 2,
+      "family_cycle": 1
+    }
+  ],
+  "live_recording": [
+    {
+      "mode": "录音实时时钟",
+      "step": 0,
+      "face_sha256": "305866713B63C679449838BF15F20B8CE369DF5D9F91DB06C6ABEEB97EA1A699",
+      "screenshot": "docs/validation/companion-rigid-eye-highlight-comp-req-560/recording-screenshots/recording-live-0.png",
+      "screenshot_sha256": "C489A7D4F5FF98119EE0B71C01370299B344BAA8B30331BDD4E068B9991CADF7",
+      "meter_step": 1,
+      "family_step": 1
+    },
+    {
+      "mode": "录音实时时钟",
+      "step": 1,
+      "face_sha256": "4F130F3A8C67C709D5FE00F82B09B4DE531D393457113FC5521C4B7F0FAE7528",
+      "screenshot": "docs/validation/companion-rigid-eye-highlight-comp-req-560/recording-screenshots/recording-live-1.png",
+      "screenshot_sha256": "397594C77A1390F502773CF40F5A68CE518A9B760895DD3CE6C3A208F50A65E7",
+      "meter_step": 2,
+      "family_step": 2
+    },
+    {
+      "mode": "录音实时时钟",
+      "step": 2,
+      "face_sha256": "4F130F3A8C67C709D5FE00F82B09B4DE531D393457113FC5521C4B7F0FAE7528",
+      "screenshot": "docs/validation/companion-rigid-eye-highlight-comp-req-560/recording-screenshots/recording-live-2.png",
+      "screenshot_sha256": "A8F823783BDAC2354FDCC1047EB1DFCA604A97249647DDD40ADBD0D1CCCBD4D5",
+      "meter_step": 3,
+      "family_step": 3
+    },
+    {
+      "mode": "录音实时时钟",
+      "step": 3,
+      "face_sha256": "E7FF80C01E485D5A5A37A1FF8F32D1CB50C51E0F2DC6F43A02AA4CC04F3FE1FA",
+      "screenshot": "docs/validation/companion-rigid-eye-highlight-comp-req-560/recording-screenshots/recording-live-3.png",
+      "screenshot_sha256": "0E73F63CF9E0A32F11CBD9CE6C7CC832BDB2A67A498BF81B8D44306C5799B213",
+      "meter_step": 4,
+      "family_step": 4
+    },
+    {
+      "mode": "录音实时时钟",
+      "step": 4,
+      "face_sha256": "E7FF80C01E485D5A5A37A1FF8F32D1CB50C51E0F2DC6F43A02AA4CC04F3FE1FA",
+      "screenshot": "docs/validation/companion-rigid-eye-highlight-comp-req-560/recording-screenshots/recording-live-4.png",
+      "screenshot_sha256": "86B6BEA18BB6A64D292C84587FBD02DDC249BA7BE44D9731E67E18DF9104D8AF",
+      "meter_step": 5,
+      "family_step": 5
+    },
+    {
+      "mode": "录音实时时钟",
+      "step": 5,
+      "face_sha256": "BBB442635BA710C1EA615F36B890E86C3171A1B54CDA73A7B5C7690119579B78",
+      "screenshot": "docs/validation/companion-rigid-eye-highlight-comp-req-560/recording-screenshots/recording-live-5.png",
+      "screenshot_sha256": "D1845EE3AC00F3A69363C33DFD05E759D74D45299C18BBCDDA55CFD86EF3F5A3",
+      "meter_step": 7,
+      "family_step": 7
+    }
+  ],
+  "on": [
+    {
+      "mode": "recording",
+      "step": 0,
+      "face_sha256": "305866713B63C679449838BF15F20B8CE369DF5D9F91DB06C6ABEEB97EA1A699",
+      "screenshot": "docs/validation/companion-rigid-eye-highlight-comp-req-560/recording-screenshots/recording-step-0.png",
+      "screenshot_sha256": "21A459CC4173126AE6D1923637E26615D61080DB25E66D7D42B833F191AF8B12",
+      "family_step": 7,
+      "family_cycle": 1,
+      "family_active": false,
+      "recording_active": true,
+      "recording_level_nodes": 1,
+      "meter_step": 7,
+      "eye": {
+        "pass": true,
+        "story": "calm_presence",
+        "frame": "calm_presence-04-calm_blink_settle.png",
+        "open_eye_count": 2,
+        "eye_rows": [
+          {
+            "eye": "left",
+            "complete": true,
+            "primary_components": 1,
+            "sparkle_components": 1,
+            "primary_pixels": 145,
+            "sparkle_pixels": 31,
+            "primary_shift": {
+              "dx": 0,
+              "dy": 0
+            },
+            "sparkle_shift": {
+              "dx": 0,
+              "dy": 0
+            },
+            "relative_vector_before": {
+              "dx": 11.220244716351509,
+              "dy": 10.725695216907681
+            },
+            "relative_vector_after": {
+              "dx": 11.220244716351509,
+              "dy": 10.725695216907681
+            },
+            "counts_match": true,
+            "rigid": true,
+            "relative_vector_preserved": true
+          },
+          {
+            "eye": "right",
+            "complete": true,
+            "primary_components": 1,
+            "sparkle_components": 1,
+            "primary_pixels": 151,
+            "sparkle_pixels": 33,
+            "primary_shift": {
+              "dx": 0,
+              "dy": 0
+            },
+            "sparkle_shift": {
+              "dx": 0,
+              "dy": 0
+            },
+            "relative_vector_before": {
+              "dx": 11.599438089504304,
+              "dy": 10.856913505920119
+            },
+            "relative_vector_after": {
+              "dx": 11.599438089504304,
+              "dy": 10.856913505920119
+            },
+            "counts_match": true,
+            "rigid": true,
+            "relative_vector_preserved": true
+          }
+        ],
+        "cluster_count": 2,
+        "component_count": 4,
+        "sparkle_components": 2,
+        "paired_sparkles": true,
+        "paired_clusters": true,
+        "primary_highlight_mismatch_pixels": 0,
+        "rigid_cluster_mismatch": 0,
+        "relative_vector_mismatch": 0,
+        "component_mismatch": 0,
+        "boundary_mismatch_pixels": 0,
+        "residual_source_pixels": 0,
+        "changed_pixels": 0,
+        "silhouette_mismatch_pixels": 0,
+        "max_changed_pixels": 1024,
+        "exact_baseline": true,
+        "desired_dx": 0,
+        "desired_dy": 0,
+        "applied_dx": 0,
+        "applied_dy": 0,
+        "clamped": false,
+        "moving_component": "rigid_primary_plus_sparkle_clusters",
+        "eye_body_silhouette_fixed": true
+      }
+    },
+    {
+      "mode": "recording",
+      "step": 2,
+      "face_sha256": "4F130F3A8C67C709D5FE00F82B09B4DE531D393457113FC5521C4B7F0FAE7528",
+      "screenshot": "docs/validation/companion-rigid-eye-highlight-comp-req-560/recording-screenshots/recording-step-2.png",
+      "screenshot_sha256": "AFA9FB1B7696800C2C7E6D8DFD5EF2F278507F7056E7DFBBBAF879465C0BD355",
+      "family_step": 2,
+      "family_cycle": 1,
+      "family_active": false,
+      "recording_active": true,
+      "recording_level_nodes": 1,
+      "meter_step": 7,
+      "eye": {
+        "pass": true,
+        "story": "calm_presence",
+        "frame": "calm_presence-04-calm_blink_settle.png",
+        "open_eye_count": 2,
+        "eye_rows": [
+          {
+            "eye": "left",
+            "complete": true,
+            "primary_components": 1,
+            "sparkle_components": 1,
+            "primary_pixels": 145,
+            "sparkle_pixels": 31,
+            "primary_shift": {
+              "dx": -3,
+              "dy": 0
+            },
+            "sparkle_shift": {
+              "dx": -3.000000000000007,
+              "dy": 0
+            },
+            "relative_vector_before": {
+              "dx": 11.220244716351509,
+              "dy": 10.725695216907681
+            },
+            "relative_vector_after": {
+              "dx": 11.220244716351502,
+              "dy": 10.725695216907681
+            },
+            "counts_match": true,
+            "rigid": true,
+            "relative_vector_preserved": true
+          },
+          {
+            "eye": "right",
+            "complete": true,
+            "primary_components": 1,
+            "sparkle_components": 1,
+            "primary_pixels": 151,
+            "sparkle_pixels": 33,
+            "primary_shift": {
+              "dx": -3,
+              "dy": 0
+            },
+            "sparkle_shift": {
+              "dx": -3,
+              "dy": 0
+            },
+            "relative_vector_before": {
+              "dx": 11.599438089504304,
+              "dy": 10.856913505920119
+            },
+            "relative_vector_after": {
+              "dx": 11.599438089504304,
+              "dy": 10.856913505920119
+            },
+            "counts_match": true,
+            "rigid": true,
+            "relative_vector_preserved": true
+          }
+        ],
+        "cluster_count": 2,
+        "component_count": 4,
+        "sparkle_components": 2,
+        "paired_sparkles": true,
+        "paired_clusters": true,
+        "primary_highlight_mismatch_pixels": 0,
+        "rigid_cluster_mismatch": 0,
+        "relative_vector_mismatch": 0,
+        "component_mismatch": 0,
+        "boundary_mismatch_pixels": 0,
+        "residual_source_pixels": 0,
+        "changed_pixels": 448,
+        "silhouette_mismatch_pixels": 0,
+        "max_changed_pixels": 1024,
+        "exact_baseline": true,
+        "desired_dx": -3,
+        "desired_dy": 0,
+        "applied_dx": -3,
+        "applied_dy": 0,
+        "clamped": false,
+        "moving_component": "rigid_primary_plus_sparkle_clusters",
+        "eye_body_silhouette_fixed": true
+      }
+    },
+    {
+      "mode": "recording",
+      "step": 4,
+      "face_sha256": "E7FF80C01E485D5A5A37A1FF8F32D1CB50C51E0F2DC6F43A02AA4CC04F3FE1FA",
+      "screenshot": "docs/validation/companion-rigid-eye-highlight-comp-req-560/recording-screenshots/recording-step-4.png",
+      "screenshot_sha256": "65B62AFAACE10171221DC6E37547EF53D8A8C848F2CCB7B11076D47896EE59F7",
+      "family_step": 4,
+      "family_cycle": 1,
+      "family_active": false,
+      "recording_active": true,
+      "recording_level_nodes": 1,
+      "meter_step": 7,
+      "eye": {
+        "pass": true,
+        "story": "calm_presence",
+        "frame": "calm_presence-04-calm_blink_settle.png",
+        "open_eye_count": 2,
+        "eye_rows": [
+          {
+            "eye": "left",
+            "complete": true,
+            "primary_components": 1,
+            "sparkle_components": 1,
+            "primary_pixels": 145,
+            "sparkle_pixels": 31,
+            "primary_shift": {
+              "dx": 4,
+              "dy": 0
+            },
+            "sparkle_shift": {
+              "dx": 4,
+              "dy": 0
+            },
+            "relative_vector_before": {
+              "dx": 11.220244716351509,
+              "dy": 10.725695216907681
+            },
+            "relative_vector_after": {
+              "dx": 11.220244716351509,
+              "dy": 10.725695216907681
+            },
+            "counts_match": true,
+            "rigid": true,
+            "relative_vector_preserved": true
+          },
+          {
+            "eye": "right",
+            "complete": true,
+            "primary_components": 1,
+            "sparkle_components": 1,
+            "primary_pixels": 151,
+            "sparkle_pixels": 33,
+            "primary_shift": {
+              "dx": 4,
+              "dy": 0
+            },
+            "sparkle_shift": {
+              "dx": 4,
+              "dy": 0
+            },
+            "relative_vector_before": {
+              "dx": 11.599438089504304,
+              "dy": 10.856913505920119
+            },
+            "relative_vector_after": {
+              "dx": 11.599438089504304,
+              "dy": 10.856913505920119
+            },
+            "counts_match": true,
+            "rigid": true,
+            "relative_vector_preserved": true
+          }
+        ],
+        "cluster_count": 2,
+        "component_count": 4,
+        "sparkle_components": 2,
+        "paired_sparkles": true,
+        "paired_clusters": true,
+        "primary_highlight_mismatch_pixels": 0,
+        "rigid_cluster_mismatch": 0,
+        "relative_vector_mismatch": 0,
+        "component_mismatch": 0,
+        "boundary_mismatch_pixels": 0,
+        "residual_source_pixels": 0,
+        "changed_pixels": 867,
+        "silhouette_mismatch_pixels": 0,
+        "max_changed_pixels": 1024,
+        "exact_baseline": true,
+        "desired_dx": 4,
+        "desired_dy": 0,
+        "applied_dx": 4,
+        "applied_dy": 0,
+        "clamped": false,
+        "moving_component": "rigid_primary_plus_sparkle_clusters",
+        "eye_body_silhouette_fixed": true
+      }
+    },
+    {
+      "mode": "recording",
+      "step": 6,
+      "face_sha256": "BBB442635BA710C1EA615F36B890E86C3171A1B54CDA73A7B5C7690119579B78",
+      "screenshot": "docs/validation/companion-rigid-eye-highlight-comp-req-560/recording-screenshots/recording-step-6.png",
+      "screenshot_sha256": "D1845EE3AC00F3A69363C33DFD05E759D74D45299C18BBCDDA55CFD86EF3F5A3",
+      "family_step": 6,
+      "family_cycle": 1,
+      "family_active": false,
+      "recording_active": true,
+      "recording_level_nodes": 1,
+      "meter_step": 7,
+      "eye": {
+        "pass": true,
+        "story": "calm_presence",
+        "frame": "calm_presence-04-calm_blink_settle.png",
+        "open_eye_count": 2,
+        "eye_rows": [
+          {
+            "eye": "left",
+            "complete": true,
+            "primary_components": 1,
+            "sparkle_components": 1,
+            "primary_pixels": 145,
+            "sparkle_pixels": 31,
+            "primary_shift": {
+              "dx": 0,
+              "dy": 4
+            },
+            "sparkle_shift": {
+              "dx": 0,
+              "dy": 4
+            },
+            "relative_vector_before": {
+              "dx": 11.220244716351509,
+              "dy": 10.725695216907681
+            },
+            "relative_vector_after": {
+              "dx": 11.220244716351509,
+              "dy": 10.725695216907681
+            },
+            "counts_match": true,
+            "rigid": true,
+            "relative_vector_preserved": true
+          },
+          {
+            "eye": "right",
+            "complete": true,
+            "primary_components": 1,
+            "sparkle_components": 1,
+            "primary_pixels": 151,
+            "sparkle_pixels": 33,
+            "primary_shift": {
+              "dx": 0,
+              "dy": 4
+            },
+            "sparkle_shift": {
+              "dx": 0,
+              "dy": 4
+            },
+            "relative_vector_before": {
+              "dx": 11.599438089504304,
+              "dy": 10.856913505920119
+            },
+            "relative_vector_after": {
+              "dx": 11.599438089504304,
+              "dy": 10.856913505920119
+            },
+            "counts_match": true,
+            "rigid": true,
+            "relative_vector_preserved": true
+          }
+        ],
+        "cluster_count": 2,
+        "component_count": 4,
+        "sparkle_components": 2,
+        "paired_sparkles": true,
+        "paired_clusters": true,
+        "primary_highlight_mismatch_pixels": 0,
+        "rigid_cluster_mismatch": 0,
+        "relative_vector_mismatch": 0,
+        "component_mismatch": 0,
+        "boundary_mismatch_pixels": 0,
+        "residual_source_pixels": 0,
+        "changed_pixels": 631,
+        "silhouette_mismatch_pixels": 0,
+        "max_changed_pixels": 1024,
+        "exact_baseline": true,
+        "desired_dx": 0,
+        "desired_dy": 4,
+        "applied_dx": 0,
+        "applied_dy": 4,
+        "clamped": false,
+        "moving_component": "rigid_primary_plus_sparkle_clusters",
+        "eye_body_silhouette_fixed": true
+      }
+    },
+    {
+      "mode": "recording",
+      "step": 8,
+      "face_sha256": "BAFF6A8ABCEAB6A161DC142C7CCE7B5887E1F8B9B244585660B376AB05F08CEA",
+      "screenshot": "docs/validation/companion-rigid-eye-highlight-comp-req-560/recording-screenshots/recording-step-8.png",
+      "screenshot_sha256": "2D15DA6FF8188F0A335CBFBC572CC33D813283CE046F8CCB0E2225B80382C9D4",
+      "family_step": 8,
+      "family_cycle": 1,
+      "family_active": false,
+      "recording_active": true,
+      "recording_level_nodes": 1,
+      "meter_step": 7,
+      "eye": {
+        "pass": true,
+        "story": "calm_presence",
+        "frame": "calm_presence-04-calm_blink_settle.png",
+        "open_eye_count": 2,
+        "eye_rows": [
+          {
+            "eye": "left",
+            "complete": true,
+            "primary_components": 1,
+            "sparkle_components": 1,
+            "primary_pixels": 145,
+            "sparkle_pixels": 31,
+            "primary_shift": {
+              "dx": -1,
+              "dy": 0
+            },
+            "sparkle_shift": {
+              "dx": -1,
+              "dy": 0
+            },
+            "relative_vector_before": {
+              "dx": 11.220244716351509,
+              "dy": 10.725695216907681
+            },
+            "relative_vector_after": {
+              "dx": 11.220244716351509,
+              "dy": 10.725695216907681
+            },
+            "counts_match": true,
+            "rigid": true,
+            "relative_vector_preserved": true
+          },
+          {
+            "eye": "right",
+            "complete": true,
+            "primary_components": 1,
+            "sparkle_components": 1,
+            "primary_pixels": 151,
+            "sparkle_pixels": 33,
+            "primary_shift": {
+              "dx": -1,
+              "dy": 0
+            },
+            "sparkle_shift": {
+              "dx": -1,
+              "dy": 0
+            },
+            "relative_vector_before": {
+              "dx": 11.599438089504304,
+              "dy": 10.856913505920119
+            },
+            "relative_vector_after": {
+              "dx": 11.599438089504304,
+              "dy": 10.856913505920119
+            },
+            "counts_match": true,
+            "rigid": true,
+            "relative_vector_preserved": true
+          }
+        ],
+        "cluster_count": 2,
+        "component_count": 4,
+        "sparkle_components": 2,
+        "paired_sparkles": true,
+        "paired_clusters": true,
+        "primary_highlight_mismatch_pixels": 0,
+        "rigid_cluster_mismatch": 0,
+        "relative_vector_mismatch": 0,
+        "component_mismatch": 0,
+        "boundary_mismatch_pixels": 0,
+        "residual_source_pixels": 0,
+        "changed_pixels": 186,
+        "silhouette_mismatch_pixels": 0,
+        "max_changed_pixels": 1024,
+        "exact_baseline": true,
+        "desired_dx": -1,
+        "desired_dy": 0,
+        "applied_dx": -1,
+        "applied_dy": 0,
+        "clamped": false,
+        "moving_component": "rigid_primary_plus_sparkle_clusters",
+        "eye_body_silhouette_fixed": true
+      }
+    },
+    {
+      "mode": "recording",
+      "step": 9,
+      "face_sha256": "305866713B63C679449838BF15F20B8CE369DF5D9F91DB06C6ABEEB97EA1A699",
+      "screenshot": "docs/validation/companion-rigid-eye-highlight-comp-req-560/recording-screenshots/recording-step-9.png",
+      "screenshot_sha256": "08FDEA410C5C66CC826DF62D6FEF482D241CF4AFDCF00817922F179269478BA1",
+      "family_step": 9,
+      "family_cycle": 1,
+      "family_active": false,
+      "recording_active": true,
+      "recording_level_nodes": 1,
+      "meter_step": 0,
+      "eye": {
+        "pass": true,
+        "story": "calm_presence",
+        "frame": "calm_presence-04-calm_blink_settle.png",
+        "open_eye_count": 2,
+        "eye_rows": [
+          {
+            "eye": "left",
+            "complete": true,
+            "primary_components": 1,
+            "sparkle_components": 1,
+            "primary_pixels": 145,
+            "sparkle_pixels": 31,
+            "primary_shift": {
+              "dx": 0,
+              "dy": 0
+            },
+            "sparkle_shift": {
+              "dx": 0,
+              "dy": 0
+            },
+            "relative_vector_before": {
+              "dx": 11.220244716351509,
+              "dy": 10.725695216907681
+            },
+            "relative_vector_after": {
+              "dx": 11.220244716351509,
+              "dy": 10.725695216907681
+            },
+            "counts_match": true,
+            "rigid": true,
+            "relative_vector_preserved": true
+          },
+          {
+            "eye": "right",
+            "complete": true,
+            "primary_components": 1,
+            "sparkle_components": 1,
+            "primary_pixels": 151,
+            "sparkle_pixels": 33,
+            "primary_shift": {
+              "dx": 0,
+              "dy": 0
+            },
+            "sparkle_shift": {
+              "dx": 0,
+              "dy": 0
+            },
+            "relative_vector_before": {
+              "dx": 11.599438089504304,
+              "dy": 10.856913505920119
+            },
+            "relative_vector_after": {
+              "dx": 11.599438089504304,
+              "dy": 10.856913505920119
+            },
+            "counts_match": true,
+            "rigid": true,
+            "relative_vector_preserved": true
+          }
+        ],
+        "cluster_count": 2,
+        "component_count": 4,
+        "sparkle_components": 2,
+        "paired_sparkles": true,
+        "paired_clusters": true,
+        "primary_highlight_mismatch_pixels": 0,
+        "rigid_cluster_mismatch": 0,
+        "relative_vector_mismatch": 0,
+        "component_mismatch": 0,
+        "boundary_mismatch_pixels": 0,
+        "residual_source_pixels": 0,
+        "changed_pixels": 0,
+        "silhouette_mismatch_pixels": 0,
+        "max_changed_pixels": 1024,
+        "exact_baseline": true,
+        "desired_dx": 0,
+        "desired_dy": 0,
+        "applied_dx": 0,
+        "applied_dy": 0,
+        "clamped": false,
+        "moving_component": "rigid_primary_plus_sparkle_clusters",
+        "eye_body_silhouette_fixed": true
+      }
+    }
+  ],
+  "contact_sheet": "docs/validation/companion-rigid-eye-highlight-comp-req-560/recording-screenshots/idle-recording-contact.png",
+  "contact_sheet_sha256": "CFBDC50CF583CC562EE7DAE76F246E4726B51401E21285B9B2056EF80048F810"
+}

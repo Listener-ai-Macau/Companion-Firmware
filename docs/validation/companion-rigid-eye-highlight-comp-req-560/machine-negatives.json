@@ -1,0 +1,31 @@
+{
+  "schema": "companion.comp_req_560.machine_ready_negatives.v1",
+  "status": "PASS",
+  "cases": [
+    {
+      "name": "unpaired_cluster",
+      "status": "NO_GO",
+      "expected_failure": "paired direction clusters"
+    },
+    {
+      "name": "stale_source_pixel",
+      "status": "NO_GO",
+      "expected_failure": "source cleanup"
+    },
+    {
+      "name": "interaction_drop",
+      "status": "NO_GO",
+      "expected_failure": "interaction scenarios"
+    },
+    {
+      "name": "browser_c_pixel_drift",
+      "status": "NO_GO",
+      "expected_failure": "browser C parity"
+    },
+    {
+      "name": "hardware_contact",
+      "status": "NO_GO",
+      "expected_failure": "machine side effects"
+    }
+  ]
+}
