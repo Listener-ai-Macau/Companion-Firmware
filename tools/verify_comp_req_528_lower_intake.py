@@ -30,8 +30,8 @@ def rel(path: Path) -> str:
     return path.relative_to(ROOT).as_posix()
 
 
-def run_json(command: list[str], env: dict[str, str] | None = None):
-    return subprocess.run(command, cwd=ROOT, env=env, capture_output=True,
+def run_json(command: list[str], env: dict[str, str] | None = None, cwd: Path | None = None):
+    return subprocess.run(command, cwd=cwd or ROOT, env=env, capture_output=True,
                           text=True, check=False)
 
 
@@ -113,28 +113,69 @@ def main() -> int:
     if not accepted:
         failures.append("accepted production checkpoint is missing")
 
-    # Execute the real compiled 525 fixture in this package root.
-    recording_out = out / "recording_525"
-    env = os.environ.copy()
-    env["COMP_REQ_515_OUT"] = str(recording_out)
-    p525 = run_json(["python", "-B", "tools/verify_comp_req_513_recording.py"], env)
-    recording_verifier = recording_out / "verifier.json"
-    if p525.returncode != 0 or not recording_verifier.is_file():
-        failures.append("focused 525 executable verifier failed")
-        recording = {}
-    else:
-        recording = json.loads(recording_verifier.read_text(encoding="utf-8"))
-    if recording.get("status") != "PASS":
-        failures.append("focused 525 result is not PASS")
-    if recording.get("checkonly") != {k: 0 for k in CHECKONLY_KEYS}:
-        failures.append("focused 525 CheckOnly is not all zero")
+    protected = {
+        "driver": {
+            "path": "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c",
+            "physical_sha256": "F52A7E853BFE2E66680F08420941265CFF163FB579B2D3870128FC72C79E035F",
+            "git_blob": "f856d7ce0b8915e5059620c3faa97aa06b06eb4e",
+        },
+        "r7_header": {
+            "path": "app/companion_pendant/epaper/companion_r7_locked_v9_frames.h",
+            "physical_sha256": "9571CF9F896B6C14451BAA7348CB717643B4963AE834B0A554E0C2ED2C7E8D35",
+            "git_blob": "2220da0c1113a5cdad7028aeae578d9fe26e936f",
+        },
+    }
+    for item in protected.values():
+        path = ROOT / item["path"]
+        if not path.is_file() or sha(path) != item["physical_sha256"] or blob(path) != item["git_blob"]:
+            failures.append(f"protected identity mismatch: {item['path']}")
 
-    # Run the real raw-touch runner and the real 24-report integration verifier
-    # into this package root.  No counters are synthesized here.
+    builds = {mode: fresh_arm_build(out, mode, head, failures)
+              for mode in ("bounded", "continuous")}
+    if not all(validate_build(entry, out, head) for entry in builds.values()):
+        failures.append("fresh build provenance is incomplete")
+
+    checkonly_run_root = out / "r7_checkonly"
+    checkonly_run_root.mkdir(parents=True, exist_ok=True)
+    checkonly_proc = run_json(["pwsh", "-NoProfile", "-File",
+                               str(ROOT / "tools/run_comp_req_466_r7_runtime_host_fixture.ps1"),
+                               "-CheckOnly", "-OutRoot",
+                               str(checkonly_run_root.relative_to(ROOT)).replace("/", "\\")],
+                              cwd=checkonly_run_root)
+    checkonly_path = checkonly_run_root / "host-result.json"
+    checkonly_actual = json.loads(checkonly_path.read_text(encoding="utf-8")) if checkonly_path.is_file() else {}
+    if checkonly_proc.returncode != 0 or checkonly_actual.get("status") != "CHECK_ONLY_PASS":
+        failures.append("real R7 CheckOnly path failed")
+
+    bridge_evidence_path = out / "bridge_machine_ready.json"
+    bridge_evidence = {
+        "schema": "companion.comp_req_528.bridge_evidence.v1",
+        "status": "PASS" if checkonly_actual.get("checkonly") == {k: 0 for k in CHECKONLY_KEYS} and
+                  all(entry.get("fresh") is True and entry.get("source_commit") == head for entry in builds.values()) else "NO_GO",
+        "source_commit": head,
+        "protected": {
+            "driver_git_blob": protected["driver"]["git_blob"],
+            "header_git_blob": protected["r7_header"]["git_blob"],
+            "driver_physical_sha256": protected["driver"]["physical_sha256"],
+            "header_physical_sha256": protected["r7_header"]["physical_sha256"],
+        },
+        "build": {
+            "bounded_and_continuous": all(entry.get("fresh") is True and entry.get("source_commit") == head for entry in builds.values()),
+            "bounded": builds["bounded"],
+            "continuous": builds["continuous"],
+        },
+        "checkonly": checkonly_actual.get("checkonly", {}),
+    }
+    bridge_evidence_path.write_text(json.dumps(bridge_evidence, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+    # Run the raw-touch producer before 525 so the recording verifier receives a
+    # package-local, current-source handoff instead of the retired canonical cache.
     raw_runner = ROOT / "tools" / "run_comp_req_501_raw_touch_trace.ps1"
     raw_out = out / "raw_touch"
+    raw_out.mkdir(parents=True, exist_ok=True)
     praw = run_json(["pwsh", "-NoProfile", "-File", str(raw_runner),
-                     "-OutRoot", str(raw_out.relative_to(ROOT)).replace("/", "\\")])
+                     "-OutRoot", str(raw_out.relative_to(ROOT)).replace("/", "\\")],
+                    cwd=raw_out)
     raw_result_path = raw_out / "result.json"
     if praw.returncode != 0 or not raw_result_path.is_file():
         failures.append("raw-touch runner failed")
@@ -148,18 +189,61 @@ def main() -> int:
         shutil.copy2(raw_result_path, out / "raw_touch_result.json")
         if (raw_out / "verifier.json").is_file():
             shutil.copy2(raw_out / "verifier.json", out / "raw_touch_verifier.json")
+    r7_handoff_path = out / "r7_handoff_input.json"
+    r7_handoff_path.write_text(json.dumps({
+        "schema": "companion.comp_req_528.current_r7_handoff_input.v1",
+        "source_commit": head,
+        "candidate_commits": [head],
+        "raw_result_sha256": sha(raw_result_path) if raw_result_path.is_file() else "",
+        "protected": protected,
+    }, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+    # Execute the real compiled 525 fixture in this package root.
+    recording_out = out / "recording_525"
+    env = os.environ.copy()
+    env["COMP_REQ_515_OUT"] = str(recording_out)
+    env["COMP_REQ_515_BOUNDED_HEX"] = str(out / "fresh_build" / "bounded" / "Companion_Nucleo_WB55RG_Ssd1681R7VisualRuntime.hex")
+    env["COMP_REQ_515_BOUNDED_ELF"] = str(out / "fresh_build" / "bounded" / "Companion_Nucleo_WB55RG_Ssd1681R7VisualRuntime.elf")
+    env["COMP_REQ_515_CONTINUOUS_HEX"] = str(out / "fresh_build" / "continuous" / "Companion_Nucleo_WB55RG_Ssd1681R7VisualRuntimeContinuous.hex")
+    env["COMP_REQ_515_CONTINUOUS_ELF"] = str(out / "fresh_build" / "continuous" / "Companion_Nucleo_WB55RG_Ssd1681R7VisualRuntimeContinuous.elf")
+    env["COMP_REQ_515_R7_HANDOFF"] = str(r7_handoff_path)
+    p525 = run_json(["python", "-B", "tools/verify_comp_req_513_recording.py"], env)
+    recording_verifier = recording_out / "verifier.json"
+    if p525.returncode != 0 or not recording_verifier.is_file():
+        failures.append("focused 525 executable verifier failed")
+        recording = {}
+    else:
+        recording = json.loads(recording_verifier.read_text(encoding="utf-8"))
+    if recording.get("status") != "PASS":
+        failures.append("focused 525 result is not PASS")
+    if recording.get("checkonly") != {k: 0 for k in CHECKONLY_KEYS}:
+        failures.append("focused 525 CheckOnly is not all zero")
+
+    # Run the real 24-report integration verifier into this package root.
     touch_out = out / "touch_integration"
+    touch_out.mkdir(parents=True, exist_ok=True)
     ptouch = run_json(["pwsh", "-NoProfile", "-File",
                        str(ROOT / "tools/run_comp_req_466_r7_touch_integration_fixture.ps1"),
-                       "-OutRoot", str(touch_out.relative_to(ROOT)).replace("/", "\\")])
+                       "-OutRoot", str(touch_out.relative_to(ROOT)).replace("/", "\\")],
+                      cwd=touch_out)
     touch_result_path = touch_out / "touch-integration-result.json"
     touch_result = json.loads(touch_result_path.read_text(encoding="utf-8-sig")) if touch_result_path.is_file() else {}
     if touch_result:
         touch_result_path.write_text(json.dumps(touch_result, indent=2, sort_keys=True) + "\n",
                                      encoding="utf-8")
     touch_stdout = touch_result.get("stdout", "")
-    touch_gate = run_json(["python", "-B", "tools/verify_comp_req_466_r7_touch_integration.py"])
+    touch_gate = run_json(["python", "-B", "tools/verify_comp_req_466_r7_touch_integration.py",
+                           "--touch-result", str(touch_result_path),
+                           "--touch-machine-ready", str(touch_out / "MACHINE_READY.json"),
+                           "--bridge-evidence", str(bridge_evidence_path),
+                           "--runner-out-root", str(touch_out.relative_to(ROOT)).replace("/", "\\")])
     touch_gate_ok = touch_gate.returncode == 0
+    # The verifier reruns the fixture; canonicalize its PowerShell hashtable
+    # ordering after that run so consumer artifacts are byte-stable.
+    if touch_result_path.is_file():
+        touch_result = json.loads(touch_result_path.read_text(encoding="utf-8-sig"))
+        touch_result_path.write_text(json.dumps(touch_result, indent=2, sort_keys=True) + "\n",
+                                     encoding="utf-8")
     touch_observed = {
         "aggregate_reports": parse_int(touch_stdout, "aggregate_reports"),
         "expected_inputs": parse_int(touch_stdout, "expected_inputs"),
@@ -186,28 +270,6 @@ def main() -> int:
         if raw_observed.get(key) != expected:
             failures.append(f"raw-touch observed {key} != {expected}")
 
-    protected = {
-        "driver": {
-            "path": "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c",
-            "physical_sha256": "F52A7E853BFE2E66680F08420941265CFF163FB579B2D3870128FC72C79E035F",
-            "git_blob": "f856d7ce0b8915e5059620c3faa97aa06b06eb4e",
-        },
-        "r7_header": {
-            "path": "app/companion_pendant/epaper/companion_r7_locked_v9_frames.h",
-            "physical_sha256": "9571CF9F896B6C14451BAA7348CB717643B4963AE834B0A554E0C2ED2C7E8D35",
-            "git_blob": "2220da0c1113a5cdad7028aeae578d9fe26e936f",
-        },
-    }
-    for item in protected.values():
-        path = ROOT / item["path"]
-        if not path.is_file() or sha(path) != item["physical_sha256"] or blob(path) != item["git_blob"]:
-            failures.append(f"protected identity mismatch: {item['path']}")
-
-    builds = {mode: fresh_arm_build(out, mode, head, failures)
-              for mode in ("bounded", "continuous")}
-    if not all(validate_build(entry, out, head) for entry in builds.values()):
-        failures.append("fresh build provenance is incomplete")
-
     # The accepted R7 static/parser gates derive command and timing rules from
     # source. Their stdout is evidence; the package never restates those rules
     # as a manually authored PASS object.
@@ -219,16 +281,6 @@ def main() -> int:
                  "exit_code": parser_run.returncode, "stdout": parser_run.stdout.strip()}
     if static_run.returncode != 0 or parser_run.returncode != 0:
         failures.append("R7 static/parser gate failed")
-
-    checkonly_run_root = out / "r7_checkonly"
-    checkonly_proc = run_json(["pwsh", "-NoProfile", "-File",
-                               str(ROOT / "tools/run_comp_req_466_r7_runtime_host_fixture.ps1"),
-                               "-CheckOnly", "-OutRoot",
-                               str(checkonly_run_root.relative_to(ROOT)).replace("/", "\\")])
-    checkonly_path = checkonly_run_root / "host-result.json"
-    checkonly_actual = json.loads(checkonly_path.read_text(encoding="utf-8")) if checkonly_path.is_file() else {}
-    if checkonly_proc.returncode != 0 or checkonly_actual.get("status") != "CHECK_ONLY_PASS":
-        failures.append("real R7 CheckOnly path failed")
 
     host_chain_files = {
         "runner": "tools/run_wb55_ssd1681_r7_locked_v9.ps1",

@@ -2,6 +2,7 @@ import hashlib
 import json
 import os
 import subprocess
+import argparse
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -47,12 +48,51 @@ def run(name, mutation="none"):
     root.mkdir(parents=True, exist_ok=True)
     p = subprocess.run(["pwsh", "-NoProfile", "-File", str(RUNNER),
                         "-OutRoot", str(root.relative_to(ROOT)),
-                        "-Mutation", mutation], cwd=ROOT,
+                        "-Mutation", mutation], cwd=OUT,
                        text=True, capture_output=True)
     result = json.loads((root / "result.json").read_text(encoding="utf-8-sig"))
     return p, result
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--bounded-hex", default=os.environ.get("COMP_REQ_515_BOUNDED_HEX"))
+    parser.add_argument("--bounded-elf", default=os.environ.get("COMP_REQ_515_BOUNDED_ELF"))
+    parser.add_argument("--continuous-hex", default=os.environ.get("COMP_REQ_515_CONTINUOUS_HEX"))
+    parser.add_argument("--continuous-elf", default=os.environ.get("COMP_REQ_515_CONTINUOUS_ELF"))
+    parser.add_argument("--r7-handoff", default=os.environ.get("COMP_REQ_515_R7_HANDOFF"))
+    args = parser.parse_args()
+
+    def required_artifact(value, fallback):
+        path = Path(value) if value else ROOT / fallback
+        if not path.is_file():
+            raise SystemExit(f"missing build artifact: {path}")
+        return path
+
+    bounded_hex = required_artifact(
+        args.bounded_hex,
+        "cubeide/Companion_Nucleo_WB55RG_Bringup/build_ssd1681_r7_visual_runtime/"
+        "Companion_Nucleo_WB55RG_Ssd1681R7VisualRuntime.hex",
+    )
+    bounded_elf = required_artifact(
+        args.bounded_elf,
+        "cubeide/Companion_Nucleo_WB55RG_Bringup/build_ssd1681_r7_visual_runtime/"
+        "Companion_Nucleo_WB55RG_Ssd1681R7VisualRuntime.elf",
+    )
+    continuous_hex = required_artifact(
+        args.continuous_hex,
+        "cubeide/Companion_Nucleo_WB55RG_Bringup/build_ssd1681_r7_visual_runtime_continuous/"
+        "Companion_Nucleo_WB55RG_Ssd1681R7VisualRuntimeContinuous.hex",
+    )
+    continuous_elf = required_artifact(
+        args.continuous_elf,
+        "cubeide/Companion_Nucleo_WB55RG_Bringup/build_ssd1681_r7_visual_runtime_continuous/"
+        "Companion_Nucleo_WB55RG_Ssd1681R7VisualRuntimeContinuous.elf",
+    )
+    r7_handoff = required_artifact(
+        args.r7_handoff,
+        ".cache/validation/comp-req-501-faraday-handoff.json",
+    )
+
     boundary_text = (ROOT / "app/companion_pendant/touch/touch_recording_boundary.c").read_text()
     board_text = (ROOT / "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/main.c").read_text()
     host_text = (ROOT / "tools/comp_req_513_recording_trace.c").read_text()
@@ -144,12 +184,12 @@ def main():
             "header_git_blob": blob(ROOT / "app/companion_pendant/epaper/companion_r7_locked_v9_frames.h"),
         },
         "builds": {
-            "bounded_hex": sha(ROOT / "cubeide/Companion_Nucleo_WB55RG_Bringup/build_ssd1681_r7_visual_runtime/Companion_Nucleo_WB55RG_Ssd1681R7VisualRuntime.hex"),
-            "bounded_elf": sha(ROOT / "cubeide/Companion_Nucleo_WB55RG_Bringup/build_ssd1681_r7_visual_runtime/Companion_Nucleo_WB55RG_Ssd1681R7VisualRuntime.elf"),
-            "continuous_hex": sha(ROOT / "cubeide/Companion_Nucleo_WB55RG_Bringup/build_ssd1681_r7_visual_runtime_continuous/Companion_Nucleo_WB55RG_Ssd1681R7VisualRuntimeContinuous.hex"),
-            "continuous_elf": sha(ROOT / "cubeide/Companion_Nucleo_WB55RG_Bringup/build_ssd1681_r7_visual_runtime_continuous/Companion_Nucleo_WB55RG_Ssd1681R7VisualRuntimeContinuous.elf"),
+            "bounded_hex": sha(bounded_hex),
+            "bounded_elf": sha(bounded_elf),
+            "continuous_hex": sha(continuous_hex),
+            "continuous_elf": sha(continuous_elf),
         },
-        "r7_handoff_sha256": sha(ROOT / ".cache/validation/comp-req-501-faraday-handoff.json"),
+        "r7_handoff_sha256": sha(r7_handoff),
         "checkonly": {"hardware_contact": 0, "programmer": 0, "serial": 0,
                       "write": 0, "reset": 0, "refresh": 0, "popup": 0,
                       "retry": 0},
