@@ -1,0 +1,20 @@
+{
+  "schema": "companion.comp_req_551.eye_integrity.v1",
+  "status": "PASS",
+  "page_sha256": "2CC12F774208F26DE7A5793591E8702A1BD9665F5A33E78B1CE5D3E480596626",
+  "families": 10,
+  "family_frames": 60,
+  "drag_gaze_keys": 280,
+  "primary_highlight_mismatch_pixels": 0,
+  "silhouette_mismatch_pixels": 0,
+  "unsafe_full_highlight_negative_rejected": true,
+  "contract": {
+    "moving_component": "small_sparkle_only",
+    "max_sparkle_pixels": 32,
+    "primary_highlight": "fixed",
+    "eye_body_silhouette": "fixed",
+    "boundary_inset_px": 1
+  },
+  "max_changed_pixels_observed": 62,
+  "checks": 65
+}

@@ -1,0 +1,60 @@
+{
+  "schema": "companion.comp_req_551.eye_integrity_machine_ready.v1",
+  "requirement": "COMP-REQ-551",
+  "status": "MACHINE_READY_OWNER_PENDING",
+  "implementation_commit": "e6a3f88e51612d4da06bb3b3394fde366375bb34",
+  "page_sha256": "2CC12F774208F26DE7A5793591E8702A1BD9665F5A33E78B1CE5D3E480596626",
+  "verifier_sha256": "8A5390D1FAB1EC5078BBEFEF15324AF16BE1B7EF88D1C70BCB92457D5584905C",
+  "eye_integrity": {
+    "status": "PASS",
+    "result_sha256": "5BB7767DF924EDBD0F5F20D75EFD016DA05544A5CB7F5AF73C05EA402997A980",
+    "families": 10,
+    "family_frames": 60,
+    "drag_gaze_keys": 280,
+    "moving_component": "small_sparkle_only",
+    "max_sparkle_pixels": 32,
+    "max_changed_pixels_observed": 62,
+    "primary_highlight_mismatch_pixels": 0,
+    "silhouette_mismatch_pixels": 0,
+    "unsafe_full_highlight_negative_rejected": true
+  },
+  "focused_family_choreography": {
+    "status": "PASS",
+    "result_sha256": "43AF90A06B6F910ED94DF770CD85AD5AA109333FF4459FD104301DBE0F87F70E",
+    "families": 10,
+    "screenshots": 60
+  },
+  "interaction": {
+    "status": "PASS",
+    "result_sha256": "63F4D9C393950A001405643DCF4487F87F6A7C130CDCA5E6D9857D48A65C2B81",
+    "scenarios": 42,
+    "failed": 0
+  },
+  "main_visual_review": {
+    "status": "PASS",
+    "contact_sheet_sha256": "F7D847B24FD707CBDF7CFAE50B05D21BB4069F1AFE029AAF7354925608F9847C",
+    "page_live_sha256": "99FFFD716C37904501DE3BDFCC011BB8F5DDCF6803AFB379D8CAA78643B82FF8",
+    "eye_outer_contours_complete": true,
+    "large_primary_highlights_fixed": true,
+    "small_sparkles_bounded": true,
+    "tear_drip_cutout_absent": true
+  },
+  "protected_lower": {
+    "driver_sha256": "F52A7E853BFE2E66680F08420941265CFF163FB579B2D3870128FC72C79E035F",
+    "frame_header_sha256": "9571CF9F896B6C14451BAA7348CB717643B4963AE834B0A554E0C2ED2C7E8D35",
+    "changed": false
+  },
+  "checkonly": {
+    "hardware_contact": 0,
+    "programmer": 0,
+    "serial": 0,
+    "write": 0,
+    "reset": 0,
+    "refresh": 0,
+    "popup": 0,
+    "retry": 0,
+    "microphone": 0,
+    "push": 0
+  },
+  "owner_review": "pending"
+}
