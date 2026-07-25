@@ -4,6 +4,7 @@
 
 #include <string.h>
 
+#if COMPANION_VISUAL_ASSET_PACK_ENABLE
 static uint32_t frame_hash(const uint8_t *bytes, size_t size)
 {
     uint32_t hash = UINT32_C(2166136261);
@@ -14,6 +15,7 @@ static uint32_t frame_hash(const uint8_t *bytes, size_t size)
     }
     return hash;
 }
+#endif
 
 static bool is_ui_assets_tap(const comp_screen_menu_t *menu,
                              const comp_touch_gesture_event_t *gesture)
@@ -235,10 +237,13 @@ bool comp_touch_visual_emit_decision(
 {
     uint32_t previous_hash = 0u;
     uint32_t current_hash = 0u;
+#if COMPANION_VISUAL_ASSET_PACK_ENABLE
     const uint8_t *previous;
     const uint8_t *current;
+#endif
     if (decision == NULL || sinks == NULL || sinks->event == NULL ||
         !decision->visual_event_valid) return false;
+#if COMPANION_VISUAL_ASSET_PACK_ENABLE
     previous = companion_visual_frame_for_state(
         (companion_visual_state_t)decision->visual_from_state);
     current = companion_visual_frame_for_state(
@@ -247,6 +252,7 @@ bool comp_touch_visual_emit_decision(
         previous_hash = frame_hash(previous, COMPANION_VISUAL_FRAME_BYTES);
         current_hash = frame_hash(current, COMPANION_VISUAL_FRAME_BYTES);
     }
+#endif
     if (!sinks->event(sinks->context, decision->visual_event,
                      decision->gesture.duration_ms, 41u,
                      decision->visual_target_state)) return false;
