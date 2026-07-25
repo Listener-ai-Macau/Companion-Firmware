@@ -1,0 +1,1812 @@
+{
+  "schema": "companion.comp-req-567.three-layer-eye.machine-ready.v1",
+  "requirement": "COMP-REQ-567",
+  "base_commit": "2a6c4ea9a0f19d1f4c0a653e07876916f44a9a2b",
+  "page_sha256": "1AE5FB63461698B1E183580BF9038178BE86909FFCD8546C389C65C7D9F6D488",
+  "screenshot_dir": ".cache/validation/comp-req-567-narrow/screenshots",
+  "hardware_contact": 0,
+  "production_enable": 0,
+  "direct_gaze": {
+    "pass": true,
+    "rows": [
+      {
+        "name": "center",
+        "key": "1,0,1,0",
+        "oracle": {
+          "pass": true,
+          "meta": {
+            "architecture": "fixed_outer_silhouette|authored_inner_white_field|paired_large_pupil_plus_rigid_glint",
+            "outer_silhouette": "fixed",
+            "inner_field": "authored_large_white_field",
+            "inner_field_area": 426,
+            "inner_field_bounds": [
+              {
+                "minX": 52,
+                "minY": 97,
+                "maxX": 64,
+                "maxY": 117
+              },
+              {
+                "minX": 135,
+                "minY": 97,
+                "maxX": 147,
+                "maxY": 117
+              }
+            ],
+            "pupil_area": 130,
+            "glint_area": 14,
+            "applied_dx": 0,
+            "applied_dy": 0,
+            "desired_dx": 0,
+            "desired_dy": 0,
+            "paired_pupil_shift": true,
+            "pupil_glint_rigid": true,
+            "glint_relative_to_pupil": "fixed",
+            "old_pose_pixels": 0,
+            "highlight_hole_architecture": false,
+            "field_boundary_fixed": true,
+            "pupil_contained": true,
+            "open_eye_count": 2,
+            "source_enclosed_white_normalized": true,
+            "rendered_residual_white_cue": 0
+          },
+          "left_bounds": {
+            "minX": 55,
+            "maxX": 61,
+            "minY": 102,
+            "maxY": 112
+          },
+          "right_bounds": {
+            "minX": 138,
+            "maxX": 144,
+            "minY": 102,
+            "maxY": 112
+          },
+          "paired": true,
+          "stale": 0,
+          "rendered_residual_white_cue": {
+            "left": 0,
+            "right": 0
+          }
+        },
+        "meta": {
+          "architecture": "fixed_outer_silhouette|authored_inner_white_field|paired_large_pupil_plus_rigid_glint",
+          "outer_silhouette": "fixed",
+          "inner_field": "authored_large_white_field",
+          "inner_field_area": 426,
+          "inner_field_bounds": [
+            {
+              "minX": 52,
+              "minY": 97,
+              "maxX": 64,
+              "maxY": 117
+            },
+            {
+              "minX": 135,
+              "minY": 97,
+              "maxX": 147,
+              "maxY": 117
+            }
+          ],
+          "pupil_area": 130,
+          "glint_area": 14,
+          "applied_dx": 0,
+          "applied_dy": 0,
+          "desired_dx": 0,
+          "desired_dy": 0,
+          "paired_pupil_shift": true,
+          "pupil_glint_rigid": true,
+          "glint_relative_to_pupil": "fixed",
+          "old_pose_pixels": 0,
+          "highlight_hole_architecture": false,
+          "field_boundary_fixed": true,
+          "pupil_contained": true,
+          "open_eye_count": 2,
+          "source_enclosed_white_normalized": true,
+          "rendered_residual_white_cue": 0
+        },
+        "screenshot": ".cache/validation/comp-req-567-narrow/screenshots/gaze-center.png"
+      },
+      {
+        "name": "left",
+        "key": "-2,0,-6,0",
+        "oracle": {
+          "pass": true,
+          "meta": {
+            "architecture": "fixed_outer_silhouette|authored_inner_white_field|paired_large_pupil_plus_rigid_glint",
+            "outer_silhouette": "fixed",
+            "inner_field": "authored_large_white_field",
+            "inner_field_area": 426,
+            "inner_field_bounds": [
+              {
+                "minX": 52,
+                "minY": 97,
+                "maxX": 64,
+                "maxY": 117
+              },
+              {
+                "minX": 135,
+                "minY": 97,
+                "maxX": 147,
+                "maxY": 117
+              }
+            ],
+            "pupil_area": 130,
+            "glint_area": 14,
+            "applied_dx": -3,
+            "applied_dy": 0,
+            "desired_dx": -4,
+            "desired_dy": 0,
+            "paired_pupil_shift": true,
+            "pupil_glint_rigid": true,
+            "glint_relative_to_pupil": "fixed",
+            "old_pose_pixels": 0,
+            "highlight_hole_architecture": false,
+            "field_boundary_fixed": true,
+            "pupil_contained": true,
+            "open_eye_count": 2,
+            "source_enclosed_white_normalized": true,
+            "rendered_residual_white_cue": 0
+          },
+          "left_bounds": {
+            "minX": 52,
+            "maxX": 58,
+            "minY": 102,
+            "maxY": 112
+          },
+          "right_bounds": {
+            "minX": 135,
+            "maxX": 141,
+            "minY": 102,
+            "maxY": 112
+          },
+          "paired": true,
+          "stale": 0,
+          "rendered_residual_white_cue": {
+            "left": 0,
+            "right": 0
+          }
+        },
+        "meta": {
+          "architecture": "fixed_outer_silhouette|authored_inner_white_field|paired_large_pupil_plus_rigid_glint",
+          "outer_silhouette": "fixed",
+          "inner_field": "authored_large_white_field",
+          "inner_field_area": 426,
+          "inner_field_bounds": [
+            {
+              "minX": 52,
+              "minY": 97,
+              "maxX": 64,
+              "maxY": 117
+            },
+            {
+              "minX": 135,
+              "minY": 97,
+              "maxX": 147,
+              "maxY": 117
+            }
+          ],
+          "pupil_area": 130,
+          "glint_area": 14,
+          "applied_dx": -3,
+          "applied_dy": 0,
+          "desired_dx": -4,
+          "desired_dy": 0,
+          "paired_pupil_shift": true,
+          "pupil_glint_rigid": true,
+          "glint_relative_to_pupil": "fixed",
+          "old_pose_pixels": 0,
+          "highlight_hole_architecture": false,
+          "field_boundary_fixed": true,
+          "pupil_contained": true,
+          "open_eye_count": 2,
+          "source_enclosed_white_normalized": true,
+          "rendered_residual_white_cue": 0
+        },
+        "screenshot": ".cache/validation/comp-req-567-narrow/screenshots/gaze-left.png"
+      },
+      {
+        "name": "right",
+        "key": "5,0,5,0",
+        "oracle": {
+          "pass": true,
+          "meta": {
+            "architecture": "fixed_outer_silhouette|authored_inner_white_field|paired_large_pupil_plus_rigid_glint",
+            "outer_silhouette": "fixed",
+            "inner_field": "authored_large_white_field",
+            "inner_field_area": 426,
+            "inner_field_bounds": [
+              {
+                "minX": 52,
+                "minY": 97,
+                "maxX": 64,
+                "maxY": 117
+              },
+              {
+                "minX": 135,
+                "minY": 97,
+                "maxX": 147,
+                "maxY": 117
+              }
+            ],
+            "pupil_area": 130,
+            "glint_area": 14,
+            "applied_dx": 3,
+            "applied_dy": 0,
+            "desired_dx": 3,
+            "desired_dy": 0,
+            "paired_pupil_shift": true,
+            "pupil_glint_rigid": true,
+            "glint_relative_to_pupil": "fixed",
+            "old_pose_pixels": 0,
+            "highlight_hole_architecture": false,
+            "field_boundary_fixed": true,
+            "pupil_contained": true,
+            "open_eye_count": 2,
+            "source_enclosed_white_normalized": true,
+            "rendered_residual_white_cue": 0
+          },
+          "left_bounds": {
+            "minX": 58,
+            "maxX": 64,
+            "minY": 102,
+            "maxY": 112
+          },
+          "right_bounds": {
+            "minX": 141,
+            "maxX": 147,
+            "minY": 102,
+            "maxY": 112
+          },
+          "paired": true,
+          "stale": 0,
+          "rendered_residual_white_cue": {
+            "left": 0,
+            "right": 0
+          }
+        },
+        "meta": {
+          "architecture": "fixed_outer_silhouette|authored_inner_white_field|paired_large_pupil_plus_rigid_glint",
+          "outer_silhouette": "fixed",
+          "inner_field": "authored_large_white_field",
+          "inner_field_area": 426,
+          "inner_field_bounds": [
+            {
+              "minX": 52,
+              "minY": 97,
+              "maxX": 64,
+              "maxY": 117
+            },
+            {
+              "minX": 135,
+              "minY": 97,
+              "maxX": 147,
+              "maxY": 117
+            }
+          ],
+          "pupil_area": 130,
+          "glint_area": 14,
+          "applied_dx": 3,
+          "applied_dy": 0,
+          "desired_dx": 3,
+          "desired_dy": 0,
+          "paired_pupil_shift": true,
+          "pupil_glint_rigid": true,
+          "glint_relative_to_pupil": "fixed",
+          "old_pose_pixels": 0,
+          "highlight_hole_architecture": false,
+          "field_boundary_fixed": true,
+          "pupil_contained": true,
+          "open_eye_count": 2,
+          "source_enclosed_white_normalized": true,
+          "rendered_residual_white_cue": 0
+        },
+        "screenshot": ".cache/validation/comp-req-567-narrow/screenshots/gaze-right.png"
+      },
+      {
+        "name": "up",
+        "key": "1,-3,1,-6",
+        "oracle": {
+          "pass": true,
+          "meta": {
+            "architecture": "fixed_outer_silhouette|authored_inner_white_field|paired_large_pupil_plus_rigid_glint",
+            "outer_silhouette": "fixed",
+            "inner_field": "authored_large_white_field",
+            "inner_field_area": 426,
+            "inner_field_bounds": [
+              {
+                "minX": 52,
+                "minY": 97,
+                "maxX": 64,
+                "maxY": 117
+              },
+              {
+                "minX": 135,
+                "minY": 97,
+                "maxX": 147,
+                "maxY": 117
+              }
+            ],
+            "pupil_area": 130,
+            "glint_area": 14,
+            "applied_dx": 0,
+            "applied_dy": -3,
+            "desired_dx": 0,
+            "desired_dy": -3,
+            "paired_pupil_shift": true,
+            "pupil_glint_rigid": true,
+            "glint_relative_to_pupil": "fixed",
+            "old_pose_pixels": 0,
+            "highlight_hole_architecture": false,
+            "field_boundary_fixed": true,
+            "pupil_contained": true,
+            "open_eye_count": 2,
+            "source_enclosed_white_normalized": true,
+            "rendered_residual_white_cue": 0
+          },
+          "left_bounds": {
+            "minX": 55,
+            "maxX": 61,
+            "minY": 99,
+            "maxY": 109
+          },
+          "right_bounds": {
+            "minX": 138,
+            "maxX": 144,
+            "minY": 99,
+            "maxY": 109
+          },
+          "paired": true,
+          "stale": 0,
+          "rendered_residual_white_cue": {
+            "left": 0,
+            "right": 0
+          }
+        },
+        "meta": {
+          "architecture": "fixed_outer_silhouette|authored_inner_white_field|paired_large_pupil_plus_rigid_glint",
+          "outer_silhouette": "fixed",
+          "inner_field": "authored_large_white_field",
+          "inner_field_area": 426,
+          "inner_field_bounds": [
+            {
+              "minX": 52,
+              "minY": 97,
+              "maxX": 64,
+              "maxY": 117
+            },
+            {
+              "minX": 135,
+              "minY": 97,
+              "maxX": 147,
+              "maxY": 117
+            }
+          ],
+          "pupil_area": 130,
+          "glint_area": 14,
+          "applied_dx": 0,
+          "applied_dy": -3,
+          "desired_dx": 0,
+          "desired_dy": -3,
+          "paired_pupil_shift": true,
+          "pupil_glint_rigid": true,
+          "glint_relative_to_pupil": "fixed",
+          "old_pose_pixels": 0,
+          "highlight_hole_architecture": false,
+          "field_boundary_fixed": true,
+          "pupil_contained": true,
+          "open_eye_count": 2,
+          "source_enclosed_white_normalized": true,
+          "rendered_residual_white_cue": 0
+        },
+        "screenshot": ".cache/validation/comp-req-567-narrow/screenshots/gaze-up.png"
+      },
+      {
+        "name": "down",
+        "key": "1,4,1,6",
+        "oracle": {
+          "pass": true,
+          "meta": {
+            "architecture": "fixed_outer_silhouette|authored_inner_white_field|paired_large_pupil_plus_rigid_glint",
+            "outer_silhouette": "fixed",
+            "inner_field": "authored_large_white_field",
+            "inner_field_area": 426,
+            "inner_field_bounds": [
+              {
+                "minX": 52,
+                "minY": 97,
+                "maxX": 64,
+                "maxY": 117
+              },
+              {
+                "minX": 135,
+                "minY": 97,
+                "maxX": 147,
+                "maxY": 117
+              }
+            ],
+            "pupil_area": 130,
+            "glint_area": 14,
+            "applied_dx": 0,
+            "applied_dy": 3,
+            "desired_dx": 0,
+            "desired_dy": 4,
+            "paired_pupil_shift": true,
+            "pupil_glint_rigid": true,
+            "glint_relative_to_pupil": "fixed",
+            "old_pose_pixels": 0,
+            "highlight_hole_architecture": false,
+            "field_boundary_fixed": true,
+            "pupil_contained": true,
+            "open_eye_count": 2,
+            "source_enclosed_white_normalized": true,
+            "rendered_residual_white_cue": 0
+          },
+          "left_bounds": {
+            "minX": 55,
+            "maxX": 61,
+            "minY": 105,
+            "maxY": 115
+          },
+          "right_bounds": {
+            "minX": 138,
+            "maxX": 144,
+            "minY": 105,
+            "maxY": 115
+          },
+          "paired": true,
+          "stale": 0,
+          "rendered_residual_white_cue": {
+            "left": 0,
+            "right": 0
+          }
+        },
+        "meta": {
+          "architecture": "fixed_outer_silhouette|authored_inner_white_field|paired_large_pupil_plus_rigid_glint",
+          "outer_silhouette": "fixed",
+          "inner_field": "authored_large_white_field",
+          "inner_field_area": 426,
+          "inner_field_bounds": [
+            {
+              "minX": 52,
+              "minY": 97,
+              "maxX": 64,
+              "maxY": 117
+            },
+            {
+              "minX": 135,
+              "minY": 97,
+              "maxX": 147,
+              "maxY": 117
+            }
+          ],
+          "pupil_area": 130,
+          "glint_area": 14,
+          "applied_dx": 0,
+          "applied_dy": 3,
+          "desired_dx": 0,
+          "desired_dy": 4,
+          "paired_pupil_shift": true,
+          "pupil_glint_rigid": true,
+          "glint_relative_to_pupil": "fixed",
+          "old_pose_pixels": 0,
+          "highlight_hole_architecture": false,
+          "field_boundary_fixed": true,
+          "pupil_contained": true,
+          "open_eye_count": 2,
+          "source_enclosed_white_normalized": true,
+          "rendered_residual_white_cue": 0
+        },
+        "screenshot": ".cache/validation/comp-req-567-narrow/screenshots/gaze-down.png"
+      }
+    ],
+    "exact_center_return": true,
+    "owner_scale_strip": ".cache/validation/comp-req-567-narrow/screenshots/gaze-five-direction-strip.png"
+  },
+  "families": {
+    "calm": {
+      "pass": true,
+      "cadence_ms": 480,
+      "temporal": {
+        "pass": true,
+        "family": "calm",
+        "distinct_face_hashes": 4,
+        "components": true,
+        "holds": [],
+        "baseline_return": true,
+        "signature": ""
+      },
+      "rows": [
+        {
+          "step": 0,
+          "face_hash": "F38B36E642B3ADA86FE5B4DACBC4B1BACFFD30C40C8C19EF59AE722FB13D59F9",
+          "trace": {
+            "sequence": 2,
+            "cycle": 0,
+            "step": 0,
+            "family": "calm",
+            "story": "calm_presence",
+            "phase": "quiet_hold",
+            "frame": "calm_presence-04-calm_blink_settle.png",
+            "frame_identity": "calm_presence-04-calm_blink_settle.png|[4,[],[]]",
+            "frame_index": 4,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "previous_frame": "calm_presence-04-calm_blink_settle.png|[4,[],[]]",
+            "changed": false,
+            "refresh_requested": false,
+            "components": [],
+            "max_component_step_px": 1,
+            "transplant_count": 0,
+            "shift_count": 0,
+            "source": "test_freeze"
+          },
+          "components": [],
+          "meta": {
+            "architecture": "fixed_outer_silhouette|authored_inner_white_field|paired_large_pupil_plus_rigid_glint",
+            "outer_silhouette": "fixed",
+            "inner_field": "authored_large_white_field",
+            "inner_field_area": 426,
+            "inner_field_bounds": [
+              {
+                "minX": 52,
+                "minY": 97,
+                "maxX": 64,
+                "maxY": 117
+              },
+              {
+                "minX": 135,
+                "minY": 97,
+                "maxX": 147,
+                "maxY": 117
+              }
+            ],
+            "pupil_area": 130,
+            "glint_area": 14,
+            "applied_dx": 0,
+            "applied_dy": 0,
+            "desired_dx": 0,
+            "desired_dy": 0,
+            "paired_pupil_shift": true,
+            "pupil_glint_rigid": true,
+            "glint_relative_to_pupil": "fixed",
+            "old_pose_pixels": 0,
+            "highlight_hole_architecture": false,
+            "field_boundary_fixed": true,
+            "pupil_contained": true,
+            "open_eye_count": 2,
+            "source_enclosed_white_normalized": true,
+            "rendered_residual_white_cue": 0
+          },
+          "screenshot": ".cache/validation/comp-req-567-narrow/screenshots/family-calm-step-0.png"
+        },
+        {
+          "step": 2,
+          "face_hash": "F7ABABEC1806436967A61926588FA7F7AA59350446DABB94B0A0505311A3F1F8",
+          "trace": {
+            "sequence": 3,
+            "cycle": 0,
+            "step": 2,
+            "family": "calm",
+            "story": "calm_presence",
+            "phase": "family_1",
+            "frame": "calm_presence-00-calm_entry.png",
+            "frame_identity": "calm_presence-00-calm_entry.png|[0,[],[]]",
+            "frame_index": 0,
+            "key": "-2,0,-6,0",
+            "previous_key": "1,0,1,0",
+            "previous_frame": "calm_presence-04-calm_blink_settle.png|[4,[],[]]",
+            "changed": true,
+            "refresh_requested": true,
+            "components": [
+              "pupil",
+              "brow"
+            ],
+            "max_component_step_px": 1,
+            "transplant_count": 0,
+            "shift_count": 0,
+            "source": "test_freeze"
+          },
+          "components": [
+            "pupil",
+            "brow"
+          ],
+          "meta": {
+            "architecture": "fixed_outer_silhouette|authored_inner_white_field|paired_large_pupil_plus_rigid_glint",
+            "outer_silhouette": "fixed",
+            "inner_field": "authored_large_white_field",
+            "inner_field_area": 426,
+            "inner_field_bounds": [
+              {
+                "minX": 52,
+                "minY": 97,
+                "maxX": 64,
+                "maxY": 117
+              },
+              {
+                "minX": 135,
+                "minY": 97,
+                "maxX": 147,
+                "maxY": 117
+              }
+            ],
+            "pupil_area": 130,
+            "glint_area": 14,
+            "applied_dx": -3,
+            "applied_dy": 0,
+            "desired_dx": -4,
+            "desired_dy": 0,
+            "paired_pupil_shift": true,
+            "pupil_glint_rigid": true,
+            "glint_relative_to_pupil": "fixed",
+            "old_pose_pixels": 0,
+            "highlight_hole_architecture": false,
+            "field_boundary_fixed": true,
+            "pupil_contained": true,
+            "open_eye_count": 2,
+            "source_enclosed_white_normalized": true,
+            "rendered_residual_white_cue": 0
+          },
+          "screenshot": ".cache/validation/comp-req-567-narrow/screenshots/family-calm-step-2.png"
+        },
+        {
+          "step": 4,
+          "face_hash": "A576D0E5E32AE306216C9D2F1138697A096C2894C2195734C122A686A0E5F703",
+          "trace": {
+            "sequence": 4,
+            "cycle": 0,
+            "step": 4,
+            "family": "calm",
+            "story": "calm_presence",
+            "phase": "family_2",
+            "frame": "calm_presence-01-calm_blink_closing.png",
+            "frame_identity": "calm_presence-01-calm_blink_closing.png|[1,[],[]]",
+            "frame_index": 1,
+            "key": "5,0,5,0",
+            "previous_key": "-2,0,-6,0",
+            "previous_frame": "calm_presence-00-calm_entry.png|[0,[],[]]",
+            "changed": true,
+            "refresh_requested": true,
+            "components": [
+              "pupil",
+              "cheek"
+            ],
+            "max_component_step_px": 1,
+            "transplant_count": 0,
+            "shift_count": 0,
+            "source": "test_freeze"
+          },
+          "components": [
+            "pupil",
+            "cheek"
+          ],
+          "meta": null,
+          "screenshot": ".cache/validation/comp-req-567-narrow/screenshots/family-calm-step-4.png"
+        },
+        {
+          "step": 8,
+          "face_hash": "3D4D5D86BEE02DF798C9C9B2DA2DBCFCAF7EA3A18C9CBE4292CFD0B0B559C2E1",
+          "trace": {
+            "sequence": 5,
+            "cycle": 0,
+            "step": 8,
+            "family": "calm",
+            "story": "calm_presence",
+            "phase": "family_4",
+            "frame": "calm_presence-03-calm_blink_opening.png",
+            "frame_identity": "calm_presence-03-calm_blink_opening.png|[3,[],[]]",
+            "frame_index": 3,
+            "key": "1,0,1,0",
+            "previous_key": "5,0,5,0",
+            "previous_frame": "calm_presence-01-calm_blink_closing.png|[1,[],[]]",
+            "changed": true,
+            "refresh_requested": true,
+            "components": [
+              "pupil",
+              "mouth"
+            ],
+            "max_component_step_px": 1,
+            "transplant_count": 0,
+            "shift_count": 0,
+            "source": "test_freeze"
+          },
+          "components": [
+            "pupil",
+            "mouth"
+          ],
+          "meta": null,
+          "screenshot": ".cache/validation/comp-req-567-narrow/screenshots/family-calm-step-8.png"
+        },
+        {
+          "step": 9,
+          "face_hash": "F38B36E642B3ADA86FE5B4DACBC4B1BACFFD30C40C8C19EF59AE722FB13D59F9",
+          "trace": {
+            "sequence": 6,
+            "cycle": 0,
+            "step": 9,
+            "family": "calm",
+            "story": "calm_presence",
+            "phase": "baseline_return",
+            "frame": "calm_presence-04-calm_blink_settle.png",
+            "frame_identity": "calm_presence-04-calm_blink_settle.png|[4,[],[]]",
+            "frame_index": 4,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "previous_frame": "calm_presence-03-calm_blink_opening.png|[3,[],[]]",
+            "changed": true,
+            "refresh_requested": true,
+            "components": [],
+            "max_component_step_px": 1,
+            "transplant_count": 0,
+            "shift_count": 0,
+            "source": "test_freeze"
+          },
+          "components": [],
+          "meta": {
+            "architecture": "fixed_outer_silhouette|authored_inner_white_field|paired_large_pupil_plus_rigid_glint",
+            "outer_silhouette": "fixed",
+            "inner_field": "authored_large_white_field",
+            "inner_field_area": 426,
+            "inner_field_bounds": [
+              {
+                "minX": 52,
+                "minY": 97,
+                "maxX": 64,
+                "maxY": 117
+              },
+              {
+                "minX": 135,
+                "minY": 97,
+                "maxX": 147,
+                "maxY": 117
+              }
+            ],
+            "pupil_area": 130,
+            "glint_area": 14,
+            "applied_dx": 0,
+            "applied_dy": 0,
+            "desired_dx": 0,
+            "desired_dy": 0,
+            "paired_pupil_shift": true,
+            "pupil_glint_rigid": true,
+            "glint_relative_to_pupil": "fixed",
+            "old_pose_pixels": 0,
+            "highlight_hole_architecture": false,
+            "field_boundary_fixed": true,
+            "pupil_contained": true,
+            "open_eye_count": 2,
+            "source_enclosed_white_normalized": true,
+            "rendered_residual_white_cue": 0
+          },
+          "screenshot": ".cache/validation/comp-req-567-narrow/screenshots/family-calm-step-9.png"
+        }
+      ]
+    },
+    "sleepy": {
+      "pass": true,
+      "cadence_ms": 480,
+      "temporal": {
+        "pass": true,
+        "family": "sleepy",
+        "distinct_face_hashes": 4,
+        "components": true,
+        "holds": [],
+        "baseline_return": true,
+        "signature": ""
+      },
+      "rows": [
+        {
+          "step": 0,
+          "face_hash": "485531501550EB7C2F0AD8B564C4B2EE41D03F0AEE4B0E6F3E0C7420F33C3E9E",
+          "trace": {
+            "sequence": 7,
+            "cycle": 0,
+            "step": 0,
+            "family": "sleepy",
+            "story": "sleepy_presence",
+            "phase": "quiet_hold",
+            "frame": "sleepy_presence-02-zzz_arrive.png",
+            "frame_identity": "sleepy_presence-02-zzz_arrive.png|[2,[],[]]",
+            "frame_index": 2,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "previous_frame": "sleepy_presence-02-zzz_arrive.png|[2,[],[]]",
+            "changed": false,
+            "refresh_requested": false,
+            "components": [],
+            "max_component_step_px": 1,
+            "transplant_count": 0,
+            "shift_count": 0,
+            "source": "test_freeze"
+          },
+          "components": [],
+          "meta": null,
+          "screenshot": ".cache/validation/comp-req-567-narrow/screenshots/family-sleepy-step-0.png"
+        },
+        {
+          "step": 2,
+          "face_hash": "8A3EBB78AE21CEFD55277F212D7B61BBBEDE7831B774FD83D7DE0F0CCE1B5CE5",
+          "trace": {
+            "sequence": 8,
+            "cycle": 0,
+            "step": 2,
+            "family": "sleepy",
+            "story": "sleepy_presence",
+            "phase": "family_1",
+            "frame": "sleepy_presence-00-sleep_entry.png",
+            "frame_identity": "sleepy_presence-00-sleep_entry.png|[0,[],[]]",
+            "frame_index": 0,
+            "key": "1,4,1,6",
+            "previous_key": "1,0,1,0",
+            "previous_frame": "sleepy_presence-02-zzz_arrive.png|[2,[],[]]",
+            "changed": true,
+            "refresh_requested": true,
+            "components": [
+              "pupil",
+              "eyelid"
+            ],
+            "max_component_step_px": 1,
+            "transplant_count": 0,
+            "shift_count": 0,
+            "source": "test_freeze"
+          },
+          "components": [
+            "pupil",
+            "eyelid"
+          ],
+          "meta": null,
+          "screenshot": ".cache/validation/comp-req-567-narrow/screenshots/family-sleepy-step-2.png"
+        },
+        {
+          "step": 4,
+          "face_hash": "32DE0285E1FBFE2A81F59F6210E680E60EBECE9B8130FA88EFAB560D3BFE01D5",
+          "trace": {
+            "sequence": 9,
+            "cycle": 0,
+            "step": 4,
+            "family": "sleepy",
+            "story": "sleepy_presence",
+            "phase": "family_2",
+            "frame": "sleepy_presence-01-eyes_soften.png",
+            "frame_identity": "sleepy_presence-01-eyes_soften.png|[1,[],[]]",
+            "frame_index": 1,
+            "key": "1,-3,1,-6",
+            "previous_key": "1,4,1,6",
+            "previous_frame": "sleepy_presence-00-sleep_entry.png|[0,[],[]]",
+            "changed": true,
+            "refresh_requested": true,
+            "components": [
+              "pupil",
+              "eyelid",
+              "mouth"
+            ],
+            "max_component_step_px": 1,
+            "transplant_count": 0,
+            "shift_count": 0,
+            "source": "test_freeze"
+          },
+          "components": [
+            "pupil",
+            "eyelid",
+            "mouth"
+          ],
+          "meta": null,
+          "screenshot": ".cache/validation/comp-req-567-narrow/screenshots/family-sleepy-step-4.png"
+        },
+        {
+          "step": 8,
+          "face_hash": "05414CCD0CB29F09F915DC8710E63539261544CEA6EFAB01BB427F318615E0B5",
+          "trace": {
+            "sequence": 10,
+            "cycle": 0,
+            "step": 8,
+            "family": "sleepy",
+            "story": "sleepy_presence",
+            "phase": "family_4",
+            "frame": "sleepy_presence-04-sleep_hold.png",
+            "frame_identity": "sleepy_presence-04-sleep_hold.png|[4,[],[]]",
+            "frame_index": 4,
+            "key": "0,0,0,0",
+            "previous_key": "1,-3,1,-6",
+            "previous_frame": "sleepy_presence-01-eyes_soften.png|[1,[],[]]",
+            "changed": true,
+            "refresh_requested": true,
+            "components": [
+              "pupil",
+              "eyelid"
+            ],
+            "max_component_step_px": 1,
+            "transplant_count": 0,
+            "shift_count": 0,
+            "source": "test_freeze"
+          },
+          "components": [
+            "pupil",
+            "eyelid"
+          ],
+          "meta": null,
+          "screenshot": ".cache/validation/comp-req-567-narrow/screenshots/family-sleepy-step-8.png"
+        },
+        {
+          "step": 9,
+          "face_hash": "485531501550EB7C2F0AD8B564C4B2EE41D03F0AEE4B0E6F3E0C7420F33C3E9E",
+          "trace": {
+            "sequence": 11,
+            "cycle": 0,
+            "step": 9,
+            "family": "sleepy",
+            "story": "sleepy_presence",
+            "phase": "baseline_return",
+            "frame": "sleepy_presence-02-zzz_arrive.png",
+            "frame_identity": "sleepy_presence-02-zzz_arrive.png|[2,[],[]]",
+            "frame_index": 2,
+            "key": "1,0,1,0",
+            "previous_key": "0,0,0,0",
+            "previous_frame": "sleepy_presence-04-sleep_hold.png|[4,[],[]]",
+            "changed": true,
+            "refresh_requested": true,
+            "components": [],
+            "max_component_step_px": 1,
+            "transplant_count": 0,
+            "shift_count": 0,
+            "source": "test_freeze"
+          },
+          "components": [],
+          "meta": null,
+          "screenshot": ".cache/validation/comp-req-567-narrow/screenshots/family-sleepy-step-9.png"
+        }
+      ]
+    },
+    "alert": {
+      "pass": true,
+      "cadence_ms": 480,
+      "temporal": {
+        "pass": true,
+        "family": "alert",
+        "distinct_face_hashes": 4,
+        "components": true,
+        "holds": [],
+        "baseline_return": true,
+        "signature": ""
+      },
+      "rows": [
+        {
+          "step": 0,
+          "face_hash": "C76B6519F0789CEEA713B81F42EF6C9A56A615BE830820EA6A0351A2A33061D1",
+          "trace": {
+            "sequence": 12,
+            "cycle": 0,
+            "step": 0,
+            "family": "alert",
+            "story": "alert_exclamation",
+            "phase": "quiet_hold",
+            "frame": "alert_exclamation-02-exclamation_mouth_arrive.png",
+            "frame_identity": "alert_exclamation-02-exclamation_mouth_arrive.png|[2,[],[]]",
+            "frame_index": 2,
+            "key": "1,0,1,0",
+            "previous_key": "1,0,1,0",
+            "previous_frame": "alert_exclamation-02-exclamation_mouth_arrive.png|[2,[],[]]",
+            "changed": false,
+            "refresh_requested": false,
+            "components": [],
+            "max_component_step_px": 1,
+            "transplant_count": 0,
+            "shift_count": 0,
+            "source": "test_freeze"
+          },
+          "components": [],
+          "meta": {
+            "architecture": "fixed_outer_silhouette|authored_inner_white_field|paired_large_pupil_plus_rigid_glint",
+            "outer_silhouette": "fixed",
+            "inner_field": "authored_large_white_field",
+            "inner_field_area": 426,
+            "inner_field_bounds": [
+              {
+                "minX": 52,
+                "minY": 107,
+                "maxX": 64,
+                "maxY": 127
+              },
+              {
+                "minX": 135,
+                "minY": 107,
+                "maxX": 147,
+                "maxY": 127
+              }
+            ],
+            "pupil_area": 130,
+            "glint_area": 14,
+            "applied_dx": 0,
+            "applied_dy": 0,
+            "desired_dx": 0,
+            "desired_dy": 0,
+            "paired_pupil_shift": true,
+            "pupil_glint_rigid": true,
+            "glint_relative_to_pupil": "fixed",
+            "old_pose_pixels": 0,
+            "highlight_hole_architecture": false,
+            "field_boundary_fixed": true,
+            "pupil_contained": true,
+            "open_eye_count": 2,
+            "source_enclosed_white_normalized": true,
+            "rendered_residual_white_cue": 0
+          },
+          "screenshot": ".cache/validation/comp-req-567-narrow/screenshots/family-alert-step-0.png"
+        },
+        {
+          "step": 2,
+          "face_hash": "8A32063A931B02A408E50A14C92521211051ECA83E1EFE20EBAA97288C54E693",
+          "trace": {
+            "sequence": 13,
+            "cycle": 0,
+            "step": 2,
+            "family": "alert",
+            "story": "alert_exclamation",
+            "phase": "family_1",
+            "frame": "alert_exclamation-00-exclamation_entry.png",
+            "frame_identity": "alert_exclamation-00-exclamation_entry.png|[0,[],[]]",
+            "frame_index": 0,
+            "key": "-2,0,-6,0",
+            "previous_key": "1,0,1,0",
+            "previous_frame": "alert_exclamation-02-exclamation_mouth_arrive.png|[2,[],[]]",
+            "changed": true,
+            "refresh_requested": true,
+            "components": [
+              "pupil",
+              "brow"
+            ],
+            "max_component_step_px": 1,
+            "transplant_count": 0,
+            "shift_count": 0,
+            "source": "test_freeze"
+          },
+          "components": [
+            "pupil",
+            "brow"
+          ],
+          "meta": {
+            "architecture": "fixed_outer_silhouette|authored_inner_white_field|paired_large_pupil_plus_rigid_glint",
+            "outer_silhouette": "fixed",
+            "inner_field": "authored_large_white_field",
+            "inner_field_area": 426,
+            "inner_field_bounds": [
+              {
+                "minX": 52,
+                "minY": 107,
+                "maxX": 64,
+                "maxY": 127
+              },
+              {
+                "minX": 135,
+                "minY": 107,
+                "maxX": 147,
+                "maxY": 127
+              }
+            ],
+            "pupil_area": 130,
+            "glint_area": 14,
+            "applied_dx": -3,
+            "applied_dy": 0,
+            "desired_dx": -4,
+            "desired_dy": 0,
+            "paired_pupil_shift": true,
+            "pupil_glint_rigid": true,
+            "glint_relative_to_pupil": "fixed",
+            "old_pose_pixels": 0,
+            "highlight_hole_architecture": false,
+            "field_boundary_fixed": true,
+            "pupil_contained": true,
+            "open_eye_count": 2,
+            "source_enclosed_white_normalized": true,
+            "rendered_residual_white_cue": 0
+          },
+          "screenshot": ".cache/validation/comp-req-567-narrow/screenshots/family-alert-step-2.png"
+        },
+        {
+          "step": 4,
+          "face_hash": "1976F047D522BECB2B130164DD3132CBDF4F4EEE44EC10F4A4521BEC0004FCE8",
+          "trace": {
+            "sequence": 14,
+            "cycle": 0,
+            "step": 4,
+            "family": "alert",
+            "story": "alert_exclamation",
+            "phase": "family_2",
+            "frame": "alert_exclamation-03-exclamation_hold.png",
+            "frame_identity": "alert_exclamation-03-exclamation_hold.png|[3,[],[]]",
+            "frame_index": 3,
+            "key": "1,4,1,6",
+            "previous_key": "-2,0,-6,0",
+            "previous_frame": "alert_exclamation-00-exclamation_entry.png|[0,[],[]]",
+            "changed": true,
+            "refresh_requested": true,
+            "components": [
+              "pupil",
+              "eyelid"
+            ],
+            "max_component_step_px": 1,
+            "transplant_count": 0,
+            "shift_count": 0,
+            "source": "test_freeze"
+          },
+          "components": [
+            "pupil",
+            "eyelid"
+          ],
+          "meta": {
+            "architecture": "fixed_outer_silhouette|authored_inner_white_field|paired_large_pupil_plus_rigid_glint",
+            "outer_silhouette": "fixed",
+            "inner_field": "authored_large_white_field",
+            "inner_field_area": 426,
+            "inner_field_bounds": [
+              {
+                "minX": 52,
+                "minY": 107,
+                "maxX": 64,
+                "maxY": 127
+              },
+              {
+                "minX": 135,
+                "minY": 107,
+                "maxX": 147,
+                "maxY": 127
+              }
+            ],
+            "pupil_area": 130,
+            "glint_area": 14,
+            "applied_dx": 0,
+            "applied_dy": 3,
+            "desired_dx": 0,
+            "desired_dy": 4,
+            "paired_pupil_shift": true,
+            "pupil_glint_rigid": true,
+            "glint_relative_to_pupil": "fixed",
+            "old_pose_pixels": 0,
+            "highlight_hole_architecture": false,
+            "field_boundary_fixed": true,
+            "pupil_contained": true,
+            "open_eye_count": 2,
+            "source_enclosed_white_normalized": true,
+            "rendered_residual_white_cue": 0
+          },
+          "screenshot": ".cache/validation/comp-req-567-narrow/screenshots/family-alert-step-4.png"
+        },
+        {
+          "step": 8,
+          "face_hash": "E0126BF769E668F1BBB0AA84C7058E23C43200F7C3DB857B9BE65F74FAECFF21",
+          "trace": {
+            "sequence": 15,
+            "cycle": 0,
+            "step": 8,
+            "family": "alert",
+            "story": "alert_exclamation",
+            "phase": "family_4",
+            "frame": "alert_exclamation-04-exclamation_settle.png",
+            "frame_identity": "alert_exclamation-04-exclamation_settle.png|[4,[],[]]",
+            "frame_index": 4,
+            "key": "0,0,0,0",
+            "previous_key": "1,4,1,6",
+            "previous_frame": "alert_exclamation-03-exclamation_hold.png|[3,[],[]]",
+            "changed": true,
+            "refresh_requested": true,
+            "components": [
+              "pupil",
+              "mouth"
+            ],
+            "max_component_step_px": 1,
+            "transplant_count": 0,
+            "shift_count": 0,
+            "source": "test_freeze"
+          },
+          "components": [
+            "pupil",
+            "mouth"
+          ],
+          "meta": {
+            "architecture": "fixed_outer_silhouette|authored_inner_white_field|paired_large_pupil_plus_rigid_glint",
+            "outer_silhouette": "fixed",
+            "inner_field": "authored_large_white_field",
+            "inner_field_area": 426,
+            "inner_field_bounds": [
+              {
+                "minX": 52,
+                "minY": 107,
+                "maxX": 64,
+                "maxY": 127
+              },
+              {
+                "minX": 135,
+                "minY": 107,
+                "maxX": 147,
+                "maxY": 127
+              }
+            ],
+            "pupil_area": 130,
+            "glint_area": 14,
+            "applied_dx": -1,
+            "applied_dy": 0,
+            "desired_dx": -1,
+            "desired_dy": 0,
+            "paired_pupil_shift": true,
+            "pupil_glint_rigid": true,
+            "glint_relative_to_pupil": "fixed",
+            "old_pose_pixels": 0,
+            "highlight_hole_architecture": false,
+            "field_boundary_fixed": true,
+            "pupil_contained": true,
+            "open_eye_count": 2,
+            "source_enclosed_white_normalized": true,
+            "rendered_residual_white_cue": 0
+          },
+          "screenshot": ".cache/validation/comp-req-567-narrow/screenshots/family-alert-step-8.png"
+        },
+        {
+          "step": 9,
+          "face_hash": "C76B6519F0789CEEA713B81F42EF6C9A56A615BE830820EA6A0351A2A33061D1",
+          "trace": {
+            "sequence": 16,
+            "cycle": 0,
+            "step": 9,
+            "family": "alert",
+            "story": "alert_exclamation",
+            "phase": "baseline_return",
+            "frame": "alert_exclamation-02-exclamation_mouth_arrive.png",
+            "frame_identity": "alert_exclamation-02-exclamation_mouth_arrive.png|[2,[],[]]",
+            "frame_index": 2,
+            "key": "1,0,1,0",
+            "previous_key": "0,0,0,0",
+            "previous_frame": "alert_exclamation-04-exclamation_settle.png|[4,[],[]]",
+            "changed": true,
+            "refresh_requested": true,
+            "components": [],
+            "max_component_step_px": 1,
+            "transplant_count": 0,
+            "shift_count": 0,
+            "source": "test_freeze"
+          },
+          "components": [],
+          "meta": {
+            "architecture": "fixed_outer_silhouette|authored_inner_white_field|paired_large_pupil_plus_rigid_glint",
+            "outer_silhouette": "fixed",
+            "inner_field": "authored_large_white_field",
+            "inner_field_area": 426,
+            "inner_field_bounds": [
+              {
+                "minX": 52,
+                "minY": 107,
+                "maxX": 64,
+                "maxY": 127
+              },
+              {
+                "minX": 135,
+                "minY": 107,
+                "maxX": 147,
+                "maxY": 127
+              }
+            ],
+            "pupil_area": 130,
+            "glint_area": 14,
+            "applied_dx": 0,
+            "applied_dy": 0,
+            "desired_dx": 0,
+            "desired_dy": 0,
+            "paired_pupil_shift": true,
+            "pupil_glint_rigid": true,
+            "glint_relative_to_pupil": "fixed",
+            "old_pose_pixels": 0,
+            "highlight_hole_architecture": false,
+            "field_boundary_fixed": true,
+            "pupil_contained": true,
+            "open_eye_count": 2,
+            "source_enclosed_white_normalized": true,
+            "rendered_residual_white_cue": 0
+          },
+          "screenshot": ".cache/validation/comp-req-567-narrow/screenshots/family-alert-step-9.png"
+        }
+      ]
+    },
+    "owner_scale_all_family_strip": ".cache/validation/comp-req-567-narrow/screenshots/families-ten-strip-atlas.png"
+  },
+  "recording": {
+    "pass": true,
+    "underlying_face_sequence_equal": true,
+    "state": {
+      "active": true,
+      "accessory_active": true,
+      "orthogonal_to_expression": true,
+      "phase": "accessory_active",
+      "sequence": 1,
+      "entries": 1,
+      "exits": 0,
+      "phaseTrace": [
+        {
+          "sequence": 1,
+          "phase": "accessory_active",
+          "base_affect": "calm",
+          "reaction_phase": "steady",
+          "story": "calm_presence",
+          "frame": "calm_presence-03-calm_blink_opening.png",
+          "face_restart": false,
+          "face_capture": false
+        }
+      ],
+      "meterTrace": [
+        {
+          "sequence": 1,
+          "step": 0,
+          "cycle": 0,
+          "columns": [
+            {
+              "slot": 0,
+              "energy_level": 6,
+              "direction": "toward_listening_point",
+              "geometry": {
+                "width": 4,
+                "height": 6
+              },
+              "bounds": {
+                "x_min": 170,
+                "x_max": 173,
+                "y_min": 67,
+                "y_max": 72
+              }
+            },
+            {
+              "slot": 1,
+              "energy_level": 14,
+              "direction": "toward_listening_point",
+              "geometry": {
+                "width": 4,
+                "height": 14
+              },
+              "bounds": {
+                "x_min": 181,
+                "x_max": 184,
+                "y_min": 63,
+                "y_max": 76
+              }
+            },
+            {
+              "slot": 2,
+              "energy_level": 8,
+              "direction": "outer_input",
+              "geometry": {
+                "width": 4,
+                "height": 8
+              },
+              "bounds": {
+                "x_min": 192,
+                "x_max": 195,
+                "y_min": 66,
+                "y_max": 73
+              }
+            }
+          ],
+          "column_count": 3,
+          "samples": [
+            6,
+            14,
+            8
+          ],
+          "ink_pixels": 112,
+          "gray_pixels": 0,
+          "listening_point": {
+            "x": 158,
+            "y": 70
+          },
+          "transition": {
+            "absorbed": null,
+            "shifted": [],
+            "inserted": null
+          }
+        },
+        {
+          "sequence": 1,
+          "step": 1,
+          "cycle": 0,
+          "columns": [
+            {
+              "slot": 0,
+              "energy_level": 14,
+              "direction": "toward_listening_point",
+              "geometry": {
+                "width": 4,
+                "height": 14
+              },
+              "bounds": {
+                "x_min": 170,
+                "x_max": 173,
+                "y_min": 63,
+                "y_max": 76
+              }
+            },
+            {
+              "slot": 1,
+              "energy_level": 8,
+              "direction": "toward_listening_point",
+              "geometry": {
+                "width": 4,
+                "height": 8
+              },
+              "bounds": {
+                "x_min": 181,
+                "x_max": 184,
+                "y_min": 66,
+                "y_max": 73
+              }
+            },
+            {
+              "slot": 2,
+              "energy_level": 16,
+              "direction": "outer_input",
+              "geometry": {
+                "width": 4,
+                "height": 16
+              },
+              "bounds": {
+                "x_min": 192,
+                "x_max": 195,
+                "y_min": 62,
+                "y_max": 77
+              }
+            }
+          ],
+          "column_count": 3,
+          "samples": [
+            14,
+            8,
+            16
+          ],
+          "ink_pixels": 152,
+          "gray_pixels": 0,
+          "listening_point": {
+            "x": 158,
+            "y": 70
+          },
+          "transition": {
+            "absorbed": 6,
+            "shifted": [
+              {
+                "from": 1,
+                "to": 0,
+                "level": 14
+              },
+              {
+                "from": 2,
+                "to": 1,
+                "level": 8
+              }
+            ],
+            "inserted": {
+              "slot": 2,
+              "level": 16
+            }
+          }
+        },
+        {
+          "sequence": 1,
+          "step": 2,
+          "cycle": 0,
+          "columns": [
+            {
+              "slot": 0,
+              "energy_level": 8,
+              "direction": "toward_listening_point",
+              "geometry": {
+                "width": 4,
+                "height": 8
+              },
+              "bounds": {
+                "x_min": 170,
+                "x_max": 173,
+                "y_min": 66,
+                "y_max": 73
+              }
+            },
+            {
+              "slot": 1,
+              "energy_level": 16,
+              "direction": "toward_listening_point",
+              "geometry": {
+                "width": 4,
+                "height": 16
+              },
+              "bounds": {
+                "x_min": 181,
+                "x_max": 184,
+                "y_min": 62,
+                "y_max": 77
+              }
+            },
+            {
+              "slot": 2,
+              "energy_level": 10,
+              "direction": "outer_input",
+              "geometry": {
+                "width": 4,
+                "height": 10
+              },
+              "bounds": {
+                "x_min": 192,
+                "x_max": 195,
+                "y_min": 65,
+                "y_max": 74
+              }
+            }
+          ],
+          "column_count": 3,
+          "samples": [
+            8,
+            16,
+            10
+          ],
+          "ink_pixels": 136,
+          "gray_pixels": 0,
+          "listening_point": {
+            "x": 158,
+            "y": 70
+          },
+          "transition": {
+            "absorbed": 14,
+            "shifted": [
+              {
+                "from": 1,
+                "to": 0,
+                "level": 8
+              },
+              {
+                "from": 2,
+                "to": 1,
+                "level": 16
+              }
+            ],
+            "inserted": {
+              "slot": 2,
+              "level": 10
+            }
+          }
+        },
+        {
+          "sequence": 1,
+          "step": 3,
+          "cycle": 0,
+          "columns": [
+            {
+              "slot": 0,
+              "energy_level": 16,
+              "direction": "toward_listening_point",
+              "geometry": {
+                "width": 4,
+                "height": 16
+              },
+              "bounds": {
+                "x_min": 170,
+                "x_max": 173,
+                "y_min": 62,
+                "y_max": 77
+              }
+            },
+            {
+              "slot": 1,
+              "energy_level": 10,
+              "direction": "toward_listening_point",
+              "geometry": {
+                "width": 4,
+                "height": 10
+              },
+              "bounds": {
+                "x_min": 181,
+                "x_max": 184,
+                "y_min": 65,
+                "y_max": 74
+              }
+            },
+            {
+              "slot": 2,
+              "energy_level": 4,
+              "direction": "outer_input",
+              "geometry": {
+                "width": 4,
+                "height": 4
+              },
+              "bounds": {
+                "x_min": 192,
+                "x_max": 195,
+                "y_min": 68,
+                "y_max": 71
+              }
+            }
+          ],
+          "column_count": 3,
+          "samples": [
+            16,
+            10,
+            4
+          ],
+          "ink_pixels": 120,
+          "gray_pixels": 0,
+          "listening_point": {
+            "x": 158,
+            "y": 70
+          },
+          "transition": {
+            "absorbed": 8,
+            "shifted": [
+              {
+                "from": 1,
+                "to": 0,
+                "level": 16
+              },
+              {
+                "from": 2,
+                "to": 1,
+                "level": 10
+              }
+            ],
+            "inserted": {
+              "slot": 2,
+              "level": 4
+            }
+          }
+        },
+        {
+          "sequence": 1,
+          "step": 4,
+          "cycle": 0,
+          "columns": [
+            {
+              "slot": 0,
+              "energy_level": 10,
+              "direction": "toward_listening_point",
+              "geometry": {
+                "width": 4,
+                "height": 10
+              },
+              "bounds": {
+                "x_min": 170,
+                "x_max": 173,
+                "y_min": 65,
+                "y_max": 74
+              }
+            },
+            {
+              "slot": 1,
+              "energy_level": 4,
+              "direction": "toward_listening_point",
+              "geometry": {
+                "width": 4,
+                "height": 4
+              },
+              "bounds": {
+                "x_min": 181,
+                "x_max": 184,
+                "y_min": 68,
+                "y_max": 71
+              }
+            },
+            {
+              "slot": 2,
+              "energy_level": 12,
+              "direction": "outer_input",
+              "geometry": {
+                "width": 4,
+                "height": 12
+              },
+              "bounds": {
+                "x_min": 192,
+                "x_max": 195,
+                "y_min": 64,
+                "y_max": 75
+              }
+            }
+          ],
+          "column_count": 3,
+          "samples": [
+            10,
+            4,
+            12
+          ],
+          "ink_pixels": 104,
+          "gray_pixels": 0,
+          "listening_point": {
+            "x": 158,
+            "y": 70
+          },
+          "transition": {
+            "absorbed": 16,
+            "shifted": [
+              {
+                "from": 1,
+                "to": 0,
+                "level": 10
+              },
+              {
+                "from": 2,
+                "to": 1,
+                "level": 4
+              }
+            ],
+            "inserted": {
+              "slot": 2,
+              "level": 12
+            }
+          }
+        }
+      ],
+      "samples": [
+        10,
+        4,
+        12
+      ],
+      "meterContract": {
+        "step_ms": 480,
+        "state_count": 8,
+        "column_x": [
+          170,
+          181,
+          192
+        ],
+        "column_width": 4,
+        "center_y": 70,
+        "level_sequence": [
+          6,
+          14,
+          8,
+          16,
+          10,
+          4,
+          12,
+          8
+        ],
+        "pipeline": "outer_insert_shift_inward",
+        "scheduler": "bounded_setTimeout",
+        "interpolation": "none",
+        "listening_point": {
+          "x": 158,
+          "y": 70
+        }
+      },
+      "indicatorNodes": 0,
+      "indicatorVisible": false,
+      "levelNodes": 1,
+      "consumedPairs": [
+        {
+          "sequence": 1,
+          "action": "enter",
+          "release_event_ids": [
+            "upper-0002",
+            "upper-0004"
+          ]
+        }
+      ],
+      "ignoredInputs": 0,
+      "micGlyphPresent": false,
+      "residualArcPresent": false,
+      "levelsVisible": true,
+      "meterStep": 4,
+      "base_affect": "calm",
+      "reaction_phase": "steady",
+      "mode_override": "none",
+      "interaction_mode": "expression"
+    },
+    "hardware_contact": 0
+  },
+  "negatives": {
+    "missing_inner_field": true,
+    "highlight_hole_architecture": true,
+    "tiny_pupil": true,
+    "detached_glint": true,
+    "detached_old_glint": true,
+    "moved_outer_silhouette": true,
+    "stale_pose": true,
+    "missing_pupil_pixel": true,
+    "one_eye_only": true,
+    "inverted_direction": true,
+    "frozen_family": true,
+    "generic_family_signature": true,
+    "no_non_pupil_component": true
+  },
+  "http_errors": [],
+  "pass": true,
+  "report_sha256": "892FECF715FE63DCCAE6E8656208A45D1199B37EADD37735794471775246301D"
+}

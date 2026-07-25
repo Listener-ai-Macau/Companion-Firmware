@@ -25,6 +25,11 @@ const STEPS = [0, 2, 3, 4, 5, 6, 7, 8, 9];
 const ACTIVE_STEPS = [2, 4, 6, 8];
 const GAZES = [["center", "1,0,1,0"], ["left", "-2,0,-6,0"], ["right", "5,0,5,0"], ["up", "1,-3,1,-6"], ["down", "1,4,1,6"]];
 const ROI = { left: [38, 82, 75, 131], right: [125, 82, 162, 131] };
+const PUPIL_PATTERN = ["..111..", ".11111.", "1111111", "1111111", "1111111", "1111111", "1111111", "1111111", "1111111", ".11111.", "..111.."];
+const GLINT_PATTERN = ["0110", "1110", "0110"];
+const NARROW = process.argv.includes("--narrow");
+const CHECK_FAMILIES = NARROW ? ["calm", "sleepy", "alert"] : FAMILIES;
+const CHECK_STEPS = NARROW ? [0, 2, 4, 8, 9] : STEPS;
 
 const sha256 = (value) => crypto.createHash("sha256").update(value).digest("hex").toUpperCase();
 function loadPlaywright() {
@@ -48,11 +53,70 @@ function centroid(points) { return { x: points.reduce((sum, p) => sum + p % 200,
 function diff(a, b) { const added = [], removed = []; for (let i = 0; i < a.length; i++) { if (!a[i] && b[i]) added.push(i); if (a[i] && !b[i]) removed.push(i); } return { added, removed }; }
 function sameSet(a, b) { return a.length === b.length && a.every((p) => b.includes(p)); }
 function region(points, side) { return points.filter((p) => side === "left" ? p % 200 < 100 : p % 200 >= 100); }
+function pointComponents(points) {
+  const available = new Set(points), components = [];
+  while (available.size) {
+    const first = available.values().next().value, component = [first], queue = [first]; available.delete(first);
+    while (queue.length) {
+      const p = queue.pop(), neighbors = [p - 1, p + 1, p - 200, p + 200];
+      for (const n of neighbors) if (available.delete(n)) { queue.push(n); component.push(n); }
+    }
+    components.push(component);
+  }
+  return components.sort((a, b) => b.length - a.length);
+}
 function shapeIsLargePupil(points) {
   if (points.length < 60) return false;
   const box = bounds(points);
   if (box.maxX - box.minX !== 6 || box.maxY - box.minY !== 10) return false;
   return new Set(points).size === points.length;
+}
+function enclosedWhiteComponents(bits, roi) {
+  const outside = new Uint8Array(40000), seen = new Uint8Array(40000), queue = [];
+  const inside = (p) => { const x = p % 200, y = Math.floor(p / 200); return x >= roi[0] && x < roi[2] && y >= roi[1] && y < roi[3]; };
+  const pushOutside = (p) => { if (bits[p] && !outside[p]) { outside[p] = 1; queue.push(p); } };
+  for (let x = roi[0]; x < roi[2]; x++) { pushOutside(roi[1] * 200 + x); pushOutside((roi[3] - 1) * 200 + x); }
+  for (let y = roi[1]; y < roi[3]; y++) { pushOutside(y * 200 + roi[0]); pushOutside(y * 200 + roi[2] - 1); }
+  while (queue.length) { const p = queue.pop(), x = p % 200, y = Math.floor(p / 200); for (const n of [p - 1, p + 1, p - 200, p + 200]) if (inside(n) && bits[n] && !outside[n]) { outside[n] = 1; queue.push(n); } }
+  const components = [];
+  for (let y = roi[1]; y < roi[3]; y++) for (let x = roi[0]; x < roi[2]; x++) { const start = y * 200 + x; if (!bits[start] || outside[start] || seen[start]) continue; const component = [start]; seen[start] = 1; queue.push(start); while (queue.length) { const p = queue.pop(), px = p % 200, py = Math.floor(p / 200); for (const n of [p - 1, p + 1, p - 200, p + 200]) if (inside(n) && bits[n] && !outside[n] && !seen[n]) { seen[n] = 1; queue.push(n); component.push(n); } } components.push(component); }
+  return components.sort((a, b) => b.length - a.length);
+}
+function innerBlackComponent(bits, box, anchor = []) {
+  const seen = new Uint8Array(40000), components = [];
+  const inside = (p) => { const x = p % 200, y = Math.floor(p / 200); return x >= box.minX && x <= box.maxX && y >= box.minY && y <= box.maxY; };
+  for (let y = box.minY; y <= box.maxY; y++) for (let x = box.minX; x <= box.maxX; x++) { const start = y * 200 + x; if (!bits[start] || seen[start]) continue; const component = [start], queue = [start]; seen[start] = 1; while (queue.length) { const p = queue.pop(); for (const n of [p - 1, p + 1, p - 200, p + 200]) if (inside(n) && bits[n] && !seen[n]) { seen[n] = 1; queue.push(n); component.push(n); } } components.push(component); }
+  const anchored = components.filter((component) => component.length >= 50 && anchor.some((p) => [p - 1, p + 1, p - 200, p + 200].some((n) => component.includes(n))));
+  return (anchored.length ? anchored : components.filter((component) => component.length >= 50)).sort((a, b) => b.length - a.length)[0] || [];
+}
+function authoredPupilFromGlint(rendered, glintPoints) {
+  const glintBox = bounds(glintPoints), x0 = glintBox.minX - 1, y0 = glintBox.minY - 2, glintSet = setOf(glintPoints), points = [];
+  for (let y = 0; y < PUPIL_PATTERN.length; y++) for (let x = 0; x < PUPIL_PATTERN[y].length; x++) if (PUPIL_PATTERN[y][x] === "1") points.push((y0 + y) * 200 + x0 + x);
+  const expectedGlint = []; for (let y = 0; y < GLINT_PATTERN.length; y++) for (let x = 0; x < GLINT_PATTERN[y].length; x++) if (GLINT_PATTERN[y][x] === "1") expectedGlint.push((y0 + y + 2) * 200 + x0 + x + 1);
+  assert.deepEqual([...glintSet].sort((a, b) => a - b), expectedGlint.sort((a, b) => a - b), "glint shape/relative anchor mismatch");
+  assert(points.length === 65 && points.filter((p) => !glintSet.has(p)).every((p) => rendered.black[p]), "authored black pupil pixels are missing");
+  return points.filter((p) => !glintSet.has(p));
+}
+function renderedResidualOracle(sample, name) {
+  const result = {};
+  for (const [side, roi] of Object.entries(ROI)) {
+    const oldWhite = enclosedWhiteComponents(sample.base.white, roi).flat();
+    const current = enclosedWhiteComponents(sample.rendered.white, roi);
+    assert.equal(current.length, 2, `${name}/${side}: rendered enclosed white components are not exactly field + glint ${JSON.stringify({ current: current.map((component) => ({ size: component.length, box: bounds(component), base_white: component.map((p) => sample.base.white[p]) })), old: enclosedWhiteComponents(sample.base.white, roi).map((component) => ({ size: component.length, box: bounds(component) })) })}`);
+    assert(current[0].length >= 100 && current[0].length >= current[1].length, `${name}/${side}: authored field is not the unique large white component`);
+    assert.equal(current[1].length, 7, `${name}/${side}: unique glint is not exactly 7 pixels`);
+    const field = setOf(current[0]), glintPoints = current[1], glint = setOf(glintPoints);
+    const residual = oldWhite.filter((p) => sample.rendered.white[p] && !field.has(p) && !glint.has(p));
+    assert.equal(residual.length, 0, `${name}/${side}: residual old enclosed white cue`);
+    const box = sample.meta.inner_field_bounds[side === "left" ? 0 : 1];
+    const pupil = authoredPupilFromGlint(sample.rendered, glintPoints);
+    const fieldMinusPupil = pointComponents(current[0].filter((p) => !pupil.includes(p)));
+    assert.equal(fieldMinusPupil.length, 1, `${name}/${side}: field-minus-pupil has isolated white island ${JSON.stringify(fieldMinusPupil.map((component) => ({ size: component.length, box: bounds(component) })))}`);
+    const pupilBox = bounds(pupil);
+    assert(pupil.length >= 50 && glintPoints.every((p) => { const x = p % 200, y = Math.floor(p / 200); return x >= pupilBox.minX && x <= pupilBox.maxX && y >= pupilBox.minY && y <= pupilBox.maxY; }), `${name}/${side}: glint detached from pupil ${JSON.stringify({ glint: bounds(glintPoints), pupil: pupilBox })}`);
+    result[side] = { old_enclosed_white_pixels: oldWhite.length, rendered_components: current.map((component) => component.length), field_minus_pupil_components: fieldMinusPupil.map((component) => component.length), residual_white_cue: residual.length, field, glint: glintPoints, pupil };
+  }
+  return result;
 }
 
 async function capture(page) {
@@ -89,11 +153,14 @@ function directOracle(sample, center, name) {
   assert(meta.inner_field_area >= 200 && meta.pupil_area >= 120 && meta.glint_area === 14, `${name}: insufficient three-layer areas`);
   assert.equal(meta.highlight_hole_architecture, false, `${name}: highlight-hole architecture`);
   assert.equal(meta.field_boundary_fixed, true); assert.equal(meta.pupil_glint_rigid, true); assert.equal(meta.old_pose_pixels, 0);
+  const layers = renderedResidualOracle(sample, name);
+  const centerLayers = renderedResidualOracle(center, `${name}/center`);
+  for (const side of ["left", "right"]) { const rel = (layers[side].glint.map((p) => `${Math.round((p % 200) - centroid(layers[side].pupil).x)},${Math.round(Math.floor(p / 200) - centroid(layers[side].pupil).y)}`).sort()); const centerRel = centerLayers[side].glint.map((p) => `${Math.round((p % 200) - centroid(centerLayers[side].pupil).x)},${Math.round(Math.floor(p / 200) - centroid(centerLayers[side].pupil).y)}`).sort(); assert.deepEqual(rel, centerRel, `${name}/${side}: glint geometry is not rigid`); }
   const fieldBoxes = sample.meta.inner_field_bounds;
   assert.deepEqual(fieldBoxes, center.meta.inner_field_bounds, `${name}: inner white field boundary moved`);
   const outsideField = (bits) => bits.map((value, index) => fieldBoxes.some((box) => { const x = index % 200, y = Math.floor(index / 200); return x >= box.minX && x <= box.maxX && y >= box.minY && y <= box.maxY; }) ? 0 : value);
   assert.deepEqual(outsideField(sample.rendered.black), outsideField(center.rendered.black), `${name}: outer silhouette changed`);
-  const pupilPoints = (state, side) => { const box = state.meta.inner_field_bounds[side === "left" ? 0 : 1]; return Array.from({ length: 40000 }, (_, index) => { const x = index % 200, y = Math.floor(index / 200); return x >= box.minX && x <= box.maxX && y >= box.minY && y <= box.maxY && state.rendered.black[index] ? index : -1; }).filter((index) => index >= 0); };
+  const pupilPoints = (state, side) => state === sample ? layers[side].pupil : centerLayers[side].pupil;
   const left = pupilPoints(sample, "left"), right = pupilPoints(sample, "right");
   const centerLeft = pupilPoints(center, "left"), centerRight = pupilPoints(center, "right");
   assert(shapeIsLargePupil(left) || left.length >= 50, `${name}: left pupil too small`);
@@ -104,7 +171,7 @@ function directOracle(sample, center, name) {
   const expected = { left: [-1, 0], right: [1, 0], up: [0, -1], down: [0, 1], center: [0, 0] }[name];
   assert.equal(sign(lc.x - cc.x), expected[0], `${name}: horizontal direction wrong`);
   assert.equal(sign(lc.y - cc.y), expected[1], `${name}: vertical direction wrong`);
-  return { pass: true, meta, left_bounds: bounds(left), right_bounds: bounds(right), paired: true, stale: 0 };
+  return { pass: true, meta, left_bounds: bounds(left), right_bounds: bounds(right), paired: true, stale: 0, rendered_residual_white_cue: Object.fromEntries(Object.entries(layers).map(([side, value]) => [side, value.residual_white_cue])) };
 }
 function temporalOracle(rows, family) {
   const signatures = rows.map((row) => row.trace?.family_signature || "");
@@ -122,6 +189,14 @@ function negativeFixtures(sample, center) {
   results.highlight_hole_architecture = reject({ ...sample.meta, highlight_hole_architecture: true }, (m) => !m.highlight_hole_architecture);
   results.tiny_pupil = reject({ ...sample.meta, pupil_area: 8 }, (m) => m.pupil_area >= 120);
   results.detached_glint = reject({ ...sample.meta, pupil_glint_rigid: false }, (m) => m.pupil_glint_rigid);
+  const oldWhite = enclosedWhiteComponents(sample.base.white, ROI.right).flat();
+  const currentRight = enclosedWhiteComponents(sample.rendered.white, ROI.right);
+  const currentRightSet = new Set(currentRight.flat());
+  let detached = oldWhite.find((p) => !currentRightSet.has(p));
+  if (detached === undefined) detached = Array.from({ length: 40000 }, (_, p) => p).find((p) => { const x = p % 200, y = Math.floor(p / 200); return x >= ROI.right[0] && x < ROI.right[2] && y >= ROI.right[1] && y < ROI.right[3] && !currentRightSet.has(p) && sample.rendered.black[p]; });
+  const detachedSample = { ...sample, base: { ...sample.base, white: [...sample.base.white] }, rendered: { ...sample.rendered, white: [...sample.rendered.white], black: [...sample.rendered.black] } };
+  if (detached !== undefined) { detachedSample.rendered.white[detached] = 1; detachedSample.rendered.black[detached] = 0; }
+  try { renderedResidualOracle(detachedSample, "negative-detached-old-glint"); results.detached_old_glint = false; } catch { results.detached_old_glint = detached !== undefined; }
   results.moved_outer_silhouette = reject({ ...sample.meta, field_boundary_fixed: false }, (m) => m.field_boundary_fixed);
   results.stale_pose = reject({ ...sample.meta, old_pose_pixels: 1 }, (m) => m.old_pose_pixels === 0);
   results.missing_pupil_pixel = reject({ ...sample.meta, pupil_area: 119 }, (m) => m.pupil_area >= 120);
@@ -161,10 +236,10 @@ try {
   report.direct_gaze = { pass: true, rows: gazeRows, exact_center_return: true, owner_scale_strip: rel(gazeStrip) };
 
   const familyStripEntries = [];
-  for (const family of FAMILIES) {
+  for (const family of CHECK_FAMILIES) {
     await page.evaluate(async (value) => { await window.__setFamilyMicroChoreographyFamily(value); window.__interruptEpaperIdleGlint("comp_req_567_freeze"); }, family);
     const rows = []; const shots = [];
-    for (const step of STEPS) {
+    for (const step of CHECK_STEPS) {
       await page.evaluate((value) => window.__epaperFreezeIdleGlintStep(value), step);
       const sample = await capture(page); const shot = await screenShot(page, `family-${family}-step-${step}.png`); const trace = sample.family.trace.at(-1) || {};
       rows.push({ step, face_hash: bitHash(sample.rendered.black), trace, components: trace.components || [], meta: sample.meta, screenshot: rel(shot) }); if ([0, 2, 4, 6, 8, 9].includes(step)) shots.push({ path: shot, label: `${family} ${step}` });
