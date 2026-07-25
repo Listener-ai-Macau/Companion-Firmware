@@ -103,7 +103,7 @@ function renderedResidualOracle(sample, name) {
     const oldWhite = enclosedWhiteComponents(sample.base.white, roi).flat();
     const current = enclosedWhiteComponents(sample.rendered.white, roi);
     assert.equal(current.length, 2, `${name}/${side}: rendered enclosed white components are not exactly field + glint ${JSON.stringify({ current: current.map((component) => ({ size: component.length, box: bounds(component), base_white: component.map((p) => sample.base.white[p]) })), old: enclosedWhiteComponents(sample.base.white, roi).map((component) => ({ size: component.length, box: bounds(component) })) })}`);
-    assert(current[0].length >= 100 && current[0].length >= current[1].length, `${name}/${side}: authored field is not the unique large white component`);
+    assert(current[0].length >= 100 && current[0].length >= current[1].length, `${name}/${side}: authored field is not the unique large white component ${JSON.stringify(current.map((component) => component.length))}`);
     assert.equal(current[1].length, 7, `${name}/${side}: unique glint is not exactly 7 pixels`);
     const field = setOf(current[0]), glintPoints = current[1], glint = setOf(glintPoints);
     const residual = oldWhite.filter((p) => sample.rendered.white[p] && !field.has(p) && !glint.has(p));
@@ -118,6 +118,27 @@ function renderedResidualOracle(sample, name) {
   }
   return result;
 }
+function familyFrameBindingOracle(sample, name) {
+  const binding = sample.binding;
+  assert(binding, name + ": missing COMP-REQ-567 frame binding");
+  assert.equal(binding.overlay_frame_src, binding.frame_open ? binding.frame_src : "", name + ": closed frame still has an overlay");
+  if (binding.frame_open) {
+    assert.equal(binding.gaze_hidden, false, name + ": open frame hid its pupil overlay");
+    assert.equal(binding.overlay_frame_src, binding.frame_src, name + ": overlay was not rebuilt for the new frame");
+    const layers = renderedResidualOracle(sample, name);
+    return { kind: "open", architecture: sample.meta?.architecture || null, layers };
+  }
+  assert.equal(binding.gaze_hidden, true, name + ": closed frame still shows gaze");
+  assert.equal(sample.meta, null, name + ": closed/squint frame still exposes gaze metadata");
+  assert.equal(sample.gaze_src, "", name + ": closed/squint frame retained a pupil/glint source");
+  const residual = {};
+  for (const [side, roi] of Object.entries(ROI)) {
+    const components = enclosedWhiteComponents(sample.rendered.white, roi);
+    assert.equal(components.length, 0, name + "/" + side + ": closed frame retained enclosed white cue " + JSON.stringify(components.map((component) => ({ size: component.length, box: bounds(component) }))));
+    residual[side] = { rendered_components: 0, old_white_cue: 0 };
+  }
+  return { kind: "closed", architecture: null, layers: residual };
+}
 
 async function capture(page) {
   return page.evaluate(async () => {
@@ -127,7 +148,8 @@ async function capture(page) {
     await wait(frame); if (!gaze.hidden) await wait(gaze);
     const draw = (includeGaze) => { const canvas = document.createElement("canvas"); canvas.width = canvas.height = 200; const context = canvas.getContext("2d", { willReadFrequently: true }); context.drawImage(frame, 0, 0); if (includeGaze && !gaze.hidden) context.drawImage(gaze, 0, 0); const data = context.getImageData(0, 0, 200, 200).data; return { black: Array.from({ length: 40000 }, (_, i) => data[i * 4] < 128 ? 1 : 0), white: Array.from({ length: 40000 }, (_, i) => data[i * 4] > 220 ? 1 : 0) }; };
     const base = draw(false), rendered = draw(true);
-    return { frame_src: frame.src, gaze_src: gaze.hidden ? "" : gaze.src, base, rendered, meta: gaze.hidden ? null : (touchGazeRenderMetaBySrc.get(gaze.src) || null), family: window.__familyMicroChoreographyState(), recording: window.__recordingContractState() };
+    const binding = window.__compReq567FrameBindingState ? window.__compReq567FrameBindingState() : null;
+    return { frame_src: frame.src, gaze_src: gaze.hidden ? "" : gaze.src, gaze_hidden: gaze.hidden, base, rendered, meta: gaze.hidden ? null : (touchGazeRenderMetaBySrc.get(gaze.src) || null), binding, family: window.__familyMicroChoreographyState(), recording: window.__recordingContractState() };
   });
 }
 async function screenShot(page, file) {
@@ -189,11 +211,14 @@ function negativeFixtures(sample, center) {
   results.highlight_hole_architecture = reject({ ...sample.meta, highlight_hole_architecture: true }, (m) => !m.highlight_hole_architecture);
   results.tiny_pupil = reject({ ...sample.meta, pupil_area: 8 }, (m) => m.pupil_area >= 120);
   results.detached_glint = reject({ ...sample.meta, pupil_glint_rigid: false }, (m) => m.pupil_glint_rigid);
+  const switched = { ...sample, binding: { ...sample.binding, frame_src: "switched-family-frame.png" } };
+  try { familyFrameBindingOracle(switched, "negative-family-frame-switch"); results.family_frame_switch_without_rebuilding_overlay = false; } catch { results.family_frame_switch_without_rebuilding_overlay = true; }
   const oldWhite = enclosedWhiteComponents(sample.base.white, ROI.right).flat();
   const currentRight = enclosedWhiteComponents(sample.rendered.white, ROI.right);
   const currentRightSet = new Set(currentRight.flat());
+  const fourNeighbors = (p) => [p - 1, p + 1, p - 200, p + 200];
   let detached = oldWhite.find((p) => !currentRightSet.has(p));
-  if (detached === undefined) detached = Array.from({ length: 40000 }, (_, p) => p).find((p) => { const x = p % 200, y = Math.floor(p / 200); return x >= ROI.right[0] && x < ROI.right[2] && y >= ROI.right[1] && y < ROI.right[3] && !currentRightSet.has(p) && sample.rendered.black[p]; });
+  if (detached === undefined) detached = Array.from({ length: 40000 }, (_, p) => p).find((p) => { const x = p % 200, y = Math.floor(p / 200); return x >= ROI.right[0] + 1 && x < ROI.right[2] - 1 && y >= ROI.right[1] + 1 && y < ROI.right[3] - 1 && !currentRightSet.has(p) && sample.rendered.black[p] && fourNeighbors(p).every((n) => sample.rendered.black[n] && !currentRightSet.has(n)); });
   const detachedSample = { ...sample, base: { ...sample.base, white: [...sample.base.white] }, rendered: { ...sample.rendered, white: [...sample.rendered.white], black: [...sample.rendered.black] } };
   if (detached !== undefined) { detachedSample.rendered.white[detached] = 1; detachedSample.rendered.black[detached] = 0; }
   try { renderedResidualOracle(detachedSample, "negative-detached-old-glint"); results.detached_old_glint = false; } catch { results.detached_old_glint = detached !== undefined; }
@@ -205,7 +230,7 @@ function negativeFixtures(sample, center) {
   results.frozen_family = reject({ distinct_face_hashes: 1 }, (m) => m.distinct_face_hashes >= 4);
   results.generic_family_signature = reject({ signatures: ["same", "same"] }, (m) => new Set(m.signatures).size === 10);
   results.no_non_pupil_component = reject({ components: ["pupil"] }, (m) => m.components.some((item) => item !== "pupil"));
-  assert(Object.values(results).every(Boolean), "negative fixture escaped");
+  assert(Object.values(results).every(Boolean), `negative fixture escaped: ${JSON.stringify(results)}`);
   return results;
 }
 
@@ -220,7 +245,7 @@ const browser = await chromium.launch({ headless: true, executablePath: "C:/Prog
 const page = await browser.newPage({ viewport: { width: 1000, height: 760 } });
 const httpErrors = [];
 page.on("response", (response) => { if (response.status() >= 400) httpErrors.push({ status: response.status(), url: response.url() }); });
-const report = { schema: "companion.comp-req-567.three-layer-eye.machine-ready.v1", requirement: "COMP-REQ-567", base_commit: "2a6c4ea9a0f19d1f4c0a653e07876916f44a9a2b", page_sha256: sha256(fs.readFileSync(pagePath)), screenshot_dir: rel(screenshotDir), hardware_contact: 0, production_enable: 0, direct_gaze: {}, families: {}, recording: {}, negatives: {}, http_errors: [] };
+const report = { schema: "companion.comp-req-567.three-layer-eye.machine-ready.v2", requirement: "COMP-REQ-567", base_commit: "3a2d9a70c1be756e8a54a64e564894856984a5c7", page_sha256: sha256(fs.readFileSync(pagePath)), screenshot_dir: rel(screenshotDir), hardware_contact: 0, production_enable: 0, direct_gaze: {}, families: {}, recording: {}, negatives: {}, http_errors: [] };
 try {
   const port = server.address().port;
   await page.goto(`http://127.0.0.1:${port}${PAGE_URL}?rev=comp-req-567#expression`, { waitUntil: "load" });
@@ -241,8 +266,8 @@ try {
     const rows = []; const shots = [];
     for (const step of CHECK_STEPS) {
       await page.evaluate((value) => window.__epaperFreezeIdleGlintStep(value), step);
-      const sample = await capture(page); const shot = await screenShot(page, `family-${family}-step-${step}.png`); const trace = sample.family.trace.at(-1) || {};
-      rows.push({ step, face_hash: bitHash(sample.rendered.black), trace, components: trace.components || [], meta: sample.meta, screenshot: rel(shot) }); if ([0, 2, 4, 6, 8, 9].includes(step)) shots.push({ path: shot, label: `${family} ${step}` });
+      const sample = await capture(page); const shot = await screenShot(page, `family-${family}-step-${step}.png`); const trace = sample.family.trace.at(-1) || {}; const binding = familyFrameBindingOracle(sample, `${family}/step-${step}`);
+      rows.push({ step, face_hash: bitHash(sample.rendered.black), trace, components: trace.components || [], meta: sample.meta, binding: sample.binding, binding_oracle: binding, screenshot: rel(shot) }); if ([0, 2, 4, 6, 8, 9].includes(step)) shots.push({ path: shot, label: `${family} ${step}` });
     }
     const temporal = temporalOracle(rows, family); const familyStrip = await strip(browser, shots, `family-${family}-time-strip.png`, 6); familyStripEntries.push({ path: familyStrip, label: family }); report.families[family] = { pass: true, cadence_ms: 480, temporal, signature: rows[0].trace?.family_signature, rows };
   }
