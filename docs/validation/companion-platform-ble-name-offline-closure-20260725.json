@@ -1,0 +1,74 @@
+{
+  "schema": "companion_platform_ble_name_offline_closure_v1",
+  "requirement": "COMP-REQ-549",
+  "implementation_commit": "e3b9a488d8cc2b407bab011f025931804d1b4b39",
+  "status": "PASS_OFFLINE_PRODUCTION_OFF",
+  "platform_pin": "d311af3db60e118a6d2c6e68873b2d00f2647a96",
+  "ble_name": {
+    "supported_commands": [
+      "stage",
+      "apply",
+      "reset"
+    ],
+    "fixture": {
+      "status": "PASS",
+      "stdout": "BLE_NAME_FIXTURE PASS stage/apply/reset parser counted-sink matrix",
+      "executable_sha256": "50073CD49F96DB3D5F0A7572AAF8A9AA0A1B4D0A10538AAE3B58ED09E8A316E6"
+    },
+    "deterministic_runs": {
+      "count": 2,
+      "byte_identical": true,
+      "result_bytes": 3527,
+      "result_sha256": "79A35E2A52062B63A1B4438CEB56AA1B86B7C4BA1DEEF5D91CD3495E1F6D10EA"
+    },
+    "production_gate_default": 0,
+    "target_controller_callback": "production-off callback returns false; no GAP, advertising, or controller mutation is enabled",
+    "physical_proof": false
+  },
+  "wb55_o2_build": {
+    "command": "pwsh -NoProfile -File .\\tools\\build_nucleo_bringup.ps1 -EpaperSsd1681R7VisualRuntimeDiagnostic -Force -Optimization O2",
+    "exit_code": 0,
+    "hex": {
+      "bytes": 569846,
+      "sha256": "C4EFBBE44602A3F41B7FB9784B7AE23F1F31D908919352B832ADD5CCF78975A3"
+    },
+    "elf": {
+      "bytes": 3312208,
+      "sha256": "61CCC83E7E4627A2E2D1BBE81084373B4D25B8D6143539D848C0D135621258C5"
+    }
+  },
+  "protected_lower": {
+    "changed_paths": [],
+    "ssd1681_driver": {
+      "sha256": "F52A7E853BFE2E66680F08420941265CFF163FB579B2D3870128FC72C79E035F",
+      "git_blob": "f856d7ce0b8915e5059620c3faa97aa06b06eb4e"
+    },
+    "r7_frame_header": {
+      "sha256": "9571CF9F896B6C14451BAA7348CB717643B4963AE834B0A554E0C2ED2C7E8D35",
+      "git_blob": "2220da0c1113a5cdad7028aeae578d9fe26e936f"
+    }
+  },
+  "side_effect_counters": {
+    "hardware": 0,
+    "serial": 0,
+    "ble_write": 0,
+    "bonding": 0,
+    "re_pair": 0,
+    "ota_transfer": 0,
+    "ota_apply": 0
+  },
+  "capability_boundary": {
+    "shared_platform_modules": "accepted offline",
+    "recording": "production GATT route exists; Companion physical user-path proof pending",
+    "diagnostics": "production GATT route exists; Companion physical proof pending",
+    "ble_name": "offline stage/apply/reset complete; production controller enable and physical proof pending",
+    "ble_re_pair": "not implemented or authorized",
+    "stm32wb_ota": "readiness/loader only; transfer/apply/recovery proof pending",
+    "esp_ota": "no Companion adapter or runner"
+  },
+  "authorization": {
+    "hardware": false,
+    "production_enable": false,
+    "push": false
+  }
+}
