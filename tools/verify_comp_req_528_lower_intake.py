@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import inspect
 import json
 import os
 import shutil
@@ -22,8 +23,32 @@ def sha(path: Path) -> str:
 
 
 def blob(path: Path) -> str:
-    return subprocess.check_output(["git", "hash-object", str(path)], cwd=ROOT,
-                                   text=True).strip()
+    """Read the tracked index blob, independent of worktree filters/EOL."""
+    relative = path.resolve().relative_to(ROOT).as_posix()
+    raw = subprocess.check_output(["git", "ls-files", "-s", "--", relative],
+                                  cwd=ROOT, text=True)
+    entries = [line for line in raw.splitlines() if line.strip()]
+    if len(entries) != 1:
+        raise RuntimeError(f"expected one tracked index entry for {relative}")
+    fields = entries[0].split()
+    if len(fields) < 4 or fields[2] != "0" or fields[3] != relative:
+        raise RuntimeError(f"invalid tracked index entry for {relative}: {entries[0]}")
+    return fields[1]
+
+
+def blob_self_check(path: Path) -> dict:
+    """Exercise the EOL/path regression case without using it as identity."""
+    relative = path.resolve().relative_to(ROOT).as_posix()
+    index_blob = blob(path)
+    worktree_probe = subprocess.check_output(["git", "hash-object", str(path)],
+                                             cwd=ROOT, text=True).strip()
+    return {
+        "path": relative,
+        "index_blob": index_blob,
+        "worktree_hash_object": worktree_probe,
+        "worktree_filter_mismatch_detected": worktree_probe != index_blob,
+        "identity_source": "git ls-files -s index entry",
+    }
 
 
 def rel(path: Path) -> str:
@@ -125,9 +150,24 @@ def main() -> int:
             "git_blob": "2220da0c1113a5cdad7028aeae578d9fe26e936f",
         },
     }
+    blob_self_checks = {}
+    blob_source = inspect.getsource(blob)
+    if "hash-object" in blob_source:
+        failures.append("blob identity implementation regressed to worktree hash-object")
     for item in protected.values():
         path = ROOT / item["path"]
-        if not path.is_file() or sha(path) != item["physical_sha256"] or blob(path) != item["git_blob"]:
+        if not path.is_file():
+            failures.append(f"protected identity mismatch: {item['path']}")
+            continue
+        try:
+            blob_self_checks[item["path"]] = blob_self_check(path)
+            tracked_blob = blob(path)
+        except (OSError, subprocess.CalledProcessError, RuntimeError) as error:
+            failures.append(f"protected index lookup failed: {item['path']}: {error}")
+            continue
+        if (sha(path) != item["physical_sha256"] or
+                tracked_blob != item["git_blob"] or
+                blob_self_checks[item["path"]]["index_blob"] != tracked_blob):
             failures.append(f"protected identity mismatch: {item['path']}")
 
     builds = {mode: fresh_arm_build(out, mode, head, failures)
@@ -196,6 +236,7 @@ def main() -> int:
         "candidate_commits": [head],
         "raw_result_sha256": sha(raw_result_path) if raw_result_path.is_file() else "",
         "protected": protected,
+        "blob_self_check": blob_self_checks,
     }, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
     # Execute the real compiled 525 fixture in this package root.
@@ -378,6 +419,7 @@ def main() -> int:
         "source_bindings": sources,
         "host_chain": host_chain,
         "protected": protected,
+        "blob_self_check": blob_self_checks,
         "builds": builds,
         "r7_gates": {"static": r7_static, "parser": r7_parser,
                       "checkonly_path": "r7_checkonly/host-result.json"},
