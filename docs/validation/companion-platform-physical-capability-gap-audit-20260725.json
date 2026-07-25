@@ -1,0 +1,63 @@
+{
+  "schema": "companion.platform.physical_capability_gap_audit.v1",
+  "date": "2026-07-25",
+  "status": "PASS_WITH_OPEN_PHYSICAL_GATES",
+  "scope": "read-only source and accepted receipt audit",
+  "accepted_platform_pin": "d311af3db60e118a6d2c6e68873b2d00f2647a96",
+  "accepted_source_commit": "f397fc197fb26af2e3fabb7426c1bbe78e44bf6d",
+  "accepted_receipt_commit": "97472cc772d1d54d0d57514fc1db07a69b531cbe",
+  "accepted_receipt_sha256": "E0EFF1341FD02B9DD18FA5971452D3E865C60A648AB593BF43DADAD02093D2FD",
+  "receipt_self_test": {
+    "baseline": "PASS",
+    "negative_cases_passed": 13,
+    "negative_cases_total": 13,
+    "hardware_contact": 0,
+    "serial": 0,
+    "ble_write": 0,
+    "ota_transfer": 0,
+    "ota_apply": 0
+  },
+  "source_blobs": {
+    "cubeide/Companion_Nucleo_WB55RG_Bringup/Core/Src/app_ble.c": "53faff7c1be1ef7f7db83a200771a6dc3def6a35",
+    "app/companion_pendant/v1_features/companion_v1_features.c": "06b418d763ddb8a68afcf3537f3fa520aa42fe81",
+    "app/companion_pendant/platform/companion_platform_adapters.c": "3d82b2dc17b47e0d9a142633cfb0744d01f64f3f"
+  },
+  "capabilities": {
+    "recording": {
+      "production_wiring": true,
+      "physical_user_path": "CLOSED_UNPROVEN",
+      "required_evidence": "scan/connect/discovery, recording list and chunk pull, ordered offset/sequence, CRC, final SHA/WAV, stop and cleanup"
+    },
+    "diagnostics": {
+      "production_wiring": true,
+      "physical_user_path": "CLOSED_UNPROVEN",
+      "required_evidence": "count/start/read/stop trace, chunk header and CRC, bounded pagination, malformed/truncated/out-of-order negatives and cleanup"
+    },
+    "ble_rename": {
+      "production_wiring": "STAGING_ONLY",
+      "physical_user_path": "CLOSED_UNPROVEN",
+      "gap": "the accepted implementation stages a pending name but GAP initialization and advertising still use the fixed companion product name",
+      "required_evidence": "read original, temporary rename, advertised/readback identity, exact restore and restart-safe persistence"
+    },
+    "ble_repair": {
+      "production_wiring": false,
+      "physical_user_path": "UNIMPLEMENTED_UNPROVEN",
+      "gap": "no controlled bond-delete or pairing-window product path and no qualified runner"
+    },
+    "stm32wb_ota": {
+      "production_wiring": "READINESS_AND_LOADER_ONLY",
+      "physical_user_path": "CLOSED_UNPROVEN",
+      "gap": "transfer/apply/recovery user path has no accepted physical evidence"
+    },
+    "esp_ota": {
+      "production_wiring": false,
+      "physical_user_path": "UNIMPLEMENTED_UNPROVEN",
+      "gap": "target enum exists but no Companion ESP adapter, orchestration or runner"
+    }
+  },
+  "authorization_boundary": {
+    "implementation_authorized": false,
+    "hardware_authorized": false,
+    "required_next_step": "create separate registry-first authorization before implementing BLE re-pair or ESP OTA, and separate hash-bound authorization before any physical BLE or OTA action"
+  }
+}
