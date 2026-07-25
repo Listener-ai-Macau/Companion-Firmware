@@ -118,6 +118,8 @@ def main() -> int:
             "gate_default_zero": "COMPANION_BLE_NAME_PLATFORM_GATE 0" in GATE_FILE.read_text(),
             "legacy_route_present": "companion_v1_apply_ble_name_config" in GATE_FILE.read_text(),
             "new_route_present": "companion_ble_name_product_entry" in GATE_FILE.read_text(),
+            "gate_if_count": GATE_FILE.read_text().count("#if COMPANION_BLE_NAME_PLATFORM_GATE"),
+            "gate_else_count": GATE_FILE.read_text().count("#else"),
             "controller_call_in_target_boundary": False,
         },
     }
@@ -172,7 +174,7 @@ def main() -> int:
             objects.append(obj)
         exe = build / "comp_req_549_ble_name_host_fixture.exe"
         link = [str(compiler), "/nologo", *(str(obj) for obj in objects),
-                f"/Fe{exe}", "/link", "/OPT:REF", "/INCREMENTAL:NO"]
+                f"/Fe{exe}", "/link", "/OPT:REF", "/INCREMENTAL:NO", "/Brepro"]
         code, stdout, stderr = run(link, env, ROOT)
         result["link_exit"] = code
         result["link_stdout"] = normalize(stdout)
