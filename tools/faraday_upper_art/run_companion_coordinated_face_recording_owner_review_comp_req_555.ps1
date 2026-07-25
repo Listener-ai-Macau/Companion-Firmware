@@ -81,6 +81,9 @@ try {
     [IO.File]::WriteAllText($raw, $rawText, [Text.UTF8Encoding]::new($false))
     if ($LASTEXITCODE -ne 0) { throw "operator-prompt exit $LASTEXITCODE" }
     $parsed = $rawText | ConvertFrom-Json
+    if (@("通过", "失败") -notcontains [string] $parsed.selected) {
+        throw "operator-prompt returned no owner verdict: $($parsed.selected)"
+    }
     $noteText = if (Test-Path $note) { [IO.File]::ReadAllText($note) } else { "" }
     $record = [ordered]@{
         schema = "companion.comp_req_555.owner_review.v1"
