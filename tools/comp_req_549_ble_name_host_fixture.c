@@ -45,6 +45,17 @@ static int expect(const char *label, companion_ble_name_result_t got,
     return 0;
 }
 
+static int expect_active(const companion_ble_name_state_t *state, const char *wanted)
+{
+    uint8_t active[COMPANION_GATT_BLE_NAME_MAX_BYTES] = {0};
+    const uint8_t length = companion_ble_name_active(state, active, sizeof(active));
+    if (length != strlen(wanted) || memcmp(active, wanted, length) != 0) {
+        fprintf(stderr, "FAIL active got=%.*s want=%s\n", (int)length, active, wanted);
+        return 1;
+    }
+    return 0;
+}
+
 int main(void)
 {
     uint8_t payload[sizeof(companion_gatt_ble_name_config_v1_t)];
@@ -86,6 +97,7 @@ int main(void)
         &state, payload, (uint16_t)wire(payload, 6u, 2u, NULL), 60u,
         counted_restart, &sink), COMPANION_BLE_NAME_CONNECTED);
     if (sink.calls != 1u) failures += 1u;
+    failures += (expect_active(&state, COMPANION_BLE_NAME_DEFAULT) != 0);
 
     companion_ble_name_init(&state);
     companion_ble_name_set_connection(&state, false, true);
@@ -95,6 +107,7 @@ int main(void)
     failures += expect("busy-apply", companion_ble_name_product_entry(
         &state, payload, (uint16_t)wire(payload, 8u, 2u, NULL), 80u,
         counted_restart, &sink), COMPANION_BLE_NAME_BUSY);
+    failures += (expect_active(&state, COMPANION_BLE_NAME_DEFAULT) != 0);
 
     companion_ble_name_init(&state);
     sink.succeed = false;
@@ -109,6 +122,7 @@ int main(void)
         &state, payload, (uint16_t)wire(payload, 10u, 2u, NULL), 100u,
         counted_restart, &sink), COMPANION_BLE_NAME_RESTART_FAILED);
     if (sink.calls != failed_calls) failures += 1u;
+    failures += (expect_active(&state, COMPANION_BLE_NAME_DEFAULT) != 0);
 
     sink.succeed = true;
     companion_ble_name_init(&state);
