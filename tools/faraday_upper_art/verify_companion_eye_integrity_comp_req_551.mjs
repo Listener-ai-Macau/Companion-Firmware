@@ -79,11 +79,12 @@ try {
   await page.waitForFunction(() => window.__eyeIntegrityPixelProbe);
 
   const contract = await page.evaluate(() => window.__eyeIntegrityContractState().contract);
-  assert.equal(contract.moving_component, "small_sparkle_only");
+  assert.equal(contract.moving_component, "paired_small_sparkles");
   assert.equal(contract.primary_highlight, "fixed");
   assert.equal(contract.eye_body_silhouette, "fixed");
   assert.equal(contract.boundary_inset_px, 1);
-  assert(contract.max_sparkle_pixels <= 32);
+  assert.equal(contract.max_sparkle_pixels, 36);
+  assert.equal(contract.expected_open_eye_sparkles, 2);
 
   for (const family of families) {
     const selected = await page.evaluate(
@@ -112,20 +113,24 @@ try {
   const gazeKeys = await page.evaluate(() => window.__eyeIntegrityGazeKeys());
   for (const key of gazeKeys) {
     const component = await page.evaluate(
-      (value) => window.__eyeIntegrityProbe(value),
+      (value) => window.__pairedEyeGazeProbe(value),
       key,
     );
-    assert(component.raw_sparkle_pixels > 0);
-    assert(component.raw_sparkle_pixels <= 64);
-    assert(component.safe_sparkle_pixels > 0);
-    assert(component.safe_sparkle_pixels <= component.raw_sparkle_pixels);
+    assert(component.presented, `gaze ${key} presentation failed`);
+    assert(component.pass, `gaze ${key} paired-eye integrity failed`);
+    assert.equal(component.open_eye_count, 2);
+    assert.equal(component.sparkle_components, 2);
+    assert(component.eye_rows.every((eye) => eye.sparkle_components === 1));
   }
   for (const key of ["1,0,1,0", "-2,0,-6,0", "1,-3,1,-6", "5,0,5,0", "1,4,1,6"]) {
     assert(
       await page.evaluate((value) => window.__eyeIntegritySetGazeKey(value), key),
       `gaze ${key} presentation failed`,
     );
-    const probe = await page.evaluate(() => window.__eyeIntegrityPixelProbe());
+    const probe = await page.evaluate(
+      (value) => window.__pairedEyeGazeProbe(value),
+      key,
+    );
     assert(probe.pass, `gaze ${key} eye integrity failed`);
     records.push({ family: "calm", step: `gaze:${key}`, ...probe });
   }
@@ -147,12 +152,13 @@ try {
     "utf8",
   );
   const report = {
-    schema: "companion.comp_req_551.eye_integrity.v1",
+    schema: "companion.comp_req_553.paired_eye_integrity.v1",
     status: "PASS",
     page_sha256: sha256(pageBytes),
     families: families.length,
     family_frames: families.length * steps.length,
     drag_gaze_keys: gazeKeys.length,
+    paired_eye_gaze_keys: gazeKeys.length,
     primary_highlight_mismatch_pixels: 0,
     silhouette_mismatch_pixels: 0,
     unsafe_full_highlight_negative_rejected: true,
