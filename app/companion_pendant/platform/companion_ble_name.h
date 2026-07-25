@@ -13,6 +13,10 @@ extern "C" {
 #define COMPANION_BLE_NAME_DEFAULT "companion"
 #define COMPANION_BLE_NAME_REPLAY_CAPACITY 8u
 
+#ifndef COMPANION_BLE_NAME_PLATFORM_GATE
+#define COMPANION_BLE_NAME_PLATFORM_GATE 0
+#endif
+
 typedef enum {
     COMPANION_BLE_NAME_STAGE = 1,
     COMPANION_BLE_NAME_APPLY = 2,
@@ -66,6 +70,8 @@ companion_ble_name_result_t companion_ble_name_handle(
 
 void companion_ble_name_set_connection(companion_ble_name_state_t *state,
                                        bool connected, bool busy);
+void companion_ble_name_get_config(const companion_ble_name_state_t *state,
+                                   companion_gatt_ble_name_config_v1_t *out);
 uint8_t companion_ble_name_active(const companion_ble_name_state_t *state,
                                   uint8_t *out, uint8_t capacity);
 uint8_t companion_ble_name_pending(const companion_ble_name_state_t *state,

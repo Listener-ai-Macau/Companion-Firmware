@@ -6,15 +6,20 @@
 typedef struct {
     unsigned calls;
     bool succeed;
-    char last_name[COMPANION_GATT_BLE_NAME_MAX_BYTES + 1u];
+    char gap_name[COMPANION_GATT_BLE_NAME_MAX_BYTES + 1u];
+    char advertising_name[COMPANION_GATT_BLE_NAME_MAX_BYTES + 1u];
 } sink_t;
 
 static bool counted_restart(void *context, const uint8_t *name, uint8_t length)
 {
     sink_t *sink = (sink_t *)context;
     sink->calls += 1u;
-    memset(sink->last_name, 0, sizeof(sink->last_name));
-    memcpy(sink->last_name, name, length);
+    if (sink->succeed) {
+        memset(sink->gap_name, 0, sizeof(sink->gap_name));
+        memset(sink->advertising_name, 0, sizeof(sink->advertising_name));
+        memcpy(sink->gap_name, name, length);
+        memcpy(sink->advertising_name, name, length);
+    }
     return sink->succeed;
 }
 
@@ -56,11 +61,22 @@ static int expect_active(const companion_ble_name_state_t *state, const char *wa
     return 0;
 }
 
+static int expect_target_names(const sink_t *sink, const char *wanted)
+{
+    if (strcmp(sink->gap_name, wanted) != 0 ||
+        strcmp(sink->advertising_name, wanted) != 0) {
+        fprintf(stderr, "FAIL target gap=%s advertising=%s want=%s\n",
+                sink->gap_name, sink->advertising_name, wanted);
+        return 1;
+    }
+    return 0;
+}
+
 int main(void)
 {
     uint8_t payload[sizeof(companion_gatt_ble_name_config_v1_t)];
     companion_ble_name_state_t state;
-    sink_t sink = {0u, true, {0}};
+    sink_t sink = {0u, true, {0}, {0}};
     unsigned failures = 0u;
 
     companion_ble_name_init(&state);
@@ -71,7 +87,9 @@ int main(void)
     failures += expect("apply", companion_ble_name_product_entry(
         &state, payload, (uint16_t)wire(payload, 2u, 2u, NULL), 20u,
         counted_restart, &sink), COMPANION_BLE_NAME_OK);
-    if (sink.calls != 1u || strcmp(sink.last_name, "luna") != 0) failures += 1u;
+    if (sink.calls != 1u || strcmp(sink.gap_name, "luna") != 0 ||
+        strcmp(sink.advertising_name, "luna") != 0) failures += 1u;
+    failures += (expect_target_names(&sink, "luna") != 0);
     failures += expect("replay-success", companion_ble_name_product_entry(
         &state, payload, (uint16_t)wire(payload, 2u, 2u, NULL), 20u,
         counted_restart, &sink), COMPANION_BLE_NAME_OK);
@@ -80,6 +98,16 @@ int main(void)
         &state, payload, (uint16_t)wire(payload, 2u, 2u, NULL), 21u,
         counted_restart, &sink), COMPANION_BLE_NAME_COLLISION);
     if (sink.calls != 1u) failures += 1u;
+
+    companion_ble_name_init(&state);
+    failures += expect("stage-before-reset", companion_ble_name_product_entry(
+        &state, payload, (uint16_t)wire(payload, 13u, 1u, "stale"), 130u,
+        counted_restart, &sink), COMPANION_BLE_NAME_OK);
+    failures += expect("reset-replaces-pending", companion_ble_name_product_entry(
+        &state, payload, (uint16_t)wire(payload, 14u, 3u, NULL), 140u,
+        counted_restart, &sink), COMPANION_BLE_NAME_OK);
+    if (strcmp(sink.gap_name, COMPANION_BLE_NAME_DEFAULT) != 0 ||
+        strcmp(sink.advertising_name, COMPANION_BLE_NAME_DEFAULT) != 0) failures += 1u;
     failures += expect("invalid", companion_ble_name_product_entry(
         &state, payload, (uint16_t)wire(payload, 3u, 1u, "bad=name"), 30u,
         counted_restart, &sink), COMPANION_BLE_NAME_INVALID);
@@ -123,13 +151,15 @@ int main(void)
         counted_restart, &sink), COMPANION_BLE_NAME_RESTART_FAILED);
     if (sink.calls != failed_calls) failures += 1u;
     failures += (expect_active(&state, COMPANION_BLE_NAME_DEFAULT) != 0);
+    failures += (expect_target_names(&sink, COMPANION_BLE_NAME_DEFAULT) != 0);
 
     sink.succeed = true;
     companion_ble_name_init(&state);
     failures += expect("reset-default", companion_ble_name_product_entry(
         &state, payload, (uint16_t)wire(payload, 11u, 3u, NULL), 110u,
         counted_restart, &sink), COMPANION_BLE_NAME_OK);
-    if (strcmp(sink.last_name, COMPANION_BLE_NAME_DEFAULT) != 0) failures += 1u;
+    if (strcmp(sink.gap_name, COMPANION_BLE_NAME_DEFAULT) != 0 ||
+        strcmp(sink.advertising_name, COMPANION_BLE_NAME_DEFAULT) != 0) failures += 1u;
     if (companion_ble_name_product_entry(&state, payload,
             (uint16_t)(wire(payload, 12u, 1u, "truncated") - 1u), 120u,
             counted_restart, &sink) != COMPANION_BLE_NAME_INVALID) failures += 1u;

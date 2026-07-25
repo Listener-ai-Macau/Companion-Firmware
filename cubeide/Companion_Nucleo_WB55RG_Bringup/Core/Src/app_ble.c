@@ -48,6 +48,7 @@
 #include "companion_product_entry_glue.h"
 #include "companion_product_identity.h"
 #include "companion_product_transport.h"
+#include "companion_ble_name_entry.h"
 #include "display_queue.h"
 #include "asset_store.h"
 #include "emote_asset_pack.h"
@@ -85,6 +86,11 @@ __attribute__((weak)) bool Companion_Ota_V1_ReadCandidate(
 
 #ifndef COMPANION_SCREEN_MENU_ENABLED
 #define COMPANION_SCREEN_MENU_ENABLED 0
+#endif
+
+/* Offline-only candidate route. Keep the real controller path disabled. */
+#ifndef COMPANION_BLE_NAME_PLATFORM_GATE
+#define COMPANION_BLE_NAME_PLATFORM_GATE 0
 #endif
 
 #ifndef COMPANION_SCREEN_EMOTE_DEMO
@@ -441,6 +447,7 @@ static companion_product_entry_glue_t s_platform_product_entry;
 static companion_settings_transport_t s_platform_settings_transport;
 static companion_meeting_transport_t s_platform_meeting_transport;
 static companion_v1_features_t s_companion_v1_features;
+static companion_ble_name_state_t s_companion_ble_name_state;
 static uint32_t s_companion_audio_notify_enabled_count = 0u;
 static uint32_t s_companion_audio_notify_disabled_count = 0u;
 static uint32_t s_companion_audio_control_write_count = 0u;
@@ -465,6 +472,10 @@ static tBleStatus Adv_Request(void);
 /* USER CODE BEGIN PFP */
 static void Companion_Audio_Init(void);
 static void Companion_Gatt_Init(void);
+static bool Companion_BleName_TargetRestart(void *context,
+                                            const uint8_t *name,
+                                            uint8_t length);
+static void Companion_BleName_SyncFeatureState(void);
 static void Companion_Gatt_Task(void);
 static void Companion_Display_Task(void);
 static void Companion_Gatt_HandleEvent(const companion_gatt_event_t *event,
@@ -1105,6 +1116,7 @@ SVCCTL_UserEvtFlowStatus_t SVCCTL_App_Notification( void *p_Pckt )
     {
       s_companion_ble_connected = false;
       s_companion_ble_advertising = false;
+      companion_ble_name_set_connection(&s_companion_ble_name_state, false, false);
       Companion_Screen_RefreshBleStatus();
       connectionHandle = COMPANION_BLE_CONN_HANDLE_INVALID;
       s_companion_ble_link_mode = COMPANION_BLE_LINK_MODE_NONE;
@@ -1131,6 +1143,7 @@ SVCCTL_UserEvtFlowStatus_t SVCCTL_App_Notification( void *p_Pckt )
           connectionHandle = p_connection_complete_event->Connection_Handle;
           s_companion_ble_connected = true;
           s_companion_ble_advertising = false;
+          companion_ble_name_set_connection(&s_companion_ble_name_state, true, false);
           Companion_Screen_RefreshBleStatus();
           s_companion_ble_link_mode = COMPANION_BLE_LINK_MODE_NONE;
           APP_DBG_MSG("==>> Companion connected handle=0x%04X; audio high-speed link deferred until active recording\n",
@@ -1364,9 +1377,29 @@ static bool Companion_Product_BeginMeeting(void *context, uint32_t now_ms,
       now_ms, request_id, idempotency_key, s_platform_pending_meeting->command);
 }
 
+static bool Companion_BleName_TargetRestart(void *context,
+                                            const uint8_t *name,
+                                            uint8_t length)
+{
+  /* Production-off boundary: no GAP, advertising, or controller call here. */
+  (void)context;
+  (void)name;
+  (void)length;
+  return false;
+}
+
+static void Companion_BleName_SyncFeatureState(void)
+{
+#if COMPANION_BLE_NAME_PLATFORM_GATE
+  companion_ble_name_get_config(&s_companion_ble_name_state,
+                                &s_companion_v1_features.ble_name);
+#endif
+}
+
 static void Companion_Gatt_Init(void)
 {
   companion_v1_features_init(&s_companion_v1_features, HAL_GetTick());
+  companion_ble_name_init(&s_companion_ble_name_state);
   s_platform_settings_transport.current = &s_companion_gatt_settings;
   s_platform_settings_transport.size = sizeof(s_companion_gatt_settings);
   s_platform_settings_transport.revision = 1u;
@@ -3806,8 +3839,16 @@ static void Companion_Gatt_HandleEvent(const companion_gatt_event_t *event,
                                                   &request) ==
           COMPANION_GATT_PARSE_OK)
       {
+#if COMPANION_BLE_NAME_PLATFORM_GATE
+        const uint32_t idempotency_key = request.request_id ^ 0xB1E5A9C3u;
+        (void)companion_ble_name_product_entry(
+            &s_companion_ble_name_state, event->payload, event->payload_len,
+            idempotency_key, Companion_BleName_TargetRestart, NULL);
+        Companion_BleName_SyncFeatureState();
+#else
         (void)companion_v1_apply_ble_name_config(&s_companion_v1_features,
                                                  &request);
+#endif
       }
       Companion_Gatt_PublishBleNameConfig();
       break;

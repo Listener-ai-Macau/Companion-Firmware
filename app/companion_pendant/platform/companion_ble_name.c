@@ -108,6 +108,22 @@ void companion_ble_name_set_connection(companion_ble_name_state_t *state,
     }
 }
 
+void companion_ble_name_get_config(const companion_ble_name_state_t *state,
+                                   companion_gatt_ble_name_config_v1_t *out)
+{
+    if (state == NULL || out == NULL) {
+        return;
+    }
+    memset(out, 0, sizeof(*out));
+    out->schema_version = 1u;
+    out->command = COMPANION_BLE_NAME_APPLY;
+    out->max_len = COMPANION_GATT_BLE_NAME_MAX_BYTES;
+    out->status = state->pending_valid ? 1u : 0u;
+    out->flags = state->pending_valid ? 0x0001u : 0u;
+    out->name_len = state->active_len;
+    memcpy(out->name, state->active, state->active_len);
+}
+
 companion_ble_name_result_t companion_ble_name_handle(
     companion_ble_name_state_t *state,
     const companion_gatt_ble_name_config_v1_t *request,
@@ -136,13 +152,13 @@ companion_ble_name_result_t companion_ble_name_handle(
                   request->name_len);
         state->pending_valid = true;
         result = COMPANION_BLE_NAME_OK;
-    } else if (request->command == COMPANION_BLE_NAME_RESET &&
-               !state->pending_valid) {
+    } else if (request->command == COMPANION_BLE_NAME_RESET) {
         static const uint8_t default_name[] = COMPANION_BLE_NAME_DEFAULT;
+        /* Reset always replaces a previously staged value before apply. */
         copy_name(state->pending, &state->pending_len, default_name,
                   (uint8_t)(sizeof(default_name) - 1u));
         state->pending_valid = true;
-        result = COMPANION_BLE_NAME_NO_STAGE;
+        result = COMPANION_BLE_NAME_OK;
         if (state->connected) {
             result = COMPANION_BLE_NAME_CONNECTED;
         } else if (state->busy) {
