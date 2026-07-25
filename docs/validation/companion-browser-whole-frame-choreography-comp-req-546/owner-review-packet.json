@@ -1,0 +1,31 @@
+{
+  "schema": "companion.browser-whole-frame-owner-review-packet.comp-req-546.v1",
+  "requirement": "COMP-REQ-546",
+  "status": "OWNER_REVIEW_READY",
+  "source_commit": "289efde68bae68109c3946a8910f3eedb49d8a97",
+  "page": {
+    "url": "http://127.0.0.1:4173/docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html#expression",
+    "sha256": "B489E62C1F15C2ABAC499A7980D85984652DC087571BBA286CFAF7ED201ADC0E"
+  },
+  "machine_ready": {
+    "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/MACHINE_READY.json",
+    "sha256": "294FB900483F437B4087EA97703A9EEEDAB7F1F651E602B1E863B0C1A5072D00"
+  },
+  "visual_self_review": {
+    "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/visual-self-review.json",
+    "sha256": "37CF08A49C851C54FAB1AF3D40FA2BCA74573160FE5A1322AD298D2DA666F97E"
+  },
+  "review_scope": [
+    "十种表情的完整眼睛轮廓和情绪身份",
+    "日常慢速眼神编舞与稀疏慢眨眼",
+    "拖拽眼神无旧眼残留",
+    "双击录音的三列输入附件",
+    "长按菜单与返回表情"
+  ],
+  "acceptance_semantics": "通过表示当前视觉和交互不再需要修改；通过但备注包含明确缺陷或修改要求时仍按失败处理。",
+  "side_effects": {
+    "hardware_contact": 0,
+    "popup_before_owner_prompt": 0,
+    "write": 0
+  }
+}

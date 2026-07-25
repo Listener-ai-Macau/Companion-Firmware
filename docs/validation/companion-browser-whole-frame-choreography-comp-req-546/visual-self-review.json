@@ -1,0 +1,96 @@
+{
+  "schema": "companion.main-agent-visual-self-review.comp-req-546.v1",
+  "requirement": "COMP-REQ-546",
+  "reviewed_at": "2026-07-25T08:43:15.3734994+08:00",
+  "reviewer": "main_agent",
+  "status": "PASS_OWNER_REVIEW_READY",
+  "source": {
+    "commit": "289efde68bae68109c3946a8910f3eedb49d8a97",
+    "page": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html",
+    "page_sha256": "B489E62C1F15C2ABAC499A7980D85984652DC087571BBA286CFAF7ED201ADC0E"
+  },
+  "inspections": {
+    "source_full_frames": {
+      "status": "PASS",
+      "artifact": "source-full-frame-contact.png",
+      "sha256": "3882FC4B401C6A0805F7217DA7E6C36F7AFC4D69CE17E1FED7D0B4E0F8F58453",
+      "observation": "All ten families retain complete intentional eye silhouettes and registered face identity."
+    },
+    "ten_family_committed_frames": {
+      "status": "PASS",
+      "artifact": "ten-family-rendered-contact.png",
+      "sha256": "227F5D7372D66388773569AB5858DF3759E079F9E245DD56585DBE157D48BF21",
+      "observed_frames": 60,
+      "observation": "No black drip, tear, spike, cutout, detached fragment, stale pupil or rectangular layer seam is visible."
+    },
+    "desktop_live_run": {
+      "status": "PASS",
+      "duration_seconds": 32,
+      "video": "desktop-30s.webm",
+      "video_sha256": "040D505C775FE7D3D7606E54DF2F78CEDD16811F0E86E7D9B7F7BEBE51E42BCF",
+      "contact": "desktop-30s-contact.png",
+      "contact_sha256": "342C276F3D711EE259BE7F5D6ACC28AC1F747BFB57487066FB7D0211533A86EE",
+      "observation": "Slow gaze choreography remains readable and the sparse blink returns cleanly to the full calm face."
+    },
+    "slow_blink": {
+      "status": "PASS",
+      "artifact": "slow-blink-contact.png",
+      "sha256": "3FFCA9A7A953C7914C728D91010E3497AA67E4B70467E5DFF0DF078ED4DDB9BD",
+      "observation": "Close, closed, reopen and hold are four complete registered frames over 1920 ms; no cross-family eye transplant occurs."
+    },
+    "mobile_and_gestures": {
+      "status": "PASS",
+      "artifact": "mobile-interaction-contact.png",
+      "sha256": "283C28EBF940931BDB4E910D8EFA7AAC844FE6B33F1B9DAE65BF0F2D7893C7E3",
+      "observation": "Mobile idle, drag replacement, meter-only recording, menu exclusivity and menu return remain centered and free of stale eye layers."
+    }
+  },
+  "visual_gates": {
+    "eye_integrity": "PASS",
+    "face_identity": "PASS",
+    "motion_rhythm": "PASS",
+    "layer_cleanup": "PASS",
+    "recording_menu_return": "PASS",
+    "mobile_layout": "PASS",
+    "epaper_plausibility": "PASS"
+  },
+  "machine_evidence": {
+    "focused_ten_family": {
+      "status": "PASS",
+      "sha256": "93AA0C42B9F3E00FEF2388A3823A4706538F45E7F0734A16194701245B7BB7D7"
+    },
+    "full_clock_120": {
+      "status": "PASS",
+      "sha256": "EA30FF91F26647F7A0A986C43940EDC8D636D8639578FADAFFD2AFD2AE2FFBAA"
+    },
+    "interaction_42": {
+      "status": "PASS",
+      "passed": 42,
+      "total": 42,
+      "sha256": "1B47FA8BF7C5F327D9D2DBD9C31C6D0CAF2A96AC6E80E10A9FBFC510DB13C5CC"
+    },
+    "stale_gaze": {
+      "status": "PASS",
+      "stale_center_mask_pixels": 0,
+      "sha256": "12B08BABA8DD92D7B9715FBB3B042A6C865F7292B1DA681D67020BDC66BE99D6"
+    },
+    "browser_pbm_c_parity": {
+      "status": "PASS",
+      "states": 111,
+      "unique_frames": 77,
+      "pixel_difference": 0,
+      "sha256": "8B6BC28993F173C019D7518E88D31A9ED12C8FB3D791810594AF525ED05971B4"
+    },
+    "whole_frame_blink": {
+      "status": "PASS",
+      "sha256": "702EB7DF115E4D0E29688E43FCD079592385AD2E652BF2327912ED7F52654EAD"
+    }
+  },
+  "artifact_manifest": {
+    "path": "artifact-manifest.json",
+    "files": 129,
+    "bytes": 6445262,
+    "sha256": "5603A1300E08118081CD9648E4BD5EA303F069BDCA83B6EB59103520E25049EE"
+  },
+  "human_boundary": "Owner visual acceptance is still pending. This self-review does not claim owner acceptance."
+}

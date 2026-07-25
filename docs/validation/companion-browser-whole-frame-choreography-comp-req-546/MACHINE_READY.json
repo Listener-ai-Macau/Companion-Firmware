@@ -1,0 +1,57 @@
+{
+  "schema": "companion.browser-whole-frame-machine-ready.comp-req-546.v1",
+  "requirement": "COMP-REQ-546",
+  "status": "MACHINE_READY",
+  "owner_gate": "PENDING",
+  "source_commit": "289efde68bae68109c3946a8910f3eedb49d8a97",
+  "page": {
+    "path": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html",
+    "sha256": "B489E62C1F15C2ABAC499A7980D85984652DC087571BBA286CFAF7ED201ADC0E"
+  },
+  "checks": {
+    "main_agent_visual_self_review": true,
+    "ten_family_complete_eye_contact": true,
+    "desktop_live_run_ge_30_seconds": true,
+    "mobile_rendering": true,
+    "tap_drag_stale_layer_zero": true,
+    "slow_blink_whole_frames_only": true,
+    "recording_meter_only": true,
+    "menu_exclusive_and_return": true,
+    "focused_ten_family_pass": true,
+    "two_run_120_cadence_pass": true,
+    "interaction_42_of_42_pass": true,
+    "browser_pbm_c_111_state_zero_diff": true,
+    "forbidden_eye_rectangle_transplant_absent": true,
+    "forbidden_black_raster_shift_absent": true,
+    "protected_lower_hashes_exact": true
+  },
+  "evidence": {
+    "artifact_manifest_sha256": "5603A1300E08118081CD9648E4BD5EA303F069BDCA83B6EB59103520E25049EE",
+    "visual_self_review_sha256": "37CF08A49C851C54FAB1AF3D40FA2BCA74573160FE5A1322AD298D2DA666F97E",
+    "focused_ten_family_sha256": "93AA0C42B9F3E00FEF2388A3823A4706538F45E7F0734A16194701245B7BB7D7",
+    "full_clock_120_sha256": "EA30FF91F26647F7A0A986C43940EDC8D636D8639578FADAFFD2AFD2AE2FFBAA",
+    "interaction_42_sha256": "1B47FA8BF7C5F327D9D2DBD9C31C6D0CAF2A96AC6E80E10A9FBFC510DB13C5CC",
+    "stale_gaze_sha256": "12B08BABA8DD92D7B9715FBB3B042A6C865F7292B1DA681D67020BDC66BE99D6",
+    "parity_sha256": "8B6BC28993F173C019D7518E88D31A9ED12C8FB3D791810594AF525ED05971B4",
+    "blink_sha256": "702EB7DF115E4D0E29688E43FCD079592385AD2E652BF2327912ED7F52654EAD"
+  },
+  "protected": {
+    "driver_sha256": "F52A7E853BFE2E66680F08420941265CFF163FB579B2D3870128FC72C79E035F",
+    "frame_header_sha256": "9571CF9F896B6C14451BAA7348CB717643B4963AE834B0A554E0C2ED2C7E8D35",
+    "owner_acceptance_sha256": "8A3BDF4BD1254B0D0F4DE13A7F293C3D74587C800339ABD4C61FEB0B7737E227"
+  },
+  "side_effects": {
+    "hardware_contact": 0,
+    "programmer": 0,
+    "serial": 0,
+    "write": 0,
+    "reset": 0,
+    "refresh": 0,
+    "popup": 0,
+    "retry": 0,
+    "microphone_permission_request": 0,
+    "owner_prompt": 0,
+    "push": 0
+  },
+  "human_boundary": "Open one canonical Chinese owner review only after this evidence commit is main-reachable. A blocking note remains a failure even if the selected button is 通过."
+}

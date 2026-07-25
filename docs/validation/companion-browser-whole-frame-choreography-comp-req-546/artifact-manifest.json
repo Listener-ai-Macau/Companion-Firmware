@@ -1,0 +1,653 @@
+{
+  "schema": "companion.whole-frame-artifact-manifest.comp-req-546.v1",
+  "requirement": "COMP-REQ-546",
+  "source_commit": "289efde68bae68109c3946a8910f3eedb49d8a97",
+  "files": [
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/blink-result.json",
+      "bytes": 847,
+      "sha256": "702EB7DF115E4D0E29688E43FCD079592385AD2E652BF2327912ED7F52654EAD"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/desktop-30s-contact.png",
+      "bytes": 98697,
+      "sha256": "342C276F3D711EE259BE7F5D6ACC28AC1F747BFB57487066FB7D0211533A86EE"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/desktop-30s.webm",
+      "bytes": 1564486,
+      "sha256": "040D505C775FE7D3D7606E54DF2F78CEDD16811F0E86E7D9B7F7BEBE51E42BCF"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/companion_browser_family_micro_pack.c",
+      "bytes": 2416780,
+      "sha256": "4436DCC32FAB8341FFA25D0C9F2730D78A1023533D264895E6D2F2B4BBA353BE"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/companion_browser_family_micro_pack.h",
+      "bytes": 8555,
+      "sha256": "22C0FF434380E9F1D57AAFB1A591DEDDCFDB0BCE3AB9905F31856D7D17AB18C3"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames.bin",
+      "bytes": 385000,
+      "sha256": "3F6C9B06FF6200AA1939EFEEDE4814C687F93A6777462597F2CD22F3E6FEF3CB"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/blink_0.pbm",
+      "bytes": 5011,
+      "sha256": "DECCCD9589BFD4A7A3AA2C606D258B166A6646D404E0D0CB561AD7FD9AD5A0DB"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/blink_1.pbm",
+      "bytes": 5011,
+      "sha256": "7CA6027688D9F0CC859F2960B0A3DE50CACA8E2B21902E2B9755029717431DEE"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/blink_2.pbm",
+      "bytes": 5011,
+      "sha256": "64397621BCFB5BE0DC610726E0321EF18F82F4CD894728E9179E985380740BB5"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/blink_3.pbm",
+      "bytes": 5011,
+      "sha256": "4EA190DF84DEEBDA6674527CEA47BBCB09D779B369AC02C63321D0296BEACA08"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/emotion_alert_brow.pbm",
+      "bytes": 5011,
+      "sha256": "51CF4CE5659E6BBD420A308A5648886E0AA55F3A172B952D264839C5EEF676D3"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/emotion_alert_hold.pbm",
+      "bytes": 5011,
+      "sha256": "27189ADE723B1F4A45ED425B78A66C11187641CDA171F671F79C04B301B18BA6"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/emotion_alert_lower.pbm",
+      "bytes": 5011,
+      "sha256": "27189ADE723B1F4A45ED425B78A66C11187641CDA171F671F79C04B301B18BA6"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/emotion_alert_source.pbm",
+      "bytes": 5011,
+      "sha256": "E4D6D3D8B38B89B804275019BDBF2669334E823BC31283D6F48DA6F4BC64D010"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/emotion_bashful_brow.pbm",
+      "bytes": 5011,
+      "sha256": "BF80CEA88353DA8ED0D3F1B2CB691FC8F3E19B33D78AC3505DC2D7A167370640"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/emotion_bashful_hold.pbm",
+      "bytes": 5011,
+      "sha256": "8828862654AFFFF96AB670B13C677D6D0FC4756BA23416856E74F027ABB99472"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/emotion_bashful_lower.pbm",
+      "bytes": 5011,
+      "sha256": "8828862654AFFFF96AB670B13C677D6D0FC4756BA23416856E74F027ABB99472"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/emotion_bashful_source.pbm",
+      "bytes": 5011,
+      "sha256": "54340A9A546B7A01D726BABDDB73C0087E7EE208BC3F3D8C09628341DB43E918"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/emotion_calm_brow.pbm",
+      "bytes": 5011,
+      "sha256": "DECCCD9589BFD4A7A3AA2C606D258B166A6646D404E0D0CB561AD7FD9AD5A0DB"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/emotion_calm_hold.pbm",
+      "bytes": 5011,
+      "sha256": "4EA190DF84DEEBDA6674527CEA47BBCB09D779B369AC02C63321D0296BEACA08"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/emotion_calm_lower.pbm",
+      "bytes": 5011,
+      "sha256": "4EA190DF84DEEBDA6674527CEA47BBCB09D779B369AC02C63321D0296BEACA08"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/emotion_calm_source.pbm",
+      "bytes": 5011,
+      "sha256": "4EA190DF84DEEBDA6674527CEA47BBCB09D779B369AC02C63321D0296BEACA08"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/emotion_curious_brow.pbm",
+      "bytes": 5011,
+      "sha256": "723ABCD0ED23516E860494F7C89760B1B16E65A7B1F68F98E0D1172D7F16051D"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/emotion_curious_hold.pbm",
+      "bytes": 5011,
+      "sha256": "5AD13806AEFDE6F8A06368AE9B1C899545ADD9C7266145A247A2EFD218EBE136"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/emotion_curious_lower.pbm",
+      "bytes": 5011,
+      "sha256": "5AD13806AEFDE6F8A06368AE9B1C899545ADD9C7266145A247A2EFD218EBE136"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/emotion_curious_source.pbm",
+      "bytes": 5011,
+      "sha256": "B42789E3F2C4B78C73E4A33011FDB466565B61059E76C7F80975C447906ED1D3"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/emotion_delighted_brow.pbm",
+      "bytes": 5011,
+      "sha256": "734FDF0673B24D670728D4B1B25C3917C39E014D3E3E703A8D3DEE6048F291C6"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/emotion_delighted_hold.pbm",
+      "bytes": 5011,
+      "sha256": "110ADDE548C6A45821CD6C28904373D9AE3045F9003CEAF62A38B49C27EDEBFD"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/emotion_delighted_lower.pbm",
+      "bytes": 5011,
+      "sha256": "110ADDE548C6A45821CD6C28904373D9AE3045F9003CEAF62A38B49C27EDEBFD"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/emotion_delighted_source.pbm",
+      "bytes": 5011,
+      "sha256": "B602B17534FA93DBEF3E4C89C3BC68AAB10616375B1FEF71B2F0E9741A3CCF62"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/emotion_focused_brow.pbm",
+      "bytes": 5011,
+      "sha256": "5CE8D197A9C618F07BA316FD917CB4735C743F8BD865F1799D2B822E0306A82A"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/emotion_focused_hold.pbm",
+      "bytes": 5011,
+      "sha256": "90DA2D1077C4B7F2ECCA5E63AADDB217B5966166C973DD6C7EBD706E2B1D3148"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/emotion_focused_lower.pbm",
+      "bytes": 5011,
+      "sha256": "90DA2D1077C4B7F2ECCA5E63AADDB217B5966166C973DD6C7EBD706E2B1D3148"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/emotion_focused_source.pbm",
+      "bytes": 5011,
+      "sha256": "9072A4DDC7CA1B5FFA9A035D9E3B4B536019099A2910B8B16371972208BD812B"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/emotion_playful_brow.pbm",
+      "bytes": 5011,
+      "sha256": "CEB7561163D671D4596CEC4F034C63CF0DDCD848258B43CC3FC17E53D0A0CF35"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/emotion_playful_hold.pbm",
+      "bytes": 5011,
+      "sha256": "0D7BB7E69D97EEBF94D47EFB497ADBF036AEBFB1D643D42D0FDA4D66D9F10673"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/emotion_playful_lower.pbm",
+      "bytes": 5011,
+      "sha256": "0D7BB7E69D97EEBF94D47EFB497ADBF036AEBFB1D643D42D0FDA4D66D9F10673"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/emotion_playful_source.pbm",
+      "bytes": 5011,
+      "sha256": "3C5227332B40828B91DE42B2198011157FDEF238C579221372A9A9A903603DF3"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/emotion_sleepy_brow.pbm",
+      "bytes": 5011,
+      "sha256": "5A03FDA3E741028258DB826708EEC7B675F41DBD9165BE22C01BEABEDD18B9EA"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/emotion_sleepy_hold.pbm",
+      "bytes": 5011,
+      "sha256": "AB76304CD5680ACF3155891F2A9BBE9CC61F4B21A78106A5DAC3EF68C9B0E190"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/emotion_sleepy_lower.pbm",
+      "bytes": 5011,
+      "sha256": "AB76304CD5680ACF3155891F2A9BBE9CC61F4B21A78106A5DAC3EF68C9B0E190"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/emotion_sleepy_source.pbm",
+      "bytes": 5011,
+      "sha256": "126C340CD3B251E17F3FF7784D7DF28C260D3A89F4D3A0674CD7279BC9FBBECB"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/emotion_thoughtful_brow.pbm",
+      "bytes": 5011,
+      "sha256": "F771C74FD3272A297089EAF2FD4B3CF2FA392B2967FD1F73F8C7295FFD7A17E1"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/emotion_thoughtful_hold.pbm",
+      "bytes": 5011,
+      "sha256": "A3CA10DF61FD8917BC0AD43633F4DF3DBD12DEE8CC76F22739CD97301D5CB14E"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/emotion_thoughtful_lower.pbm",
+      "bytes": 5011,
+      "sha256": "A3CA10DF61FD8917BC0AD43633F4DF3DBD12DEE8CC76F22739CD97301D5CB14E"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/emotion_thoughtful_source.pbm",
+      "bytes": 5011,
+      "sha256": "1ED7FCC8BD904FAC35EF6400FFABE9256D032065C984C310AA715CBB8823F211"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/emotion_warm_brow.pbm",
+      "bytes": 5011,
+      "sha256": "CC4FAC9439CA3BEB1E39D6051A39E5F6DA7F6F7FFCF4E44BDC1766CD759B5ABA"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/emotion_warm_hold.pbm",
+      "bytes": 5011,
+      "sha256": "4879F391290FA1D3786A5705FF291C524B779034AFE8F8C7CE95505E3A08C333"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/emotion_warm_lower.pbm",
+      "bytes": 5011,
+      "sha256": "4879F391290FA1D3786A5705FF291C524B779034AFE8F8C7CE95505E3A08C333"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/emotion_warm_source.pbm",
+      "bytes": 5011,
+      "sha256": "625BD050B0F537EA306D0819C9CD0A6CD6851C2F89DCDEDC8BA66A619FD543CF"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/family_micro_alert_step_0.pbm",
+      "bytes": 5011,
+      "sha256": "27189ADE723B1F4A45ED425B78A66C11187641CDA171F671F79C04B301B18BA6"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/family_micro_alert_step_2.pbm",
+      "bytes": 5011,
+      "sha256": "1A4DADC6298933E575354AAE3A4BFB5E6330DE62EBEBB5A6C47299BA967ED037"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/family_micro_alert_step_3.pbm",
+      "bytes": 5011,
+      "sha256": "1A4DADC6298933E575354AAE3A4BFB5E6330DE62EBEBB5A6C47299BA967ED037"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/family_micro_alert_step_4.pbm",
+      "bytes": 5011,
+      "sha256": "C42AD48DADD3AB7555F75D0163819CA3ECA240BFA45CD1B42550C32BE410D2F8"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/family_micro_bashful_step_0.pbm",
+      "bytes": 5011,
+      "sha256": "8828862654AFFFF96AB670B13C677D6D0FC4756BA23416856E74F027ABB99472"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/family_micro_bashful_step_2.pbm",
+      "bytes": 5011,
+      "sha256": "FFFAD37781784AB7C233B41D42559F580075BC137CE357066D0F87FF70650C70"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/family_micro_bashful_step_3.pbm",
+      "bytes": 5011,
+      "sha256": "FFFAD37781784AB7C233B41D42559F580075BC137CE357066D0F87FF70650C70"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/family_micro_bashful_step_4.pbm",
+      "bytes": 5011,
+      "sha256": "9C81E7F9A3FAAE82F5D94A2069B5ABEE846846AD0687D76414E237FE8829281D"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/family_micro_calm_step_0.pbm",
+      "bytes": 5011,
+      "sha256": "4EA190DF84DEEBDA6674527CEA47BBCB09D779B369AC02C63321D0296BEACA08"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/family_micro_calm_step_2.pbm",
+      "bytes": 5011,
+      "sha256": "7F318A0C465CACC3877F17793A5DB3C2F3CDB8B6A11D87E5DE55BC34F99EADD3"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/family_micro_calm_step_3.pbm",
+      "bytes": 5011,
+      "sha256": "7F318A0C465CACC3877F17793A5DB3C2F3CDB8B6A11D87E5DE55BC34F99EADD3"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/family_micro_calm_step_4.pbm",
+      "bytes": 5011,
+      "sha256": "1C14872BBC231C374A0BDEAF3B4A90BFF8442F62BA27DADD9151587C88F72E60"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/family_micro_curious_step_0.pbm",
+      "bytes": 5011,
+      "sha256": "5AD13806AEFDE6F8A06368AE9B1C899545ADD9C7266145A247A2EFD218EBE136"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/family_micro_curious_step_2.pbm",
+      "bytes": 5011,
+      "sha256": "63E2CCEABCD9FBE788CA10F2F74FE0F7DEE16B79250113FAD004A9547114347F"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/family_micro_curious_step_3.pbm",
+      "bytes": 5011,
+      "sha256": "63E2CCEABCD9FBE788CA10F2F74FE0F7DEE16B79250113FAD004A9547114347F"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/family_micro_curious_step_4.pbm",
+      "bytes": 5011,
+      "sha256": "4EF65EA5E7B95414FA8C30D044DC19E664B416E86A23800B091F0883B070BEE8"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/family_micro_delighted_step_0.pbm",
+      "bytes": 5011,
+      "sha256": "110ADDE548C6A45821CD6C28904373D9AE3045F9003CEAF62A38B49C27EDEBFD"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/family_micro_delighted_step_2.pbm",
+      "bytes": 5011,
+      "sha256": "966F5638EDC2F8B850255D1B4F084AC3DB2176037AC16A097E1AD589148C2C52"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/family_micro_delighted_step_3.pbm",
+      "bytes": 5011,
+      "sha256": "966F5638EDC2F8B850255D1B4F084AC3DB2176037AC16A097E1AD589148C2C52"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/family_micro_delighted_step_4.pbm",
+      "bytes": 5011,
+      "sha256": "AB2BA1F54EBD376BC73D75AF91371E0E188C5C90CB40206DBC144B6AA3E1F3E1"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/family_micro_focused_step_0.pbm",
+      "bytes": 5011,
+      "sha256": "90DA2D1077C4B7F2ECCA5E63AADDB217B5966166C973DD6C7EBD706E2B1D3148"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/family_micro_focused_step_2.pbm",
+      "bytes": 5011,
+      "sha256": "E815FEE2488000650B83F6DC2E604CFB45E99E1D7007345B6710771B2B6CF798"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/family_micro_focused_step_3.pbm",
+      "bytes": 5011,
+      "sha256": "E815FEE2488000650B83F6DC2E604CFB45E99E1D7007345B6710771B2B6CF798"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/family_micro_focused_step_4.pbm",
+      "bytes": 5011,
+      "sha256": "4C5D292F21933B7A75D02B622219A78C1734620942C9A3373E32C15ED28CF945"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/family_micro_playful_step_0.pbm",
+      "bytes": 5011,
+      "sha256": "0D7BB7E69D97EEBF94D47EFB497ADBF036AEBFB1D643D42D0FDA4D66D9F10673"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/family_micro_playful_step_2.pbm",
+      "bytes": 5011,
+      "sha256": "7ED1CC821E8CAF260DC1489DC4A2CFD88FD75AE8F17E281C29F91C68A99F3CEB"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/family_micro_playful_step_3.pbm",
+      "bytes": 5011,
+      "sha256": "7ED1CC821E8CAF260DC1489DC4A2CFD88FD75AE8F17E281C29F91C68A99F3CEB"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/family_micro_playful_step_4.pbm",
+      "bytes": 5011,
+      "sha256": "003797F454B237B94612E79BB9E5CA66664FEC127DE1B51C11057B55BC8FDCD1"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/family_micro_sleepy_step_0.pbm",
+      "bytes": 5011,
+      "sha256": "AB76304CD5680ACF3155891F2A9BBE9CC61F4B21A78106A5DAC3EF68C9B0E190"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/family_micro_sleepy_step_2.pbm",
+      "bytes": 5011,
+      "sha256": "191B8D479938DF674D7F97333B5CCABAD73EDBB981AD955B97CEF343B7541128"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/family_micro_sleepy_step_3.pbm",
+      "bytes": 5011,
+      "sha256": "191B8D479938DF674D7F97333B5CCABAD73EDBB981AD955B97CEF343B7541128"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/family_micro_sleepy_step_4.pbm",
+      "bytes": 5011,
+      "sha256": "D0734FE35B9594EE2D0AB34451931C4CFCE6F740B2AE414266ECA1C278E830BF"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/family_micro_thoughtful_step_0.pbm",
+      "bytes": 5011,
+      "sha256": "A3CA10DF61FD8917BC0AD43633F4DF3DBD12DEE8CC76F22739CD97301D5CB14E"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/family_micro_thoughtful_step_2.pbm",
+      "bytes": 5011,
+      "sha256": "2AC5DEC6B0F73D51B657FA869C02073583E165E95E83637BAF73714235CAF3CF"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/family_micro_thoughtful_step_3.pbm",
+      "bytes": 5011,
+      "sha256": "2AC5DEC6B0F73D51B657FA869C02073583E165E95E83637BAF73714235CAF3CF"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/family_micro_thoughtful_step_4.pbm",
+      "bytes": 5011,
+      "sha256": "F5EC4329A4F1F29C5AAD165DA9DB4B26858EE778B1CE1C4E6E9F568685A896AA"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/family_micro_warm_step_0.pbm",
+      "bytes": 5011,
+      "sha256": "4879F391290FA1D3786A5705FF291C524B779034AFE8F8C7CE95505E3A08C333"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/family_micro_warm_step_2.pbm",
+      "bytes": 5011,
+      "sha256": "2DA27EBD66D02E8CD97D3DF159EAB1C7FE793DD7004AE3C0786D95B0698157AD"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/family_micro_warm_step_3.pbm",
+      "bytes": 5011,
+      "sha256": "2DA27EBD66D02E8CD97D3DF159EAB1C7FE793DD7004AE3C0786D95B0698157AD"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/family_micro_warm_step_4.pbm",
+      "bytes": 5011,
+      "sha256": "8BBAFE0E2F08A6103912439A6DDF35A9A9584AB607841DC74D53C28E7213C854"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/gaze_center.pbm",
+      "bytes": 5011,
+      "sha256": "4EA190DF84DEEBDA6674527CEA47BBCB09D779B369AC02C63321D0296BEACA08"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/gaze_down.pbm",
+      "bytes": 5011,
+      "sha256": "FE782A055DB1A3FEF3E3776D1C3BC4AC37893BE1EA0B68CCBE3A7CF30EC24B8A"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/gaze_left.pbm",
+      "bytes": 5011,
+      "sha256": "ACDF7FA849104C5FB43F985712E6DC258352E834C7B3B65413B275E2254B7572"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/gaze_right.pbm",
+      "bytes": 5011,
+      "sha256": "5872EE9C7AC11D819EADB3C03ADD1B272FA377C60D9CF5174C859312435B69CA"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/gaze_up.pbm",
+      "bytes": 5011,
+      "sha256": "0CFDA1E99AE88D5DF30CF6A65E376B3F46380335184EB46D0E9C68FADBC3B32A"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/menu_connection.pbm",
+      "bytes": 5011,
+      "sha256": "94327696B2304E1B85AE60AEAECBE1852B38FF2EB0DA1FB0D13F249352A84C76"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/menu_device.pbm",
+      "bytes": 5011,
+      "sha256": "47DCA8921A432E6F76DD88A5742451FBEE0FF44F40BEB6B531C1DB4B279B0960"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/menu_preferences.pbm",
+      "bytes": 5011,
+      "sha256": "2E9EB6A6B5F866DFDE450C0388D83BEF3C0D6C71138645B9E84C532AC0744970"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/menu_roots.pbm",
+      "bytes": 5011,
+      "sha256": "8A469694911F60EE709BA63F8DDFE8C6BE1979914E4D9448200EC611471444E0"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/menu_voice.pbm",
+      "bytes": 5011,
+      "sha256": "73EE2C66AB7F098EA3A33017FAF8625449F981F67D8B21609D6220621DF257F8"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/recording_alert_hold_meter_0.pbm",
+      "bytes": 5011,
+      "sha256": "D3B5A131D38C1724B6E4F0B12264C35D065F32637E9430AF8ACD63AB15BDAA7A"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/recording_bashful_hold_meter_0.pbm",
+      "bytes": 5011,
+      "sha256": "015C1F32D08E2009B52866261F25DA703B25E94B5EC091D0BF774A9428C373BF"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/recording_calm_hold_meter_0.pbm",
+      "bytes": 5011,
+      "sha256": "D70B493E60E92895A38868532A19C1233E09CDE96198C782EA5A9B92573E625A"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/recording_calm_hold_meter_1.pbm",
+      "bytes": 5011,
+      "sha256": "19667EA5337C660411E19B1913D4D6A7D983D2FEA3977F44FC830A2EA325A99C"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/recording_calm_hold_meter_2.pbm",
+      "bytes": 5011,
+      "sha256": "5D960070992638B3C90A80F7C653D80CC5580FCF9C6C7C10BCBDC84FEBA39C4C"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/recording_calm_hold_meter_3.pbm",
+      "bytes": 5011,
+      "sha256": "528CDFD04AC3B9CE81C23B61AD1E081DEE903EC4DC153B11258280E4C1B15E05"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/recording_calm_hold_meter_4.pbm",
+      "bytes": 5011,
+      "sha256": "3FC6982B268B2E312F8310AD5D8CFD213E5013E9FCD91ADAC7502866FCB50ABF"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/recording_calm_hold_meter_5.pbm",
+      "bytes": 5011,
+      "sha256": "9BBD7EE8B993BAEE3E95D12AA474487E00BD2E091690422F7D690E313FE1FB71"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/recording_calm_hold_meter_6.pbm",
+      "bytes": 5011,
+      "sha256": "21F204B64D7D68775D0B6585D3F2C05DCED233C73CFD21DF7142F70C0A239E9C"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/recording_calm_hold_meter_7.pbm",
+      "bytes": 5011,
+      "sha256": "2DD90EFCF6F8A235EA36050C7EF83FC5DBF4051523A105E1353EADDC089DD611"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/recording_curious_hold_meter_0.pbm",
+      "bytes": 5011,
+      "sha256": "5BFB37E9F064D35A8472EA167E8F817AFEC37B78689568C34BC2EBB96A8D2927"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/recording_delighted_hold_meter_0.pbm",
+      "bytes": 5011,
+      "sha256": "4D2F2D1CA8A01C51980A3CE7F8971A50C4C4AAA6657BD23DF27E42191DDE474E"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/recording_focused_hold_meter_0.pbm",
+      "bytes": 5011,
+      "sha256": "EE5555B7A3FA21A53250EA4EFCFE18B060BAE9210BDF2CD4E777FDC401C7061B"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/recording_playful_hold_meter_0.pbm",
+      "bytes": 5011,
+      "sha256": "5AFF5B26D12BE8AB7F4793518452ED3DAFC71E8DCE8937932AE9E6F4B3CDB067"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/recording_sleepy_hold_meter_0.pbm",
+      "bytes": 5011,
+      "sha256": "F8E95E6C3809A8286DFF0AF3D09887CB58CEBD6E3F981912508BB05C7F8F1F3C"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/recording_thoughtful_hold_meter_0.pbm",
+      "bytes": 5011,
+      "sha256": "CCD616591AC59EC85379AC7489D6BC20C9BB64EEECB4AB8EA7FF4DFC505D86CC"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/frames/recording_warm_hold_meter_0.pbm",
+      "bytes": 5011,
+      "sha256": "90C5DD0DF3BB0F97729CB71C294F45C0542F3F574B9B3C11AD8B51A5F26ECFD4"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/device-pack/visual-frame-manifest.json",
+      "bytes": 143176,
+      "sha256": "A95880AF1209605A2D12D975677399302A5A06FCC1C023EDD2DFF6824C0E9814"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/focused-ten-family-result.json",
+      "bytes": 376333,
+      "sha256": "93AA0C42B9F3E00FEF2388A3823A4706538F45E7F0734A16194701245B7BB7D7"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/full-clock-120-result.json",
+      "bytes": 389654,
+      "sha256": "EA30FF91F26647F7A0A986C43940EDC8D636D8639578FADAFFD2AFD2AE2FFBAA"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/interaction-42-result.json",
+      "bytes": 360204,
+      "sha256": "1B47FA8BF7C5F327D9D2DBD9C31C6D0CAF2A96AC6E80E10A9FBFC510DB13C5CC"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/interaction-pixel-dom-result.json",
+      "bytes": 266,
+      "sha256": "63AA9F22FC75F94D01A1EDDA826E912A89091C3C631C9BE2F0D87F75A94C37C3"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/interaction-screenshot-manifest.json",
+      "bytes": 3086,
+      "sha256": "37F98AD360EC4B7C7F2E67854BEA6D579AA128B8C75DD8A480B60E4CC934345B"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/mobile-interaction-contact.png",
+      "bytes": 6854,
+      "sha256": "283C28EBF940931BDB4E910D8EFA7AAC844FE6B33F1B9DAE65BF0F2D7893C7E3"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/parity-verifier-result.json",
+      "bytes": 9054,
+      "sha256": "8B6BC28993F173C019D7518E88D31A9ED12C8FB3D791810594AF525ED05971B4"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/slow-blink-contact.png",
+      "bytes": 3520,
+      "sha256": "3FFCA9A7A953C7914C728D91010E3497AA67E4B70467E5DFF0DF078ED4DDB9BD"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/source-full-frame-contact.png",
+      "bytes": 67757,
+      "sha256": "3882FC4B401C6A0805F7217DA7E6C36F7AFC4D69CE17E1FED7D0B4E0F8F58453"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/stale-gaze-result.json",
+      "bytes": 5641,
+      "sha256": "12B08BABA8DD92D7B9715FBB3B042A6C865F7292B1DA681D67020BDC66BE99D6"
+    },
+    {
+      "path": "docs/validation/companion-browser-whole-frame-choreography-comp-req-546/ten-family-rendered-contact.png",
+      "bytes": 49131,
+      "sha256": "227F5D7372D66388773569AB5858DF3759E079F9E245DD56585DBE157D48BF21"
+    }
+  ],
+  "status": "PASS"
+}

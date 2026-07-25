@@ -1,0 +1,486 @@
+{
+  "checks": {
+    "browser_to_c_pixel_diff_zero": true,
+    "c_payload_reconstructs_unique_frames": true,
+    "c_state_mapping_exact": true,
+    "default_off": true,
+    "file_hashes_exact": true,
+    "format_exact": true,
+    "meter_contract_exact": true,
+    "no_gray_input_pixels": true,
+    "orientation_identity": true,
+    "pack_capacity_exact": true,
+    "page_identity_exact": true,
+    "pbm_reconstructs_every_state": true,
+    "source_manifest_pass": true,
+    "state_identity_exact": true
+  },
+  "failed": [],
+  "inputs": {
+    "manifest_repo_path": ".cache/visual-audit-546/device-pack-round2/visual-frame-manifest.json",
+    "manifest_sha256": "A95880AF1209605A2D12D975677399302A5A06FCC1C023EDD2DFF6824C0E9814",
+    "page_canonical_sha256": "B489E62C1F15C2ABAC499A7980D85984652DC087571BBA286CFAF7ED201ADC0E"
+  },
+  "observed": {
+    "c_payload_bytes": 385000,
+    "meter_state_count": 17,
+    "pack_bytes": 385000,
+    "pbm_reconstructed": 111,
+    "state_count": 111,
+    "unique_frame_count": 77
+  },
+  "pbm_rows": [
+    {
+      "id": "emotion_calm_source",
+      "pass": true
+    },
+    {
+      "id": "emotion_calm_brow",
+      "pass": true
+    },
+    {
+      "id": "emotion_calm_lower",
+      "pass": true
+    },
+    {
+      "id": "emotion_calm_hold",
+      "pass": true
+    },
+    {
+      "id": "emotion_curious_source",
+      "pass": true
+    },
+    {
+      "id": "emotion_curious_brow",
+      "pass": true
+    },
+    {
+      "id": "emotion_curious_lower",
+      "pass": true
+    },
+    {
+      "id": "emotion_curious_hold",
+      "pass": true
+    },
+    {
+      "id": "emotion_warm_source",
+      "pass": true
+    },
+    {
+      "id": "emotion_warm_brow",
+      "pass": true
+    },
+    {
+      "id": "emotion_warm_lower",
+      "pass": true
+    },
+    {
+      "id": "emotion_warm_hold",
+      "pass": true
+    },
+    {
+      "id": "emotion_playful_source",
+      "pass": true
+    },
+    {
+      "id": "emotion_playful_brow",
+      "pass": true
+    },
+    {
+      "id": "emotion_playful_lower",
+      "pass": true
+    },
+    {
+      "id": "emotion_playful_hold",
+      "pass": true
+    },
+    {
+      "id": "emotion_sleepy_source",
+      "pass": true
+    },
+    {
+      "id": "emotion_sleepy_brow",
+      "pass": true
+    },
+    {
+      "id": "emotion_sleepy_lower",
+      "pass": true
+    },
+    {
+      "id": "emotion_sleepy_hold",
+      "pass": true
+    },
+    {
+      "id": "emotion_delighted_source",
+      "pass": true
+    },
+    {
+      "id": "emotion_delighted_brow",
+      "pass": true
+    },
+    {
+      "id": "emotion_delighted_lower",
+      "pass": true
+    },
+    {
+      "id": "emotion_delighted_hold",
+      "pass": true
+    },
+    {
+      "id": "emotion_bashful_source",
+      "pass": true
+    },
+    {
+      "id": "emotion_bashful_brow",
+      "pass": true
+    },
+    {
+      "id": "emotion_bashful_lower",
+      "pass": true
+    },
+    {
+      "id": "emotion_bashful_hold",
+      "pass": true
+    },
+    {
+      "id": "emotion_thoughtful_source",
+      "pass": true
+    },
+    {
+      "id": "emotion_thoughtful_brow",
+      "pass": true
+    },
+    {
+      "id": "emotion_thoughtful_lower",
+      "pass": true
+    },
+    {
+      "id": "emotion_thoughtful_hold",
+      "pass": true
+    },
+    {
+      "id": "emotion_focused_source",
+      "pass": true
+    },
+    {
+      "id": "emotion_focused_brow",
+      "pass": true
+    },
+    {
+      "id": "emotion_focused_lower",
+      "pass": true
+    },
+    {
+      "id": "emotion_focused_hold",
+      "pass": true
+    },
+    {
+      "id": "emotion_alert_source",
+      "pass": true
+    },
+    {
+      "id": "emotion_alert_brow",
+      "pass": true
+    },
+    {
+      "id": "emotion_alert_lower",
+      "pass": true
+    },
+    {
+      "id": "emotion_alert_hold",
+      "pass": true
+    },
+    {
+      "id": "family_micro_calm_step_0",
+      "pass": true
+    },
+    {
+      "id": "family_micro_calm_step_2",
+      "pass": true
+    },
+    {
+      "id": "family_micro_calm_step_3",
+      "pass": true
+    },
+    {
+      "id": "family_micro_calm_step_4",
+      "pass": true
+    },
+    {
+      "id": "family_micro_curious_step_0",
+      "pass": true
+    },
+    {
+      "id": "family_micro_curious_step_2",
+      "pass": true
+    },
+    {
+      "id": "family_micro_curious_step_3",
+      "pass": true
+    },
+    {
+      "id": "family_micro_curious_step_4",
+      "pass": true
+    },
+    {
+      "id": "family_micro_warm_step_0",
+      "pass": true
+    },
+    {
+      "id": "family_micro_warm_step_2",
+      "pass": true
+    },
+    {
+      "id": "family_micro_warm_step_3",
+      "pass": true
+    },
+    {
+      "id": "family_micro_warm_step_4",
+      "pass": true
+    },
+    {
+      "id": "family_micro_playful_step_0",
+      "pass": true
+    },
+    {
+      "id": "family_micro_playful_step_2",
+      "pass": true
+    },
+    {
+      "id": "family_micro_playful_step_3",
+      "pass": true
+    },
+    {
+      "id": "family_micro_playful_step_4",
+      "pass": true
+    },
+    {
+      "id": "family_micro_sleepy_step_0",
+      "pass": true
+    },
+    {
+      "id": "family_micro_sleepy_step_2",
+      "pass": true
+    },
+    {
+      "id": "family_micro_sleepy_step_3",
+      "pass": true
+    },
+    {
+      "id": "family_micro_sleepy_step_4",
+      "pass": true
+    },
+    {
+      "id": "family_micro_delighted_step_0",
+      "pass": true
+    },
+    {
+      "id": "family_micro_delighted_step_2",
+      "pass": true
+    },
+    {
+      "id": "family_micro_delighted_step_3",
+      "pass": true
+    },
+    {
+      "id": "family_micro_delighted_step_4",
+      "pass": true
+    },
+    {
+      "id": "family_micro_bashful_step_0",
+      "pass": true
+    },
+    {
+      "id": "family_micro_bashful_step_2",
+      "pass": true
+    },
+    {
+      "id": "family_micro_bashful_step_3",
+      "pass": true
+    },
+    {
+      "id": "family_micro_bashful_step_4",
+      "pass": true
+    },
+    {
+      "id": "family_micro_thoughtful_step_0",
+      "pass": true
+    },
+    {
+      "id": "family_micro_thoughtful_step_2",
+      "pass": true
+    },
+    {
+      "id": "family_micro_thoughtful_step_3",
+      "pass": true
+    },
+    {
+      "id": "family_micro_thoughtful_step_4",
+      "pass": true
+    },
+    {
+      "id": "family_micro_focused_step_0",
+      "pass": true
+    },
+    {
+      "id": "family_micro_focused_step_2",
+      "pass": true
+    },
+    {
+      "id": "family_micro_focused_step_3",
+      "pass": true
+    },
+    {
+      "id": "family_micro_focused_step_4",
+      "pass": true
+    },
+    {
+      "id": "family_micro_alert_step_0",
+      "pass": true
+    },
+    {
+      "id": "family_micro_alert_step_2",
+      "pass": true
+    },
+    {
+      "id": "family_micro_alert_step_3",
+      "pass": true
+    },
+    {
+      "id": "family_micro_alert_step_4",
+      "pass": true
+    },
+    {
+      "id": "gaze_center",
+      "pass": true
+    },
+    {
+      "id": "gaze_left",
+      "pass": true
+    },
+    {
+      "id": "gaze_up",
+      "pass": true
+    },
+    {
+      "id": "gaze_right",
+      "pass": true
+    },
+    {
+      "id": "gaze_down",
+      "pass": true
+    },
+    {
+      "id": "blink_0",
+      "pass": true
+    },
+    {
+      "id": "blink_1",
+      "pass": true
+    },
+    {
+      "id": "blink_2",
+      "pass": true
+    },
+    {
+      "id": "blink_3",
+      "pass": true
+    },
+    {
+      "id": "menu_roots",
+      "pass": true
+    },
+    {
+      "id": "menu_voice",
+      "pass": true
+    },
+    {
+      "id": "menu_device",
+      "pass": true
+    },
+    {
+      "id": "menu_connection",
+      "pass": true
+    },
+    {
+      "id": "menu_preferences",
+      "pass": true
+    },
+    {
+      "id": "recording_calm_hold_meter_0",
+      "pass": true
+    },
+    {
+      "id": "recording_curious_hold_meter_0",
+      "pass": true
+    },
+    {
+      "id": "recording_warm_hold_meter_0",
+      "pass": true
+    },
+    {
+      "id": "recording_playful_hold_meter_0",
+      "pass": true
+    },
+    {
+      "id": "recording_sleepy_hold_meter_0",
+      "pass": true
+    },
+    {
+      "id": "recording_delighted_hold_meter_0",
+      "pass": true
+    },
+    {
+      "id": "recording_bashful_hold_meter_0",
+      "pass": true
+    },
+    {
+      "id": "recording_thoughtful_hold_meter_0",
+      "pass": true
+    },
+    {
+      "id": "recording_focused_hold_meter_0",
+      "pass": true
+    },
+    {
+      "id": "recording_alert_hold_meter_0",
+      "pass": true
+    },
+    {
+      "id": "recording_calm_hold_meter_1",
+      "pass": true
+    },
+    {
+      "id": "recording_calm_hold_meter_2",
+      "pass": true
+    },
+    {
+      "id": "recording_calm_hold_meter_3",
+      "pass": true
+    },
+    {
+      "id": "recording_calm_hold_meter_4",
+      "pass": true
+    },
+    {
+      "id": "recording_calm_hold_meter_5",
+      "pass": true
+    },
+    {
+      "id": "recording_calm_hold_meter_6",
+      "pass": true
+    },
+    {
+      "id": "recording_calm_hold_meter_7",
+      "pass": true
+    }
+  ],
+  "schema": "companion.comp-req-540-parity-verifier.v1",
+  "side_effects": {
+    "browser": 0,
+    "hardware": 0,
+    "owner_prompt": 0,
+    "production_write": 0
+  },
+  "status": "PASS"
+}
