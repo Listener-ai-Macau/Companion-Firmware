@@ -435,4 +435,93 @@ window.__compReq566PupilProbe=async key=>{const requested=key||touchData.center_
 window.__eyeIntegrityPixelProbe=window.__compReq566PupilProbe;
 if(overallController?.state?.activeFrame)touchSetGaze(touchData.center_key,'comp_req_566_boot');
 renderExpressionStateView({kind:'initial'});
+/* COMP-REQ-567: three deliberate eye layers.  The registered frame supplies
+ * the complete outer silhouette.  This successor authors a larger inner
+ * white field, then places one large pupil and one rigid glint in that field.
+ * The old optical highlight is never used as the eye field or gaze carrier. */
+const compReq567EyeRois={left:[38,82,75,131],right:[125,82,162,131]};
+const compReq567FieldSizes=[[13,21],[13,20],[12,20],[12,19],[11,19],[11,18],[11,17]];
+const compReq567PupilPattern=[
+ '..111..',
+ '.11111.',
+ '1111111',
+ '1111111',
+ '1111111',
+ '1111111',
+ '1111111',
+ '1111111',
+ '1111111',
+ '.11111.',
+ '..111..',
+];
+const compReq567GlintPattern=['0110','1110','0110'];
+const compReq567EyeModelCache=new Map(),compReq567EyeOverlayCache=new Map();
+const compReq567Contract={
+ architecture:'fixed_outer_silhouette|authored_inner_white_field|paired_large_pupil_plus_rigid_glint',
+ outer_silhouette:'pixel_exact_fixed',
+ inner_white_field:'authored_distinct_from_existing_highlight',
+ pupil_width:7,
+ pupil_height:11,
+ pupil_pixels:65,
+ glint_pixels:7,
+ direct_gaze_cadence_ms:480,
+ field_min_width:11,
+ field_min_height:17,
+ field_min_pixels:100,
+ family_signature_count:10,
+};
+function compReq567PointSet(points){return new Set(points)}
+function compReq567Inside(index,roi){const x=index%200,y=Math.floor(index/200);return x>=roi[0]&&x<roi[2]&&y>=roi[1]&&y<roi[3]}
+function compReq567InteriorMask(pixels,roi){
+ const white=new Uint8Array(40000),outside=new Uint8Array(40000),queue=[];
+ for(let y=roi[1];y<roi[3];y++)for(let x=roi[0];x<roi[2];x++){const index=y*200+x,at=index*4;if(pixels[at]>=200&&pixels[at+3]>0)white[index]=1}
+ for(let x=roi[0];x<roi[2];x++)for(const y of [roi[1],roi[3]-1]){const index=y*200+x;if(white[index]&&!outside[index]){outside[index]=1;queue.push(index)}}
+ for(let y=roi[1];y<roi[3];y++)for(const x of [roi[0],roi[2]-1]){const index=y*200+x;if(white[index]&&!outside[index]){outside[index]=1;queue.push(index)}}
+ while(queue.length){const index=queue.pop(),x=index%200,y=Math.floor(index/200);for(const next of [index-1,index+1,index-200,index+200])if(compReq567Inside(next,roi)&&white[next]&&!outside[next]){outside[next]=1;queue.push(next)}}
+ const inside=[];for(let y=roi[1];y<roi[3];y++)for(let x=roi[0];x<roi[2];x++){const index=y*200+x;if(!outside[index])inside.push(index)}
+ const black=inside.filter(index=>pixels[index*4]<128),xs=inside.map(index=>index%200),ys=inside.map(index=>Math.floor(index/200));
+ return{inside,insideSet:compReq567PointSet(inside),blackCount:black.length,bounds:{minX:Math.min(...xs),minY:Math.min(...ys),maxX:Math.max(...xs),maxY:Math.max(...ys)}};
+}
+function compReq567Shape(width,height){const rows=[];for(let y=0;y<height;y++){const center=(height-1)/2,half=Math.max(1,Math.round((width-1)/2*Math.sqrt(Math.max(0,1-((y-center)/(center||1))**2)))),row=Array(width).fill('0'),mid=(width-1)/2;for(let x=Math.ceil(mid-half);x<=Math.floor(mid+half);x++)row[x]='1';rows.push(row.join(''))}return rows}
+function compReq567ShapePoints(rows,x0,y0){const points=[];for(let y=0;y<rows.length;y++)for(let x=0;x<rows[y].length;x++)if(rows[y][x]==='1')points.push((y0+y)*200+x0+x);return points}
+function compReq567Fit(set,rows,x0,y0){return compReq567ShapePoints(rows,x0,y0).every(index=>set.has(index))}
+function compReq567FindField(mask){
+ const candidates=[];for(const [width,height] of compReq567FieldSizes){const rows=compReq567Shape(width,height);for(let y=mask.bounds.minY;y<=mask.bounds.maxY-height+1;y++)for(let x=mask.bounds.minX;x<=mask.bounds.maxX-width+1;x++)if(compReq567Fit(mask.insideSet,rows,x,y)){const points=compReq567ShapePoints(rows,x,y);candidates.push({width,height,rows,points,set:compReq567PointSet(points),x,y,score:Math.abs(x-(mask.bounds.minX+mask.bounds.maxX-width+1)/2)+Math.abs(y-(mask.bounds.minY+mask.bounds.maxY-height+1)/2)})}}
+ candidates.sort((a,b)=>b.width*b.height-a.width*a.height||a.score-b.score);return candidates[0]||null;
+}
+function compReq567FindPupil(field){
+ const rows=compReq567PupilPattern,fieldBounds={minX:Math.min(...field.points.map(index=>index%200)),minY:Math.min(...field.points.map(index=>Math.floor(index/200))),maxX:Math.max(...field.points.map(index=>index%200)),maxY:Math.max(...field.points.map(index=>Math.floor(index/200)))};const candidates=[];for(let y=fieldBounds.minY;y<=fieldBounds.maxY-rows.length+1;y++)for(let x=fieldBounds.minX;x<=fieldBounds.maxX-rows[0].length+1;x++)if(compReq567Fit(field.set,rows,x,y)){const points=compReq567ShapePoints(rows,x,y);candidates.push({rows,points,set:compReq567PointSet(points),x,y,score:Math.abs(x-(fieldBounds.minX+fieldBounds.maxX-rows[0].length+1)/2)+Math.abs(y-(fieldBounds.minY+fieldBounds.maxY-rows.length+1)/2)})}candidates.sort((a,b)=>a.score-b.score);return candidates[0]||null;
+}
+function compReq567Glint(pupil){const points=[];for(let y=0;y<compReq567GlintPattern.length;y++)for(let x=0;x<compReq567GlintPattern[y].length;x++)if(compReq567GlintPattern[y][x]==='1')points.push((pupil.y+y+2)*200+pupil.x+x+1);return points}
+function compReq567ModelFromPixels(pixels){
+ const eyes=[];for(const [eye,roi] of Object.entries(compReq567EyeRois)){const mask=compReq567InteriorMask(pixels,roi);if(mask.blackCount<220||mask.bounds.maxY-mask.bounds.minY<30){return{open:false,reason:'closed_eye_or_no_enclosed_silhouette'}}const field=compReq567FindField(mask);if(!field||field.width<11||field.height<17||field.points.length<100)return{open:false,reason:'inner_field_not_large_or_bounded'};const pupil=compReq567FindPupil(field);if(!pupil)return{open:false,reason:'large_pupil_does_not_fit_inner_field'};const glint=compReq567Glint(pupil);if(!glint.every(index=>pupil.set.has(index)))return{open:false,reason:'glint_not_on_pupil'};eyes.push({eye,mask,field,pupil,glint,existing_highlight_max_pixels:0})}
+ return{open:true,eyes,field_area:Math.min(...eyes.map(eye=>eye.field.points.length)),pupil_area:65,glint_area:7};
+}
+function compReq567Direction(key){const values=String(key||touchData.center_key).split(',').map(Number);if(values.length!==4||String(key)===String(touchData.center_key))return{dx:0,dy:0};return{dx:Math.max(-4,Math.min(4,Math.round((((values[0]+values[2])/2)-1)/1.4))),dy:Math.max(-4,Math.min(4,Math.round(((values[1]+values[3])/2)/1.4)))} }
+function compReq567SharedOffset(model,desired){const choices=[];for(let dy=-4;dy<=4;dy++)for(let dx=-4;dx<=4;dx++){if(!model.eyes.every(eye=>compReq567Fit(eye.field.set,compReq567PupilPattern,eye.pupil.x+dx,eye.pupil.y+dy)))continue;const wrong=(desired.dx&&Math.sign(dx)!==Math.sign(desired.dx)?30:0)+(desired.dy&&Math.sign(dy)!==Math.sign(desired.dy)?30:0);choices.push({dx,dy,score:Math.abs(dx-desired.dx)+Math.abs(dy-desired.dy)+wrong})}choices.sort((a,b)=>a.score-b.score||Math.abs(b.dx)+Math.abs(b.dy)-Math.abs(a.dx)-Math.abs(a.dy));return choices[0]||{dx:0,dy:0}}
+function compReq567FrameModel(frame){const source=frame?.touch_base||frame?.src||overallController.state.activeBaseSrc;if(!source)return Promise.resolve(null);const cacheKey=`comp-req-567-model|${source}`;if(compReq567EyeModelCache.has(cacheKey))return compReq567EyeModelCache.get(cacheKey);const promise=touchGazeImage(cached(source)).then(image=>{if(!image)return null;const canvas=document.createElement('canvas');canvas.width=canvas.height=200;const context=canvas.getContext('2d',{willReadFrequently:true});context.drawImage(image,0,0);const model=compReq567ModelFromPixels(context.getImageData(0,0,200,200).data);if(model?.open){model.source=cached(source);model.field_area=model.eyes.reduce((sum,eye)=>sum+eye.field.points.length,0);model.pupil_area=model.eyes.reduce((sum,eye)=>sum+eye.pupil.points.length,0);model.glint_area=model.eyes.reduce((sum,eye)=>sum+eye.glint.length,0);model.field_bounds=model.eyes.map(eye=>({minX:Math.min(...eye.field.points.map(index=>index%200)),minY:Math.min(...eye.field.points.map(index=>Math.floor(index/200))),maxX:Math.max(...eye.field.points.map(index=>index%200)),maxY:Math.max(...eye.field.points.map(index=>Math.floor(index/200)))}));}return model});compReq567EyeModelCache.set(cacheKey,promise);return promise}
+function compReq567Overlay(frame,storyName,key){const source=frame?.touch_base||frame?.src||overallController.state.activeBaseSrc;if(!source)return Promise.resolve(null);const cacheKey=`comp-req-567-overlay|${source}|${key}`;if(compReq567EyeOverlayCache.has(cacheKey))return compReq567EyeOverlayCache.get(cacheKey);const promise=compReq567FrameModel(frame).then(model=>{if(!model?.open)return null;const direction=compReq567Direction(key),offset=compReq567SharedOffset(model,direction),canvas=document.createElement('canvas');canvas.width=canvas.height=200;const context=canvas.getContext('2d'),out=context.createImageData(200,200);for(const eye of model.eyes){for(const index of eye.field.points){const at=index*4;out.data[at]=out.data[at+1]=out.data[at+2]=255;out.data[at+3]=255}const pupil=compReq567ShapePoints(compReq567PupilPattern,eye.pupil.x+offset.dx,eye.pupil.y+offset.dy),glint=eye.glint.map(index=>index+offset.dy*200+offset.dx);for(const index of pupil){const at=index*4;out.data[at]=out.data[at+1]=out.data[at+2]=0;out.data[at+3]=255}for(const index of glint){const at=index*4;out.data[at]=out.data[at+1]=out.data[at+2]=255;out.data[at+3]=255}}
+ context.putImageData(out,0,0);const src=canvas.toDataURL('image/png');touchGazeRenderMetaBySrc.set(src,{architecture:compReq567Contract.architecture,outer_silhouette:'fixed',inner_field:'authored_large_white_field',inner_field_area:model.field_area,inner_field_bounds:model.field_bounds,pupil_area:model.pupil_area,glint_area:model.glint_area,applied_dx:offset.dx,applied_dy:offset.dy,desired_dx:direction.dx,desired_dy:direction.dy,paired_pupil_shift:true,pupil_glint_rigid:true,glint_relative_to_pupil:'fixed',old_pose_pixels:0,highlight_hole_architecture:false,field_boundary_fixed:true,pupil_contained:true,open_eye_count:2});return src});compReq567EyeOverlayCache.set(cacheKey,promise);return promise}
+touchGazeClearedBase=function(frame,storyName){const source=frame?.touch_base||frame?.src||overallController.state.activeBaseSrc;return source?Promise.resolve(cached(source)):Promise.resolve(null)};
+touchGazeSafeOverlay=function(frame,storyName,overlay){const key=Object.entries(touchData.overlays).find(([,value])=>value===overlay)?.[0]||touchData.center_key;return compReq567Overlay(frame,storyName,key)};
+const compReq567TouchSetGaze=touchSetGaze;
+touchSetGaze=async function(...args){const result=await compReq567TouchSetGaze(...args);if(result){const meta=touchGazeRenderMetaBySrc.get(overallGaze.src);overallFrame.dataset.gazeCleared=meta?'three-layer-inner-pupil':'closed-eye-no-pupil';overallFrame.dataset.eyeSilhouette='fixed-complete-outer-silhouette';}return result};
+setExpressionGaze=touchSetGaze;restoreExpressionGaze=mode=>touchSetGaze(touchData.center_key,mode);
+const compReq567FamilySignatures={
+ calm:{frames:[0,1,2,3],keys:['-2,0,-6,0','5,0,5,0','1,4,1,6','1,0,1,0'],components:[['pupil','brow'],['pupil','cheek'],['pupil','eyelid'],['pupil','mouth']]},
+ curious:{frames:[1,0,4,3],keys:['1,-3,1,-6','5,0,5,0','-2,0,-6,0','0,0,0,0'],components:[['pupil','brow'],['pupil','mouth'],['pupil','cheek'],['pupil','brow','mouth']]},
+ warm:{frames:[0,1,3,4],keys:['-2,0,-6,0','1,-3,1,-6','5,0,5,0','0,0,0,0'],components:[['pupil','brow'],['pupil','mouth','cheek'],['pupil','cheek'],['pupil','mouth']]},
+ playful:{frames:[1,3,0,4],keys:['5,0,5,0','-2,0,-6,0','1,4,1,6','0,0,0,0'],components:[['pupil','brow'],['pupil','mouth'],['pupil','cheek'],['pupil','brow','mouth']]},
+ sleepy:{frames:[0,1,3,4],keys:['1,4,1,6','1,-3,1,-6','-2,0,-6,0','0,0,0,0'],components:[['pupil','eyelid'],['pupil','eyelid','mouth'],['pupil','eyelid','cheek'],['pupil','eyelid']]},
+ delighted:{frames:[1,2,4,3],keys:['1,-3,1,-6','5,0,5,0','1,4,1,6','0,0,0,0'],components:[['pupil','brow','cheek'],['pupil','mouth','cheek'],['pupil','cheek'],['pupil','brow','mouth']]},
+ bashful:{frames:[3,1,4,0],keys:['1,4,1,6','-2,0,-6,0','1,-3,1,-6','0,0,0,0'],components:[['pupil','cheek'],['pupil','brow'],['pupil','mouth','cheek'],['pupil','brow','eyelid']]},
+ thoughtful:{frames:[1,4,0,3],keys:['1,-3,1,-6','-2,0,-6,0','5,0,5,0','0,0,0,0'],components:[['pupil','brow'],['pupil','mouth'],['pupil','cheek'],['pupil','brow','mouth']]},
+ focused:{frames:[3,1,4,0],keys:['5,0,5,0','1,-3,1,-6','-2,0,-6,0','0,0,0,0'],components:[['pupil','brow'],['pupil','eyelid'],['pupil','cheek'],['pupil','mouth']]},
+ alert:{frames:[0,3,1,4],keys:['-2,0,-6,0','1,4,1,6','5,0,5,0','0,0,0,0'],components:[['pupil','brow'],['pupil','eyelid'],['pupil','cheek'],['pupil','mouth']]},
+};
+familyMicroSpec=function(plan,step){const normalized=((Number(step)||0)%epaperVisualManifest.idle_glint.cycle_steps+epaperVisualManifest.idle_glint.cycle_steps)%epaperVisualManifest.idle_glint.cycle_steps,activeSteps=[2,4,6,8],activeIndex=activeSteps.indexOf(normalized),holdIndex=activeIndex>=0?activeIndex:(normalized>2&&normalized<9?activeSteps.filter(slot=>slot<normalized).length-1:-1),signature=compReq567FamilySignatures[plan.state]||compReq567FamilySignatures.calm,baseline=Number.isInteger(plan.baseline_frame)?plan.baseline_frame:4,beatIndex=activeIndex>=0?activeIndex:holdIndex,frameIndex=beatIndex>=0?signature.frames[beatIndex]:baseline,key=beatIndex>=0?signature.keys[beatIndex]:touchData.center_key,components=activeIndex>=0?[...signature.components[activeIndex]]:[],familySignature=`${plan.state}|${signature.frames.join(',')}|${signature.keys.join(';')}|${signature.components.map(row=>row.join('+')).join(';')}`;return{normalized,frameIndex,key,components,maxStepPx:1,transplants:[],shifts:[],composition:'three_layer_eye_family_pose',phase:activeIndex>=0?`family_${activeIndex+1}`:holdIndex>=0?`family_${holdIndex+1}_hold`:normalized===9?'baseline_return':'quiet_hold',baseline_frame:baseline,family_signature:familySignature,signature_frames:[...signature.frames],signature_keys:[...signature.keys]}};
+window.__compReq567State=()=>({contract:naturalClone(compReq567Contract),family:window.__familyMicroChoreographyState(),recording:window.__recordingContractState(),meta:touchGazeRenderMetaBySrc.get(overallGaze.src)||null});
+window.__compReq567Probe=async key=>{const requested=key||touchData.center_key,presented=await touchSetGaze(requested,'comp_req_567_probe'),meta=overallGaze.hidden?null:touchGazeRenderMetaBySrc.get(overallGaze.src)||null;return{presented,requested,meta,pass:Boolean(presented&&((meta&&meta.open_eye_count===2&&meta.pupil_area>=120&&meta.inner_field_area>=200&&meta.glint_area===14&&meta.pupil_glint_rigid&&!meta.highlight_hole_architecture)||(!meta&&overallGaze.hidden)))}};
+window.__eyeIntegrityPixelProbe=window.__compReq567Probe;
+if(overallController?.state?.activeFrame)touchSetGaze(touchData.center_key,'comp_req_567_boot');
 </script></html>
