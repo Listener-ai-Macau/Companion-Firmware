@@ -1,0 +1,307 @@
+{
+  "schema": "companion.fixed-reflection-gaze.comp-req-564.v1",
+  "status": "PASS",
+  "page_sha256": "648058E3A879B785157CF25969BF2F8AB756FC17F7A82CA118778CDBCB08B56C",
+  "checks": {
+    "five_directions": true,
+    "fixed_registered_highlight_and_closed_eye": true,
+    "exact_paired_eye_poses": true,
+    "correct_direction": true,
+    "exact_center_return": true,
+    "clamp_negative": true,
+    "missing_cue_negative": true,
+    "extra_cue_negative": true,
+    "inverted_direction_negative": true
+  },
+  "probes": [
+    {
+      "name": "center",
+      "key": "1,0,1,0",
+      "presented": true,
+      "pass": true,
+      "story": "calm_presence",
+      "frame": "calm_presence-04-calm_blink_settle.png",
+      "open_eye_count": 2,
+      "eye_rows": [
+        {
+          "eye": "left",
+          "shift": {
+            "dx": 0,
+            "dy": 0
+          },
+          "solid_pixels": 1198,
+          "reflection_pixels": 176,
+          "reflection_fixed": true
+        },
+        {
+          "eye": "right",
+          "shift": {
+            "dx": 0,
+            "dy": 0
+          },
+          "solid_pixels": 1210,
+          "reflection_pixels": 184,
+          "reflection_fixed": true
+        }
+      ],
+      "eye_pose_count": 2,
+      "paired_eye_shift": true,
+      "pose_shape_mismatch_pixels": 0,
+      "residual_source_pixels": 0,
+      "non_eye_mismatch_pixels": 0,
+      "changed_pixels": 0,
+      "max_changed_pixels": 2048,
+      "exact_baseline": true,
+      "direction_match": true,
+      "desired_dx": 0,
+      "desired_dy": 0,
+      "applied_dx": 0,
+      "applied_dy": 0,
+      "clamped": false,
+      "moving_component": "paired_black_eye_bodies",
+      "primary_highlight_fixed": true,
+      "eye_silhouette_closed": true,
+      "reflection_mismatch_pixels": 0,
+      "stale_old_pose_pixels": 0,
+      "base_eye_black_pixels": 0,
+      "render_expected_black_pixels": 2679,
+      "render_actual_black_pixels": 2679,
+      "first_mismatches": []
+    },
+    {
+      "name": "left",
+      "key": "-2,0,-6,0",
+      "presented": true,
+      "pass": true,
+      "story": "calm_presence",
+      "frame": "calm_presence-04-calm_blink_settle.png",
+      "open_eye_count": 2,
+      "eye_rows": [
+        {
+          "eye": "left",
+          "shift": {
+            "dx": -3,
+            "dy": 0
+          },
+          "solid_pixels": 1198,
+          "reflection_pixels": 176,
+          "reflection_fixed": true
+        },
+        {
+          "eye": "right",
+          "shift": {
+            "dx": -3,
+            "dy": 0
+          },
+          "solid_pixels": 1210,
+          "reflection_pixels": 184,
+          "reflection_fixed": true
+        }
+      ],
+      "eye_pose_count": 2,
+      "paired_eye_shift": true,
+      "pose_shape_mismatch_pixels": 0,
+      "residual_source_pixels": 0,
+      "non_eye_mismatch_pixels": 0,
+      "changed_pixels": 540,
+      "max_changed_pixels": 2048,
+      "exact_baseline": true,
+      "direction_match": true,
+      "desired_dx": -3,
+      "desired_dy": 0,
+      "applied_dx": -3,
+      "applied_dy": 0,
+      "clamped": false,
+      "moving_component": "paired_black_eye_bodies",
+      "primary_highlight_fixed": true,
+      "eye_silhouette_closed": true,
+      "reflection_mismatch_pixels": 0,
+      "stale_old_pose_pixels": 0,
+      "base_eye_black_pixels": 0,
+      "render_expected_black_pixels": 2679,
+      "render_actual_black_pixels": 2679,
+      "first_mismatches": []
+    },
+    {
+      "name": "right",
+      "key": "5,0,5,0",
+      "presented": true,
+      "pass": true,
+      "story": "calm_presence",
+      "frame": "calm_presence-04-calm_blink_settle.png",
+      "open_eye_count": 2,
+      "eye_rows": [
+        {
+          "eye": "left",
+          "shift": {
+            "dx": 3,
+            "dy": 0
+          },
+          "solid_pixels": 1198,
+          "reflection_pixels": 176,
+          "reflection_fixed": true
+        },
+        {
+          "eye": "right",
+          "shift": {
+            "dx": 3,
+            "dy": 0
+          },
+          "solid_pixels": 1210,
+          "reflection_pixels": 184,
+          "reflection_fixed": true
+        }
+      ],
+      "eye_pose_count": 2,
+      "paired_eye_shift": true,
+      "pose_shape_mismatch_pixels": 0,
+      "residual_source_pixels": 0,
+      "non_eye_mismatch_pixels": 0,
+      "changed_pixels": 540,
+      "max_changed_pixels": 2048,
+      "exact_baseline": true,
+      "direction_match": true,
+      "desired_dx": 4,
+      "desired_dy": 0,
+      "applied_dx": 3,
+      "applied_dy": 0,
+      "clamped": true,
+      "moving_component": "paired_black_eye_bodies",
+      "primary_highlight_fixed": true,
+      "eye_silhouette_closed": true,
+      "reflection_mismatch_pixels": 0,
+      "stale_old_pose_pixels": 0,
+      "base_eye_black_pixels": 0,
+      "render_expected_black_pixels": 2679,
+      "render_actual_black_pixels": 2679,
+      "first_mismatches": []
+    },
+    {
+      "name": "up",
+      "key": "1,-3,1,-6",
+      "presented": true,
+      "pass": true,
+      "story": "calm_presence",
+      "frame": "calm_presence-04-calm_blink_settle.png",
+      "open_eye_count": 2,
+      "eye_rows": [
+        {
+          "eye": "left",
+          "shift": {
+            "dx": 0,
+            "dy": -3
+          },
+          "solid_pixels": 1198,
+          "reflection_pixels": 176,
+          "reflection_fixed": true
+        },
+        {
+          "eye": "right",
+          "shift": {
+            "dx": 0,
+            "dy": -3
+          },
+          "solid_pixels": 1210,
+          "reflection_pixels": 184,
+          "reflection_fixed": true
+        }
+      ],
+      "eye_pose_count": 2,
+      "paired_eye_shift": true,
+      "pose_shape_mismatch_pixels": 0,
+      "residual_source_pixels": 0,
+      "non_eye_mismatch_pixels": 0,
+      "changed_pixels": 402,
+      "max_changed_pixels": 2048,
+      "exact_baseline": true,
+      "direction_match": true,
+      "desired_dx": 0,
+      "desired_dy": -3,
+      "applied_dx": 0,
+      "applied_dy": -3,
+      "clamped": false,
+      "moving_component": "paired_black_eye_bodies",
+      "primary_highlight_fixed": true,
+      "eye_silhouette_closed": true,
+      "reflection_mismatch_pixels": 0,
+      "stale_old_pose_pixels": 0,
+      "base_eye_black_pixels": 0,
+      "render_expected_black_pixels": 2679,
+      "render_actual_black_pixels": 2679,
+      "first_mismatches": []
+    },
+    {
+      "name": "down",
+      "key": "1,4,1,6",
+      "presented": true,
+      "pass": true,
+      "story": "calm_presence",
+      "frame": "calm_presence-04-calm_blink_settle.png",
+      "open_eye_count": 2,
+      "eye_rows": [
+        {
+          "eye": "left",
+          "shift": {
+            "dx": 0,
+            "dy": 3
+          },
+          "solid_pixels": 1198,
+          "reflection_pixels": 176,
+          "reflection_fixed": true
+        },
+        {
+          "eye": "right",
+          "shift": {
+            "dx": 0,
+            "dy": 3
+          },
+          "solid_pixels": 1210,
+          "reflection_pixels": 184,
+          "reflection_fixed": true
+        }
+      ],
+      "eye_pose_count": 2,
+      "paired_eye_shift": true,
+      "pose_shape_mismatch_pixels": 0,
+      "residual_source_pixels": 0,
+      "non_eye_mismatch_pixels": 0,
+      "changed_pixels": 402,
+      "max_changed_pixels": 2048,
+      "exact_baseline": true,
+      "direction_match": true,
+      "desired_dx": 0,
+      "desired_dy": 4,
+      "applied_dx": 0,
+      "applied_dy": 3,
+      "clamped": true,
+      "moving_component": "paired_black_eye_bodies",
+      "primary_highlight_fixed": true,
+      "eye_silhouette_closed": true,
+      "reflection_mismatch_pixels": 0,
+      "stale_old_pose_pixels": 0,
+      "base_eye_black_pixels": 0,
+      "render_expected_black_pixels": 2679,
+      "render_actual_black_pixels": 2679,
+      "first_mismatches": []
+    }
+  ],
+  "screenshots": {
+    "center.png": "AA011C2AED146E9640E738600F1A536850C9C66C35002DB52F8EBCE1A0C60304",
+    "down.png": "F73F1320A84BAB74DD2479E34B13C73936F732ACE193EEDB15FCF8E37709FA45",
+    "left.png": "080C945F10E5BFDBB2DD540E6CBE2C52B459F9BAB1BCDAA33667A26CE9F51053",
+    "right.png": "C4430B6AEE41A8DBE7F103072591A2DA441E1AC1989585AC063F0142EB2B1FAC",
+    "up.png": "EEA816C3842890A92445C528523C2D0C9D5B494F52072804FA177A2D4F48CC39"
+  },
+  "side_effects": {
+    "hardware": 0,
+    "programmer": 0,
+    "serial": 0,
+    "write": 0,
+    "reset": 0,
+    "refresh": 0,
+    "popup": 0,
+    "microphone": 0,
+    "production": 0,
+    "push": 0
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "schema": "companion.comp_req_564.browser_machine_ready.v1",
+  "status": "PASS_MACHINE_READY_OWNER_PENDING",
+  "requirement_id": "COMP-REQ-564",
+  "implementation_commit": "753f0a36311fac5e9e22509953fd6590b1adb1ec",
+  "registry_commit": "d2d2aee36997a1b4656038af19ec638fe42de9aa",
+  "page": {
+    "path": "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html",
+    "sha256": "648058E3A879B785157CF25969BF2F8AB756FC17F7A82CA118778CDBCB08B56C",
+    "review_url": "http://127.0.0.1:4173/docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html?rev=comp-req-564#expression"
+  },
+  "fixed_reflection_oracle": {
+    "path": "docs/validation/companion-fixed-reflection-gaze-comp-req-564/fixed-reflection-result.json",
+    "sha256": "82DED879F202CDA8F2394ADB9EE23C9B3CBD0F866DEAFC6E1C93D8D2AD130A84",
+    "five_directions": 5,
+    "paired_eye_bodies": true,
+    "large_and_small_reflections_fixed": true,
+    "stale_eye_pixels": 0,
+    "non_eye_mismatch_pixels": 0,
+    "center_raster_difference": 0,
+    "missing_extra_and_inverted_negatives": true
+  },
+  "interaction": {
+    "path": "docs/validation/companion-fixed-reflection-gaze-comp-req-564/interaction/interaction-successor-result.json",
+    "sha256": "D46EB17417AA3BB488D9E9450A436F5D2BEFC01F701CB3E341FABC38972568C2",
+    "desktop_mobile_pointer_combinations": 6,
+    "scenarios_passed": 42,
+    "scenarios_total": 42,
+    "face_layers": 1,
+    "gaze_layers": 1,
+    "recording_entries": 1,
+    "inward_meter_layers": 1,
+    "menu_layers_during_recording": 0,
+    "progress_nodes": 0,
+    "errors": 0,
+    "microphone_requests": 0
+  },
+  "protected": {
+    "ssd1681_driver": {
+      "path": "app/companion_pendant/epaper/panel_target_stm32wb_ssd1681.c",
+      "sha256": "F52A7E853BFE2E66680F08420941265CFF163FB579B2D3870128FC72C79E035F"
+    },
+    "r7_frame_header": {
+      "path": "app/companion_pendant/epaper/companion_r7_locked_v9_frames.h",
+      "sha256": "9571CF9F896B6C14451BAA7348CB717643B4963AE834B0A554E0C2ED2C7E8D35"
+    },
+    "owner_acceptance": {
+      "path": "docs/validation/companion-pet-special-system-owner-acceptance-20260717.json",
+      "sha256": "8A3BDF4BD1254B0D0F4DE13A7F293C3D74587C800339ABD4C61FEB0B7737E227"
+    }
+  },
+  "checkonly": {
+    "hardware": 0,
+    "programmer": 0,
+    "serial": 0,
+    "write": 0,
+    "reset": 0,
+    "refresh": 0,
+    "popup": 0,
+    "retry": 0,
+    "microphone": 0,
+    "production": 0,
+    "push": 0,
+    "owner_prompt": 0
+  },
+  "human_boundary": {
+    "browser_visual_review": "PENDING",
+    "physical_touch_review": "UNPROVEN_SEPARATE_GATE",
+    "canonical_prompt_opened": false
+  }
+}
