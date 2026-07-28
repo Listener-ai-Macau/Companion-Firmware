@@ -121,13 +121,17 @@ function Invoke-PrepareBleOtaLoaderWithSwd {
         [Parameter(Mandatory = $true)][string] $LogPath
     )
 
-    $handoffBase = "0x20000000"
-    $sectorByte = "0x{0:X2}" -f $SectorCount
-    $handoffBytes = @("0x01", "0x07", $sectorByte, "0xC3")
+    # denzic_ota_v1 OTA loader (Companion_BLE_Ota_Loader/system_stm32wbxx.c
+    # CheckFwAppValidity) enters OTA mode when the app magic keyword 0x94448A29
+    # (TAG_OTA_END) is invalid. Erase the app sectors to invalidate the magic;
+    # the loader then advertises denzic_ota_v1 (1b55f597). The older st_ble_ota
+    # SRAM handoff (01 07 <sectors> C3 @ 0x20000000) is NOT read by this loader.
+    $appStartSector = 7
+    $appEndSector = $appStartSector + $SectorCount - 1
     $connectArgs = @("port=$PortName", "mode=UR", "reset=HWrst", "freq=4000")
-    $args = @("-c") + $connectArgs + @("-w8", $handoffBase) + $handoffBytes + @("-r8", $handoffBase, "4", "-rst")
+    $args = @("-c") + $connectArgs + @("-e", "[$appStartSector $appEndSector]", "-rst")
 
-    Write-Host "Preparing STM32WB OTA loader erase handoff: $handoffBase = $($handoffBytes -join ' ')"
+    Write-Host "Preparing denzic_ota_v1 OTA loader: erase app sectors [$appStartSector $appEndSector] (invalidate magic) + reset"
     $output = & $Programmer @args 2>&1
     $exitCode = if ($null -eq $LASTEXITCODE) { 0 } else { [int]$LASTEXITCODE }
     $output | Tee-Object -FilePath $LogPath
