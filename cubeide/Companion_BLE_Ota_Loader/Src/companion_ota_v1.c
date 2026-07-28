@@ -4,11 +4,14 @@
 #include "flash_driver.h"
 #include "companion_ota_v1.h"
 #include "denzic_ota_v1.h"
+#include "denzic_ota_v1_reorder.h"
 
 #define COMPANION_OTA_V1_UUID_LENGTH             UUID_TYPE_128
 #define COMPANION_OTA_V1_DATA_PACKET_SIZE        (248u)
 #define COMPANION_OTA_V1_DATA_PAYLOAD_MAX        (COMPANION_OTA_V1_DATA_PACKET_SIZE - DENZIC_OTA_V1_DATA_HEADER_BYTES)
-#define COMPANION_OTA_V1_DEFAULT_WINDOW_CHUNKS   (8u)
+/* Match platform dual-lane bulk recommendation when host uses dual_lane_bulk(). */
+#define COMPANION_OTA_V1_DEFAULT_WINDOW_CHUNKS   (400u)
+#define COMPANION_OTA_V1_REORDER_SLOTS           DENZIC_OTA_V1_REORDER_DEFAULT_SLOTS
 #define COMPANION_OTA_V1_FLASH_WORD_SIZE         (8u)
 #define COMPANION_OTA_V1_APP_BASE_ADDRESS        (FLASH_BASE + (CFG_APP_START_SECTOR_INDEX * FLASH_PAGE_SIZE))
 #define COMPANION_OTA_V1_REBOOT_GRACE_MS         (300u)
@@ -23,6 +26,7 @@ typedef struct
   uint16_t service_handle;
   uint16_t control_char_handle;
   uint16_t data_char_handle;
+  uint16_t data_b_char_handle;
   uint16_t status_char_handle;
 } CompanionOtaV1GattContext_t;
 
@@ -58,6 +62,9 @@ static const uint8_t COMPANION_OTA_V1_CONTROL_UUID[16] = {
 static const uint8_t COMPANION_OTA_V1_DATA_UUID[16] = {
   DENZIC_OTA_V1_GATT_DATA_UUID_BYTES
 };
+static const uint8_t COMPANION_OTA_V1_DATA_B_UUID[16] = {
+  DENZIC_OTA_V1_GATT_DATA_B_UUID_BYTES
+};
 static const uint8_t COMPANION_OTA_V1_STATUS_UUID[16] = {
   DENZIC_OTA_V1_GATT_STATUS_UUID_BYTES
 };
@@ -65,6 +72,8 @@ static const uint8_t COMPANION_OTA_V1_STATUS_UUID[16] = {
 PLACE_IN_SECTION("BLE_DRIVER_CONTEXT") static CompanionOtaV1GattContext_t CompanionOtaV1GattContext;
 static CompanionOtaV1StorageContext_t CompanionOtaV1StorageContext;
 static denzic_ota_v1_context_t CompanionOtaV1Context;
+static denzic_ota_v1_reorder_slot_t CompanionOtaV1ReorderSlots[COMPANION_OTA_V1_REORDER_SLOTS];
+static denzic_ota_v1_reorder_t CompanionOtaV1Reorder;
 
 void Companion_Ota_V1_Init(void)
 {
@@ -76,10 +85,11 @@ void Companion_Ota_V1_Init(void)
   };
 
   SVCCTL_RegisterSvcHandler(Companion_Ota_V1_Event_Handler);
+  /* Service + control + data + data_b + status (2 attr handles each char). */
   aci_gatt_add_service(COMPANION_OTA_V1_UUID_LENGTH,
                        (Service_UUID_t *)COMPANION_OTA_V1_SERVICE_UUID,
                        PRIMARY_SERVICE,
-                       1 + 2 + 2 + 2,
+                       1 + 2 + 2 + 2 + 2,
                        &(CompanionOtaV1GattContext.service_handle));
   aci_gatt_add_char(CompanionOtaV1GattContext.service_handle,
                     COMPANION_OTA_V1_UUID_LENGTH,
@@ -103,6 +113,16 @@ void Companion_Ota_V1_Init(void)
                     &(CompanionOtaV1GattContext.data_char_handle));
   aci_gatt_add_char(CompanionOtaV1GattContext.service_handle,
                     COMPANION_OTA_V1_UUID_LENGTH,
+                    (Char_UUID_t *)COMPANION_OTA_V1_DATA_B_UUID,
+                    COMPANION_OTA_V1_DATA_PACKET_SIZE,
+                    CHAR_PROP_WRITE | CHAR_PROP_WRITE_WITHOUT_RESP,
+                    ATTR_PERMISSION_NONE,
+                    GATT_NOTIFY_ATTRIBUTE_WRITE,
+                    10,
+                    1,
+                    &(CompanionOtaV1GattContext.data_b_char_handle));
+  aci_gatt_add_char(CompanionOtaV1GattContext.service_handle,
+                    COMPANION_OTA_V1_UUID_LENGTH,
                     (Char_UUID_t *)COMPANION_OTA_V1_STATUS_UUID,
                     DENZIC_OTA_V1_STATUS_BYTES,
                     CHAR_PROP_READ,
@@ -118,6 +138,10 @@ void Companion_Ota_V1_Init(void)
                      &CompanionOtaV1StorageContext,
                      COMPANION_OTA_V1_DATA_PAYLOAD_MAX,
                      COMPANION_OTA_V1_DEFAULT_WINDOW_CHUNKS);
+  denzic_ota_v1_reorder_init(&CompanionOtaV1Reorder,
+                             CompanionOtaV1ReorderSlots,
+                             COMPANION_OTA_V1_REORDER_SLOTS,
+                             COMPANION_OTA_V1_DATA_PAYLOAD_MAX);
   Companion_Ota_V1_Update_Status();
 }
 
@@ -171,7 +195,9 @@ static SVCCTL_EvtAckStatus_t Companion_Ota_V1_Event_Handler(void *Event)
     return_value = SVCCTL_EvtAckFlowEnable;
   }
   else if(Companion_Ota_V1_Is_Value_Handle(attribute_modified->Attr_Handle,
-                                           CompanionOtaV1GattContext.data_char_handle) != 0u)
+                                           CompanionOtaV1GattContext.data_char_handle) != 0u ||
+          Companion_Ota_V1_Is_Value_Handle(attribute_modified->Attr_Handle,
+                                           CompanionOtaV1GattContext.data_b_char_handle) != 0u)
   {
     Companion_Ota_V1_Handle_Data(&attribute_modified->Attr_Data[0],
                                  attribute_modified->Attr_Data_Length);
@@ -191,6 +217,10 @@ static void Companion_Ota_V1_Handle_Control(const uint8_t *bytes, uint8_t length
 {
   uint8_t operation = (length > 4u) ? bytes[4] : 0u;
   bool accepted = denzic_ota_v1_handle_control(&CompanionOtaV1Context, bytes, length);
+  if(accepted && operation == DENZIC_OTA_V1_OP_BEGIN)
+  {
+    denzic_ota_v1_reorder_clear(&CompanionOtaV1Reorder);
+  }
   Companion_Ota_V1_Update_Status();
   if(accepted && operation == DENZIC_OTA_V1_OP_FINISH)
   {
@@ -200,7 +230,11 @@ static void Companion_Ota_V1_Handle_Control(const uint8_t *bytes, uint8_t length
 
 static void Companion_Ota_V1_Handle_Data(const uint8_t *bytes, uint8_t length)
 {
-  (void)denzic_ota_v1_handle_data(&CompanionOtaV1Context, bytes, length);
+  (void)denzic_ota_v1_handle_data_ordered(
+      &CompanionOtaV1Context,
+      &CompanionOtaV1Reorder,
+      bytes,
+      length);
   Companion_Ota_V1_Update_Status();
 }
 
@@ -208,6 +242,7 @@ static bool Companion_Ota_V1_Storage_Begin(void *driver_context, uint32_t image_
 {
   (void)driver_context;
   Companion_Ota_V1_Reset_Storage();
+  denzic_ota_v1_reorder_clear(&CompanionOtaV1Reorder);
   return Companion_Ota_V1_Erase_App(image_size) != 0u;
 }
 

@@ -51,6 +51,7 @@ C_SOURCES := \
 	Src/system_stm32wbxx.c \
 	Src/companion_ota_v1.c \
 	$(DENZIC_OTA)/src/denzic_ota_v1.c \
+	$(DENZIC_OTA)/src/denzic_ota_v1_reorder.c \
 	$(OTA)/STM32_WPAN/Target/hw_ipcc.c \
 	$(OTA)/STM32CubeIDE/Application/Core/syscalls.c \
 	$(OTA)/STM32CubeIDE/Application/Core/sysmem.c \
