@@ -1,0 +1,49 @@
+# Engineering notes retained from the previous homepage
+
+These notes preserve the earlier development context. WB55 bring-up and fixture reports are historical; they do not establish current WBA acceptance. Use the [current readiness page](STATUS.md) for product scope. Some commands and linked files require the local engineering workspace and are not published in this documentation-only update.
+
+---
+
+# Companion Firmware
+
+Companion Firmware starts from the official ST STM32CubeWB package for the
+NUCLEO-WB55RG pendant prototype.
+
+Current bring-up baseline:
+
+- Board: `NUCLEO-WB55RG`
+- Upstream package: `STMicroelectronics/STM32CubeWB`
+- Pinned upstream tag: `v1.24.0`
+- First official example: `BLE_p2pServer`
+- Example path:
+  `third_party/STM32CubeWB/Projects/P-NUCLEO-WB55.Nucleo/Applications/BLE/BLE_p2pServer`
+
+Run this after cloning or when the submodule checkout is incomplete:
+
+```powershell
+.\tools\bootstrap_stm32cubewb.ps1
+```
+
+Then follow [docs/bringup_steps.md](bringup_steps.md).
+
+For the recommended Codex + CubeIDE development loop, see
+[docs/codex_development_workflow.md](codex_development_workflow.md).
+
+For the current upper-art checkpoint and the complete V9-to-V45 prompt, lineage,
+emotion and choreography handoff, see
+[docs/companion_v45_art_handoff.md](companion_v45_art_handoff.md) and
+[docs/companion_art_generation_lineage.md](companion_art_generation_lineage.md).
+
+## Product CubeIDE project
+
+The Companion Pendant product CubeMX/CubeIDE configuration lives at the repo
+root as `Companion_Pendant.ioc` (target MCU STM32WB55CEUx / UFQFPN48). Pinout,
+peripheral mapping, and open/generate/build steps are documented in
+[docs/companion_pendant_ioc.md](companion_pendant_ioc.md). Product
+application source (recording / diag_log / e-paper) stays under
+`app/companion_pendant/` and is linked into the project as a source folder.
+
+Do not edit files directly under `third_party/STM32CubeWB` for product work.
+Use it as the official reference package. Product firmware should be copied or
+generated into this repo's own application directory after the official BLE
+example is proven on hardware.
