@@ -10,6 +10,7 @@
 #include "wba_recording_product.h"
 #include "companion_recording_identity.h"
 #include "companion_preferences.h"
+#include "capture_feedback.h"
 #include "companion_pet_profile_wire.h"
 #include "wba_silence_stop.h"
 #include "wba_recording_level.h"
@@ -111,6 +112,9 @@ void comp_v11_product_download_timing(bool enabled);
 comp_v11_download_read_timing_t comp_v11_product_download_read_timing(void);
 bool comp_v11_product_recording_capacity(const comp_v11_product_app_t *,
                                        companion_recording_capacity_v1_t *);
+/* No flash/radio access, recording command, resident queue or sleep blocker.
+ * updating comes from the existing OTA owner, not a requested UI action. */
+comp_capture_feedback_t comp_v11_product_capture_feedback(const comp_v11_product_app_t *,bool updating);
 /* OTA owns a durable tail reservation; zero releases it. No implicit loss. */
 bool comp_v11_product_update_workspace(void *,uint32_t,uint32_t *);
 /* WUS2 mount/lease result, before capture becomes available. */

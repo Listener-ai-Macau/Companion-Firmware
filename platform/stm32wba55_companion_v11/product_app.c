@@ -534,6 +534,80 @@ bool comp_v11_product_recording_capacity(const comp_v11_product_app_t *app,
     value->local_limit_seconds=0u; /* WBA local recording has no configured time limit. */
     return true;
 }
+comp_capture_feedback_t comp_v11_product_capture_feedback(const comp_v11_product_app_t *app,bool updating)
+{
+    comp_capture_feedback_t out={0};
+    if(!app||!app->board)return out;
+    const comp_wba_recording_product_t *product=&app->recording;
+    const comp_wba_recording_pipeline_t *pipeline=&product->pipeline;
+    const bool microphone=app->board->microphone.running;
+    if(microphone)out.flags|=COMP_CAPTURE_MIC_RUNNING;
+    if(updating){out.state=COMP_CAPTURE_UPDATING;return out;}
+    if(!comp_wba_recording_product_capture_available(product)) {
+        out.state=comp_wba_recording_product_state(product)==COMP_WBA_RECORDING_FAULT?
+            COMP_CAPTURE_ERROR:COMP_CAPTURE_PREPARING;
+        return out; /* The recovery union is not a live recording engine. */
+    }
+    const comp_cont_recording_t *engine=pipeline->engine_bound?&product->capture.engine:NULL;
+    if(pipeline->state==COMP_PIPE_FAILED||(engine&&engine->state==COMP_CONT_FAULT)) {
+        const bool full=(pipeline->state==COMP_PIPE_FAILED&&pipeline->failure==COMP_SEG_FULL)||
+            (engine&&engine->state==COMP_CONT_FAULT&&engine->failure==COMP_SEG_FULL);
+        out.state=full?COMP_CAPTURE_FULL:COMP_CAPTURE_ERROR;
+        if(full)out.full_reason=COMP_CAPTURE_FULL_ALLOCATION;
+        return out;
+    }
+    if(engine&&engine->bookmark_request&&engine->state!=COMP_CONT_CANCELED&&engine->state!=COMP_CONT_CANCELING) {
+        out.bookmark_request=engine->bookmark_request;
+        const comp_segment_result_t result=comp_wba_recording_product_bookmark_result(
+            product,pipeline->token,engine->bookmark_request);
+        if(result==COMP_SEG_PENDING)out.flags|=COMP_CAPTURE_MARK_PENDING;
+        else if(result==COMP_SEG_OK)out.flags|=COMP_CAPTURE_MARK_CONFIRMED;
+    }
+    if(pipeline->state==COMP_PIPE_STOPPING||pipeline->state==COMP_PIPE_CLEANUP||
+       (pipeline->stop_requested&&pipeline->state!=COMP_PIPE_FINISHED)||
+       (engine&&(engine->state==COMP_CONT_STOPPING||engine->state==COMP_CONT_ENDING_PAUSE||
+                 engine->state==COMP_CONT_CANCELING||
+                 (engine->state==COMP_CONT_SEALED&&(pipeline->state!=COMP_PIPE_FINISHED||
+                                                   microphone||product->catalog.phase))))) {
+        out.state=COMP_CAPTURE_SAVING;return out;
+    }
+    if(app->runtime.prepare_pending||app->runtime.start_pending||
+       pipeline->state==COMP_PIPE_PREPARING||pipeline->state==COMP_PIPE_READY) {
+        out.state=COMP_CAPTURE_PREPARING;return out;
+    }
+    if(pipeline->state==COMP_PIPE_RECORDING&&engine) {
+        if(engine->state==COMP_CONT_PAUSED&&!microphone)out.state=COMP_CAPTURE_PAUSED;
+        else if(engine->state==COMP_CONT_PAUSE_PENDING||engine->state==COMP_CONT_PAUSING)
+            out.state=COMP_CAPTURE_PAUSING;
+        else if(engine->state==COMP_CONT_RESUMING)out.state=COMP_CAPTURE_RESUMING;
+        else out.state=engine->state==COMP_CONT_RUNNING&&microphone&&engine->microphone_active&&engine->stats.accepted_pcm_blocks?
+            COMP_CAPTURE_RECORDING:COMP_CAPTURE_PREPARING;
+        return out;
+    }
+    if(pipeline->state==COMP_PIPE_FINISHED&&engine&&engine->state==COMP_CONT_SEALED&&
+       !microphone&&!product->catalog.phase) {
+        out.flags|=COMP_CAPTURE_ORIGINAL_SAVED;
+        out.state=COMP_CAPTURE_SAVED;
+        if(engine->stop_reason==COMP_CONT_STOP_FULL)out.full_reason|=COMP_CAPTURE_FULL_STOP;
+    } else out.state=COMP_CAPTURE_IDLE;
+    companion_recording_capacity_v1_t capacity;
+    if(comp_v11_product_recording_capacity(app,&capacity)&&
+       (capacity.flags&(COMPANION_RECORDING_CAPACITY_VALID|COMPANION_RECORDING_CAPACITY_BUSY))==
+            COMPANION_RECORDING_CAPACITY_VALID) {
+        out.flags|=COMP_CAPTURE_CAPACITY_KNOWN;
+        if(capacity.unsynced_entries)out.flags|=COMP_CAPTURE_UNSYNCED;
+        /* Use the existing geometry-qualified scan, not total free bytes or
+         * an invented minutes-left estimate. ACKED bytes remain occupied. */
+        if(!product->space.allocatable_segments) {
+            out.full_reason|=COMP_CAPTURE_FULL_NO_SEGMENTS;
+            if(capacity.used_entries>=capacity.max_entries)out.full_reason|=COMP_CAPTURE_FULL_SLOTS;
+            if(capacity.reserve_headroom&&capacity.largest_free_extent<capacity.reserve_headroom)
+                out.full_reason|=COMP_CAPTURE_FULL_EXTENT;
+        }
+    }
+    if(out.full_reason&COMP_CAPTURE_FULL_NO_SEGMENTS)out.state=COMP_CAPTURE_FULL;
+    return out;
+}
 static bool recording_control(void *c,bool start,uint32_t token)
 {
     comp_v11_product_app_t *app=c;

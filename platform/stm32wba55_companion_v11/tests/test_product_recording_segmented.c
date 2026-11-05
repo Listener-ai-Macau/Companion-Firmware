@@ -505,10 +505,16 @@ static void layout_root(void)
     comp_rec_put32(p+28u,COMP_WBA_NOR_RECORDING_DATA_BYTES);comp_rec_put32(p+60u,comp_rec_crc(p,60u));
     memcpy(fixture.flash+COMP_WBA_NOR_LAYOUT_A,p,64u);memcpy(fixture.flash+COMP_WBA_NOR_LAYOUT_B,p,64u);
 }
+static bool feedback_watch;
+static uint32_t feedback_observed;
 static void step(comp_v11_product_app_t *app,uint32_t count)
 {
     for(uint32_t i=0u;i<count;i++) {
         fixture.tick+=STEP_MS;comp_v11_product_app_poll(app);
+        if(feedback_watch) {
+            comp_capture_feedback_t feedback=comp_v11_product_capture_feedback(app,false);
+            feedback_observed|=(1u<<feedback.state)|((uint32_t)feedback.flags<<16u);
+        }
         if(!app->recording_ready&&comp_wba_recording_product_space_current(&app->recording)) {
             /* No BLE/PKA in this fixture. Simulate only the external boot
              * lease result; this cannot qualify actual WUS2 or signed OTA. */
@@ -1484,6 +1490,74 @@ static int late_release_button_journey(void)
     puts("PASS Capture real product long press: late release across idle foreground gap starts once; threshold release stops and seals without a wired recording command");
     free(fixture.flash);return 0;
 }
+static int feedback_saved_checks(comp_v11_product_app_t *app)
+{
+    comp_wba_recording_product_t *product=&app->recording;
+    comp_cont_recording_t *engine=&product->capture.engine;
+    comp_capture_feedback_t view=comp_v11_product_capture_feedback(app,false);
+    REQUIRE(view.state==COMP_CAPTURE_SAVED&&(view.flags&COMP_CAPTURE_ORIGINAL_SAVED),
+        "saved feedback before sealed/catalog durability");
+    REQUIRE((view.flags&COMP_CAPTURE_MARK_CONFIRMED)&&view.bookmark_request==engine->bookmark_request,
+        "latest durable mark missing from feedback");
+    /* Sealing invalidates the generation-qualified free-space walk. Its busy
+     * interval is unknown capacity, even though this recording is saved. */
+    for(uint32_t i=0u;i<20000u&&!(view.flags&COMP_CAPTURE_CAPACITY_KNOWN);++i) {
+        REQUIRE(view.state!=COMP_CAPTURE_FULL,"busy capacity reported full");
+        step(app,1u);view=comp_v11_product_capture_feedback(app,false);
+    }
+    REQUIRE(view.flags&COMP_CAPTURE_CAPACITY_KNOWN,"idle capacity walk did not complete");
+    const uint32_t generation=product->catalog.generation;
+    const uint32_t preferences=app->preferences.generation;
+    const comp_wba_recording_space_t space=product->space;
+    product->space.generation^=1u;
+    view=comp_v11_product_capture_feedback(app,false);
+    REQUIRE(!(view.flags&COMP_CAPTURE_CAPACITY_KNOWN)&&view.state!=COMP_CAPTURE_FULL,
+        "stale capacity claimed full/known");
+    product->space=space;
+    REQUIRE((view=comp_v11_product_capture_feedback(app,true)).state==COMP_CAPTURE_UPDATING,
+        "actual update owner has no feedback priority");
+    product->space.used=COMP_SEGMENT_CAPACITY;product->space.allocatable_segments=0u;
+    product->space.largest_gap=product->pipeline.config.extent_bytes*4u;
+    view=comp_v11_product_capture_feedback(app,false);
+    REQUIRE(view.state==COMP_CAPTURE_FULL&&(view.full_reason&COMP_CAPTURE_FULL_SLOTS)&&
+        (view.flags&COMP_CAPTURE_ORIGINAL_SAVED),"catalog slots/full preserved-original distinction");
+    product->space.used=0u;product->space.largest_gap=product->pipeline.config.extent_bytes-1u;
+    view=comp_v11_product_capture_feedback(app,false);
+    REQUIRE(view.state==COMP_CAPTURE_FULL&&(view.full_reason&COMP_CAPTURE_FULL_EXTENT)&&
+        !(view.full_reason&COMP_CAPTURE_FULL_SLOTS),"fragmented bytes mistaken for usable extent");
+    product->space=space;
+    const comp_cont_stop_t stop=engine->stop_reason;
+    engine->stop_reason=COMP_CONT_STOP_FULL;
+    view=comp_v11_product_capture_feedback(app,false);
+    REQUIRE(view.state==COMP_CAPTURE_SAVED&&(view.full_reason&COMP_CAPTURE_FULL_STOP),
+        "historical full stop hid currently available capacity");
+    engine->stop_reason=stop;
+    product->catalog.phase=1u;view=comp_v11_product_capture_feedback(app,false);
+    REQUIRE(view.state==COMP_CAPTURE_SAVING&&!(view.flags&COMP_CAPTURE_ORIGINAL_SAVED),
+        "uncommitted catalog reported saved");
+    product->catalog.phase=0u;
+    const comp_cont_state_t state=engine->state;
+    const comp_segment_result_t failure=engine->failure;
+    engine->state=COMP_CONT_FAULT;engine->failure=COMP_SEG_IO_ERROR;
+    view=comp_v11_product_capture_feedback(app,false);
+    REQUIRE(view.state==COMP_CAPTURE_ERROR&&!(view.flags&COMP_CAPTURE_MARK_CONFIRMED),
+        "failed writer reported successful mark");
+    engine->state=COMP_CONT_CANCELED;
+    view=comp_v11_product_capture_feedback(app,false);
+    REQUIRE(view.state==COMP_CAPTURE_IDLE&&!(view.flags&(COMP_CAPTURE_ORIGINAL_SAVED|COMP_CAPTURE_MARK_CONFIRMED)),
+        "canceled prepared writer reported saved original");
+    engine->state=state;engine->failure=failure;
+    const comp_wba_pipeline_state_t phase=product->pipeline.state;
+    const comp_segment_result_t pipeline_failure=product->pipeline.failure;
+    product->pipeline.state=COMP_PIPE_FAILED;product->pipeline.failure=COMP_SEG_FULL;
+    view=comp_v11_product_capture_feedback(app,false);
+    REQUIRE(view.state==COMP_CAPTURE_FULL&&(view.full_reason&COMP_CAPTURE_FULL_ALLOCATION)&&
+        !(view.flags&COMP_CAPTURE_ORIGINAL_SAVED),"failed full allocation reported saved or generic error");
+    product->pipeline.state=phase;product->pipeline.failure=pipeline_failure;
+    REQUIRE(product->catalog.generation==generation&&app->preferences.generation==preferences,
+        "feedback changed storage or preferences");
+    return 0;
+}
 static int capture_controls_journey(const char *path)
 {
     comp_v11_hal_t board;comp_v11_product_app_t app;
@@ -1491,6 +1565,7 @@ static int capture_controls_journey(const char *path)
     memset(&fixture,0,sizeof(fixture));fixture.flash=malloc(FLASH_BYTES);
     REQUIRE(fixture.flash,"Capture control NOR allocation");memset(fixture.flash,255u,FLASH_BYTES);layout_root();
     init_board(&app,&board);REQUIRE(wait_state(&app,COMP_WBA_RECORDING_IDLE,20000u),"Capture control boot");
+    feedback_observed=0u;feedback_watch=true;
     uint8_t calendar_settings[17];comp_v11_product_calendar_settings(&app,calendar_settings);
     REQUIRE(comp_rec_get32(calendar_settings+13u)==0u,"unsynchronized date fabricated");
     key(&app,true,80u);key(&app,false,4u);
@@ -1523,6 +1598,26 @@ static int capture_controls_journey(const char *path)
     step(&app,30u);
     comp_cont_recording_t *engine=&app.recording.capture.engine;
     REQUIRE(engine->state==COMP_CONT_RUNNING&&fixture.mic_starts==1u,"Capture start not stable");
+    comp_capture_feedback_t feedback=comp_v11_product_capture_feedback(&app,false);
+    REQUIRE(feedback.state==COMP_CAPTURE_RECORDING&&(feedback.flags&COMP_CAPTURE_MIC_RUNNING),
+        "feedback missed actual microphone capture");
+    const uint32_t first_blocks=engine->stats.accepted_pcm_blocks;
+    engine->stats.accepted_pcm_blocks=0u;
+    REQUIRE(comp_v11_product_capture_feedback(&app,false).state==COMP_CAPTURE_PREPARING,
+        "microphone request reported recording before first PCM");
+    engine->stats.accepted_pcm_blocks=first_blocks;
+    const comp_cont_state_t running=engine->state;
+    engine->state=COMP_CONT_PAUSE_PENDING;
+    REQUIRE(comp_v11_product_capture_feedback(&app,false).state==COMP_CAPTURE_PAUSING,"pending pause claimed paused");
+    engine->state=COMP_CONT_RESUMING;
+    REQUIRE(comp_v11_product_capture_feedback(&app,false).state==COMP_CAPTURE_RESUMING,"pending resume claimed recording");
+    engine->state=running;
+    app.recording.media_ready=false;
+    REQUIRE(comp_v11_product_capture_feedback(&app,false).state==COMP_CAPTURE_PREPARING,
+        "recovery union mistaken for active engine");
+    app.recording.media_ready=true;
+    REQUIRE(comp_v11_product_capture_feedback(NULL,false).state==COMP_CAPTURE_UNKNOWN,
+        "missing product reported a known state");
     uint32_t recorded_date=engine->active.started_unix_s;
     REQUIRE(recorded_date>=calendar_anchor && recorded_date<=calendar_anchor+5u,"Capture date not persisted from synchronized clock");
     REQUIRE(comp_clock_sync_unix(&app.clock,calendar_anchor-1000u,fixture.tick),"host clock backstep fixture");
@@ -1553,6 +1648,14 @@ static int capture_controls_journey(const char *path)
     comp_v11_wake_events_note_key_isr(&board.wake_events,COMP_V11_WAKE_KEY_RISING,fixture.tick);
     comp_v11_product_app_poll(&app);step(&app,4u);
     REQUIRE(wait_state(&app,COMP_WBA_RECORDING_TRANSFER_READY,20000u),"one-second stop not saved");
+    REQUIRE(feedback_saved_checks(&app)==0,"saved feedback checks");
+    const uint32_t expected_states=(1u<<COMP_CAPTURE_PREPARING)|(1u<<COMP_CAPTURE_RECORDING)|
+        (1u<<COMP_CAPTURE_SAVING)|(1u<<COMP_CAPTURE_SAVED);
+    REQUIRE((feedback_observed&expected_states)==expected_states&&
+        (feedback_observed&((uint32_t)COMP_CAPTURE_MARK_PENDING<<16u))&&
+        (feedback_observed&((uint32_t)COMP_CAPTURE_MARK_CONFIRMED<<16u)),
+        "real recorder/NOR journey missed preparing/recording/saving/saved or pending/durable mark feedback");
+    feedback_watch=false;
     REQUIRE(fixture.mic_starts==1u&&!board.microphone.running&&!app.recording.last_fault&&
         engine->bookmark_sequence==2u,"long stop added a mark or repeated start");
     comp_segment_entry_t entry={0};bool found=false;
@@ -1590,6 +1693,7 @@ static int capture_controls_journey(const char *path)
     REQUIRE(comp_preferences_are_defaults(&app.preferences.values)&&app.preferences.values.imu_screen_axes==0x99u,
         "restored preferences or calibration not durable");
     puts("PASS Capture recorder-card controls: one-second start from sleep, two durable short-press marks without pause, one-second stop, original survives reboot");
+    puts("PASS Capture feedback: real prepare/capture/save/mark durability; stale capacity, catalog slots, fragmented extents, cancellation and failure never invent success");
     puts("PASS Capture calendar settings: unknown/midnight/invalid echo/NOR-free sync; active date immutable across host backstep");
     puts("PASS restore preferences: refuses live capture, preserves saved original/date/calibration, no-op repeat and reboot durability");
     free(fixture.flash);return 0;

@@ -1,0 +1,68 @@
+{
+  "at": "2026-11-05T17:10:30+08:00",
+  "state": "IMPLEMENTED_SOFTWARE_ACCEPTED_NOT_INSTALLED",
+  "scope": "P1-3 existing-owner state projection and finite diagnostic access; no new GPIO/color assumption, GATT wire change, recording state machine, buffer, background timer or continuous logging.",
+  "behavior": [
+    "Actual first PCM before recording confirmation",
+    "Pending marker separate from NOR-confirmed current request",
+    "Saving separate from sealed catalog-confirmed original",
+    "Busy/stale capacity unknown; catalog slots and contiguous extent shortage distinguished",
+    "Historical full stop does not mask later reclaimed capacity",
+    "Canceled writers and allocation/storage failures never claim saved original or successful mark",
+    "Actual OTA owner has priority; pause/resume transitions remain explicit"
+  ],
+  "modelReceipt": "capture-feedback-model.json",
+  "armReceipt": "capture-feedback-arm.json",
+  "modelEncodedOriginalByteIdenticalToBefore": true,
+  "modelOriginalSha256": "EAFFDDEB77518826D0F0588F764B5B61C093EB16063A1BFE1A7C6415A736F0AE",
+  "modelMarksIdenticalToBefore": true,
+  "resourceMeasurements": {
+    "product_app_before": {
+      "textAndReadOnly": 9364,
+      "staticRam": 0
+    },
+    "product_app_after": {
+      "textAndReadOnly": 9988,
+      "staticRam": 0
+    },
+    "feedbackFunctionBytes": 624,
+    "feedbackLocalStack": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\firmware-recovery\\platform\\stm32wba55_companion_v11\\product_app.c:537:25:comp_v11_product_capture_feedback\t96\tstatic",
+    "main_before": {
+      "textAndReadOnly": 8789,
+      "staticRam": 11456
+    },
+    "main_after": {
+      "textAndReadOnly": 8938,
+      "staticRam": 11456
+    },
+    "product_app_delta": {
+      "textAndReadOnly": 624,
+      "staticRam": 0
+    },
+    "main_delta": {
+      "textAndReadOnly": 149,
+      "staticRam": 0
+    },
+    "result": "PASS_CHANGED_UNITS_ARM_COMPILE_NOT_FULL_IMAGE",
+    "scope": "Pinned actual ST WBA55 headers/HAL/BLE includes. Non-LTO per-unit object comparison; not final firmware size, complete link, runtime stack peak, hardware LED or installed firmware.",
+    "persistentFeedbackStateBytes": 0
+  },
+  "sourceSha256": {
+    "platform/stm32wba55_companion_v11/capture_feedback.h": "3a2a84b0824e2ae54c5234ad867329237bb36d0407718a4a9bc5d0eb3534a4b9",
+    "platform/stm32wba55_companion_v11/product_app.h": "a6be1445f70df164a2364c61bebf075e160e5f25529ac09cb321ef0adfd36d4b",
+    "platform/stm32wba55_companion_v11/product_app.c": "61e0ffe2a579d31ba5e96cdad1930c25714b7fe0b2b661023f5cc80573f4fb56",
+    "platform/stm32wba55_companion_v11/main.c": "20c7900e5b23993fca0e573116194abd1580cbd85141d0d6742a2479fd089353",
+    "platform/stm32wba55_companion_v11/tests/test_product_recording_segmented.c": "3630608afd7b136d2fe973145a0274b5f9e1fc13cb0c3d69e5c36c28d2d8656b"
+  },
+  "notQualified": [
+    "Original13-file intermediate source diff unresolved; matching UI85 generated inputs missing",
+    "Complete firmware build/size/link not performed",
+    "No actual board OTA, state readback or physical LED/phone UI qualification",
+    "GPIO/polarity/color and physical feedback remain the existing new-board block"
+  ],
+  "failuresPreserved": [
+    "capture-feedback-r1: new helper used void with the fixture int-return REQUIRE macro; corrected helper return type",
+    "capture-feedback-r2: capacity snapshot had not finished its generation-qualified idle scan; fixture now waits on the real owner and asserts unknown until ready",
+    "M33 setup attempts preserve missing GATT/diagnostic include paths and the pinned passive-trace flag correction; actual compiler then exposed and corrected the first-pass duplicate enum replay"
+  ]
+}

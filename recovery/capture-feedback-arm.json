@@ -1,0 +1,31 @@
+{
+  "product_app_before": {
+    "textAndReadOnly": 9364,
+    "staticRam": 0
+  },
+  "product_app_after": {
+    "textAndReadOnly": 9988,
+    "staticRam": 0
+  },
+  "feedbackFunctionBytes": 624,
+  "feedbackLocalStack": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\firmware-recovery\\platform\\stm32wba55_companion_v11\\product_app.c:537:25:comp_v11_product_capture_feedback\t96\tstatic",
+  "main_before": {
+    "textAndReadOnly": 8789,
+    "staticRam": 11456
+  },
+  "main_after": {
+    "textAndReadOnly": 8938,
+    "staticRam": 11456
+  },
+  "product_app_delta": {
+    "textAndReadOnly": 624,
+    "staticRam": 0
+  },
+  "main_delta": {
+    "textAndReadOnly": 149,
+    "staticRam": 0
+  },
+  "result": "PASS_CHANGED_UNITS_ARM_COMPILE_NOT_FULL_IMAGE",
+  "scope": "Pinned actual ST WBA55 headers/HAL/BLE includes. Non-LTO per-unit object comparison; not final firmware size, complete link, runtime stack peak, hardware LED or installed firmware.",
+  "persistentFeedbackStateBytes": 0
+}
