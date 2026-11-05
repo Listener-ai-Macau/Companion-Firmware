@@ -1,0 +1,97 @@
+DIAG1 BEGIN seq=7 reason=query
+DIAG1 ID seq=7 fw=0001047a build=20261004 board=57424155 uid=120011000d50335754363720 ui=85 uptime_ms=255556
+DIAG1 CORE seq=7 reset=14000000 iwdg_reset=0 faults=00000000 clock=0 lse=0 io=0 imu=0 touch=0 audio=0 mic=0 nor=0 panel=0 battery=0 ram_gap=424 stack_min=4416 stack_low=0 stack_guard=0
+DIAG1 DISPLAY seq=7 bound=0 driver=0 error=0 presenter=2 assets=1 rendered=0 failed=0 stage=0 busy=0 transfer_calls=0 busy_timeouts=0
+DIAG1 STORAGE seq=7 jedec=ef6018 size=16777216 layout=1 recording_ready=1 rec_state=6 rec_fault=0 committed=290472 suspend_ok=1 erase_active=0 erase_sus=0 sus_ms=2 resume_ms=2 bfp_dw=16 dw12=337663e9 dw13=757a757a
+DIAG1 AUDIO seq=7 mic_init=1 mic_run=0 mic_hal=0 mic_irq_err=0 mic_stale=0 mic_overflow=0 mic_reject=0 frames=13800 deadline=0 speaker_ready=1 fg_ms=6 hal_ms=4 rec_ms=1 ble_ms=3 runtime_ms=1 present_ms=1 render_ms=1 pdm_ms=4
+DIAG1 TIMING seq=7 rec_id=131868 mic_starts=1 tick_us=1000 min_samples=20 enc_n=6901 enc_valid=1 enc_p95_upper_ms=6 enc_peak_upper_ms=7 pdm_n=13801 pdm_valid=1 pdm_p95_upper_ms=3 pdm_peak_upper_ms=5
+DIAG1 BLE seq=7 compiled=1 init=1 host=1 host_error=0 connection=ffff linked=0 secured=0 fatal=0 bond_lost=0 rebond=0 pair_status=0 pair_reason=0
+DIAG1 POWER seq=7 adc=0 voltage_valid=0 percent_valid=0 charger_valid=1 charger_present=1 mv=0 pct=255 charge=1 ota_block=0000 sleep_block=00000000
+DIAG1 BATTERY seq=7 vref_raw=2746 vref_cal=1648 vdda_mv=1800 vref_valid=1 vref_age_ms=118 vref_n=51 raw=0 samples=0 adc_error=0 adc_failures=0 divider_safe=0 divider_verified=0 reference_verified=0 sample_errors=0 gate_errors=0 raw_mode=0 input_mv=0 input_valid=0 saturated=0 sample_age_ms=4294967295 vdda_min_mv=1798 vdda_max_mv=1803
+DIAG1 POWERCFG seq=7 top_ohm=100000 bottom_ohm=68000 max_cell_mv=4350 reference_floor_mv=1700 charger_pullups_verified=1 soc_curve_verified=0
+DIAG1 END seq=7
+BOOT4 schema=1 route=2
+HALCAP schema=1 calls=75152 total_ms=4 speaker=1 pdm=2 panel=0 imu=1 touch=0 inputs=0 power=0 statuses=0
+PDM3 output=0 processed_mask=1 inactive_stats=unavailable
+DMIC1 schema=1 token=1 samples=0 count=0 invalid=1 clip_l=0 clip_r=0 ls_hi=0 ls_lo=0 lss_hi=0 lss_lo=0
+DMIC1 lag=-3 rs_hi=0 rs_lo=0 rss_hi=0 rss_lo=0 cross_hi=0 cross_lo=0
+DMIC1 lag=-2 rs_hi=0 rs_lo=0 rss_hi=0 rss_lo=0 cross_hi=0 cross_lo=0
+DMIC1 lag=-1 rs_hi=0 rs_lo=0 rss_hi=0 rss_lo=0 cross_hi=0 cross_lo=0
+DMIC1 lag=0 rs_hi=0 rs_lo=0 rss_hi=0 rss_lo=0 cross_hi=0 cross_lo=0
+DMIC1 lag=1 rs_hi=0 rs_lo=0 rss_hi=0 rss_lo=0 cross_hi=0 cross_lo=0
+DMIC1 lag=2 rs_hi=0 rs_lo=0 rss_hi=0 rss_lo=0 cross_hi=0 cross_lo=0
+DMIC1 lag=3 rs_hi=0 rs_lo=0 rss_hi=0 rss_lo=0 cross_hi=0 cross_lo=0
+RCTL1 schema=1 token=1 state=5 stop_reason=1 result=0 prepare=0 prepare_ms=73548 pipeline=6 core=4 stop_requested=0
+OTA3 manifest_attempts=0 manifest_stage=0 pka_failure_stage=0 pka_failure_status=0 pka_failure_error=0 pka_failures=0
+CODEC1 last_encode_error=0
+CAPTURE1 state=6 flags=56 full_reason=0 mark_request=0
+RECQ1 INPUT token=1 bound=1 state=4 mic=0 block_samples=160 pcm_blocks=13800 encoded_packets=6901
+RECQ1 PENDING token=1 depth=0 peak=2 slots=8 codec_pcm=0 stage_bytes=0 writer_phase=0
+RECQ1 END token=1 durable_bytes=290472 pcm_overflows=0 budget_failures=0 queue_age_measured=0
+SWD1 pa13_mode=2 pa13_af=0 pa13_pull=1 pa14_mode=2 pa14_af=0 pa14_pull=2 debug=00090006 sleepdeep=0 low_power=STOP1_AUTOMATIC
+SCREEN1 enabled=0
+BUTTON1 max_hold_ms=0 last_event=0 raw=0 pressed=0 consumed=0 wake_only=0 double=0 runtime_result=0 rejected=0
+BUTTON2 hold_ms=1000 marks=0 mark_request=0 mark_pending=0
+BUTTON3 down_edges=0 up_edges=0 down_ms=0 up_ms=0
+BATPATH1 pa5_mode=3 gate_on=00 io=00 input_age=322 pg=0 stat=0 seen=1
+POWER1 entries=110 compensated_ms=1847 failures=0 wake_flags=2
+POWER1_IRQ point=before valid=1 entered=1 nvic=00000000,00000000,00000000 icsr=00000000 exti_r=00000000 exti_f=00000000
+POWER1_IRQ point=after valid=1 entered=1 nvic=00000004,00000000,00000000 icsr=00412000 exti_r=00000000 exti_f=00000000
+UI2 wakes=0 source=0 wake_ms=0 motion_flags=0 motion_ms=0 orientation=0
+IMU2 ms=255514 age_ms=402 n=12198 ax=703 ay=268 az=-639 tilt=255 axes=00 carry=0 movement_ms=0
+UI1 surface=0 visible_surface=0 revision=182 visible_revision=0 outstanding=0 idle_ms=182008 idle_minutes=3 touch_contact=0 key_debounced=0 committed_valid=0 ink_pixels=0
+BUI1 ui_pct=255 cell_mv=0 est=0 age_ms=4294967295 fill=0 hint_seen=0 hint_pending=0 hint_fail=0
+PANEL16 gpio low_slew=0 dc_mode=1 mosi_mode=1 cs_mode=1 sck_mode=1 dc_speed=2 mosi_speed=2 cs_speed=2 sck_speed=2 dc_od=0 mosi_od=0 cs_od=0 sck_od=0
+PANEL17 mode2_recovery misses=0 retries=0 recovered=0 last_retry_ms=0 recovery_ms=0
+PANEL14 recovery_full started=0 guard=0 held=0 min_ms=60000 next_ms=0 now=255556
+TOUCH1 ack=0 stage=0 probes=0 retries=0 reads=0 errors=0 hal=0 i2c_error=00000000 rst_cmd=0 scl=0 sda=0 id_a3=00 fw_a6=00 id_a8=00 contacts=0 x=0 y=0 downs=0 last_ms=0 last_x=0 last_y=0 resets=0 reset_phase=0
+TOUCH2 tca_valid=1 rst_tca=0 scan_count=0 scan_next=00 scan_errors=0 ack_00_1f=00000000 ack_20_3f=00000000 ack_40_5f=00000000 ack_60_7f=00000000 stop_read=0 read_leg=0
+CLOCK1 core_hz=61439820 sysclk_hz=61439820 hclk5_hz=30719910 sai_hz=49151856
+CLOCK2 flash_ws=1 voltage_scale=65536 hclk_hz=61439820
+CLOCK3 icache_enabled=1 icache_ways=1 panel_software=1 panel_delay_loops=40 idle_divider=1
+PANELIO1 boot_scope=1 calls=0 transferred_bytes=0
+PANEL2 full=0 partial=0 fast=0 recording=0 first_error=0 first_stage=0 first_op=0 first_seq=0 first_busy=0 first_ms=0 first_wait_ms=0
+PANEL20 first_ready start_ms=0 last_poll_ms=0 samples=0 high=0 max_gap_ms=0 max_quiet_ms=0 rise_samples=0 edges=0
+PANEL3 last_cmd=00 cmd_ms=0 complete_ms=0 visible_wait_ms=0 busy_edge_ms=0 ready_glitches=0 idle_busy_edges=0 paired=0 blink_rebases=0 since_full=0 full_ms=0 start_max_ms=0 delayed_starts=0
+INPUT1 key_wakes=0 last_ms=0 raw_pressed=0 pending=0
+BLETRACE0 retained=16 capacity=16 cursor_from=1 partial=1
+BLETRACE1 seq=111 ms=238619 reason=15 handle=0 ci=48 tx_us=0 octets=0 tx_phy=0 rx_phy=0 status=0 bulk=0 detail=2000
+BLETRACE1 seq=114 ms=238740 reason=10 handle=0 ci=512 tx_us=0 octets=509 tx_phy=0 rx_phy=0 status=0 bulk=0 detail=0
+BLETRACE1 seq=115 ms=239220 reason=3 handle=0 ci=48 tx_us=965 octets=251 tx_phy=0 rx_phy=0 status=0 bulk=0 detail=965
+BLETRACE1 seq=116 ms=239999 reason=4 handle=0 ci=48 tx_us=965 octets=251 tx_phy=2 rx_phy=2 status=0 bulk=0 detail=0
+BLETRACE1 seq=117 ms=240000 reason=8 handle=0 ci=48 tx_us=965 octets=251 tx_phy=2 rx_phy=2 status=0 bulk=0 detail=256
+BLETRACE1 seq=118 ms=240120 reason=3 handle=0 ci=48 tx_us=965 octets=251 tx_phy=2 rx_phy=2 status=0 bulk=0 detail=965
+BLETRACE2 END partial=1
+LINK1 ci_units=48 latency=0 tx_phy=2 rx_phy=2 tx_octets=251 connected=0 bp=670 pool=448 timer=220 rx_profile=0 rx_status=0 att_mtu=512 mtu_state=128 mtu_status=255
+LINK2 tx_time_us=965 compact_limit_bytes=489 value_limit_bytes=509 single_ll_audio_estimate=199 dle_attempts=1 dle_accepted=1 dle_status=0 ci_request_status=0
+LINK3 aligned_octets=0 alignment_attempted=0 alignment_status=255 restore_attempted=0 restore_status=255 ci_attempts=0 dle_waiting=0
+LINK4 limits_status=0 max_tx_octets=251 max_tx_us=17040 max_rx_octets=251 max_rx_us=17040
+LINK5 suggested_status=0 suggested_tx_octets=251 suggested_tx_us=2120 effective_rx_octets=251 effective_rx_us=965
+GATTHASH1 calls=8 input_bytes=672 last=128cc31c9a120d8d519910626f7f0660 previous=128cc31c9a120d8d519910626f7f0660 scope=public_db
+GATTHASH3 complete_input_bytes=931 faults=0 scope=public_db
+GATTHASH2 envelope_valid=1 live_records=1 hash_valid=1 hash=128cc31c9a120d8d519910626f7f0660 sc_present=1 sc_cccd=2
+BOND1 restore=0 peers_boot=1 pending=0 busy=0 writes_ok=0 writes_failed=0 bulk_ci_status=0
+GAP1 disconnects=4 secured_disconnects=4 last_ms=253560 reason=13 secured_reason=13 was_secured=1 enc_status=00 enc_enabled=1
+GAP3 first_secured_disconnect_ms=12342 first_secured_reason=13 first_bond_lost_ms=0
+GAP2 radio=1 auto_reconnect=1 advertising=1 pending=0 pair_open=0 connection_allowed=1 ll_status=00 ll_mask=01 recoveries=0 stop_pending=0 rearms=4 gap_stop=0c ctrl_stop=00
+GAP4 seen=4 failed=0 unowned=0 kind=01 code=00 last_ms=238232
+CAPREAD schema=1 scope=backend_capture calls=1625 max_us=1143 ge5ms=0 ge10ms=0 errors=0
+XFER1 read_steps=215 read_us=119981 read_max_us=1111 notify=200 notify_us=20007 notify_max_us=400
+XFER2 pool_in_call=0 retry_delay_ms=2 staged_retry=634 busy=0 complete=673
+XFER4 wait_ms=0 windows=0 active=0 measured=0
+XFER5 residence_schema=1 accepted=138 completed=130 begin=0 end=8 flags=0 hook_bound=1
+XFER6 residence_schema=1 samples=130 total_us=8924481 max_us=165405 reports=39 radio_starts=40 zero_starts=0
+RADACT schema=1 min_us=2864 max_us=9294 n=7,3,14,15 flags=0 pending=1
+XFER7 controller_buffer_schema=1 status=0 packet_bytes=251 packets=8
+LLSEND1 schema=1 count=0 first=00000000 last=00000000 saturated=0
+LLSEND2 schema=1 pending_cancelled=0
+SPIRD schema=1 calls=215 total_us=84287 overflow=0 sck_hz=8000000 bytes_per_call=256
+XFER9 gate_schema=2 pool_us=0 complete_us=168843 timer_us=792148 pool=0 complete=32 timer=72 flags=128
+XFER8 span_us=1181633 clock_fallbacks=0 systick_load=61438 tick_step_ms=1
+XFER10 gate_schema=2 stage=0 commit=104 radio_pending=39 radio_empty=0
+CREDITWAKE schema=1 wake=32 accepted=30 resource=2 pending=0 attempt=0
+XFER11 task=1 n=367 us=12695 max=574 coal=50 unpaired=0 flags=0
+XFER11 task=2 n=42 us=26786 max=2414 coal=40 unpaired=0 flags=0
+SDKMAX schema=2 boot_scope=1 read=1 exec_ticks=17 drift_ticks=13 unit=ll_hw_step count_known=0
+XFER3 state=0 result=2 id=0 next=0 remaining=0 ready=0 staged=0 gate=0 allowed=0
+ADCFAIL1 failures=0 first_error=0 first_phase=0 current_error=0

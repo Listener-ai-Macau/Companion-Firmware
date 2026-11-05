@@ -209,9 +209,14 @@ static void logical_control_across_segments(void)
     send(COMPANION_GATT_CHAR_MEETING_CONTROL,wire,52u);assert(link_owner.record_calls==1u);
     product_ready_capture(0x100000002ull,link_owner.runtime.record_token);
     link_owner.runtime.command_pending=false;link_owner.runtime.prepare_pending=false;link_owner.runtime.capture_active=true;
+    comp_link_poll(&link_owner.link,f.now);
+    assert(mic&&!product_rec.capture.engine.stats.accepted_pcm_blocks&&logical_status[1]==0u);
+    int16_t first_samples[160];pcm(0u,first_samples);
+    assert(comp_wba_recording_product_pcm(&product_rec,first_samples,160u,16000u));
+    for(unsigned i=0u;i<100u;i++)product_tick();
     comp_link_poll(&link_owner.link,f.now);uint32_t anchor=comp_rec_get32(logical_status+12u);
-    assert(anchor&&comp_rec_get64(logical_status+52u)==0x100000002ull);
-    for(unsigned block=0u;block<70u;block++) {
+    assert(logical_status[1]==1u&&anchor&&comp_rec_get64(logical_status+52u)==0x100000002ull);
+    for(unsigned block=1u;block<70u;block++) {
         int16_t samples[160];pcm(block,samples);assert(comp_wba_recording_product_pcm(&product_rec,samples,160u,16000u));
         for(unsigned i=0u;i<100u;i++)product_tick();
     }
@@ -279,9 +284,14 @@ static void pause_controls(const char *path)
     for(unsigned i=0u;i<10000u&&!comp_wba_recording_product_ready(&product_rec,link_owner.runtime.record_token);i++)product_tick();
     assert(comp_wba_recording_product_control(&product_rec,true,link_owner.runtime.record_token));
     link_owner.runtime.prepare_pending=link_owner.runtime.command_pending=false;pause_control_tick();
+    assert(mic&&!product_rec.capture.engine.stats.accepted_pcm_blocks&&logical_status[1]==0u);
+    int16_t first_samples[160];pcm(0u,first_samples);
+    assert(comp_wba_recording_product_pcm(&product_rec,first_samples,160u,16000u));
+    for(unsigned i=0u;i<100u;i++)product_tick();
+    pause_control_tick();
     assert(logical_status[1]==1u&&logical_status[64]==1u&&link_owner.link.remote_limit_ms==600000u);
     uint32_t anchor=comp_rec_get32(logical_status+12u);assert(anchor);pause_control_export(out,wire,true,&count);
-    for(unsigned block=0u;block<8u;block++) {
+    for(unsigned block=1u;block<8u;block++) {
         int16_t samples[160];pcm(block,samples);assert(comp_wba_recording_product_pcm(&product_rec,samples,160u,16000u));
         for(unsigned i=0u;i<100u;i++)product_tick();
     }
@@ -326,8 +336,13 @@ static void pause_controls(const char *path)
     for(unsigned i=0u;i<10000u&&!comp_wba_recording_product_ready(&product_rec,link_owner.runtime.record_token);i++)product_tick();
     assert(comp_wba_recording_product_control(&product_rec,true,link_owner.runtime.record_token));
     link_owner.runtime.prepare_pending=link_owner.runtime.command_pending=false;pause_control_tick();
+    assert(mic&&!product_rec.capture.engine.stats.accepted_pcm_blocks&&logical_status[1]==0u);
+    pcm(0u,first_samples);
+    assert(comp_wba_recording_product_pcm(&product_rec,first_samples,160u,16000u));
+    for(unsigned i=0u;i<100u;i++)product_tick();
+    pause_control_tick();
     pause_control_export(out,wire,true,&count);anchor=comp_rec_get32(logical_status+12u);
-    for(unsigned block=0u;block<4u;block++) {
+    for(unsigned block=1u;block<4u;block++) {
         int16_t samples[160];pcm(block,samples);assert(comp_wba_recording_product_pcm(&product_rec,samples,160u,16000u));
         for(unsigned i=0u;i<100u;i++)product_tick();
     }
@@ -369,11 +384,16 @@ static void local_controls(const char *path)
         for(unsigned i=0u;i<10000u&&!comp_wba_recording_product_ready(&product_rec,token);i++)product_tick();
         assert(comp_wba_recording_product_control(&product_rec,true,token));
         link_owner.runtime.prepare_pending=link_owner.runtime.command_pending=false;pause_control_tick();
+        assert(mic&&!product_rec.capture.engine.stats.accepted_pcm_blocks&&logical_status[1]==0u);
+        int16_t first_samples[160];pcm(0u,first_samples);
+        assert(comp_wba_recording_product_pcm(&product_rec,first_samples,160u,16000u));
+        for(unsigned i=0u;i<100u;i++)product_tick();
+        pause_control_tick();
         assert(logical_status_bytes==80u&&logical_status[1]==1u&&logical_status[66]==local);
         uint32_t start=link_owner.link.meeting_start_request_id,anchor=comp_rec_get32(logical_status+12u);
         assert(start==(local?token:101u)&&anchor);
         assert(fwrite(logical_status,1u,80u,out)==80u);
-        for(unsigned block=0u;block<8u;block++) {
+        for(unsigned block=1u;block<8u;block++) {
             int16_t samples[160];pcm(block,samples);assert(comp_wba_recording_product_pcm(&product_rec,samples,160u,16000u));
             for(unsigned i=0u;i<100u;i++)product_tick();
         }

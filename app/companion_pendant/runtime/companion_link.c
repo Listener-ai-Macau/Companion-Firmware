@@ -132,6 +132,12 @@ static void meeting_refresh(comp_link_t *l,uint32_t now)
                 why==COMP_RECORD_STOP_POWER_UNKNOWN?COMPANION_V1_MEETING_ERROR_POWER_UNKNOWN:COMPANION_V1_MEETING_ERROR_REJECTED;
         } else if(p->state==COMP_PIPE_FAILED)status->last_error=COMPANION_V1_MEETING_ERROR_REJECTED;
         else if(p->engine_bound&&(p->state==COMP_PIPE_RECORDING||p->state==COMP_PIPE_STOPPING||p->state==COMP_PIPE_FINISHED)) {
+            /* Opening the microphone is still START preparation: its first
+             * DMA halves are acoustic settling, not accepted audio. Keep the
+             * existing pending reply until the real PCM owner accepts a block.
+             * STOP/cancel and pause transitions retain their actual results. */
+            if(p->state==COMP_PIPE_RECORDING&&!p->stop_requested&&
+               e->state==COMP_CONT_RUNNING&&!e->stats.accepted_pcm_blocks)return;
             status->state=p->state==COMP_PIPE_FINISHED?MEETING_STATE_FINALIZED:MEETING_STATE_RECORDING;
             if(l->meeting_extended&&p->state!=COMP_PIPE_FINISHED) {
                 if(p->stop_requested||p->state==COMP_PIPE_STOPPING)status->state=MEETING_STATE_STOPPING;
