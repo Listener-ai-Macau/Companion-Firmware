@@ -1,0 +1,67 @@
+{
+  "schema": "companion.engineering-endpoint-selection.v1",
+  "observedAt": "2026-11-05T20:25:11+08:00",
+  "observation": {
+    "phoneSerial": "d6bd213d",
+    "adbOnline": false,
+    "serviceActive": null,
+    "packageReady": false,
+    "preparedProcessLive": false,
+    "activityResumed": false,
+    "phoneLogReadAvailable": false,
+    "availability": "phone_absent"
+  },
+  "stageBoundary": "closed_and_physical_idle_observed",
+  "startsOperation": false,
+  "requiredBeforeHardware": [
+    "board_turn",
+    "shared_file_lease",
+    "current_source_binding",
+    "normal_uart_admission"
+  ],
+  "boardTurn": {
+    "next": null,
+    "liveLeases": 0,
+    "mayClaim": {
+      "codex": true,
+      "grok": true
+    },
+    "turnMinutes": 0
+  },
+  "endpoint": "windows",
+  "action": "next_windows_or_offline_stage",
+  "reason": "Phone is unavailable or not ready for a new job; continue executable Windows work without waiting.",
+  "phoneObservations": [
+    {
+      "phoneSerial": "d6bd213d",
+      "adbOnline": false,
+      "serviceActive": null,
+      "packageReady": false,
+      "preparedProcessLive": false,
+      "activityResumed": false,
+      "phoneLogReadAvailable": false,
+      "availability": "phone_absent"
+    },
+    {
+      "phoneSerial": "bcfb8bc1",
+      "adbOnline": false,
+      "serviceActive": null,
+      "packageReady": false,
+      "preparedProcessLive": false,
+      "activityResumed": false,
+      "phoneLogReadAvailable": false,
+      "availability": "phone_absent"
+    },
+    {
+      "phoneSerial": "6LCAPVHE9PBE45DU",
+      "adbOnline": false,
+      "serviceActive": null,
+      "packageReady": false,
+      "preparedProcessLive": false,
+      "activityResumed": false,
+      "phoneLogReadAvailable": false,
+      "availability": "phone_absent"
+    }
+  ],
+  "previousStageReceipt": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\firmware-recovery\\recovery\\ota66681-inputs\\previous-stage.json"
+}

@@ -1,0 +1,213 @@
+{
+  "schema": "companion.wba.uart-diagnostic.v1",
+  "result": "ISSUES_DETECTED",
+  "source": "UART_QUERY",
+  "hardwareAcceptance": "NOT_EVALUATED",
+  "fullChainAcceptance": "NOT_RUN",
+  "flashed": false,
+  "resetsRequested": false,
+  "errors": [],
+  "rejectedFrames": [],
+  "snapshot": {
+    "seq": 2,
+    "reason": "query",
+    "sections": {
+      "ID": {
+        "fw": "00010477",
+        "build": "20261004",
+        "board": "57424155",
+        "uid": "120011000d50335754363720",
+        "ui": 85,
+        "uptime_ms": 23413
+      },
+      "CORE": {
+        "reset": "14000000",
+        "iwdg_reset": 0,
+        "faults": "00000000",
+        "clock": 0,
+        "lse": 0,
+        "io": 0,
+        "imu": 0,
+        "touch": 0,
+        "audio": 0,
+        "mic": 0,
+        "nor": 0,
+        "panel": 0,
+        "battery": 0,
+        "ram_gap": 432,
+        "stack_min": 18152,
+        "stack_low": 0,
+        "stack_guard": 0
+      },
+      "DISPLAY": {
+        "bound": 0,
+        "driver": 0,
+        "error": 0,
+        "presenter": 2,
+        "assets": 1,
+        "rendered": 0,
+        "failed": 0,
+        "stage": 0,
+        "busy": 0,
+        "transfer_calls": 0,
+        "busy_timeouts": 0
+      },
+      "STORAGE": {
+        "jedec": "ef6018",
+        "size": 16777216,
+        "layout": 1,
+        "recording_ready": 1,
+        "rec_state": 1,
+        "rec_fault": 0,
+        "committed": 0,
+        "suspend_ok": 1,
+        "erase_active": 0,
+        "erase_sus": 0,
+        "sus_ms": 2,
+        "resume_ms": 2,
+        "bfp_dw": 16,
+        "dw12": "337663e9",
+        "dw13": "757a757a"
+      },
+      "AUDIO": {
+        "mic_init": 1,
+        "mic_run": 0,
+        "mic_hal": 0,
+        "mic_irq_err": 0,
+        "mic_stale": 0,
+        "mic_overflow": 0,
+        "mic_reject": 0,
+        "frames": 0,
+        "deadline": 0,
+        "speaker_ready": 1,
+        "fg_ms": 0,
+        "hal_ms": 0,
+        "rec_ms": 0,
+        "ble_ms": 0,
+        "runtime_ms": 0,
+        "present_ms": 0,
+        "render_ms": 0,
+        "pdm_ms": 1
+      },
+      "TIMING": {
+        "rec_id": 0,
+        "mic_starts": 0,
+        "tick_us": 1000,
+        "min_samples": 20,
+        "enc_n": 0,
+        "enc_valid": 0,
+        "enc_p95_upper_ms": 0,
+        "enc_peak_upper_ms": 0,
+        "pdm_n": 0,
+        "pdm_valid": 0,
+        "pdm_p95_upper_ms": 0,
+        "pdm_peak_upper_ms": 0
+      },
+      "BLE": {
+        "compiled": 1,
+        "init": 1,
+        "host": 1,
+        "host_error": 0,
+        "connection": "ffff",
+        "linked": 0,
+        "secured": 0,
+        "fatal": 0,
+        "bond_lost": 0,
+        "rebond": 0,
+        "pair_status": 255,
+        "pair_reason": 255
+      },
+      "POWER": {
+        "adc": 0,
+        "voltage_valid": 0,
+        "percent_valid": 0,
+        "charger_valid": 0,
+        "charger_present": 0,
+        "mv": 0,
+        "pct": 255,
+        "charge": 0,
+        "ota_block": "0004",
+        "sleep_block": "00000088"
+      },
+      "BATTERY": {
+        "vref_raw": 2746,
+        "vref_cal": 1648,
+        "vdda_mv": 1800,
+        "vref_valid": 1,
+        "vref_age_ms": 4422,
+        "vref_n": 4,
+        "raw": 0,
+        "samples": 0,
+        "adc_error": 0,
+        "adc_failures": 0,
+        "divider_safe": 0,
+        "divider_verified": 0,
+        "reference_verified": 0,
+        "sample_errors": 0,
+        "gate_errors": 0,
+        "raw_mode": 0,
+        "input_mv": 0,
+        "input_valid": 0,
+        "saturated": 0,
+        "sample_age_ms": 4294967295,
+        "vdda_min_mv": 1800,
+        "vdda_max_mv": 1802
+      },
+      "POWERCFG": {
+        "top_ohm": 100000,
+        "bottom_ohm": 68000,
+        "max_cell_mv": 4350,
+        "reference_floor_mv": 1700,
+        "charger_pullups_verified": 1,
+        "soc_curve_verified": 0
+      }
+    }
+  },
+  "issues": [
+    {
+      "code": "POWER_UNQUALIFIED",
+      "message": "电池/充电检测有未验证字段；0 mV 或 0% 不能当实测。需确认分压量程与 PG/STAT 上拉。"
+    },
+    {
+      "code": "OTA_POWER_BLOCKED",
+      "message": "当前电源条件阻止 OTA；先核实供电和电源检测，不能跳过更新门禁。"
+    }
+  ],
+  "battery": {
+    "cellState": "DIVIDER_UNVERIFIED",
+    "cellMillivolts": null,
+    "socPercent": null,
+    "supplyMillivolts": 1800,
+    "supplyAgeMs": 4422,
+    "supplyMinMillivolts": 1800,
+    "supplyMaxMillivolts": 1802,
+    "chargeState": "UNKNOWN",
+    "adcError": 0,
+    "samplingBlockers": [
+      "DIVIDER_UNVERIFIED",
+      "DIVIDER_RANGE",
+      "REFERENCE_UNVERIFIED"
+    ],
+    "configuration": {
+      "top_ohm": 100000,
+      "bottom_ohm": 68000,
+      "max_cell_mv": 4350,
+      "reference_floor_mv": 1700,
+      "charger_pullups_verified": 1,
+      "soc_curve_verified": 0
+    },
+    "maximumNominalInputMillivolts": 1761,
+    "requiredProfileSupplyMillivolts": 1861,
+    "chargeStateObservable": true,
+    "socCurveQualified": false
+  },
+  "exercise": {
+    "microphone": "NOT_EXERCISED",
+    "display": "NOT_EXERCISED",
+    "bleLink": "NOT_CONNECTED",
+    "speaker": "INITIALIZED_NOT_ACOUSTIC_ACCEPTANCE"
+  },
+  "screenEnabled": false,
+  "bootPreBleObserved": false,
+  "rawLogSha256": "ab0785c5eb75280dc7a1defb40b9d66c696ba141263f2f5a2091a7a136e94209"
+}

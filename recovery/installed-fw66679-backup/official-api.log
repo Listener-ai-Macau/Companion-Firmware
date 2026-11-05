@@ -1,0 +1,96 @@
+1: STM32CubeProgrammer API v2.23.0 | Windows-64Bits **||**STM32CubeProgrammer API v2.23.0 | Windows-64Bits 
+HOST_PARAMETERS accessPort=1 mode=0 frequency=1000
+1: ST-LINK SN  : 004400403532510B31333430**||**ST-LINK SN  : 004400403532510B31333430
+1: ST-LINK FW  : V3J17M11B6S1**||**ST-LINK FW  : V3J17M11B6S1
+1: Board       : STLINK-V3SET**||**Board       : STLINK-V3SET
+1: Voltage     : 1.79V**||**Voltage     : 1.79V
+1: SWD freq    : 1000 KHz**||**SWD freq    : 1000 KHz
+1: Connect mode: Normal**||**Connect mode: Normal
+1: Reset mode  : Software reset**||**Reset mode  : Software reset
+1: Device ID   : 0x492**||**Device ID   : 0x492
+1: Revision ID : Rev B**||**Revision ID : Rev B
+8: Clear all interrupts
+**||**Clear all interrupts
+
+8: Reading data...**||**Reading data...
+8: r ap 1 @0x0BF905D2 0x00000004 bytes Data 0xFF130035**||**r ap 1 @0x0BF905D2 0x00000004 bytes Data 0xFF130035
+8: Reading data...**||**Reading data...
+8: r ap 1 @0x40022040 0x00000004 bytes Data 0x7FFFF8AA**||**r ap 1 @0x40022040 0x00000004 bytes Data 0x7FFFF8AA
+7: Database: Config 0 is active.**||**Database: Config 0 is active.
+7: flash loader C:\ST\STM32CubeProgrammer\bin/FlashLoader/0x492.stldr is loaded**||**flash loader C:\ST\STM32CubeProgrammer\bin/FlashLoader/0x492.stldr is loaded
+0: Debug in Low Power mode is not supported for this device.**||**Debug in Low Power mode is not supported for this device.
+0: UPLOADING ...**||**UPLOADING ...
+0:   Size          : 12 Bytes**||**  Size          : 12 Bytes
+0:   Address       : 0xBF90700**||**  Address       : 0xBF90700
+0: Read progress:**||**Read progress:
+8: Reading data...**||**Reading data...
+8: r ap 1 @0x0BF90700 0x0000000C bytes Data 0x00110012**||**r ap 1 @0x0BF90700 0x0000000C bytes Data 0x00110012
+9: Data read successfully**||**Data read successfully
+0: Time elapsed during the read operation is: 00:00:00.000**||**Time elapsed during the read operation is: 00:00:00.000
+0: **||**
+0: UPLOADING ...**||**UPLOADING ...
+0:   Size          : 4 Bytes**||**  Size          : 4 Bytes
+0:   Address       : 0xE0044008**||**  Address       : 0xE0044008
+0: Read progress:**||**Read progress:
+8: Reading data...**||**Reading data...
+8: r ap 1 @0xE0044008 0x00000004 bytes Data 0x00000000**||**r ap 1 @0xE0044008 0x00000004 bytes Data 0x00000000
+9: Data read successfully**||**Data read successfully
+0: Time elapsed during the read operation is: 00:00:00.000**||**Time elapsed during the read operation is: 00:00:00.000
+0: **||**
+8: r ap 1 @0x40022040 0x00000004 bytes Data 0x7FFFF8AA**||**r ap 1 @0x40022040 0x00000004 bytes Data 0x7FFFF8AA
+8: r ap 1 @0x40022040 0x00000004 bytes Data 0x7FFFF8AA**||**r ap 1 @0x40022040 0x00000004 bytes Data 0x7FFFF8AA
+8: r ap 1 @0x40022040 0x00000004 bytes Data 0x7FFFF8AA**||**r ap 1 @0x40022040 0x00000004 bytes Data 0x7FFFF8AA
+7: Programming via FlashLoader!**||**Programming via FlashLoader!
+7: Memory Erase via FlashLoader!**||**Memory Erase via FlashLoader!
+7: Memory erase...**||**Memory erase...
+0: DOWNLOADING ...**||**DOWNLOADING ...
+0:   Size          : 4 Bytes**||**  Size          : 4 Bytes
+0:   Address       : 0xE0044008**||**  Address       : 0xE0044008
+8: r ap 1 @0x40022040 0x00000004 bytes Data 0x7FFFF8AA**||**r ap 1 @0x40022040 0x00000004 bytes Data 0x7FFFF8AA
+8: r ap 1 @0x40022040 0x00000004 bytes Data 0x7FFFF8AA**||**r ap 1 @0x40022040 0x00000004 bytes Data 0x7FFFF8AA
+7: Programming via FlashLoader!**||**Programming via FlashLoader!
+8: Buffer program...**||**Buffer program...
+8: w ap 1 @0xE0044008 : 0x00000004 bytes, Data 0x00001000...**||**w ap 1 @0xE0044008 : 0x00000004 bytes, Data 0x00001000...
+0: Data downloaded successfully**||**Data downloaded successfully
+0: UPLOADING ...**||**UPLOADING ...
+0:   Size          : 24576 Bytes**||**  Size          : 24576 Bytes
+0:   Address       : 0x8000000**||**  Address       : 0x8000000
+0: Read progress:**||**Read progress:
+8: Reading data...**||**Reading data...
+8: r ap 1 @0x40022040 0x00000004 bytes Data 0x7FFFF8AA**||**r ap 1 @0x40022040 0x00000004 bytes Data 0x7FFFF8AA
+8: r ap 1 @0x40022050 0x00000004 bytes Data 0x00000000**||**r ap 1 @0x40022050 0x00000004 bytes Data 0x00000000
+8: r ap 1 @0x40022040 0x00000004 bytes Data 0x7FFFF8AA**||**r ap 1 @0x40022040 0x00000004 bytes Data 0x7FFFF8AA
+8: r ap 1 @0x08000000 0x00006000 bytes Data 0x20020000**||**r ap 1 @0x08000000 0x00006000 bytes Data 0x20020000
+9: Data read successfully**||**Data read successfully
+0: Time elapsed during the read operation is: 00:00:00.203**||**Time elapsed during the read operation is: 00:00:00.203
+0: **||**
+0: UPLOADING ...**||**UPLOADING ...
+0:   Size          : 458752 Bytes**||**  Size          : 458752 Bytes
+0:   Address       : 0x8006000**||**  Address       : 0x8006000
+0: Read progress:**||**Read progress:
+8: Reading data...**||**Reading data...
+8: r ap 1 @0x40022040 0x00000004 bytes Data 0x7FFFF8AA**||**r ap 1 @0x40022040 0x00000004 bytes Data 0x7FFFF8AA
+8: r ap 1 @0x40022050 0x00000004 bytes Data 0x00000000**||**r ap 1 @0x40022050 0x00000004 bytes Data 0x00000000
+8: r ap 1 @0x40022040 0x00000004 bytes Data 0x7FFFF8AA**||**r ap 1 @0x40022040 0x00000004 bytes Data 0x7FFFF8AA
+8: r ap 1 @0x08006000 0x00070000 bytes Data 0x20020000**||**r ap 1 @0x08006000 0x00070000 bytes Data 0x20020000
+9: Data read successfully**||**Data read successfully
+0: Time elapsed during the read operation is: 00:00:03.751**||**Time elapsed during the read operation is: 00:00:03.751
+0: **||**
+8: r ap 1 @0x40022040 0x00000004 bytes Data 0x7FFFF8AA**||**r ap 1 @0x40022040 0x00000004 bytes Data 0x7FFFF8AA
+8: r ap 1 @0x40022040 0x00000004 bytes Data 0x7FFFF8AA**||**r ap 1 @0x40022040 0x00000004 bytes Data 0x7FFFF8AA
+8: r ap 1 @0x40022040 0x00000004 bytes Data 0x7FFFF8AA**||**r ap 1 @0x40022040 0x00000004 bytes Data 0x7FFFF8AA
+7: Programming via FlashLoader!**||**Programming via FlashLoader!
+7: Memory Erase via FlashLoader!**||**Memory Erase via FlashLoader!
+7: Memory erase...**||**Memory erase...
+0: DOWNLOADING ...**||**DOWNLOADING ...
+0:   Size          : 4 Bytes**||**  Size          : 4 Bytes
+0:   Address       : 0xE0044008**||**  Address       : 0xE0044008
+8: r ap 1 @0x40022040 0x00000004 bytes Data 0x7FFFF8AA**||**r ap 1 @0x40022040 0x00000004 bytes Data 0x7FFFF8AA
+8: r ap 1 @0x40022040 0x00000004 bytes Data 0x7FFFF8AA**||**r ap 1 @0x40022040 0x00000004 bytes Data 0x7FFFF8AA
+7: Programming via FlashLoader!**||**Programming via FlashLoader!
+8: Buffer program...**||**Buffer program...
+8: w ap 1 @0xE0044008 : 0x00000004 bytes, Data 0x00000000...**||**w ap 1 @0xE0044008 : 0x00000004 bytes, Data 0x00000000...
+0: Data downloaded successfully**||**Data downloaded successfully
+7: reset ap 1 **||**reset ap 1 
+7: Disconnected**||**Disconnected
+9: Disconnected from device.**||**Disconnected from device.

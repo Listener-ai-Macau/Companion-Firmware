@@ -22,8 +22,8 @@ EXPECTED='5c16dfabdb1a59e4280f2eb867050d870273c717dbf4a571e3ee9f72ccb12b09'
 
 def lease():
     with board_turn.turn_lock():
-        holder=board_turn.load_state().get('holder')
-        if not holder or holder.get('side')!='codex' or holder.get('item')!=ITEM:
+        state=board_turn.load_state()
+        if state.get('holder')!='codex' or state.get('item')!=ITEM:
             raise RuntimeError('The existing exclusive board lease is not this resource read')
 
 def read_ui(session,offset,size):

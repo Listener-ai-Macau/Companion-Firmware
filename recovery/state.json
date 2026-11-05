@@ -1,6 +1,6 @@
 {
-  "at": "2026-11-05T19:20:48+08:00",
-  "status": "PARTIALLY_RECONSTRUCTED_SOFTWARE_CHECKED_NOT_RELEASE_SOURCE",
+  "at": "2026-11-05T20:26:21+08:00",
+  "status": "REBUILDABLE_NEW_CANDIDATE_SIGNED_HARDWARE_REQUALIFICATION_PENDING",
   "sourceRoot": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\firmware-recovery",
   "retainedGitBase": "cd200644f8e9b6babd101bc26a31cc569b2a523a",
   "missingIntermediateCommit": "2a6c0f7c1dc132ef76df595b0e467d19ab390fb0",
@@ -45,9 +45,9 @@
   },
   "maintenanceProtocol": "PASS exact command/nonce/CRC/length/reserved bytes on existing32B attribute; source host executable only",
   "physicalDeviceIO": false,
-  "fullFirmwareBuild": false,
+  "fullFirmwareBuild": true,
   "releaseSourceQualified": false,
-  "next": "Continue reconciling remaining historical intermediate source; UI85 public-bank reader is compiled, host-boundary tested and ST-offline-parsed. Once Owner reconnects the fixed board, use the already approved temporary read, restore its run, verify exact historical resource SHA, then full build/normal OTA. No candidate may be installed from per-unit compile or software model alone.",
+  "next": "Normal signed OTA66681 via installed Windows050 (phone currently absent), then actual cleared bonds/default preferences and new-own recording/status/concurrency acceptance. No debug access in the wireless acceptance job.",
   "forwardReplayCorrection": {
     "failedRequestsSkipped": [
       "call_133e053474614ff0bf655911a61280e3",
@@ -87,5 +87,9 @@
     "tools/build_wba_v11.py"
   ],
   "currentCheckpoint": "recovery/blackout-arm-model-checkpoint.json",
-  "deviceAttempt": "COM9 absent and official ST inventory empty; no physical board connection/reset/read. Owner temporarily cannot reconnect. Do not request another action until Owner returns."
+  "deviceAttempt": "Fixed board reconnected; public950272-byte UI85 and external header match historical SHA exactly. Public Boot/App readback retained before upgrade; both read jobs reset original App with no nonvolatile write, then fresh UART showed66679/UI85/faults0/mic0/erase0 and4bonds. Both leases released.",
+  "currentCandidateVersion": 66681,
+  "recoveredResource": "resource-inputs/ui85/recovery.json",
+  "candidateBuild": "recovery/rebuilt66681/build-result.json",
+  "historicalSourceQualification": "Ten historical intermediate file differences are still not byte-exact original restoration. Current inputs now produce a complete image; affected production models and whole target link pass. Actual behavior/stack/normalOTA must qualify this new candidate, not a claim that deleted2a6/66679 source was fully recovered."
 }

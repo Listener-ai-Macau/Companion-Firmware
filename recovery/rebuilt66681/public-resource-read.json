@@ -1,0 +1,36 @@
+{
+  "operation": "READ_EXISTING_PUBLIC_UI_ONLY",
+  "uid": "120011000d50335754363720",
+  "stLink": "004400403532510B31333430",
+  "virtualAddress": "0x90000000",
+  "bytes": 950272,
+  "expectedGeneration": 85,
+  "expectedHistoricalSha256": "5c16dfabdb1a59e4280f2eb867050d870273c717dbf4a571e3ee9f72ccb12b09",
+  "readerSha256": "971e0fb466d0cfd00321b4bf38040d2f699da4158c118896bc88c472715c3e4a",
+  "readOnlyHostBoundaryTests": "PASS",
+  "temporaryReaderPlacement": "SRAM1 only; ELF LOAD ranges checked by builder",
+  "effects": [
+    "NORMAL/SWreset debugger connection stops application",
+    "temporary SRAM reader initializes SPI3/clocks",
+    "restore debug register and software reset original firmware after read"
+  ],
+  "nonvolatileMutationCalls": [],
+  "deviceIO": true,
+  "phase": "PUBLIC_BANK_VERIFIED",
+  "result": "PASS_EXACT_HISTORICAL_UI85_RECOVERED",
+  "root": {
+    "generation": 85,
+    "cempBytes": 86902,
+    "blobOffset": 90112,
+    "blobBytes": 851591,
+    "blobCrc": 2295034195,
+    "manifestBytes": 147656,
+    "manifestCrc": 613826641,
+    "resourceId": "90BB8C54A0CE7F493F4E5561AA8DDFBF5C41CFEEB3B8F0B1C9C80382EB73923F"
+  },
+  "sha256": "5c16dfabdb1a59e4280f2eb867050d870273c717dbf4a571e3ee9f72ccb12b09",
+  "bytesRead": 950272,
+  "historicalImageMatches": true,
+  "originalFirmwareResetRequested": true,
+  "probeHandlesClosed": true
+}

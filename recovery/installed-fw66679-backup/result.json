@@ -1,0 +1,38 @@
+{
+  "result": "PASS_READ_PUBLIC_FIRMWARE_BACKUP",
+  "uid": "120011000d50335754363720",
+  "version": 66679,
+  "ui": 85,
+  "ranges": [
+    {
+      "name": "boot.bin",
+      "address": 134217728,
+      "bytes": 24576
+    },
+    {
+      "name": "application-padded.bin",
+      "address": 134242304,
+      "bytes": 458752
+    }
+  ],
+  "norReads": 0,
+  "recordingPayloadReads": 0,
+  "nonvolatileWrites": 0,
+  "sideEffects": "NORMAL/SWreset debug connection interrupts original App; software reset restores it after read. Separate from wireless acceptance.",
+  "qualification": "Application artifact includes erased padding; observed non-erased extent is not claimed to be original build file length.",
+  "files": {
+    "boot.bin": {
+      "bytes": 24576,
+      "sha256": "c259c780e83bd8740b05cf6dcafcc4deeee7cc455a452f413360715e23df39db"
+    },
+    "application-padded.bin": {
+      "bytes": 458752,
+      "sha256": "5dcda2ff134f05d7c1f9ec3256b7f42280c8d09bca6c3d467680ed379c952f74"
+    }
+  },
+  "initialMsp": "0x20020000",
+  "resetVector": "0x80459b9",
+  "observedNonErasedExtentBytes": 458752,
+  "originalFirmwareResetRequested": true,
+  "probeHandlesClosed": true
+}

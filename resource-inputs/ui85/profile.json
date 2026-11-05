@@ -1,0 +1,215 @@
+{
+  "profileRevision": 5800,
+  "storageLayoutVersion": 3,
+  "cempBytes": 86902,
+  "result": "EXACT_HISTORICAL_BANK_RECOVERED_BUILD_CONTRACTS_RECONSTRUCTED",
+  "generation": 85,
+  "resourceId": "90BB8C54A0CE7F493F4E5561AA8DDFBF5C41CFEEB3B8F0B1C9C80382EB73923F",
+  "stateCount": 6151,
+  "uiPartitionBytes": 950272,
+  "uiPartitionSha256": "5C16DFABDB1A59E4280F2EB867050D870273C717DBF4A571E3EE9F72CCB12B09",
+  "flashGeometry": {
+    "norBytes": 16777216,
+    "staticBytes": 950272,
+    "rootA": 942080,
+    "rootB": 946176,
+    "dynamicBase": 950272,
+    "dynamicBytes": 15826944,
+    "systemBytes": 131072,
+    "recordingCatalog": 1015808,
+    "payloadBase": 1081344,
+    "payloadBytes": 15695872
+  },
+  "resourceArenaUsedBytes": 941703,
+  "generationBytes": 851591,
+  "hardwareAcceptance": "NOT_RUN",
+  "fullChainAcceptance": "NOT_RUN",
+  "recordingRegionPreserved": true,
+  "dynamicRegionIncluded": false,
+  "sourceMode": "IMMUTABLE_PUBLIC_IMAGE_RECOVERY_NOT_ART_REBUILD",
+  "externalUi": {
+    "schema": "companion.wba.external-pet-labels.v1",
+    "generation": 85,
+    "sourceGeneration": 68,
+    "extensionOffset": 878709,
+    "extensionBytes": 62994,
+    "addedOffset": 893936,
+    "addedBytes": 2391,
+    "atlas": [
+      {
+        "name": "comp_wba_live_values",
+        "glyphs": 33,
+        "decodedBytes": 7392,
+        "encodedBytes": 2865,
+        "originalSha256": "a66a0ffafd65171321ed5b6003e06e2459d15b6334e14d8d1f93e30d20ed27be",
+        "lossless": true
+      },
+      {
+        "name": "comp_wba_value_digits",
+        "glyphs": 18,
+        "decodedBytes": 504,
+        "encodedBytes": 290,
+        "originalSha256": "1f619a5b6955622821f1968399cfc92e0670eecf0e7c4c8c6fab50adde8d2345",
+        "lossless": true
+      },
+      {
+        "name": "comp_wba_clock_digits",
+        "glyphs": 18,
+        "decodedBytes": 432,
+        "encodedBytes": 450,
+        "originalSha256": "9c9c33fbb3cb4df9710aad40bb8bc2add172e901f24e176ec40acfff33807231",
+        "lossless": true
+      },
+      {
+        "name": "comp_wba_count_digits",
+        "glyphs": 10,
+        "decodedBytes": 750,
+        "encodedBytes": 516,
+        "originalSha256": "e25d2aea1876ac175cf3ea1e8fa7990802fa75c64cdb27f5ad9f669f5a7393bd",
+        "lossless": true
+      },
+      {
+        "name": "comp_wba_menu_feedback",
+        "glyphs": 39,
+        "decodedBytes": 12012,
+        "encodedBytes": 4858,
+        "originalSha256": "828dfffdfcb94ac3c6d6afe1d637429748787f0b522e5ed56e2494b2c63d36c4",
+        "lossless": true
+      },
+      {
+        "name": "comp_pet_reply_captions",
+        "glyphs": 36,
+        "decodedBytes": 9360,
+        "encodedBytes": 4565,
+        "originalSha256": "5e723fd21e2c850784991d25b11ef70e0b4cb1ec338ed97b55136e2d21b709db",
+        "lossless": true
+      },
+      {
+        "name": "comp_pet_help_labels",
+        "shape": [
+          3,
+          5
+        ],
+        "glyphs": 15,
+        "decodedBytes": 5400,
+        "encodedBytes": 1340,
+        "originalSha256": "8c0f41e060340c20434a4d3be3cfdc8533c3d33f81212e60ec8452bf6e39ba0f",
+        "lossless": true
+      },
+      {
+        "name": "comp_pet_discovery_slices",
+        "shape": [
+          3,
+          1
+        ],
+        "glyphs": 3,
+        "decodedBytes": 780,
+        "encodedBytes": 490,
+        "originalSha256": "bd2b8332f8049751402a3201314d5cb02043328efd7e0379ae0258612d33beae",
+        "lossless": true
+      },
+      {
+        "name": "comp_battery_display_labels",
+        "shape": [
+          3,
+          3
+        ],
+        "glyphs": 9,
+        "decodedBytes": 1134,
+        "encodedBytes": 730,
+        "originalSha256": "066d6b7f88420165d222692bf54dd63dd950fb6e5e63acc1be1017fe76d7d604",
+        "lossless": true
+      },
+      {
+        "name": "comp_wba_quick_labels",
+        "shape": [
+          3,
+          3
+        ],
+        "glyphs": 9,
+        "decodedBytes": 1620,
+        "originalSha256": "00f57fc1d343fae0622f035cbff586794e5af99288320742b4764e5d1d8121b6",
+        "lossless": true
+      },
+      {
+        "name": "comp_record_reason_external",
+        "shape": [
+          3,
+          4
+        ],
+        "glyphs": 12,
+        "decodedBytes": 2688,
+        "encodedBytes": 1203,
+        "originalSha256": "4d5ce78a96546767e2b3de37e431990dd90b56d849c65366465a878fdfb1caa3",
+        "lossless": true
+      }
+    ],
+    "accessorySpansBytes": 3117,
+    "accessoryVariants": 30,
+    "maxGlyphBytes": 199,
+    "maxAccessoryBytes": 186,
+    "headerSha256": "efc317bad1674def31d270faee5ec971f9b3a5cec513571e7c97f6c663d25af7",
+    "cempAndOriginalManifestUnchanged": false,
+    "existingExternalAtlasUnchanged": true,
+    "sourceBankSha256": "3e8ed94a64e1584745fc7fef22fd7f907f7282c3a6bb067177982b3cfb318a26",
+    "newBankSha256": "5c16dfabdb1a59e4280f2eb867050d870273c717dbf4a571e3ee9f72ccb12b09",
+    "oldGeometry": {
+      "norBytes": 16777216,
+      "staticBytes": 905216,
+      "rootA": 897024,
+      "rootB": 901120,
+      "dynamicBase": 905216,
+      "dynamicBytes": 15872000,
+      "systemBytes": 131072,
+      "recordingCatalog": 970752,
+      "payloadBase": 1036288,
+      "payloadBytes": 15740928
+    },
+    "newGeometry": {
+      "norBytes": 16777216,
+      "staticBytes": 905216,
+      "rootA": 897024,
+      "rootB": 901120,
+      "dynamicBase": 905216,
+      "dynamicBytes": 15872000,
+      "systemBytes": 131072,
+      "recordingCatalog": 970752,
+      "payloadBase": 1036288,
+      "payloadBytes": 15740928
+    },
+    "pairedGeometryInstallationRequired": false,
+    "matchedAppResourcesRequired": true,
+    "arenaFreeBytes": 377,
+    "discoverySlices": 1,
+    "discoverySliceRows": 13,
+    "originalRasterHashes": {
+      "comp_pet_help_labels": "8c0f41e060340c20434a4d3be3cfdc8533c3d33f81212e60ec8452bf6e39ba0f",
+      "comp_pet_discovery_slices": "bd2b8332f8049751402a3201314d5cb02043328efd7e0379ae0258612d33beae",
+      "comp_battery_display_labels": "066d6b7f88420165d222692bf54dd63dd950fb6e5e63acc1be1017fe76d7d604"
+    },
+    "executableCodeMoved": false,
+    "codecTablesMoved": false,
+    "testsRun": false,
+    "originalStatePixelsUnchanged": true,
+    "originalManifestReindexedWithOffsets": true,
+    "atlasRelocationBytes": 24,
+    "recordReasonBytes": 1203
+  },
+  "sourceSha256": {
+    "resource-inputs/ui85/ui-partition.bin": "5C16DFABDB1A59E4280F2EB867050D870273C717DBF4A571E3EE9F72CCB12B09",
+    "resource-inputs/ui85/companion_pet_charm_catalog.h": "9ED66A23652BABB31D0F37D206FC6A5727E4EDE426310CD38171E7375B5280B5",
+    "resource-inputs/ui85/companion_pet_face_template.h": "C52FD6A49F3AAB12B3E587839332048F559FDE6F85A98801410FF6736B684A9F",
+    "resource-inputs/ui85/companion_pet_reply_captions.h": "4636F61FA81A4BC01C6FCA602A8E33D6A8CE44196BCCBE8352130E743D5CE45E",
+    "resource-inputs/ui85/companion_pet_variations.h": "FAA4CD6C17F832DDB0771F4F8E0549C3214AE0FF68DE2851E4E00C07D0044F35",
+    "resource-inputs/ui85/companion_wba_customer_ui.h": "2098952D338F9DFFD48A00C0259AD469C8D5EAA957AF8DD750BCB7C24B676F85",
+    "resource-inputs/ui85/companion_wba_external_ui.h": "EFC317BAD1674DEF31D270FAEE5EC971F9B3A5CEC513571E7C97F6C663D25AF7",
+    "resource-inputs/ui85/companion_wba_resource_contract.h": "907D1AEB559ACC67B5855FAA812AD0EA924EFBF433E9981DB01FFE84A64007A7",
+    "tools/recover_ui85_build_inputs.py": "D68DBEDF182E439BC256DD56712BDB2F7C7FCD63A77B674A1C4A294610A15FB2",
+    "tools/build_wba_customer_menu.py": "F4EA2F7193B7B50CE28AEC2E922B08C45EC6EC5C298971BAB9181664FE302AF4",
+    "tools/wba_customer_menu.py": "85FC6D66C66E4D68A865A2DC642F112C4946A2850CDC5F3775D43A7A0F074487",
+    "tools/build_wba_pet_play_labels.py": "B101D0F1EA576AE6192D61223BA2D7A452816BEC0785379AE5498ADDF66F83E3",
+    "tools/wba_menu_typography.py": "B967BFB00E4EFBEBF2B08DF256AC59D470E87A06337FB2F0C66AD7F8AF9811CB",
+    "tools/wba_menu_icons.py": "A83C39A141946EC425AE7393D53842DEABDF7AEEC8256878D7504973B592F1BA",
+    "tools/compact_wba_recording_ui.py": "11DB47F6483BFD606C378963C526FBB4EAB61B428B0D6EA694E29F4B098F143A"
+  }
+}

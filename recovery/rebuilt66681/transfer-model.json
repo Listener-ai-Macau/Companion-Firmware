@@ -1,0 +1,31 @@
+{
+  "schema": "companion.wba_recording_transfer.prehardware.v1",
+  "status": "PASS_HOST_ONLY",
+  "hardware_status": "NOT_RUN",
+  "wire": {
+    "request_bytes": 16,
+    "response_header_bytes": 56,
+    "max_att_value_bytes": 509,
+    "max_payload_bytes": 453,
+    "legacy_test_compact_payload_bytes": 224,
+    "lanes": 1,
+    "resume_authority": "host_verified_byte_offset",
+    "resume_token_semantics": "correlation_only"
+  },
+  "test_stdout": "PASS_WBA_RECORDING_TRANSFER_HOST_ONLY packets=7 bytes=1142",
+  "compile_log": "test_wba_recording_transfer.c\nwba_recording_transfer.c\ncompanion_recording_journal.c\n\u6b63\u5728\u751f\u6210\u4ee3\u7801...",
+  "m33_objects": {
+    "wba_recording_transfer.o": "0509316BA2E2EAE00AA099FFEA6AC50CF315BDC65B427F708E98392AC3A68EDD",
+    "companion_recording_journal.o": "4812666B88E5EDB7BEE1BFE82D3998D87F5C9E2EE9826DD0291DEF7BE0197985"
+  },
+  "source_sha256": {
+    "app\\companion_pendant\\recording\\tests\\test_wba_recording_transfer.c": "8FC502B9295CCE9AC9606D95B02502255585E1B14C689F5FF75DC9946C36F765",
+    "app\\companion_pendant\\recording\\wba_recording_transfer.c": "02EE26F0F084F4F1EC71BD4D53CE58936179DA1087DAC20D8E5FBAD5A4BC6B2D",
+    "app\\companion_pendant\\recording\\companion_recording_journal.c": "346DF984183EAE48AC2D3571D9EB87ABF4CEA857CBC20B06955E96F02BD54C8B",
+    "app\\companion_pendant\\recording\\wba_recording_transfer.h": "03FE327B6EB164DC17F29C1550EB40DCCEBAE7A1CB514D032B017F9010A097E8",
+    "app\\companion_pendant\\recording\\wba_recording_crc.h": "2E2851C9729F4B29A50DA1B8EE1B780A97FE37D49F540AFB0654C27AD4FE1207",
+    "app\\companion_pendant\\recording\\companion_recording_wire.h": "71E85080EF6DCA097DA43E6E89DBFC19ADC198DE25D113BBDF895D71CEB7BE18",
+    "app\\companion_pendant\\recording\\companion_recording_gatt_adapter.h": "67AB1EFD17DA3452CF49BF282EB559CCDF81F1E2049129C2B8232DD9A2348F23",
+    "app\\companion_pendant\\recording\\companion_recording_journal.h": "C2A2B3ADC6CD18213845E2B5293DF232742DAF9DD7FBB40B5E61A54B6D7291D3"
+  }
+}

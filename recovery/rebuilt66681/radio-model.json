@@ -1,0 +1,11 @@
+{
+  "result": "PASS_RADIO_RUNTIME_SOFTWARE_ONLY",
+  "softwareOutput": "PASS_WBA_COMPANION_LINK_HOST_ONLY publishes=9 rejected=0\nPASS_CONFIRMED_UNSYNCED_DISCARD_HOST_ONLY exact-proof/cancel/expiry/reboot/IO\nradio stage: setup real Opus sealed sample\nradio setup: NOR/catalog initialized\nradio setup: initial extent prepared\nradio setup: capture started\nradio setup: original capture sealed\nradio setup: segmented product link initialized\nradio stage: protected negotiation complete\nradio stage: directory complete\nradio stage: first sealed window during capture\nradio stage: resumed sealed upload complete\nradio stage: accepted physical consume completed offline\nPASS V2 production dispatcher/radio model: protected negotiation, immutable backpressure,136B directory, real Opus sealed upload during independent capture, verified-offset reconnect, accepted consume completes offline and exact receipt replay, wrong proof/CCCD refuses without MIC stop; SOFTWARE ONLY\nradio setup: NOR/catalog initialized\nradio setup: initial extent prepared\nradio setup: capture started\nradio setup: original capture sealed\nradio setup: segmented product link initialized\nPASS growing tail: committed complete-frame CLP2, protected session, CRC live packets without FINAL/SHA/ACK, scratch reuse, disconnect keeps capture and later prefix stable; SOFTWARE ONLY\nradio setup: NOR/catalog initialized\nradio setup: initial extent prepared\nradio setup: capture started\nradio setup: original capture sealed\nradio setup: segmented product link initialized\nPASS finite encrypted batch interval: exact UID/epoch/token, sealed completion retains hint, stale close refused, idle expiry/wrap, CCCD/cancel/disconnect revoke, no media mutation; SOFTWARE ONLY\n",
+  "physicalBoard": false,
+  "realBle": false,
+  "typeDurability": false,
+  "timingQualification": false,
+  "productionAppBound": false,
+  "installed": false,
+  "opusHostLibrarySha256": "48b4227fea393d2343587e608d6a3ae28d0c4de8120900e45b274f9197b9e824"
+}
