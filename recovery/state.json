@@ -1,23 +1,20 @@
 {
-  "at": "2026-11-05T16:40:51+08:00",
+  "at": "2026-11-05T19:20:48+08:00",
   "status": "PARTIALLY_RECONSTRUCTED_SOFTWARE_CHECKED_NOT_RELEASE_SOURCE",
   "sourceRoot": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\firmware-recovery",
   "retainedGitBase": "cd200644f8e9b6babd101bc26a31cc569b2a523a",
   "missingIntermediateCommit": "2a6c0f7c1dc132ef76df595b0e467d19ab390fb0",
   "missingIntermediateDiffFiles": [
-    "app/companion_pendant/recording/companion_opus16_rt.c",
     "app/companion_pendant/recording/wba_recording_level.h",
     "app/companion_pendant/recording/wba_recording_radio.c",
     "app/companion_pendant/recording/wba_recording_transfer.c",
     "app/companion_pendant/recording/wba_recording_transfer.h",
     "app/companion_pendant/runtime/companion_renderer.c",
     "app/companion_pendant/runtime/companion_runtime.h",
-    "platform/stm32wba55_companion_v11/ble/app_ble.c",
     "platform/stm32wba55_companion_v11/ble/ble_product.c",
     "platform/stm32wba55_companion_v11/ble/ble_product.h",
     "platform/stm32wba55_companion_v11/product_app.c",
-    "tools/build_wba_v11.py",
-    "platform/stm32wba55_companion_v11/ble/sealed_blackout_switch.S"
+    "tools/build_wba_v11.py"
   ],
   "historicalNextCommit": "e3715904c799788037c70400cf295b899c4aefe7",
   "historicalInstalledVersion": 66679,
@@ -50,7 +47,7 @@
   "physicalDeviceIO": false,
   "fullFirmwareBuild": false,
   "releaseSourceQualified": false,
-  "next": "Find or reconstruct the13-file intermediate diff; recover the matching UI85 resource inputs, then rebuild with the current verified recipe and validate changed code before normal OTA. Do not substitute the older desktop HEAD or label this tree as the original66680.",
+  "next": "Continue reconciling remaining historical intermediate source; UI85 public-bank reader is compiled, host-boundary tested and ST-offline-parsed. Once Owner reconnects the fixed board, use the already approved temporary read, restore its run, verify exact historical resource SHA, then full build/normal OTA. No candidate may be installed from per-unit compile or software model alone.",
   "forwardReplayCorrection": {
     "failedRequestsSkipped": [
       "call_133e053474614ff0bf655911a61280e3",
@@ -62,5 +59,33 @@
       "app/companion_pendant/diag_log/diag_log_events.h"
     ],
     "reason": "Historical apply_patch verification failures were atomic across their request; replay must not retain earlier file operations from a failed request."
-  }
+  },
+  "historicalIntermediateDiffFiles": [
+    "app/companion_pendant/recording/companion_opus16_rt.c",
+    "app/companion_pendant/recording/wba_recording_level.h",
+    "app/companion_pendant/recording/wba_recording_radio.c",
+    "app/companion_pendant/recording/wba_recording_transfer.c",
+    "app/companion_pendant/recording/wba_recording_transfer.h",
+    "app/companion_pendant/runtime/companion_renderer.c",
+    "app/companion_pendant/runtime/companion_runtime.h",
+    "platform/stm32wba55_companion_v11/ble/app_ble.c",
+    "platform/stm32wba55_companion_v11/ble/ble_product.c",
+    "platform/stm32wba55_companion_v11/ble/ble_product.h",
+    "platform/stm32wba55_companion_v11/product_app.c",
+    "tools/build_wba_v11.py",
+    "platform/stm32wba55_companion_v11/ble/sealed_blackout_switch.S"
+  ],
+  "recoveredIntermediateFiles": [
+    "app/companion_pendant/recording/companion_opus16_rt.c",
+    "platform/stm32wba55_companion_v11/ble/app_ble.c",
+    "platform/stm32wba55_companion_v11/ble/sealed_blackout_switch.S"
+  ],
+  "partiallyReconciledIntermediateFiles": [
+    "platform/stm32wba55_companion_v11/ble/ble_product.c",
+    "platform/stm32wba55_companion_v11/ble/ble_product.h",
+    "platform/stm32wba55_companion_v11/product_app.c",
+    "tools/build_wba_v11.py"
+  ],
+  "currentCheckpoint": "recovery/blackout-arm-model-checkpoint.json",
+  "deviceAttempt": "COM9 absent and official ST inventory empty; no physical board connection/reset/read. Owner temporarily cannot reconnect. Do not request another action until Owner returns."
 }

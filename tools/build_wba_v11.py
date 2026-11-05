@@ -630,7 +630,8 @@ def main() -> int:
                       '-DCOMPANION_RECORDING_SEGMENTED_ONLY=1',
                       '-DCOMP_DIAG_LOG_RING_CAPACITY=16',f'-I{APP / "platform"}',f'-I{APP / "diag_log"}',f'-I{APP / "gatt"}',
                       f'-I{ROOT / "third_party/denzic-platform/ota/embedded/c/include"}',*(f'-I{p}' for p in ble_includes)]
-            sources += [*ble_sources, APP/'gatt/companion_gatt_stm32wb.c',
+            sources += [*ble_sources, PLATFORM/'ble/sealed_blackout_switch.S',
+                APP/'gatt/companion_gatt_stm32wb.c',
                 APP/'runtime/companion_link.c',APP/'recording/wba_recording_transfer.c',
                 *(APP/'recording'/n for n in ('wba_recording_radio.c','wba_segment_pull.c',
                     'wba_segment_directory.c')),

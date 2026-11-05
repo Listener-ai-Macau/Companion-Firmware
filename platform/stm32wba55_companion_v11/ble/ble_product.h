@@ -19,6 +19,8 @@ bool comp_v11_ble_blocking_diagnostic_busy(void);
 /* Feed only a sealed transfer at renderer/NOR transaction boundaries.
  * No control dispatch, catalog mutation or erasure inside a rendered frame. */
 void comp_v11_ble_transfer_progress(void);
+void comp_v11_ble_live_follow_progress(void);
+void comp_v11_ble_sealed_capture_blackout(bool enter);
 void comp_v11_ble_idle_background_progress(void);
 /* Bounded long-value receive metadata in the existing diagnostic ring.
  * No payload, address, key, additional resident buffer or callback UART. */

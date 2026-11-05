@@ -132,6 +132,10 @@ static const bool bulk_empty_rx_slots=true;
  * align during a batch; this is a hypothesis, not a claimed peer/driver bug. */
 static const bool bulk_renegotiate_dle=false;
 static bool bulk_ci_requested;
+/* Set when a 6/6/0/400 request is accepted, cleared by the update event.
+ * Live capture may repeat that same request after the central leaves 6.
+ * The callback only clears this flag; it does not send another command. */
+static bool bulk_ci_wait_update;
 static uint8_t bulk_ci_status=0xFFu;
 static uint8_t bulk_ci_attempts;
 static uint16_t bulk_ci_previous_interval;
@@ -512,7 +516,7 @@ static void connection_opened(uint16_t handle,uint8_t type,const uint8_t *addres
     comp_v11_peer_indication_reset(&peer_indication);
 #endif
     bulk_ci_requested=false;bulk_ci_previous_interval=0u;
-    bulk_ci_attempts=0u;
+    bulk_ci_attempts=0u;bulk_ci_wait_update=false;
     bulk_ci_ready_after=bulk_dle_ready_after=0u;
     bulk_dle_issued=bulk_dle_waiting=false;
     dle_attempts=0u;dle_status=0xFFu;directional_budget_recovery=0u;
@@ -814,7 +818,15 @@ void comp_v11_ble_bulk_profile(comp_v11_ble_bulk_direction_t direction,bool inte
     /* Request the bulk interval BEFORE re-suggesting DLE. A successful ACI
      * return only accepts the request; wait for actual CI6 or the finite
      * deadline below. ST documents 0x3a when DLE overlaps a connection update.
-     * Payload work continues with the current measured capacity throughout. */
+     * Payload work continues with the current measured capacity throughout.
+     * Live capture uses ordinary RX. Each time a connection update leaves
+     * interval 6, repeat the same 6/6/0/400 request once. Sealed uploads and
+     * OTA keep the single request. The saved idle interval is not replaced. */
+    if(direction==COMP_V11_BLE_BULK_NONE && interval_hint && bulk_ci_requested &&
+       transport.interval>6u && !bulk_ci_wait_update) {
+        bulk_ci_requested=false;
+        if(bulk_ci_attempts>=2u)bulk_ci_attempts=1u;
+    }
     if(enabled && !bulk_ci_requested && bulk_ci_attempts<2u && transport.interval>6u) {
         uint16_t owner=connection;
         if(!bulk_ci_attempts)bulk_ci_previous_interval=transport.interval;
@@ -824,7 +836,7 @@ void comp_v11_ble_bulk_profile(comp_v11_ble_bulk_direction_t direction,bool inte
         if(connection!=owner || bulk_ci_attempts!=attempt)return;
         bulk_ci_status=status;
         transport_trace(13u,status);
-        if(status==BLE_STATUS_SUCCESS)bulk_ci_requested=true;
+        if(status==BLE_STATUS_SUCCESS){bulk_ci_requested=true;bulk_ci_wait_update=true;}
         else profile_retry=HAL_GetTick()+1000u;
         return;
     }
@@ -1222,6 +1234,7 @@ SVCCTL_UserEvtFlowStatus_t SVCCTL_App_Notification(void *packet)
                 transport.interval=c->Conn_Interval;transport.latency=c->Conn_Latency;
                 if(directional_budget_recovery==3u && c->Conn_Interval==6u)
                     dle_ready_after=HAL_GetTick()+200u;
+                bulk_ci_wait_update=false;
                 transport_trace(2u,0u);
             }
         } else if(meta->subevent==HCI_LE_DATA_LENGTH_CHANGE_SUBEVT_CODE) {

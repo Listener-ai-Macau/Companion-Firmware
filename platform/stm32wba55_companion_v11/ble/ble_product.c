@@ -87,6 +87,33 @@ static volatile uint32_t fatal_error;
 static uint32_t sequencer_started_ms;
 static uint8_t sequencer_depth;
 static bool sequencer_yielded;
+static uint8_t sequencer_slice_ms;
+/* One sealed-backlog slice during opus_encode. 0 means the normal yield. */
+static uint8_t blackout_hold;
+static uint8_t blackout_sent;
+#if defined(__arm__)
+volatile uint32_t comp_blackout_state;
+uint32_t comp_blackout_opus_msp,comp_blackout_pump_msp,comp_blackout_pump_base,comp_blackout_main_msplim;
+static uint64_t blackout_stack[384];
+static uint8_t blackout_ready;
+static volatile uint8_t blackout_armed,blackout_used;
+static void sealed_blackout_service(void);
+static void sealed_blackout_stack_init(void);
+static void pump_thread(void);
+#endif
+static void sealed_blackout_kick(void)
+{
+#if defined(__arm__)
+    if(!blackout_ready || !blackout_armed || blackout_used || comp_blackout_state!=0u || !product)return;
+    /* Leave the 10 ms capture deadline room for one link-layer task plus a send. */
+    if((uint32_t)(HAL_GetTick()-product->capture_cycle_started_ms)>=7u)return;
+    blackout_used=1u;
+    comp_blackout_state=1u;
+    SCB->ICSR=SCB_ICSR_PENDSVSET_Msk;
+#else
+    /* Host tests do not switch stacks. */
+#endif
+}
 static comp_v11_ble_tx_gate_t notify_gate
 #if COMPANION_WBA_CE_SHARED_CAPTURE && defined(__GNUC__)
     __attribute__((section(".sram1.bss"),aligned(8)))
@@ -313,10 +340,31 @@ bool comp_v11_ble_blocking_diagnostic_busy(void)
      * existing two-second expiry keeps a dead host from hiding logs forever. */
     return !radio->interval_deadline || (int32_t)(HAL_GetTick()-radio->interval_deadline)<0;
 }
+static bool sealed_capture_transfer(void)
+{
+    return product && product->board->microphone.running &&
+        product_link.transfer.connected && !product_link.transfer.snapshot_live &&
+        (product_link.transfer.state==COMP_WBA_RECORDING_TRANSFER_ACTIVE ||
+         product_link.transfer.state==COMP_WBA_RECORDING_TRANSFER_BACKPRESSURED);
+}
+static bool sealed_during_capture_ready(void)
+{
+    comp_wba_recording_radio_t *radio=product_link.segmented;
+    /* A segment that already sealed, including the backlog after reconnect,
+     * is not a growing tail. Send it with the stopped-file pump while the
+     * microphone is between PCM slices. The one-packet foreground pair stays
+     * on the live snapshot only. This does not request a connection interval. */
+    return link_ready && !fatal_error && linked && secured &&
+        sealed_capture_transfer() && !product_link.maintenance &&
+        !comp_v11_ble_nvm_busy() && radio &&
+        comp_v11_ble_tx_gate_ready(&notify_gate,HAL_GetTick()) &&
+        comp_wba_recording_radio_read_allowed(radio);
+}
 static const comp_wba_recording_transfer_budget_t *transfer_budget(void)
 {
     static const comp_wba_recording_transfer_budget_t waiting = {0u,0u,0u};
     static const comp_wba_recording_transfer_budget_t capturing = {1u,2u,1u};
+    if(sealed_capture_transfer())return &waiting;
     if(product&&product->board->microphone.running)
         return comp_v11_ble_tx_gate_ready(&notify_gate,HAL_GetTick())?&capturing:&waiting;
     /* Sealed sending has one owner: the bounded sequencer task. Live capture
@@ -328,8 +376,8 @@ static const comp_wba_recording_transfer_budget_t *transfer_budget(void)
 static uint32_t diagnostic_clock(void *context) {(void)context;return HAL_GetTick();}
 static bool sealed_transfer_allowed(void)
 {
-    return sealed_transfer_work() && !comp_v11_ble_nvm_busy() &&
-        comp_link_heavy_io_allowed(&product_link);
+    return sealed_during_capture_ready() || (sealed_transfer_work() &&
+        !comp_v11_ble_nvm_busy() && comp_link_heavy_io_allowed(&product_link));
 }
 /* The measured LL ready-to-run tail reaches3ms at equal priority. Keep
  * LL/host/HCI at priority0; sealed file preparation is priority1, so any
@@ -363,8 +411,11 @@ static void send_sealed_transfer(void)
     if(product_link.segmented)
         (void)comp_wba_recording_radio_set_value_capacity(product_link.segmented,comp_v11_ble_value_capacity());
     product_link.transfer.compact_payload_limit=comp_v11_ble_recording_capacity();
+    bool allowed=sealed_transfer_allowed();
+    if(blackout_hold && comp_v11_ble_tx_pump_ready(&product_link.transfer,&notify_gate,
+        allowed,HAL_GetTick()))blackout_sent=1u;
     comp_v11_ble_tx_pump_poll(&notify_pump,&product_link.transfer,&notify_gate,
-        sealed_transfer_allowed(),sequencer_depth,diagnostic_clock,NULL,
+        allowed,sequencer_depth,diagnostic_clock,NULL,
         1u<<CFG_TASK_SEND_NOTIF_ID,CFG_SEQ_PRIO_1);
 }
 static void run_foreground_tasks(uint32_t tasks)
@@ -479,6 +530,7 @@ void RADIO_IRQHandler(void)
     comp_v11_cpu_irq_enter(false);
     if(radio_callback)radio_callback();
     LL_RCC_RADIO_DisableSleepTimerClock(); __ISB();
+    sealed_blackout_kick();
 
     comp_v11_cpu_irq_exit();
 }
@@ -514,10 +566,12 @@ void UTIL_SEQ_PostTask(uint32_t id)
     if(sequencer_depth)--sequencer_depth;
     /* Yield only after the owned outer task returns. ACI may also WaitEvt
      * from outside our Run; that dispatch must retain its semaphore tasks. */
+    if(blackout_hold && !blackout_sent &&
+       (uint32_t)(HAL_GetTick()-product->capture_cycle_started_ms)<7u)return;
     if(notify_pump.foreground_run && !sequencer_depth && product &&
        (product->board->microphone.running || sealed_transfer_work() ||
         comp_v11_ota_gatt_foreground_pending()) &&
-       HAL_GetTick()-sequencer_started_ms>=2u) {
+       HAL_GetTick()-sequencer_started_ms>=(sequencer_slice_ms?sequencer_slice_ms:2u)) {
         /* A complete queued OTA command is a foreground consumer too.
          * Preserve the existing outer-task/owned-Run guard and quantum:
          * never pause a nested ACI WaitEvt or the active NOR consumer. */
@@ -1237,6 +1291,9 @@ bool comp_v11_ble_init(comp_v11_product_app_t *app)
     /* Board clock has already set the immutable PLL. CFG_SCM_SUPPORTED=0
      * prevents the radio clock manager from replacing the audio clock. */
     comp_v11_ble_bond_media_bind(&app->board->nor);
+#if defined(__arm__)
+    sealed_blackout_stack_init();
+#endif
     (void)MX_APPE_Init(NULL);
     comp_v11_clock_restore(&app->clock,continuous_clock);
     if(!fatal_error && comp_v11_ble_host_ready()) {
@@ -1254,6 +1311,102 @@ bool comp_v11_ble_init(comp_v11_product_app_t *app)
             publish(NULL,COMPANION_GATT_CHAR_OTA_READINESS,(uint8_t*)&ota,sizeof(ota));
     }
     return false;
+}
+#if defined(__arm__)
+static bool sealed_backlog_wants_pump(void)
+{
+    /* The tx gate may still be closed: this slice's host task is what opens it.
+     * Live snapshot stays on the one-packet foreground pair. */
+    return link_ready && !fatal_error && linked && secured &&
+        sealed_capture_transfer() && !product_link.maintenance &&
+        !comp_v11_ble_nvm_busy();
+}
+static void sealed_blackout_service(void)
+{
+    const uint32_t radio=(1u<<CFG_TASK_BLE_HOST)|(1u<<CFG_TASK_LINK_LAYER)|
+        (1u<<CFG_TASK_HCI_ASYNCH_EVT_ID)|(1u<<CFG_TASK_SEND_NOTIF_ID);
+    if(__get_IPSR()!=0u || !blackout_armed || sequencer_depth || notify_pump.dispatching ||
+       notify_gate.in_call || !sealed_backlog_wants_pump())return;
+    if((uint32_t)(HAL_GetTick()-product->capture_cycle_started_ms)>=7u)return;
+    notify_pump.foreground_run=true;
+    if(sequencer_yielded){UTIL_SEQ_ResumeTask(UTIL_SEQ_DEFAULT);sequencer_yielded=false;}
+    schedule_sealed_transfer();
+    blackout_hold=1u;
+    blackout_sent=0u;
+    sequencer_slice_ms=2u;
+    sequencer_started_ms=HAL_GetTick();
+    UTIL_SEQ_Run(radio);
+    if(sequencer_yielded){UTIL_SEQ_ResumeTask(UTIL_SEQ_DEFAULT);sequencer_yielded=false;}
+    sequencer_slice_ms=0u;
+    blackout_hold=0u;
+    notify_pump.foreground_run=false;
+}
+static void pump_thread(void)
+{
+    for(;;) {
+        sealed_blackout_service();
+        /* Return to opus. If PendSV is masked, wait here and do not take
+         * another slice out of the 10 ms capture deadline. */
+        for(;;) {
+            comp_blackout_state=3u;
+            SCB->ICSR=SCB_ICSR_PENDSVSET_Msk;
+            __DSB();
+            __ISB();
+            if(comp_blackout_state!=3u)break;
+            __NOP();
+        }
+    }
+}
+static void sealed_blackout_stack_init(void)
+{
+    uint32_t *slot;
+    /* Below the radio IRQ (0) and the sleep-timer IRQ (5). 7 stays inside
+     * the preemption field this image already uses for RTC priority 5. */
+    HAL_NVIC_SetPriority(PendSV_IRQn,7,0);
+    comp_blackout_main_msplim=__get_MSPLIM();
+    slot=(uint32_t *)((uintptr_t)blackout_stack+sizeof blackout_stack);
+    *(--slot)=0x01000000u;
+    *(--slot)=((uint32_t)(uintptr_t)pump_thread)&~1u;
+    *(--slot)=0u;
+    *(--slot)=0u;
+    *(--slot)=0u;
+    *(--slot)=0u;
+    *(--slot)=0u;
+    *(--slot)=0u;
+    /* Thread mode, MSP, no FP context. TZEN is off on this card. */
+    *(--slot)=0xFFFFFFB8u;
+    slot-=8;
+    comp_blackout_pump_msp=(uint32_t)(uintptr_t)slot;
+    comp_blackout_pump_base=(uint32_t)(uintptr_t)blackout_stack;
+    comp_blackout_state=0u;
+    blackout_ready=1u;
+}
+void comp_v11_ble_sealed_capture_blackout(bool enter)
+{
+    if(!blackout_ready)return;
+    uint32_t mask=__get_PRIMASK();__disable_irq();
+    if(enter) {
+        blackout_used=0u;
+        blackout_armed=sealed_backlog_wants_pump()?1u:0u;
+    } else {
+        blackout_armed=0u;
+        if(comp_blackout_state==1u)comp_blackout_state=0u;
+    }
+    __set_PRIMASK(mask);
+}
+#else
+void comp_v11_ble_sealed_capture_blackout(bool enter) {(void)enter;}
+#endif
+void comp_v11_ble_live_follow_progress(void)
+{
+    /* A single bounded foreground owner, after PCM service. The IRQ only
+     * requests PendSV; it never invokes this sequencer or GATT itself. */
+    if(__get_IPSR()!=0u || !product || sequencer_depth || notify_pump.dispatching ||
+       notify_gate.in_call || !sealed_during_capture_ready() ||
+       (uint32_t)(HAL_GetTick()-product->capture_cycle_started_ms)>=7u)return;
+    const uint32_t radio=(1u<<CFG_TASK_BLE_HOST)|(1u<<CFG_TASK_LINK_LAYER)|
+        (1u<<CFG_TASK_HCI_ASYNCH_EVT_ID)|(1u<<CFG_TASK_SEND_NOTIF_ID);
+    run_foreground_tasks(radio);
 }
 void comp_v11_ble_transfer_progress(void)
 {

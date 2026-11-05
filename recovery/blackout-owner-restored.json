@@ -1,0 +1,31 @@
+{
+  "status": "RECOVERED_RAW_CONTEXT_OWNER_WITH_RECONSTRUCTED_GLUE_NOT_INSTALLED",
+  "exactRawBodies": [
+    "sealed_blackout_kick",
+    "sealed_capture_transfer",
+    "sealed_during_capture_ready",
+    "sealed_backlog_wants_pump",
+    "sealed_blackout_service",
+    "pump_thread loop (final outer brace read was cut)",
+    "sealed_blackout_stack_init"
+  ],
+  "originalLineLevelEvidence": [
+    "armed/used/state cancellation and arm/no-arm definitions from03:53:59 rg",
+    "blackout_sent scheduling gate and pre-task yield condition from03:53:59 rg",
+    "product_app capture_progress22 live_follow call from14:30:11 and05:49:10 raw reads"
+  ],
+  "reconstructedGlue": [
+    "enter/exit PRIMASK scope",
+    "same masked bounded foreground live_follow owner body",
+    "capture readiness integration with existing schedule/foreground budgets",
+    "build ASM source inclusion and public declarations"
+  ],
+  "qualification": "These glue bodies are a new candidate reconstruction, not claimed byte-exact original2a6 or installed66679. Full compile, concurrency/stack and real reconnect capture acceptance remain required. No GATT payload/recording format changes.",
+  "readerOfflineParse": "PASS official installed ST API metadata, no hardware I/O",
+  "sha256": {
+    "platform\\stm32wba55_companion_v11\\ble\\ble_product.c": "dc3ad47f5197236c20e14c0f87322ea0ce1d60f8ce5d83af50a850dd8ad46972",
+    "platform\\stm32wba55_companion_v11\\ble\\ble_product.h": "77170159d16ac0fb29b2a7a916ccaafddf985bc29c25fbbc6bb0b2bb5621f654",
+    "tools\\build_wba_v11.py": "fb2a91cb701a341f91375584b328213c55f5e64610e6e5cc71de342b99b962fa",
+    "platform\\stm32wba55_companion_v11\\product_app.c": "6ce73dc9df73ca8aaa345b55cb39fb0ee6dddc9305bd661864416fc8a7e26fe0"
+  }
+}

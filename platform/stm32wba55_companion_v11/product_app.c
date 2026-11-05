@@ -1604,7 +1604,12 @@ void comp_v11_product_app_poll(comp_v11_product_app_t *app)
          * original. HOLD only suppresses short-key and touch actions. */
         (void)comp_runtime_record(&app->runtime,!comp_runtime_recording_owned(&app->runtime),now);
     }
-    if(board->microphone.running)(void)capture_progress(app,22u);
+    if(board->microphone.running) {
+        (void)capture_progress(app,22u);
+#ifdef COMPANION_WBA_BLE_LINKED
+        comp_v11_ble_live_follow_progress();
+#endif
+    }
     phase_started=HAL_GetTick();
     recording_capture_clock(app);
     const uint8_t previous_chat_state=app->runtime.chat_caption_state;
