@@ -1,0 +1,49 @@
+--- a/celt/celt_encoder.c
++++ b/celt/celt_encoder.c
+@@ -32,6 +32,11 @@
+ #endif
+ 
+ #define CELT_ENCODER_C
++#ifdef COMPANION_WBA_CODEC_PROFILE
++#include "companion_codec_profile.h"
++#else
++#define companion_codec_profile_mark(phase) ((void)0)
++#endif
+ 
+ #include "cpu_support.h"
+ #include "os_support.h"
+@@ -2038,7 +2043,9 @@
+       enabled = ((st->lfe&&nbAvailableBytes>3) || nbAvailableBytes>12*C) && !hybrid && !silence && tell+16<=total_bits && !st->disable_pf;
+ 
+       prefilter_tapset = st->tapset_decision;
++      companion_codec_profile_mark(1u);
+       pf_on = run_prefilter(st, in, prefilter_mem, CC, N, prefilter_tapset, &pitch_index, &gain1, &qg, enabled, st->complexity, tf_estimate, nbAvailableBytes, &st->analysis, tone_freq, toneishness ARG_QEXT(qext_scale));
++      companion_codec_profile_mark(2u);
+       if ((gain1 > QCONST16(.4f,15) || st->prefilter_gain > QCONST16(.4f,15)) && (!st->analysis.valid || st->analysis.tonality > .3)
+             && (pitch_index > 1.26*st->prefilter_period || pitch_index < .79*st->prefilter_period))
+          pitch_change = 1;
+@@ -2087,7 +2094,9 @@
+       }
+    }
+ 
++   companion_codec_profile_mark(3u);
+    compute_mdcts(mode, shortBlocks, in, freq, C, CC, LM, st->upsample, st->arch);
++   companion_codec_profile_mark(4u);
+    /* This should catch any NaN in the CELT input. Since we're not supposed to see any (they're filtered
+       at the Opus layer), just abort. */
+    celt_assert(!celt_isnan(freq[0]) && (C==1 || !celt_isnan(freq[N])));
+@@ -2667,12 +2676,14 @@
+ 
+    /* Residual quantisation */
+    ALLOC(collapse_masks, C*nbEBands, unsigned char);
++   companion_codec_profile_mark(5u);
+    quant_all_bands(1, mode, start, end, X, C==2 ? X+N : NULL, collapse_masks,
+          bandE, pulses, shortBlocks, st->spread_decision,
+          dual_stereo, st->intensity, tf_res, nbCompressedBytes*(8<<BITRES)-anti_collapse_rsv,
+          balance, enc, LM, codedBands, &st->rng, st->complexity, st->arch, st->disable_inv
+          ARG_QEXT(&ext_enc) ARG_QEXT(extra_pulses)
+          ARG_QEXT(qext_bytes*(8<<BITRES)) ARG_QEXT(cap));
++   companion_codec_profile_mark(6u);
+ 
+ #ifdef ENABLE_QEXT
+    if (qext_mode) {

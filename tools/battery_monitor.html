@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Companion · 电池观察</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f4f4ef;color:#243731;font:15px/1.65 "Segoe UI","Microsoft YaHei",sans-serif}main{max-width:1100px;margin:36px auto;padding:0 28px 50px}h1{font-size:30px;margin:0;letter-spacing:-.7px}h2{font-size:19px;margin:0 0 16px}p{margin:6px 0}header{display:flex;justify-content:space-between;align-items:center;gap:20px;margin-bottom:28px}.eyebrow{font-size:12px;letter-spacing:2px;color:#648172;text-transform:uppercase}.subtle{color:#6d7c75;font-size:13px}.badge{background:#e2eee5;color:#3c6554;padding:7px 13px;border-radius:20px;font-size:12px;white-space:nowrap}.cards{display:grid;grid-template-columns:1.15fr 1fr 1fr;gap:16px}.card{background:#fff;border:1px solid #e1e7df;border-radius:20px;padding:24px;box-shadow:0 3px 12px #273b2c04}.card.hero{background:#eaf0df;border-color:#d5e1c5}.label{color:#567060;font-size:13px}.number{font-size:54px;letter-spacing:-2px;line-height:1.25;margin:13px 0;color:#23382a;font-variant-numeric:tabular-nums}.number span{font-size:23px;letter-spacing:0;margin-left:6px}.volts{font-size:38px}.bar{width:100%;background:#d0dec0;height:8px;border-radius:10px;overflow:hidden;margin:15px 0}.fill{height:100%;background:#759052;width:0%;border-radius:10px;transition:width .4s}.notice{display:flex;gap:12px;align-items:flex-start;background:#fbf1e6;border:1px solid #efd7b7;border-radius:14px;padding:14px 18px;margin:18px 0;color:#7d5a2e;font-size:13px}.dot{display:inline-block;width:8px;height:8px;background:#be9256;border-radius:100%;margin-top:7px;flex:none}.section{margin-top:20px}.chart{width:100%;height:230px;background:#fff;display:block}.chart text{font:11px "Microsoft YaHei",sans-serif;fill:#839188}.chart-note{margin-top:9px}.split{display:grid;grid-template-columns:1.35fr 1fr;gap:18px;margin-top:20px}.facts{display:grid;grid-template-columns:1fr 1fr;gap:18px}.fact strong{display:block;font-weight:600}.fact small{color:#7a8980}.controls{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:15px 0}label{font-size:12px;color:#6d7c75;display:block}input{width:100%;background:#f9faf7;border:1px solid #d5dfd2;border-radius:9px;padding:9px 10px;margin-top:5px;color:#304b38;font:inherit}button{border:1px solid #d3decf;border-radius:9px;background:#fff;padding:9px 14px;color:#486641;cursor:pointer}table{width:100%;border-collapse:collapse;font-size:13px;margin-top:15px}th,td{text-align:left;padding:10px 8px;border-bottom:1px solid #edf0e9}th{color:#7d8c7d;font-weight:400}details{margin-top:18px;color:#68786d;font-size:12px}summary{cursor:pointer}a{color:#517b68}footer{display:flex;justify-content:space-between;gap:12px;margin-top:25px;color:#7c8a7f;font-size:12px}#estimate{font-size:26px;color:#466a42;font-weight:600;line-height:1.4;margin:12px 0}.empty{text-align:center;fill:#738573;font-size:14px!important}@media(max-width:800px){.cards,.split{grid-template-columns:1fr}.number{font-size:46px}header{align-items:flex-start;flex-direction:column}main{padding:0 17px;margin:24px auto}.facts{grid-template-columns:1fr 1fr}footer{flex-direction:column}}
+</style>
+<main>
+<header><div><div class="eyebrow">Companion / Battery</div><h1>看清电量，再看续航</h1><p class="subtle">真实 ADC 读数 · 临时电量估算 · 分段观察放电趋势</p></div><span class="badge" id="capture-state">正在读取记录</span></header>
+<div class="cards">
+<section class="card hero"><div class="label">最近一次电量估算</div><div class="number" id="percent">—<span>%</span></div><div class="bar"><div class="fill" id="fill"></div></div><div class="subtle" id="time">暂无有效读数</div><p class="subtle">按电压线性换算，非精确剩余容量</p></section>
+<section class="card"><div class="label">电池电压估算</div><div class="number volts" id="voltage">—<span>V</span></div><p id="voltage-detail" class="subtle">等待 ADC 样本</p><p class="subtle" id="source">供电来源未知</p></section>
+<section class="card"><div class="label">按当前趋势，还能用多久</div><div id="estimate">正在积累数据</div><p class="subtle" id="trend-reason">至少观察2小时，再判断趋势是否能用于粗估</p><p class="subtle" id="trend-count">有效记录：0</p></section>
+</div>
+<div class="notice" id="screen-notice"><span class="dot"></span><div id="screen-message">读取屏幕状态中…</div></div>
+<section class="card section"><div style="display:flex;justify-content:space-between;gap:10px"><h2>电压随时间的变化</h2><span class="subtle">仅真实采样点</span></div><svg id="chart" class="chart" viewBox="0 0 980 230" role="img" aria-label="电池电压趋势图"></svg><div class="subtle chart-note" id="curve-note">记录尚少；曲线变化不直接等于电流</div></section>
+<div class="split">
+<section class="card"><h2>观察条件</h2><div class="facts">
+<div class="fact"><span class="label">电池容量</span><strong id="capacity">未确认</strong><small>知道 mAh 后补充</small></div>
+<div class="fact"><span class="label">实际电流 / 功率</span><strong>尚未测量</strong><small>ADC 电压不能直接给出 mA</small></div>
+<div class="fact"><span class="label">采样时的设备状态</span><strong id="mode">—</strong><small>不自动录音或切换工作模式</small></div>
+<div class="fact"><span class="label">温度 / 发热</span><strong>尚未测量</strong><small>不从电压推算温度</small></div>
+</div><details><summary>读数来源与限制</summary><p id="evidence"></p><p>比例为 R上100kΩ / R下68kΩ；百分比使用2.85V→0%、4.15V→100%的临时规则。ADC尚未做外部标定。</p><p>当前仍连接ST-Link UART。查询、调试连接和采样间隔内的操作都会影响结果。失联、重启、充电或模式变化分段，不拼成一条连续放电曲线。</p><p>电压曲线只提供粗略外推；完整续航最终要用正常宠物刷新、录音等实际使用条件验证。</p></details>
+</section>
+<section class="card"><h2>续航计算器 <span class="subtle">假设对照</span></h2><p class="subtle">输入容量和电池侧平均电流，查看理论上限。这里的数值不是本机测量。</p><div class="controls"><label>容量（mAh）<input id="model-capacity" type="number" min="1" max="10000" placeholder="容量暂未知"></label><label>平均电流（mA）<input id="model-current" type="number" min="0.01" step="0.1" placeholder="待实际测量"></label></div><strong id="model-result">容量 ÷ 平均电流 = 理论小时数</strong><table><thead><tr><th>每100mAh，假设电池侧电流</th><th>理论上限</th></tr></thead><tbody><tr><td>1mA</td><td>约4.2天</td></tr><tr><td>5mA</td><td>约20小时</td></tr><tr><td>10mA</td><td>约10小时</td></tr></tbody></table><p class="subtle">保护截止、容量老化和负载变化会让可用时间低于简单除法。</p></section>
+</div>
+<section class="card section"><h2>功耗方面，目前能确认什么</h2><p>当前固件空闲使用WFI，STOP1深睡仍未启用；保持屏幕上的画面不等于整机进入深睡。录音、蓝牙收取、屏幕实际刷新和待机需要分别观察。</p><p class="subtle">ST数据手册的示例：1.8V、100MHz、25℃、其它外设关闭，SMPS下CoreMark典型约5.18mA。这个值是特定条件下的主控参考，不能当作本板电池侧电流；无线、屏幕、外设和电源转换还需要计入。</p><p class="subtle"><a href="https://www.st.com/resource/en/datasheet/stm32wba55cg.pdf" target="_blank" rel="noreferrer">ST DS14127 Rev10 表48</a> · <a href="https://www.ti.com/document-viewer/lit/html/SSZT786/GUID-5DD8C3D9-BCBE-467B-90E5-FAA672AAC15D" target="_blank" rel="noreferrer">TI：电压估算电量的局限</a></p></section>
+<footer><span>面板每30秒读取本地记录；打开面板不触发板端采样。</span><button id="refresh">刷新面板</button></footer>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+const modes={idle_display_error:'空闲，但屏幕刷新失败',screen_sleep:'屏幕待机',pet_or_menu:'宠物 / 菜单',connected:'蓝牙已连接',recording_offline:'离线录音',recording_connected:'录音且蓝牙已连接'};
+const formatTime=t=>new Date(t).toLocaleString('zh-CN',{hour12:false});
+const duration=h=>h>=48?`${(h/24).toFixed(1)}天`:`${h.toFixed(1)}小时`;
+function graph(data){
+ const svg=$('chart'),pts=data.observations.filter(p=>p.cellEstimateMv!==null),ns='http://www.w3.org/2000/svg';svg.replaceChildren();
+ function node(type,attrs,text){const n=document.createElementNS(ns,type);Object.entries(attrs).forEach(([k,v])=>n.setAttribute(k,v));if(text!==undefined)n.textContent=text;svg.appendChild(n);return n}
+ if(!pts.length){node('text',{x:490,y:112,'text-anchor':'middle',class:'empty'},'尚无有效记录，连接不可用时不会补成0%');return}
+ const start=pts[0].epoch,end=Math.max(start+900,pts.at(-1).epoch),lo=Math.floor((Math.min(...pts.map(p=>p.cellEstimateMv))-25)/25)*25,hi=Math.ceil((Math.max(...pts.map(p=>p.cellEstimateMv))+25)/25)*25;
+ const x=t=>62+(t-start)/(end-start)*870,y=v=>190-(v-lo)/(hi-lo)*162;
+ for(let i=0;i<4;i++){const v=lo+(hi-lo)*i/3;node('line',{x1:62,x2:940,y1:y(v),y2:y(v),stroke:'#e8eee5'});node('text',{x:49,y:y(v)+4,'text-anchor':'end'},(v/1000).toFixed(3)+'V')}
+ const segments=new Map();pts.forEach(p=>{const a=segments.get(p.segmentId)||[];a.push(p);segments.set(p.segmentId,a)});
+ segments.forEach(ps=>{if(ps.length>1)node('polyline',{points:ps.map(p=>`${x(p.epoch)},${y(p.cellEstimateMv)}`).join(' '),fill:'none',stroke:'#6c8b58','stroke-width':2.5,'stroke-linejoin':'round'});});
+ pts.forEach(p=>{const n=node('circle',{cx:x(p.epoch),cy:y(p.cellEstimateMv),r:4,fill:'#6c8b58',stroke:'#fff','stroke-width':2});const title=document.createElementNS(ns,'title');title.textContent=`${formatTime(p.atLocal)}：${(p.cellEstimateMv/1000).toFixed(3)}V，估算${p.percentEstimate}%，${modes[p.mode]||p.mode}`;n.appendChild(title)});
+ node('text',{x:62,y:219},new Date(start*1000).toLocaleTimeString('zh-CN',{hour12:false}));node('text',{x:940,y:219,'text-anchor':'end'},new Date(end*1000).toLocaleTimeString('zh-CN',{hour12:false}));
+}
+function render(d){
+ const p=d.latest,t=d.trend;
+ const stopped=d.config.monitoringStatus==='CANCELED_BY_OWNER';
+ $('capture-state').textContent=stopped?'定时观察已取消 · 历史记录':d.recentObservation?'最近采样成功':p?'历史读数 · 等待下次采样':'等待有效采样';
+ if(p){$('percent').innerHTML=`≈${p.percentEstimate}<span>%</span>`;$('fill').style.width=p.percentEstimate+'%';$('time').textContent=`采样于 ${formatTime(p.atLocal)}`;$('voltage').innerHTML=`${(p.cellEstimateMv/1000).toFixed(3)}<span>V</span>`;$('voltage-detail').textContent=`ADC ${p.rawAdc} · 查询时样本年龄 ${(p.sampleAgeMs/1000).toFixed(1)}秒`;$('mode').textContent=modes[p.mode]||p.mode;$('evidence').textContent=`实际固件0x${p.firmware} / UI${p.ui}。${p.evidence}`;}
+ $('source').textContent=d.config.powerSource==='battery'?'Owner确认：仅电池供电':d.config.powerSource==='usb'?'外部USB供电：不估算放电续航':'供电来源未确认';
+ $('capacity').textContent=d.config.capacityMah?`${d.config.capacityMah}mAh`:'未确认';
+ $('estimate').textContent=stopped?'续航仍未知':t.remainingHoursEstimate!==null?`粗估 ${duration(t.remainingHoursEstimate)}`:'正在积累数据';
+ $('trend-reason').textContent=t.reason;$('trend-count').textContent=`当前段 ${t.points} 次 · ${t.elapsedHours.toFixed(2)}小时 · 总有效记录 ${d.validObservationCount} 次`;
+ $('curve-note').textContent=t.dropMv===null?'缺失记录保留空缺，不当作0%':`当前同一段电压下降 ${t.dropMv}mV；30mV以内的变化暂不用于续航外推。`;
+ $('screen-message').textContent=p?.displayFault?'屏幕仍未成功刷新：实屏电量尚不可见。本页电量来自正常应用串口中的真实ADC样本；当前趋势不代表宠物正常动画时的功耗。':'电量来自串口ADC记录；是否已显示在实屏，还需要成功刷新后的实际观察。';
+ graph(d);
+}
+async function refresh(){try{const r=await fetch('/report.json',{cache:'no-store'});if(!r.ok)throw Error('读数面板连接不可用');render(await r.json());}catch(e){$('capture-state').textContent='面板连接暂不可用';$('trend-reason').textContent=e.message+'；保留上次读数，不生成新电量。'}}
+function model(){const c=Number($('model-capacity').value),a=Number($('model-current').value);$('model-result').textContent=c>0&&a>0?`假设条件下：理论 ${duration(c/a)}（非本机实测）`:'容量 ÷ 平均电流 = 理论小时数'}
+$('refresh').onclick=refresh;$('model-capacity').oninput=model;$('model-current').oninput=model;refresh();setInterval(refresh,30000);
+</script>
+</html>

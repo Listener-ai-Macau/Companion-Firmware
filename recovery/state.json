@@ -1,0 +1,54 @@
+{
+  "at": "2026-11-05T16:40:51+08:00",
+  "status": "PARTIALLY_RECONSTRUCTED_SOFTWARE_CHECKED_NOT_RELEASE_SOURCE",
+  "sourceRoot": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\firmware-recovery",
+  "retainedGitBase": "cd200644f8e9b6babd101bc26a31cc569b2a523a",
+  "missingIntermediateCommit": "2a6c0f7c1dc132ef76df595b0e467d19ab390fb0",
+  "missingIntermediateDiffFiles": [
+    "app/companion_pendant/recording/companion_opus16_rt.c",
+    "app/companion_pendant/recording/wba_recording_level.h",
+    "app/companion_pendant/recording/wba_recording_radio.c",
+    "app/companion_pendant/recording/wba_recording_transfer.c",
+    "app/companion_pendant/recording/wba_recording_transfer.h",
+    "app/companion_pendant/runtime/companion_renderer.c",
+    "app/companion_pendant/runtime/companion_runtime.h",
+    "platform/stm32wba55_companion_v11/ble/app_ble.c",
+    "platform/stm32wba55_companion_v11/ble/ble_product.c",
+    "platform/stm32wba55_companion_v11/ble/ble_product.h",
+    "platform/stm32wba55_companion_v11/product_app.c",
+    "tools/build_wba_v11.py",
+    "platform/stm32wba55_companion_v11/ble/sealed_blackout_switch.S"
+  ],
+  "historicalNextCommit": "e3715904c799788037c70400cf295b899c4aefe7",
+  "historicalInstalledVersion": 66679,
+  "historicalUninstalledCandidateVersion": 66680,
+  "originalPatchCallsRetained": 93,
+  "replayScope": "Original forward edits recovered after the retained Git base. Historical failed attempts and their retries are preserved. Three original Python source mutations were also restored. The earlier13-file diff is unresolved; later edits touching those files do not recreate that earlier diff.",
+  "softwareChecks": {
+    "capture_controls": {
+      "source": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\firmware-recovery\\.cache\\recording-core-20261011\\recovery-r5\\result.json",
+      "sha256": "b419c2ca3f11fa597631ddbd126404a3a5917c3cd88bc1e2337f52d42d323fa2",
+      "result": "PASS_CAPTURE_RECORDER_CONTROLS_SOFTWARE_ONLY"
+    },
+    "calendar_radio": {
+      "source": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\firmware-recovery\\.cache\\recording-core-20261011\\recovery-calendar\\result.json",
+      "sha256": "52f2e4a75b6318ec20aed2759155a642dc74f5c7ac126ac1a940f6e153390242",
+      "result": "PASS_RADIO_RUNTIME_SOFTWARE_ONLY"
+    },
+    "retained_clock": {
+      "source": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\firmware-recovery\\.cache\\host-tests\\wba-retained-clock\\result.json",
+      "sha256": "18355861502babae327b3016a144506943bd1702c35536065453c493aae15d44",
+      "result": "PASS_PREHARDWARE_SOFTWARE_ONLY"
+    },
+    "preferences": {
+      "source": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\firmware-recovery\\.cache\\wba-preferences-capture-host\\result.json",
+      "sha256": "e453a453d96c8b91cf09ba40c6b2006876661d56c6e4f3b5bb20b043dbdf9935",
+      "result": "PASS_HOST_ONLY"
+    }
+  },
+  "maintenanceProtocol": "PASS exact command/nonce/CRC/length/reserved bytes on existing32B attribute; source host executable only",
+  "physicalDeviceIO": false,
+  "fullFirmwareBuild": false,
+  "releaseSourceQualified": false,
+  "next": "Find or reconstruct the13-file intermediate diff; recover the matching UI85 resource inputs, then rebuild with the current verified recipe and validate changed code before normal OTA. Do not substitute the older desktop HEAD or label this tree as the original66680."
+}

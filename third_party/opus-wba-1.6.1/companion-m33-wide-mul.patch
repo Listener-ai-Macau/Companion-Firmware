@@ -1,0 +1,24 @@
+--- a/celt/fixed_generic.h
++++ b/celt/fixed_generic.h
+@@ -215,4 +215,20 @@
+ }
+ #define SIG2WORD16(x) (SIG2WORD16_generic(x))
+ 
+-#endif
++/* Optional WBA M33 exact 16x32 product lowering. Leave the original 32x32
++ * approximations and OPUS_FAST_INT64 policy unchanged. GCC can lower these
++ * bounded products to SMULL rather than several high/low half multiplies. */
++#if defined(COMPANION_OPUS_M33_WIDE_MUL) && COMPANION_OPUS_M33_WIDE_MUL
++#undef MULT16_32_Q15
++#undef MULT16_32_Q16
++#undef MULT16_32_P16
++#undef MAC16_32_Q15
++#undef MAC16_32_Q16
++#define MULT16_32_Q15(a,b) ((opus_val32)SHR((opus_int64)(opus_val16)(a)*(opus_val32)(b),15))
++#define MULT16_32_Q16(a,b) ((opus_val32)SHR((opus_int64)(opus_val16)(a)*(opus_val32)(b),16))
++#define MULT16_32_P16(a,b) ((opus_val32)PSHR((opus_int64)(opus_val16)(a)*(opus_val32)(b),16))
++#define MAC16_32_Q15(c,a,b) ADD32((c),MULT16_32_Q15((a),(b)))
++#define MAC16_32_Q16(c,a,b) ADD32((c),MULT16_32_Q16((a),(b)))
++#endif
++
++#endif

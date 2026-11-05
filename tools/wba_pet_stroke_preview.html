@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Companion · 眼神与摸头互动</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f3f1e9;color:#29352f;font:16px/1.7 system-ui,"Microsoft YaHei",sans-serif}
+main{max-width:1020px;margin:40px auto;padding:0 24px}.eyebrow{font-size:13px;letter-spacing:2px;color:#607163}
+h1{font-size:30px;line-height:1.3;margin:8px 0 12px}.intro{max-width:740px;color:#586359}
+.grid{display:grid;grid-template-columns:440px 1fr;gap:32px;margin-top:30px}.pet{background:#fff;border:1px solid #dddccf;border-radius:16px;padding:19px;text-align:center}
+canvas{width:min(400px,100%);height:auto;aspect-ratio:1;image-rendering:pixelated;touch-action:none;cursor:crosshair;background:white}
+.hint{font-size:14px;color:#69756b;margin:12px 0 0}.actions{display:flex;flex-wrap:wrap;gap:10px;margin:20px 0}
+button{font:inherit;border:1px solid #aeb8aa;border-radius:9px;padding:9px 15px;background:#fff;color:#314536;cursor:pointer}button:hover{background:#e7ecdf}button:disabled{opacity:.45;cursor:wait}
+.note{background:#e9eddf;border-radius:12px;padding:17px 20px}.status{min-height:30px;font-size:14px;color:#526657}
+ul{padding-left:22px}li{margin:10px 0}.caption{font-size:13px;color:#778077;margin-top:24px}
+@media(max-width:760px){main{margin:24px auto}.grid{grid-template-columns:1fr}.pet{max-width:440px}.grid{gap:16px}}
+</style>
+<main>
+<div class="eyebrow">COMPANION · P33r5 互动与日常预览</div>
+<h1>好奇地看你，也有自己的小日常。</h1>
+<p class="intro">沿用原开发板整套表情和饰件。移动时带着原来的神态看向手指，摸头后舒服地回应；放着不碰，也会看看周围、思考或放松，一段动作结束后歇一歇。</p>
+<div class="grid"><section class="pet"><canvas id="pet" width="200" height="200" aria-label="可触摸的宠物预览"></canvas><p class="hint">在眉毛上方，缓慢左右来回轻扫。也可以直接轻触。</p></section>
+<section><div class="actions"><button id="follow">好奇地看手指</button><button id="demo">示范轻扫摸头</button><button id="tap">轻触头部</button><button id="continue">回应时继续移动</button><button id="idle">放着看它的日常</button><button id="menu">静止长按进菜单</button><button id="reset">重新开始</button></div>
+<div class="status" id="status" role="status">正在加载原生画面…</div>
+<p><label for="emotion">查看原十类神态：</label> <select id="emotion" aria-label="作者选择原神态"><option value="">自然日常</option><option value="0">平静</option><option value="1">好奇</option><option value="2">开心</option><option value="3">温暖</option><option value="4">俏皮</option><option value="5">困倦</option><option value="6">害羞</option><option value="7">思考</option><option value="8">专注</option><option value="9">警觉</option></select></p>
+<p class="hint">选择神态用于查看完整原图和动作；日常仍由程序按情境选择。十类、方向图与原饰件都保留。</p>
+<div class="note">这是生产 C 代码的电脑预览，输入和面板完成时间为模拟。当前使用每次完整提交 1 秒的模型；实际刷新速度、颜色变浅和残影仍需实屏确认。</div>
+<ul><li>移动时用同一情绪的原方向整脸；停住不反复刷，松手稍留一眼再回正。</li><li>舒服闭眼的原姿态保留，睁眼拍再看向仍有效的手指。一段回应不重新抽五官和饰件。</li><li>放着时会看向周围、好奇、放松，也会思考和专注；动作后有长短不同的停顿。其余困倦、害羞和警觉仍按情境触发。</li><li>静止长按约 3 秒进入原菜单；录音期间不插入摸头回应。自动休眠仍遵守原设置。</li><li>同一时刻只有一张画面在提交，完成后才推进动作，不补帧追赶。</li></ul>
+<p class="caption">200 × 200 原生黑白图，放大仅用于查看。没有重画眼睛、嘴形或饰件；本页不连接主板、不播放声音。</p>
+</section></div></main>
+<script>
+const canvas=document.querySelector('#pet'),ctx=canvas.getContext('2d'),status=document.querySelector('#status');
+const buttons=[...document.querySelectorAll('button')];let down=false,scripting=false,sequence=0,pending=Promise.resolve(),imageVersion=-1,activePointer=null;const contacts=new Set();
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+function send(data){pending=pending.then(async()=>{const r=await fetch('/api/input',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});const v=await r.json();if(!r.ok)throw Error(v.error||'预览请求失败');return v;}).catch(e=>{status.textContent=e.message;});return pending;}
+function point(e){const r=canvas.getBoundingClientRect();return{x:Math.max(0,Math.min(199,Math.round((e.clientX-r.left)*200/r.width))),y:Math.max(0,Math.min(199,Math.round((e.clientY-r.top)*200/r.height)))};}
+canvas.onpointerdown=e=>{if(scripting)return;contacts.add(e.pointerId);canvas.setPointerCapture(e.pointerId);if(contacts.size!==1){down=false;activePointer=null;send({kind:'cancel'});return;}down=true;activePointer=e.pointerId;send({kind:'touch',down:true,...point(e)});};
+canvas.onpointermove=e=>{if(down&&!scripting&&activePointer===e.pointerId)send({kind:'touch',down:true,...point(e)});};
+function release(e){contacts.delete(e.pointerId);if(!down||activePointer!==e.pointerId)return;down=false;activePointer=null;send({kind:'touch',down:false,...point(e)});}
+function cancel(e){contacts.delete(e.pointerId);if(activePointer===e.pointerId){down=false;activePointer=null;send({kind:'cancel'});}}
+canvas.onpointerup=release;canvas.onpointercancel=cancel;canvas.onlostpointercapture=cancel;
+async function scripted(path){if(scripting)return;scripting=true;buttons.forEach(b=>b.disabled=true);status.textContent='示范中，请让这一段回应落稳。';try{for(const [wait,x,y,contact]of path){await sleep(wait);await send({kind:'touch',x,y,down:contact});}}finally{scripting=false;buttons.forEach(b=>b.disabled=false);}}
+document.querySelector('#demo').onclick=()=>scripted([[0,75,60,true],[250,110,60,true],[250,135,60,true],[250,103,60,true],[250,75,60,true],[250,105,60,true],[250,75,60,false]]);
+document.querySelector('#follow').onclick=()=>scripted([[0,55,115,true],[650,145,115,true],[650,145,150,true],[650,55,150,true],[650,55,115,true],[650,55,115,false]]);
+document.querySelector('#continue').onclick=()=>scripted([[0,100,60,true],[160,100,60,false],[700,150,115,true],[400,50,115,true],[400,150,150,true],[400,50,150,true],[400,150,115,true],[400,50,115,true],[400,150,115,true],[400,50,115,true],[400,150,150,true],[400,50,150,true],[500,50,150,false]]);
+document.querySelector('#tap').onclick=()=>scripted([[0,100,60,true],[160,100,60,false]]);
+document.querySelector('#menu').onclick=()=>send({kind:'action',action:5});
+document.querySelector('#emotion').onchange=async e=>{if(scripting)return;down=false;activePointer=null;contacts.clear();await send({kind:'cancel'});if(e.target.value!=='')await send({kind:'family',family:Number(e.target.value)});};
+document.querySelector('#idle').onclick=async()=>{down=false;activePointer=null;contacts.clear();await send({kind:'cancel'});status.textContent='放着即可：每段小动作后会歇一歇，情绪缓慢变化。';};
+document.querySelector('#reset').onclick=async()=>{++sequence;down=false;activePointer=null;contacts.clear();await send({kind:'reset'});await send({kind:'panel',latencyMs:1000,fail:false});};
+async function refresh(){try{const r=await fetch('/api/state');const s=await r.json();if(s.version!==imageVersion){const i=new Image();i.onload=()=>{ctx.imageSmoothingEnabled=false;ctx.drawImage(i,0,0,200,200);};i.src='data:image/png;base64,'+s.png;imageVersion=s.version;}
+if(!scripting)status.textContent=s.surface===1?'已进入原菜单，可以继续轻触菜单或重新开始。':s.capturing?'模拟录音中，摸头回应已让出。':s.deferredPetKind===3?'正在完成这一段回应，随后看向你的手指。':s.strokePhase===4&&s.replyPending?'已识别一次轻扫，正在完成这一段舒服回应。':s.touchContact?'正在留意你的手指。':s.replyPending?'正在回应，随后回到自然状态。':'可以轻触、移动手指或在头部来回轻扫。';}catch(e){status.textContent='预览服务暂时不可用。';}setTimeout(refresh,120);}refresh();
+</script></html>

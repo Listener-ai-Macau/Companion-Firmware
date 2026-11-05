@@ -1,0 +1,20 @@
+{
+  "schema": "companion.wba.reused-contracts.v1",
+  "date": "2026-10-03",
+  "files": [
+    {
+      "source": "cubeide/Companion_Nucleo_WB55RG_Bringup/build_freertos/generated/companion_browser_interaction_contract.h",
+      "destination": "app/companion_pendant/runtime/generated/companion_browser_interaction_contract.h",
+      "sha256": "a5e605d97e6a724cdf36f222f5f91882676e4d12d9a7a4daf8843acadbd22166",
+      "bytes": 77655
+    },
+    {
+      "source": "cubeide/Companion_Nucleo_WB55RG_Bringup/build_freertos/generated/companion_browser_cemp_contract.h",
+      "destination": "app/companion_pendant/runtime/generated/companion_browser_cemp_contract.h",
+      "sha256": "9bede8fe8cb70a8b4665b77327e93c2ecc052527b940d3034f35a1593296f22f",
+      "bytes": 763301
+    }
+  ],
+  "external_resource_installation": "NOT_RUN",
+  "physical_visual_acceptance": "NOT_RUN"
+}

@@ -1,0 +1,894 @@
+{
+  "schema": "companion.emote_asset_pack_manifest.v1",
+  "name": "emote-matrix-white-200x200-v1",
+  "revision": 53,
+  "priority": 100,
+  "profile": {
+    "width": 200,
+    "height": 200,
+    "stride_bytes": 25,
+    "pixel_format": "mono_1bpp_white_is_one_msb"
+  },
+  "encoding": "packbits",
+  "clips": [
+    {
+      "name": "idle",
+      "loop_start": 1,
+      "loop_end": 2,
+      "frames": [
+        {
+          "source": "../../../../docs/validation/epaper/expression_idle_1_54in.pbm",
+          "duration_ms": 1800,
+          "dirty": [
+            8,
+            18,
+            184,
+            166
+          ]
+        },
+        {
+          "source": "../../../../docs/validation/epaper/expression_idle_glance_left_1_54in.pbm",
+          "duration_ms": 1200,
+          "dirty": [
+            8,
+            18,
+            184,
+            166
+          ]
+        },
+        {
+          "source": "../../../../docs/validation/epaper/expression_idle_1_54in.pbm",
+          "duration_ms": 1600,
+          "dirty": [
+            8,
+            18,
+            184,
+            166
+          ]
+        }
+      ]
+    },
+    {
+      "name": "listening",
+      "loop_start": 1,
+      "loop_end": 4,
+      "frames": [
+        {
+          "source": "../../../../docs/validation/epaper/expression_listening_1_54in.pbm",
+          "duration_ms": 1200,
+          "dirty": [
+            8,
+            18,
+            184,
+            166
+          ]
+        },
+        {
+          "source": "../../../../docs/validation/epaper/expression_listening_focus_1_54in.pbm",
+          "duration_ms": 700,
+          "dirty": [
+            8,
+            18,
+            184,
+            166
+          ]
+        },
+        {
+          "source": "../../../../docs/validation/epaper/expression_listening_wave_1_54in.pbm",
+          "duration_ms": 700,
+          "dirty": [
+            8,
+            18,
+            184,
+            166
+          ]
+        },
+        {
+          "source": "../../../../docs/validation/epaper/expression_listening_focus_1_54in.pbm",
+          "duration_ms": 700,
+          "dirty": [
+            8,
+            18,
+            184,
+            166
+          ]
+        },
+        {
+          "source": "../../../../docs/validation/epaper/expression_listening_1_54in.pbm",
+          "duration_ms": 900,
+          "dirty": [
+            8,
+            18,
+            184,
+            166
+          ]
+        }
+      ]
+    },
+    {
+      "name": "thinking",
+      "loop_start": 1,
+      "loop_end": 4,
+      "frames": [
+        {
+          "source": "../../../../docs/validation/epaper/expression_thinking_1_54in.pbm",
+          "duration_ms": 1400,
+          "dirty": [
+            8,
+            18,
+            184,
+            166
+          ]
+        },
+        {
+          "source": "../../../../docs/validation/epaper/expression_thinking_inward_1_54in.pbm",
+          "duration_ms": 800,
+          "dirty": [
+            8,
+            18,
+            184,
+            166
+          ]
+        },
+        {
+          "source": "../../../../docs/validation/epaper/expression_thinking_outward_1_54in.pbm",
+          "duration_ms": 800,
+          "dirty": [
+            8,
+            18,
+            184,
+            166
+          ]
+        },
+        {
+          "source": "../../../../docs/validation/epaper/expression_thinking_inward_1_54in.pbm",
+          "duration_ms": 800,
+          "dirty": [
+            8,
+            18,
+            184,
+            166
+          ]
+        },
+        {
+          "source": "../../../../docs/validation/epaper/expression_thinking_1_54in.pbm",
+          "duration_ms": 1000,
+          "dirty": [
+            8,
+            18,
+            184,
+            166
+          ]
+        }
+      ]
+    },
+    {
+      "name": "speaking",
+      "loop_start": 1,
+      "loop_end": 4,
+      "frames": [
+        {
+          "source": "../../../../docs/validation/epaper/expression_speaking_1_54in.pbm",
+          "duration_ms": 1200,
+          "dirty": [
+            8,
+            18,
+            184,
+            166
+          ]
+        },
+        {
+          "source": "../../../../docs/validation/epaper/expression_speaking_soft_1_54in.pbm",
+          "duration_ms": 700,
+          "dirty": [
+            8,
+            18,
+            184,
+            166
+          ]
+        },
+        {
+          "source": "../../../../docs/validation/epaper/expression_speaking_open_1_54in.pbm",
+          "duration_ms": 700,
+          "dirty": [
+            8,
+            18,
+            184,
+            166
+          ]
+        },
+        {
+          "source": "../../../../docs/validation/epaper/expression_speaking_soft_1_54in.pbm",
+          "duration_ms": 700,
+          "dirty": [
+            8,
+            18,
+            184,
+            166
+          ]
+        },
+        {
+          "source": "../../../../docs/validation/epaper/expression_speaking_1_54in.pbm",
+          "duration_ms": 900,
+          "dirty": [
+            8,
+            18,
+            184,
+            166
+          ]
+        }
+      ]
+    },
+    {
+      "name": "happy",
+      "loop_start": 1,
+      "loop_end": 2,
+      "frames": [
+        {
+          "source": "../../../../docs/validation/epaper/expression_happy_attention_1_54in.pbm",
+          "duration_ms": 1000,
+          "dirty": [
+            8,
+            18,
+            184,
+            166
+          ]
+        },
+        {
+          "source": "../../../../docs/validation/epaper/expression_happy_bright_1_54in.pbm",
+          "duration_ms": 1100,
+          "dirty": [
+            8,
+            18,
+            184,
+            166
+          ]
+        },
+        {
+          "source": "../../../../docs/validation/epaper/expression_happy_1_54in.pbm",
+          "duration_ms": 1500,
+          "dirty": [
+            8,
+            18,
+            184,
+            166
+          ]
+        }
+      ]
+    },
+    {
+      "name": "attention.center",
+      "loop_start": 1,
+      "loop_end": 2,
+      "frames": [
+        {
+          "source": "../../../../docs/validation/epaper/expression_idle_1_54in.pbm",
+          "duration_ms": 850,
+          "dirty": [
+            8,
+            18,
+            184,
+            166
+          ]
+        },
+        {
+          "source": "../../../../docs/validation/epaper/expression_happy_attention_1_54in.pbm",
+          "duration_ms": 950,
+          "dirty": [
+            8,
+            18,
+            184,
+            166
+          ]
+        },
+        {
+          "source": "../../../../docs/validation/epaper/expression_happy_1_54in.pbm",
+          "duration_ms": 1500,
+          "dirty": [
+            8,
+            18,
+            184,
+            166
+          ]
+        }
+      ]
+    },
+    {
+      "name": "attention.up_left",
+      "loop_start": 1,
+      "loop_end": 2,
+      "frames": [
+        {
+          "source": "../../../../docs/validation/epaper/expression_idle_look_up_left_1_54in.pbm",
+          "duration_ms": 850,
+          "dirty": [
+            8,
+            18,
+            184,
+            166
+          ]
+        },
+        {
+          "source": "../../../../docs/validation/epaper/expression_happy_attention_up_left_1_54in.pbm",
+          "duration_ms": 950,
+          "dirty": [
+            8,
+            18,
+            184,
+            166
+          ]
+        },
+        {
+          "source": "../../../../docs/validation/epaper/expression_happy_1_54in.pbm",
+          "duration_ms": 1500,
+          "dirty": [
+            8,
+            18,
+            184,
+            166
+          ]
+        }
+      ]
+    },
+    {
+      "name": "attention.up",
+      "loop_start": 1,
+      "loop_end": 2,
+      "frames": [
+        {
+          "source": "../../../../docs/validation/epaper/expression_idle_look_up_1_54in.pbm",
+          "duration_ms": 850,
+          "dirty": [
+            8,
+            18,
+            184,
+            166
+          ]
+        },
+        {
+          "source": "../../../../docs/validation/epaper/expression_happy_attention_up_1_54in.pbm",
+          "duration_ms": 950,
+          "dirty": [
+            8,
+            18,
+            184,
+            166
+          ]
+        },
+        {
+          "source": "../../../../docs/validation/epaper/expression_happy_1_54in.pbm",
+          "duration_ms": 1500,
+          "dirty": [
+            8,
+            18,
+            184,
+            166
+          ]
+        }
+      ]
+    },
+    {
+      "name": "attention.up_right",
+      "loop_start": 1,
+      "loop_end": 2,
+      "frames": [
+        {
+          "source": "../../../../docs/validation/epaper/expression_idle_look_up_right_1_54in.pbm",
+          "duration_ms": 850,
+          "dirty": [
+            8,
+            18,
+            184,
+            166
+          ]
+        },
+        {
+          "source": "../../../../docs/validation/epaper/expression_happy_attention_up_right_1_54in.pbm",
+          "duration_ms": 950,
+          "dirty": [
+            8,
+            18,
+            184,
+            166
+          ]
+        },
+        {
+          "source": "../../../../docs/validation/epaper/expression_happy_1_54in.pbm",
+          "duration_ms": 1500,
+          "dirty": [
+            8,
+            18,
+            184,
+            166
+          ]
+        }
+      ]
+    },
+    {
+      "name": "attention.left",
+      "loop_start": 1,
+      "loop_end": 2,
+      "frames": [
+        {
+          "source": "../../../../docs/validation/epaper/expression_idle_look_left_1_54in.pbm",
+          "duration_ms": 850,
+          "dirty": [
+            8,
+            18,
+            184,
+            166
+          ]
+        },
+        {
+          "source": "../../../../docs/validation/epaper/expression_happy_attention_left_1_54in.pbm",
+          "duration_ms": 950,
+          "dirty": [
+            8,
+            18,
+            184,
+            166
+          ]
+        },
+        {
+          "source": "../../../../docs/validation/epaper/expression_happy_1_54in.pbm",
+          "duration_ms": 1500,
+          "dirty": [
+            8,
+            18,
+            184,
+            166
+          ]
+        }
+      ]
+    },
+    {
+      "name": "attention.right",
+      "loop_start": 1,
+      "loop_end": 2,
+      "frames": [
+        {
+          "source": "../../../../docs/validation/epaper/expression_idle_look_right_1_54in.pbm",
+          "duration_ms": 850,
+          "dirty": [
+            8,
+            18,
+            184,
+            166
+          ]
+        },
+        {
+          "source": "../../../../docs/validation/epaper/expression_happy_attention_right_1_54in.pbm",
+          "duration_ms": 950,
+          "dirty": [
+            8,
+            18,
+            184,
+            166
+          ]
+        },
+        {
+          "source": "../../../../docs/validation/epaper/expression_happy_1_54in.pbm",
+          "duration_ms": 1500,
+          "dirty": [
+            8,
+            18,
+            184,
+            166
+          ]
+        }
+      ]
+    },
+    {
+      "name": "attention.down_left",
+      "loop_start": 1,
+      "loop_end": 2,
+      "frames": [
+        {
+          "source": "../../../../docs/validation/epaper/expression_idle_look_down_left_1_54in.pbm",
+          "duration_ms": 850,
+          "dirty": [
+            8,
+            18,
+            184,
+            166
+          ]
+        },
+        {
+          "source": "../../../../docs/validation/epaper/expression_happy_attention_down_left_1_54in.pbm",
+          "duration_ms": 950,
+          "dirty": [
+            8,
+            18,
+            184,
+            166
+          ]
+        },
+        {
+          "source": "../../../../docs/validation/epaper/expression_happy_1_54in.pbm",
+          "duration_ms": 1500,
+          "dirty": [
+            8,
+            18,
+            184,
+            166
+          ]
+        }
+      ]
+    },
+    {
+      "name": "attention.down",
+      "loop_start": 1,
+      "loop_end": 2,
+      "frames": [
+        {
+          "source": "../../../../docs/validation/epaper/expression_idle_look_down_1_54in.pbm",
+          "duration_ms": 850,
+          "dirty": [
+            8,
+            18,
+            184,
+            166
+          ]
+        },
+        {
+          "source": "../../../../docs/validation/epaper/expression_happy_attention_down_1_54in.pbm",
+          "duration_ms": 950,
+          "dirty": [
+            8,
+            18,
+            184,
+            166
+          ]
+        },
+        {
+          "source": "../../../../docs/validation/epaper/expression_happy_1_54in.pbm",
+          "duration_ms": 1500,
+          "dirty": [
+            8,
+            18,
+            184,
+            166
+          ]
+        }
+      ]
+    },
+    {
+      "name": "attention.down_right",
+      "loop_start": 1,
+      "loop_end": 2,
+      "frames": [
+        {
+          "source": "../../../../docs/validation/epaper/expression_idle_look_down_right_1_54in.pbm",
+          "duration_ms": 850,
+          "dirty": [
+            8,
+            18,
+            184,
+            166
+          ]
+        },
+        {
+          "source": "../../../../docs/validation/epaper/expression_happy_attention_down_right_1_54in.pbm",
+          "duration_ms": 950,
+          "dirty": [
+            8,
+            18,
+            184,
+            166
+          ]
+        },
+        {
+          "source": "../../../../docs/validation/epaper/expression_happy_1_54in.pbm",
+          "duration_ms": 1500,
+          "dirty": [
+            8,
+            18,
+            184,
+            166
+          ]
+        }
+      ]
+    },
+    {
+      "name": "sleepy",
+      "loop_start": 1,
+      "loop_end": 4,
+      "frames": [
+        {
+          "source": "../../../../docs/validation/epaper/expression_sleepy_1_54in.pbm",
+          "duration_ms": 1500,
+          "dirty": [
+            8,
+            18,
+            184,
+            166
+          ]
+        },
+        {
+          "source": "../../../../docs/validation/epaper/expression_sleepy_drift_1_54in.pbm",
+          "duration_ms": 900,
+          "dirty": [
+            8,
+            18,
+            184,
+            166
+          ]
+        },
+        {
+          "source": "../../../../docs/validation/epaper/expression_sleepy_yawn_1_54in.pbm",
+          "duration_ms": 900,
+          "dirty": [
+            8,
+            18,
+            184,
+            166
+          ]
+        },
+        {
+          "source": "../../../../docs/validation/epaper/expression_sleepy_drift_1_54in.pbm",
+          "duration_ms": 900,
+          "dirty": [
+            8,
+            18,
+            184,
+            166
+          ]
+        },
+        {
+          "source": "../../../../docs/validation/epaper/expression_sleepy_1_54in.pbm",
+          "duration_ms": 1100,
+          "dirty": [
+            8,
+            18,
+            184,
+            166
+          ]
+        }
+      ]
+    },
+    {
+      "name": "recording",
+      "loop_start": 1,
+      "loop_end": 4,
+      "frames": [
+        {
+          "source": "../../../../docs/validation/epaper/expression_recording_1_54in.pbm",
+          "duration_ms": 1400,
+          "dirty": [
+            8,
+            18,
+            184,
+            166
+          ]
+        },
+        {
+          "source": "../../../../docs/validation/epaper/expression_recording_soft_1_54in.pbm",
+          "duration_ms": 800,
+          "dirty": [
+            8,
+            18,
+            184,
+            166
+          ]
+        },
+        {
+          "source": "../../../../docs/validation/epaper/expression_recording_pulse_1_54in.pbm",
+          "duration_ms": 800,
+          "dirty": [
+            8,
+            18,
+            184,
+            166
+          ]
+        },
+        {
+          "source": "../../../../docs/validation/epaper/expression_recording_soft_1_54in.pbm",
+          "duration_ms": 800,
+          "dirty": [
+            8,
+            18,
+            184,
+            166
+          ]
+        },
+        {
+          "source": "../../../../docs/validation/epaper/expression_recording_1_54in.pbm",
+          "duration_ms": 1000,
+          "dirty": [
+            8,
+            18,
+            184,
+            166
+          ]
+        }
+      ]
+    },
+    {
+      "name": "sync_complete",
+      "loop_start": 0,
+      "loop_end": 1,
+      "frames": [
+        {
+          "source": "../../../../docs/validation/epaper/expression_sync_complete_1_54in.pbm",
+          "duration_ms": 1000
+        }
+      ]
+    },
+    {
+      "name": "low_battery",
+      "loop_start": 0,
+      "loop_end": 1,
+      "frames": [
+        {
+          "source": "../../../../docs/validation/epaper/expression_low_battery_1_54in.pbm",
+          "duration_ms": 1000
+        }
+      ]
+    },
+    {
+      "name": "error",
+      "loop_start": 0,
+      "loop_end": 1,
+      "frames": [
+        {
+          "source": "../../../../docs/validation/epaper/expression_error_1_54in.pbm",
+          "duration_ms": 1000
+        }
+      ]
+    },
+    {
+      "name": "menu.home.en",
+      "loop_start": 0,
+      "loop_end": 1,
+      "frames": [
+        {
+          "source": "../../../../docs/validation/epaper/menu_home_en_1_54in.pbm",
+          "duration_ms": 1000
+        }
+      ]
+    },
+    {
+      "name": "menu.record.en",
+      "loop_start": 0,
+      "loop_end": 1,
+      "frames": [
+        {
+          "source": "../../../../docs/validation/epaper/menu_record_en_1_54in.pbm",
+          "duration_ms": 1000
+        }
+      ]
+    },
+    {
+      "name": "menu.status.en",
+      "loop_start": 0,
+      "loop_end": 1,
+      "frames": [
+        {
+          "source": "../../../../docs/validation/epaper/menu_status_en_1_54in.pbm",
+          "duration_ms": 1000
+        }
+      ]
+    },
+    {
+      "name": "menu.phone.en",
+      "loop_start": 0,
+      "loop_end": 1,
+      "frames": [
+        {
+          "source": "../../../../docs/validation/epaper/menu_phone_en_1_54in.pbm",
+          "duration_ms": 1000
+        }
+      ]
+    },
+    {
+      "name": "menu.device.en",
+      "loop_start": 0,
+      "loop_end": 1,
+      "frames": [
+        {
+          "source": "../../../../docs/validation/epaper/menu_device_en_1_54in.pbm",
+          "duration_ms": 1000
+        }
+      ]
+    },
+    {
+      "name": "menu.preferences.en",
+      "loop_start": 0,
+      "loop_end": 1,
+      "frames": [
+        {
+          "source": "../../../../docs/validation/epaper/menu_preferences_en_1_54in.pbm",
+          "duration_ms": 1000
+        }
+      ]
+    },
+    {
+      "name": "menu.about.en",
+      "loop_start": 0,
+      "loop_end": 1,
+      "frames": [
+        {
+          "source": "../../../../docs/validation/epaper/menu_about_en_1_54in.pbm",
+          "duration_ms": 1000
+        }
+      ]
+    },
+    {
+      "name": "menu.home.zh",
+      "loop_start": 0,
+      "loop_end": 1,
+      "frames": [
+        {
+          "source": "../../../../docs/validation/epaper/menu_home_zh_1_54in.pbm",
+          "duration_ms": 1000
+        }
+      ]
+    },
+    {
+      "name": "menu.record.zh",
+      "loop_start": 0,
+      "loop_end": 1,
+      "frames": [
+        {
+          "source": "../../../../docs/validation/epaper/menu_record_zh_1_54in.pbm",
+          "duration_ms": 1000
+        }
+      ]
+    },
+    {
+      "name": "menu.status.zh",
+      "loop_start": 0,
+      "loop_end": 1,
+      "frames": [
+        {
+          "source": "../../../../docs/validation/epaper/menu_status_zh_1_54in.pbm",
+          "duration_ms": 1000
+        }
+      ]
+    },
+    {
+      "name": "menu.phone.zh",
+      "loop_start": 0,
+      "loop_end": 1,
+      "frames": [
+        {
+          "source": "../../../../docs/validation/epaper/menu_phone_zh_1_54in.pbm",
+          "duration_ms": 1000
+        }
+      ]
+    },
+    {
+      "name": "menu.device.zh",
+      "loop_start": 0,
+      "loop_end": 1,
+      "frames": [
+        {
+          "source": "../../../../docs/validation/epaper/menu_device_zh_1_54in.pbm",
+          "duration_ms": 1000
+        }
+      ]
+    },
+    {
+      "name": "menu.preferences.zh",
+      "loop_start": 0,
+      "loop_end": 1,
+      "frames": [
+        {
+          "source": "../../../../docs/validation/epaper/menu_preferences_zh_1_54in.pbm",
+          "duration_ms": 1000
+        }
+      ]
+    },
+    {
+      "name": "menu.about.zh",
+      "loop_start": 0,
+      "loop_end": 1,
+      "frames": [
+        {
+          "source": "../../../../docs/validation/epaper/menu_about_zh_1_54in.pbm",
+          "duration_ms": 1000
+        }
+      ]
+    }
+  ]
+}

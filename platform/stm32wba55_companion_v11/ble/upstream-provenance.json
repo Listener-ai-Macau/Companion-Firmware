@@ -1,0 +1,153 @@
+{
+  "sdk_commit": "e455b860ceb52aaa0332a98f1e7a10bbd7014fc9",
+  "files": {
+    "app_conf.h": {
+      "source": "Projects/NUCLEO-WBA55CG/Applications/BLE/BLE_p2pServer/Core/Inc/app_conf.h",
+      "sha256": "a208777e3723f4ce368f6ce6dbe093e7d2f80c8971046e89969f4797ccf0e7b3"
+    },
+    "app_common.h": {
+      "source": "Projects/NUCLEO-WBA55CG/Applications/BLE/BLE_p2pServer/Core/Inc/app_common.h",
+      "sha256": "f24d2518584612b0f934ca2f46a7b35f6512952a9d21c76dc18d2479573261de"
+    },
+    "app_entry.h": {
+      "source": "Projects/NUCLEO-WBA55CG/Applications/BLE/BLE_p2pServer/Core/Inc/app_entry.h",
+      "sha256": "52015ebc1b5b3e791585d459e6a5aa1b7a2e5328cb5f80962e90e2cf43c49d23"
+    },
+    "stm32_rtos.h": {
+      "source": "Projects/NUCLEO-WBA55CG/Applications/BLE/BLE_p2pServer/Core/Inc/stm32_rtos.h",
+      "sha256": "768dc08cfbd47a532e7d22f90265b6dcddbcc2593724f7952bcd7ff6757c9417"
+    },
+    "utilities_conf.h": {
+      "source": "Projects/NUCLEO-WBA55CG/Applications/BLE/BLE_p2pServer/Core/Inc/utilities_conf.h",
+      "sha256": "edf1a050633ba7f4ba6c24ed501c5dc6aa356dcce8ce208860be2f760de5c973"
+    },
+    "main.h": {
+      "source": "Projects/NUCLEO-WBA55CG/Applications/BLE/BLE_p2pServer/Core/Inc/main.h",
+      "sha256": "5c5dbd66de9091bb6467f1c6d238a37cb764f2c6eaafc197d786ba8dee91241a"
+    },
+    "app_entry.c": {
+      "source": "Projects/NUCLEO-WBA55CG/Applications/BLE/BLE_p2pServer/Core/Src/app_entry.c",
+      "sha256": "485f07354a7281a1f10ad1d85b936abbcd0de6f80c1219d54aeb3d0164db9c4c"
+    },
+    "ble_conf.h": {
+      "source": "Projects/NUCLEO-WBA55CG/Applications/BLE/BLE_p2pServer/STM32_WPAN/App/ble_conf.h",
+      "sha256": "52a568cbac50773fdb845390760d54f17e34e2f466f53ef3a81e3eea04c1bf85"
+    },
+    "ble_dbg_conf.h": {
+      "source": "Projects/NUCLEO-WBA55CG/Applications/BLE/BLE_p2pServer/STM32_WPAN/App/ble_dbg_conf.h",
+      "sha256": "8e6e67277efed70490d03f74920c4a0ce354fb277d1d5a1710ea092956ad2f71"
+    },
+    "app_ble.h": {
+      "source": "Projects/NUCLEO-WBA55CG/Applications/BLE/BLE_p2pServer/STM32_WPAN/App/app_ble.h",
+      "sha256": "6fda22b5c40c99789896ad0eed7667322e89fab1998cd05880898c4e2ec1a9b5"
+    },
+    "bleplat.c": {
+      "source": "Projects/NUCLEO-WBA55CG/Applications/BLE/BLE_p2pServer/STM32_WPAN/Target/bleplat.c",
+      "sha256": "55466bc0fc9075045edf3f402609f4cf4097da35228fa5f22b46e18980396d6b"
+    },
+    "host_stack_if.c": {
+      "source": "Projects/NUCLEO-WBA55CG/Applications/BLE/BLE_p2pServer/STM32_WPAN/Target/host_stack_if.c",
+      "sha256": "31a1957936cb9127412814f2229d41a35725511f4e559eb5e00bfb5e960973c0"
+    },
+    "host_stack_if.h": {
+      "source": "Projects/NUCLEO-WBA55CG/Applications/BLE/BLE_p2pServer/STM32_WPAN/Target/host_stack_if.h",
+      "sha256": "f2cbf38a6456c18b0e4c08af495e84a2828810e6d8dce15244e331b4b9c680e7"
+    },
+    "linklayer_plat.c": {
+      "source": "Projects/NUCLEO-WBA55CG/Applications/BLE/BLE_p2pServer/STM32_WPAN/Target/linklayer_plat.c",
+      "sha256": "701ed42f1e1e27cd48978c666cb5e3cb2a0b5acbf1aaa488ad510816bdb4ffcb"
+    },
+    "ll_sys_if.c": {
+      "source": "Projects/NUCLEO-WBA55CG/Applications/BLE/BLE_p2pServer/STM32_WPAN/Target/ll_sys_if.c",
+      "sha256": "c29a892c22ffbb793508556d7ab22d30b65edc2ac60c67f94cab4e7a15f3df59"
+    },
+    "ll_sys_if.h": {
+      "source": "Projects/NUCLEO-WBA55CG/Applications/BLE/BLE_p2pServer/STM32_WPAN/Target/ll_sys_if.h",
+      "sha256": "d04019a0f7258eb06ccd64034f2b4b520baef8ce33b678dbeef2d55bdbf8c778"
+    },
+    "power_table.c": {
+      "source": "Projects/NUCLEO-WBA55CG/Applications/BLE/BLE_p2pServer/STM32_WPAN/Target/power_table.c",
+      "sha256": "e78a3a654dd49e4f75d9a29e716f695671d92912c6d4832721e95454ff213ad5"
+    },
+    "common_wpan_conf.h": {
+      "source": "Projects/NUCLEO-WBA55CG/Applications/BLE/BLE_p2pServer/System/Config/common_wpan_conf.h",
+      "sha256": "158f886b0ae756ee1aac92641ecced594ca4924559c2764c9c66132f6f2b349c"
+    },
+    "adc_ctrl_conf.h": {
+      "source": "Projects/NUCLEO-WBA55CG/Applications/BLE/BLE_p2pServer/System/Config/ADC_Ctrl/adc_ctrl_conf.h",
+      "sha256": "2095e801ee51acfac840b07586870c4283a6cb5580cbf3bd91f9eabecb557ab9"
+    },
+    "crc_ctrl_conf.h": {
+      "source": "Projects/NUCLEO-WBA55CG/Applications/BLE/BLE_p2pServer/System/Config/CRC_Ctrl/crc_ctrl_conf.h",
+      "sha256": "173d7c9f9469bfa775b7165c94ecfacc356835bfcd9954ed02160731daf31513"
+    },
+    "app_debug.h": {
+      "source": "Projects/NUCLEO-WBA55CG/Applications/BLE/BLE_p2pServer/System/Config/Debug_GPIO/app_debug.h",
+      "sha256": "be34daa2368a61b3ec53fb873f7eb5d707d816bc2a31080ac49a794bfc2e11e7"
+    },
+    "app_debug_signal_def.h": {
+      "source": "Projects/NUCLEO-WBA55CG/Applications/BLE/BLE_p2pServer/System/Config/Debug_GPIO/app_debug_signal_def.h",
+      "sha256": "6cf7a3a35c37cdabae2f6fe7cec2f2286168d821fa838bfe2c5df89e372fb7a5"
+    },
+    "debug_config.h": {
+      "source": "Projects/NUCLEO-WBA55CG/Applications/BLE/BLE_p2pServer/System/Config/Debug_GPIO/debug_config.h",
+      "sha256": "561b137da3cfc45f64777d66a105dd0d417760aa822cb7c25ffb11d4f2c99d6f"
+    },
+    "simple_nvm_arbiter_conf.h": {
+      "source": "Projects/NUCLEO-WBA55CG/Applications/BLE/BLE_p2pServer/System/Config/Flash/simple_nvm_arbiter_conf.h",
+      "sha256": "84684b01a364787f58f953e343dbf63ef423d9b0b23f719f65c4cc8de3d7a65b"
+    },
+    "log_module_conf.h": {
+      "source": "Projects/NUCLEO-WBA55CG/Applications/BLE/BLE_p2pServer/System/Config/Log/log_module_conf.h",
+      "sha256": "04b441a00f09ec0264fc095a0fa83dfe46103cc4e73dbe701adceda934d05d34"
+    },
+    "peripheral_init.h": {
+      "source": "Projects/NUCLEO-WBA55CG/Applications/BLE/BLE_p2pServer/System/Config/LowPower/peripheral_init.h",
+      "sha256": "dde5bdf462fd65e4f0ae8c8727f6c1e440fb1757ff3019c55085681d48e8d35d"
+    },
+    "user_low_power_config.h": {
+      "source": "Projects/NUCLEO-WBA55CG/Applications/BLE/BLE_p2pServer/System/Config/LowPower/user_low_power_config.h",
+      "sha256": "aa387318adfd6c17526a4542e6992d9ef998c1e113e72c7abdca68ad94eae6a9"
+    },
+    "stm32_lpm_if.h": {
+      "source": "Projects/NUCLEO-WBA55CG/Applications/BLE/BLE_p2pServer/System/Interfaces/stm32_lpm_if.h",
+      "sha256": "abd7017851fe97d10d2864e8d1454b9b4d58961dafef1aceac79be72a4c79635"
+    },
+    "ble_timer.h": {
+      "source": "Projects/NUCLEO-WBA55CG/Applications/BLE/BLE_p2pServer/System/Modules/ble_timer.h",
+      "sha256": "0fccd2040578bb7e4acd398221e61f16720a7b2393cd7fa64cf253b951a8ad19"
+    },
+    "ble_timer.c": {
+      "source": "Projects/NUCLEO-WBA55CG/Applications/BLE/BLE_p2pServer/System/Modules/ble_timer.c",
+      "sha256": "f3d3bc7a5df6b8c4d591da356ac38beb03a74ec460266b47c7f8f84bf1370462"
+    },
+    "simple_nvm_arbiter_conf.c": {
+      "source": "Projects/NUCLEO-WBA55CG/Applications/BLE/BLE_p2pServer/System/Config/Flash/simple_nvm_arbiter_conf.c",
+      "sha256": "e6af9caec9b9b276b8d3e46cc05a199d1ec79f6fb90965d2288e75a8d96012cd"
+    },
+    "crc_ctrl_conf.c": {
+      "source": "Projects/NUCLEO-WBA55CG/Applications/BLE/BLE_p2pServer/System/Config/CRC_Ctrl/crc_ctrl_conf.c",
+      "sha256": "7b5eba7e0246ba4798a7376231bc5e54398afee1b2a5bf10997b6a0d1223963c"
+    },
+    "app_debug.c": {
+      "source": "Projects/NUCLEO-WBA55CG/Applications/BLE/BLE_p2pServer/System/Config/Debug_GPIO/app_debug.c",
+      "sha256": "72c8ec3fb5447921ff9a913fac88afd982df632057ef7061ab3b54344f3a46b6"
+    },
+    "hw_rng.c": {
+      "source": "Projects/Common/WPAN/Interfaces/hw_rng.c",
+      "sha256": "e9ef8d9896245227eff0ad7620d80e1beff76fbe2ef9099643c91c2fd473c54a"
+    },
+    "app_ble.c": {
+      "source": "Projects/NUCLEO-WBA55CG/Applications/BLE/BLE_p2pServer/STM32_WPAN/App/app_ble.c",
+      "sha256": "d4eeebd64bf012377ad665a3920c73210b2115aa9e54a2f951b3dce683f304c4"
+    }
+  },
+  "hash_meaning": "sha256 identifies upstream original; delivery build hashes identify modified Companion files",
+  "adaptations": {
+    "app_ble.c": "Companion services, random persisted identity, encryption gate, bounded NVM requests, split event copy",
+    "app_conf.h": "one peripheral link; no Nucleo pins, SCM, ADC temperature or low power; bounded GATT/event buffers",
+    "app_entry.c": "removed Nucleo BSP include; board clocks initialized before wireless",
+    "hw_rng.c": "shared entropy reserve, bounded refill outside interrupt masking, fail closed on underflow",
+    "simple_nvm_arbiter_conf.h": "last 16 KiB internal flash reserved for two NVM pages"
+  }
+}

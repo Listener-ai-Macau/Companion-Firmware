@@ -1,0 +1,20 @@
+--- a/celt/os_support.h
++++ b/celt/os_support.h
+@@ -74,6 +74,17 @@
+ }
+ #endif
+ 
++/* Product-only memory lowering; preserve upstream type checks and byte spans. */
++#if defined(COMPANION_OPUS_FAST_MEMORY) && COMPANION_OPUS_FAST_MEMORY
++#include "companion_opus_memory.h"
++#define OVERRIDE_OPUS_COPY 1
++#define OVERRIDE_OPUS_MOVE 1
++#define OVERRIDE_OPUS_CLEAR 1
++#define OPUS_COPY(dst,src,n) (companion_opus_copy((dst),(src),(n)*sizeof(*(dst))+0*((dst)-(src))))
++#define OPUS_MOVE(dst,src,n) (companion_opus_move((dst),(src),(n)*sizeof(*(dst))+0*((dst)-(src))))
++#define OPUS_CLEAR(dst,n) (companion_opus_clear((dst),(n)*sizeof(*(dst))))
++#endif
++
+ /** Copy n elements from src to dst. The 0* term provides compile-time type checking  */
+ #ifndef OVERRIDE_OPUS_COPY
+ #define OPUS_COPY(dst, src, n) (memcpy((dst), (src), (n)*sizeof(*(dst)) + 0*((dst)-(src)) ))

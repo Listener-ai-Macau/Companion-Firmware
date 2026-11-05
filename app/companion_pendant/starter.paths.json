@@ -1,0 +1,29 @@
+{
+  "name": "companion_pendant",
+  "board": "NUCLEO-WB55RG",
+  "official_baseline": {
+    "upstream": "STMicroelectronics/STM32CubeWB",
+    "tag": "v1.24.0",
+    "commit": "7c5aa7dcd2c0abe787f922bb06a6213c724d08e4",
+    "example": "BLE_p2pServer"
+  },
+  "paths": {
+    "cubeide_project": "third_party/STM32CubeWB/Projects/P-NUCLEO-WB55.Nucleo/Applications/BLE/BLE_p2pServer/STM32CubeIDE",
+    "reference_hex": "third_party/STM32CubeWB/Projects/P-NUCLEO-WB55.Nucleo/Applications/BLE/BLE_p2pServer/Binary/BLE_p2pServer_reference.hex",
+    "ble_full_stack_binary": "third_party/STM32CubeWB/Projects/STM32WB_Copro_Wireless_Binaries/STM32WB5x/stm32wb5x_BLE_Stack_full_fw.bin"
+  },
+  "include_roots": [
+    "third_party/STM32CubeWB/Drivers/STM32WBxx_HAL_Driver/Inc",
+    "third_party/STM32CubeWB/Drivers/CMSIS/Device/ST/STM32WBxx/Include",
+    "third_party/STM32CubeWB/Drivers/CMSIS/Include",
+    "third_party/STM32CubeWB/Drivers/BSP/P-NUCLEO-WB55.Nucleo",
+    "third_party/STM32CubeWB/Middlewares/ST/STM32_WPAN",
+    "third_party/STM32CubeWB/Utilities/lpm/tiny_lpm",
+    "third_party/STM32CubeWB/Utilities/sequencer"
+  ],
+  "rules": [
+    "Do not edit files under third_party/STM32CubeWB for product work.",
+    "Use app/companion_pendant for Companion-owned source once the official starter is proven.",
+    "Use aiw with-lock -Resource Companion-WB55 for real flash windows."
+  ]
+}

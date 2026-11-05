@@ -1,0 +1,345 @@
+#!/usr/bin/env node
+import crypto from "node:crypto";
+import fs from "node:fs";
+import http from "node:http";
+import path from "node:path";
+import { createRequire } from "node:module";
+import { fileURLToPath } from "node:url";
+
+const require = createRequire(import.meta.url);
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
+const pageRel = ".cache/validation/comp-req-597-refined-whole-face-choreography/index.html";
+const outRel = ".cache/validation/comp-req-597-refined-whole-face-choreography";
+const outDir = path.join(root, ...outRel.split("/"));
+const sha = value => crypto.createHash("sha256").update(value).digest("hex").toUpperCase();
+const sourceHashes = {
+  calm: ["docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/calm_presence-04-calm_blink_settle.png", "CACD27828EE8197B46C5B34BFD04F271501698B2F171D37115E88E5590A7AB47"],
+  curious: ["docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/curious_question-02-question_mouth_arrive.png", "F2627FA8EE0BF467DBA59551CCE55B737D42F68A21B5C3D2637B72D152CC4003"],
+  delighted: ["docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/delighted_presence-02-delighted_mouth_arrive.png", "47BEA68C763CAFA0EDD2287443330625CBF355622F581384C7FA166DB807013E"]
+};
+const livePage = "docs/art/iterations/companion-pet-expression-v9-two-track-rig-v7/candidate/wb55-browser-parity-attempt-01/index.html";
+const livePageExpected = "0272365C090662F888ED664EA13A57BD164C87863D944439BF0EBD1BB47EF4D4";
+
+function playwright() {
+  for (const name of [
+    process.env.COMPANION_PLAYWRIGHT_MODULE,
+    "playwright",
+    "C:/Users/Billy/AppData/Local/npm-cache/_npx/420ff84f11983ee5/node_modules/playwright",
+    "C:/Users/Billy/AppData/Local/npm-cache/_npx/e41f203b7505f1fb/node_modules/playwright"
+  ].filter(Boolean)) {
+    try { return require(name); } catch {}
+  }
+  throw new Error("Playwright unavailable");
+}
+
+const server = http.createServer((request, response) => {
+  const target = path.resolve(root, `.${decodeURIComponent(request.url.split("?")[0])}`);
+  if (!target.startsWith(`${root}${path.sep}`)) return response.writeHead(403).end();
+  fs.readFile(target, (error, data) => {
+    if (error) return response.writeHead(404).end();
+    const type = target.endsWith(".html") ? "text/html; charset=utf-8" : "image/png";
+    response.writeHead(200, { "content-type": type });
+    response.end(data);
+  });
+});
+
+let browser;
+try {
+  await new Promise(resolve => server.listen(0, "127.0.0.1", resolve));
+  browser = await playwright().chromium.launch({ headless: true });
+  const page = await browser.newPage({ viewport: { width: 680, height: 630 }, deviceScaleFactor: 1 });
+  const errors = [];
+  page.on("pageerror", error => errors.push(`page:${error.message}`));
+  page.on("console", message => { if (message.type() === "error") errors.push(`console:${message.text()}`); });
+  const response = await page.goto(`http://127.0.0.1:${server.address().port}/${pageRel}`, { waitUntil: "load", timeout: 15000 });
+  await page.waitForFunction(() => window.__compReq597Ready === true, null, { timeout: 15000 });
+
+  const audit = await page.evaluate(() => {
+    const families = ["calm", "curious", "delighted"];
+    const phases = ["hold", "anticipate", "accent", "settle"];
+    const boxes = {
+      calm: {
+        eyes: [[40, 82, 38, 51], [123, 82, 39, 51]],
+        brow: [[42, 56, 32, 17], [124, 56, 33, 17]],
+        cheek: [[30, 127, 24, 19], [148, 126, 25, 19]],
+        nose: [[90, 116, 20, 17]],
+        mouth: [[82, 129, 36, 19]]
+      },
+      curious: {
+        eyes: [[41, 106, 38, 51], [124, 106, 39, 51]],
+        brow: [[53, 64, 39, 23], [121, 83, 34, 17]],
+        cheek: [[29, 150, 25, 19], [149, 147, 25, 19]],
+        nose: [[90, 140, 20, 17]],
+        mouth: [[89, 153, 26, 22]]
+      },
+      delighted: {
+        eyes: [[41, 86, 38, 51], [124, 86, 39, 51]],
+        brow: [[41, 50, 39, 23], [123, 49, 38, 23]],
+        cheek: [[29, 128, 25, 21], [148, 128, 25, 21]],
+        nose: [[90, 120, 20, 17]],
+        mouth: [[83, 130, 36, 21]]
+      }
+    };
+    const inside = (x, y, regions) => regions.some(([bx, by, width, height]) =>
+      x >= bx && x < bx + width && y >= by && y < by + height
+    );
+    const pixels = () => new Uint8Array(
+      document.querySelector("#face").getContext("2d", { willReadFrequently: true }).getImageData(0, 0, 200, 200).data
+    );
+    const signature = data => {
+      let value = "";
+      for (let index = 0; index < data.length; index += 4) value += data[index] < 128 ? "1" : "0";
+      return value;
+    };
+    const components = (data, box) => {
+      const [bx, by, width, height] = box;
+      const white = (x, y) => data[(y * 200 + x) * 4] > 127;
+      const seen = new Set();
+      const enclosed = [];
+      for (let y = by; y < by + height; y += 1) {
+        for (let x = bx; x < bx + width; x += 1) {
+          const key = y * 200 + x;
+          if (seen.has(key) || !white(x, y)) continue;
+          const queue = [[x, y]];
+          const points = [];
+          let border = false;
+          seen.add(key);
+          while (queue.length) {
+            const [cx, cy] = queue.shift();
+            points.push([cx, cy]);
+            if (cx === bx || cy === by || cx === bx + width - 1 || cy === by + height - 1) border = true;
+            for (const [nx, ny] of [[cx - 1, cy], [cx + 1, cy], [cx, cy - 1], [cx, cy + 1]]) {
+              if (nx < bx || nx >= bx + width || ny < by || ny >= by + height) continue;
+              const next = ny * 200 + nx;
+              if (!seen.has(next) && white(nx, ny)) {
+                seen.add(next);
+                queue.push([nx, ny]);
+              }
+            }
+          }
+          if (!border) enclosed.push(points);
+        }
+      }
+      return enclosed.sort((a, b) => b.length - a.length);
+    };
+    const filledEyeSignature = (data, box) => {
+      const copy = new Uint8Array(data);
+      components(data, box).flat().forEach(([x, y]) => {
+        const at = (y * 200 + x) * 4;
+        copy[at] = copy[at + 1] = copy[at + 2] = 0;
+      });
+      const [bx, by, width, height] = box;
+      const seen = new Set();
+      const blackComponents = [];
+      for (let y = by; y < by + height; y += 1) {
+        for (let x = bx; x < bx + width; x += 1) {
+          const key = y * 200 + x;
+          if (seen.has(key) || copy[key * 4] >= 128) continue;
+          const queue = [[x, y]];
+          const points = [];
+          seen.add(key);
+          while (queue.length) {
+            const [cx, cy] = queue.shift();
+            points.push(cy * 200 + cx);
+            for (const [nx, ny] of [[cx - 1, cy], [cx + 1, cy], [cx, cy - 1], [cx, cy + 1]]) {
+              if (nx < bx || nx >= bx + width || ny < by || ny >= by + height) continue;
+              const next = ny * 200 + nx;
+              if (!seen.has(next) && copy[next * 4] < 128) {
+                seen.add(next);
+                queue.push([nx, ny]);
+              }
+            }
+          }
+          blackComponents.push(points.sort((a, b) => a - b));
+        }
+      }
+      blackComponents.sort((a, b) => b.length - a.length);
+      return blackComponents[0]?.join(",") || "";
+    };
+    const diff = (a, b) => {
+      const points = [];
+      for (let pixel = 0; pixel < 40000; pixel += 1) {
+        const at = pixel * 4;
+        if (a[at] !== b[at]) points.push([pixel % 200, Math.floor(pixel / 200)]);
+      }
+      return points;
+    };
+    const capture = (family, phrase, phase) => {
+      window.__compReq597Freeze(family, phrase, phase);
+      const data = pixels();
+      let nonBinary = 0;
+      for (let at = 0; at < data.length; at += 4) {
+        if (![0, 255].includes(data[at]) || data[at] !== data[at + 1] || data[at] !== data[at + 2] || data[at + 3] !== 255) nonBinary += 1;
+      }
+      return { data, signature: signature(data), nonBinary };
+    };
+    const result = {};
+    for (const family of families) {
+      const phraseResults = [];
+      const hold = capture(family, 0, "hold");
+      const holdEyeBodies = boxes[family].eyes.map(box => filledEyeSignature(hold.data, box));
+      const holdHoleAreas = boxes[family].eyes.map(box => components(hold.data, box).map(item => item.length));
+      for (let phrase = 0; phrase < 3; phrase += 1) {
+        const frames = Object.fromEntries(phases.map(phase => [phase, capture(family, phrase, phase)]));
+        const eyeAudit = {};
+        for (const phase of phases) {
+          eyeAudit[phase] = boxes[family].eyes.map((box, eye) => {
+            const holes = components(frames[phase].data, box);
+            return {
+              count: holes.length,
+              areas: holes.map(item => item.length),
+              no_fragment: holes.every(item => item.length > 8),
+              body_exact: filledEyeSignature(frames[phase].data, box) === holdEyeBodies[eye],
+              areas_exact: JSON.stringify(holes.map(item => item.length)) === JSON.stringify(holdHoleAreas[eye])
+            };
+          });
+        }
+        const gazeDiff = diff(frames.hold.data, frames.anticipate.data);
+        const accentDiff = diff(frames.anticipate.data, frames.accent.data);
+        const allRegions = Object.values(boxes[family]).flat();
+        phraseResults.push({
+          signatures: Object.fromEntries(phases.map(phase => [phase, frames[phase].signature])),
+          non_binary: Object.values(frames).reduce((sum, frame) => sum + frame.nonBinary, 0),
+          eye_audit: eyeAudit,
+          gaze_pixels: gazeDiff.length,
+          gaze_outside_eyes: gazeDiff.filter(([x, y]) => !inside(x, y, boxes[family].eyes)).length,
+          accent_pixels: accentDiff.length,
+          accent_lane_hits: Object.fromEntries(["brow", "cheek", "nose", "mouth"].map(lane => [
+            lane,
+            accentDiff.filter(([x, y]) => inside(x, y, boxes[family][lane])).length
+          ])),
+          accent_outside_union: accentDiff.filter(([x, y]) => !inside(x, y, allRegions)).length,
+          settle_exact: frames.settle.signature === frames.hold.signature
+        });
+      }
+      const replayA = phraseResults.map(item => ({ ...item.signatures }));
+      const replayB = [0, 1, 2].map(phrase => Object.fromEntries(phases.map(phase => [
+        phase,
+        capture(family, phrase, phase).signature
+      ])));
+      result[family] = {
+        hold_hole_areas: holdHoleAreas,
+        phrases: phraseResults,
+        deterministic_replay: JSON.stringify(replayA) === JSON.stringify(replayB),
+        distinct_accents: new Set(phraseResults.map(item => item.signatures.accent)).size
+      };
+    }
+    window.__compReq597Freeze("calm", 1, "accent");
+    window.__compReq597Interrupt("machine_probe");
+    const interrupted = signature(pixels());
+    const calmHold = capture("calm", 0, "hold").signature;
+    window.__compReq597Restore();
+    const restored = signature(pixels());
+    for (let index = 0; index < 80; index += 1) capture("calm", index % 3, phases[index % 4]);
+    const snapshot = window.__compReq597Snapshot();
+    return {
+      contract: window.__compReq597Contract(),
+      families: result,
+      interruption_to_hold: interrupted === calmHold,
+      restore_to_hold: restored === calmHold,
+      stale_replay: snapshot.trace.some(item => item.stale_replay === true),
+      trace_length: snapshot.trace.length,
+      canvas_count: document.querySelectorAll("canvas[width='200'][height='200']").length,
+      css_animated_nodes: [...document.querySelectorAll("*")].filter(node => {
+        const style = getComputedStyle(node);
+        return style.animationName !== "none" || style.transitionDuration.split(",").some(value => parseFloat(value) > 0);
+      }).length
+    };
+  });
+
+  for (const family of ["calm", "curious", "delighted"]) {
+    await page.evaluate(name => window.__compReq597Freeze(name, 1, "accent"), family);
+    await page.screenshot({ path: path.join(outDir, `${family}-accent.png`), fullPage: true });
+  }
+  await page.evaluate(() => window.__compReq597Freeze("calm", 0, "hold"));
+  await page.screenshot({ path: path.join(outDir, "calm-hold.png"), fullPage: true });
+  await page.evaluate(() => {
+    const atlas = document.createElement("canvas");
+    atlas.id = "clipAtlas";
+    atlas.width = 600;
+    atlas.height = 600;
+    atlas.style.width = "600px";
+    atlas.style.height = "600px";
+    atlas.style.imageRendering = "pixelated";
+    const atlasContext = atlas.getContext("2d");
+    ["calm", "curious", "delighted"].forEach((family, row) => {
+      [0, 1, 2].forEach(phrase => {
+        window.__compReq597Freeze(family, phrase, "accent");
+        atlasContext.drawImage(document.querySelector("#face"), phrase * 200, row * 200);
+      });
+    });
+    document.body.replaceChildren(atlas);
+  });
+  await page.locator("#clipAtlas").screenshot({ path: path.join(outDir, "nine-clip-accent-atlas.png") });
+
+  const pagePath = path.join(root, ...pageRel.split("/"));
+  const pageSource = fs.readFileSync(pagePath, "utf8");
+  const sources = Object.fromEntries(Object.entries(sourceHashes).map(([name, [rel, expected]]) => {
+    const actual = sha(fs.readFileSync(path.join(root, ...rel.split("/"))));
+    return [name, { path: rel, expected_sha256: expected, actual_sha256: actual, match: actual === expected }];
+  }));
+  const families = Object.values(audit.families);
+  const phrases = families.flatMap(family => family.phrases);
+  const eyeFrames = phrases.flatMap(phrase => Object.values(phrase.eye_audit).flat());
+  const contractFamilies = Object.values(audit.contract.families);
+  const checks = {
+    page_http_200: response?.status() === 200,
+    source_hashes_match: Object.values(sources).every(item => item.match),
+    strict_1bpp: phrases.every(item => item.non_binary === 0),
+    exactly_two_clean_highlights_per_eye: eyeFrames.every(item =>
+      item.count === 2 && item.no_fragment && item.body_exact && item.areas_exact
+    ),
+    outer_eye_shell_invariant: eyeFrames.every(item => item.body_exact),
+    gaze_leads_inside_eyes_only: phrases.every(item => item.gaze_pixels > 0 && item.gaze_outside_eyes === 0),
+    whole_face_accent_lanes: phrases.every(item => Object.values(item.accent_lane_hits).every(count => count > 0)),
+    registered_union_only: phrases.every(item => item.accent_outside_union === 0),
+    exact_settle_return: phrases.every(item => item.settle_exact),
+    three_distinct_clips_per_family: families.every(item => item.distinct_accents === 3),
+    deterministic_pixel_replay: families.every(item => item.deterministic_replay),
+    non_repeating_selector: contractFamilies.every(item =>
+      item.phrase_count >= 3 && item.phrase_order.every((value, index, order) => index === 0 || value !== order[index - 1])
+    ),
+    authored_quiet_range: contractFamilies.every(item =>
+      new Set(item.quiet_slots).size >= 4 && item.quiet_slots.every(value => value >= 7 && value <= 16)
+    ),
+    physical_cadence_and_three_changes: audit.contract.cadence_ms === 480 && audit.contract.changed_commits_per_phrase === 3,
+    sole_scheduler_writer: audit.contract.scheduler_count === 1 && audit.contract.writer_count === 1,
+    bounded_trace: audit.contract.trace_capacity === 64 && audit.trace_length <= 64,
+    interruption_restore_exact: audit.interruption_to_hold && audit.restore_to_hold && !audit.stale_replay,
+    no_pixel_noise_or_block_translation: !pageSource.includes("Math.random") &&
+      !pageSource.includes("shiftRegion") &&
+      !/drawImage\\s*\\([^,]+,[^,]+,[^,]+,[^,]+,[^,]+,[^,]+,[^,]+,[^,]+,[^)]+\\)/.test(pageSource),
+    no_css_animation: audit.css_animated_nodes === 0,
+    one_composed_200x200_face: audit.canvas_count === 1,
+    browser_errors_zero: errors.length === 0,
+    live_page_unchanged: sha(fs.readFileSync(path.join(root, ...livePage.split("/")))) === livePageExpected
+  };
+  const result = {
+    schema: "companion.comp_req_598.refined_whole_face_choreography.verification.v1",
+    status: Object.values(checks).every(Boolean) ? "PASS_OWNER_REVIEW_READY" : "NO_GO",
+    page: { path: pageRel, sha256: sha(fs.readFileSync(pagePath)) },
+    research: {
+      path: "docs/validation/companion-whole-face-choreography-research-20260725.md",
+      sha256: sha(fs.readFileSync(path.join(root, "docs/validation/companion-whole-face-choreography-research-20260725.md")))
+    },
+    sources,
+    live_page: { path: livePage, expected_sha256: livePageExpected },
+    audit,
+    checks,
+    errors,
+    screenshots: ["calm-hold.png", "calm-accent.png", "curious-accent.png", "delighted-accent.png", "nine-clip-accent-atlas.png"]
+      .map(name => `${outRel}/${name}`)
+  };
+  const resultPath = path.join(outDir, "verification.json");
+  fs.writeFileSync(resultPath, `${JSON.stringify(result, null, 2)}\n`);
+  console.log(JSON.stringify({
+    status: result.status,
+    page_sha256: result.page.sha256,
+    evidence_sha256: sha(fs.readFileSync(resultPath)),
+    checks
+  }, null, 2));
+  if (result.status !== "PASS_OWNER_REVIEW_READY") process.exitCode = 2;
+} finally {
+  await browser?.close();
+  await new Promise(resolve => server.close(resolve));
+}

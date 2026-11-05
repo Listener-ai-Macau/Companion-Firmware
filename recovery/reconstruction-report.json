@@ -1,0 +1,1127 @@
+[
+  {
+    "at": "2026-11-03T13:50:10.906Z",
+    "path": "app/companion_pendant/diag_log/diag_log_events.h",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-03T13:50:10.906Z",
+    "path": "app/companion_pendant/diag_log/recording_gap_probe.h",
+    "op": "Add File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-03T13:50:10.906Z",
+    "path": "platform/stm32wba55_companion_v11/main.c",
+    "op": "Update File",
+    "result": "NEEDS_RECONCILIATION",
+    "reason": "Original hunk context absent:         comp_v11_product_app_poll(&companion_app);\n        comp_cpu_transfer_stage_end(COMP_BULK_CPU_PRODUCT,b"
+  },
+  {
+    "at": "2026-11-03T13:50:10.906Z",
+    "path": "app/companion_pendant/diag_log/tests/test_recording_gap_probe.c",
+    "op": "Add File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-03T13:50:37.345Z",
+    "path": "app/companion_pendant/diag_log/diag_log_events.h",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-03T13:50:37.345Z",
+    "path": "app/companion_pendant/diag_log/recording_gap_probe.h",
+    "op": "Add File",
+    "result": "NEEDS_RECONCILIATION",
+    "reason": "Add target exists"
+  },
+  {
+    "at": "2026-11-03T13:50:37.345Z",
+    "path": "app/companion_pendant/diag_log/tests/test_recording_gap_probe.c",
+    "op": "Add File",
+    "result": "NEEDS_RECONCILIATION",
+    "reason": "Add target exists"
+  },
+  {
+    "at": "2026-11-03T13:50:46.316Z",
+    "path": "platform/stm32wba55_companion_v11/main.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-03T13:52:01.413Z",
+    "path": "app/companion_pendant/diag_log/tests/test_recording_gap_probe.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-03T13:52:27.815Z",
+    "path": "app/companion_pendant/diag_log/tests/test_recording_gap_probe.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T08:28:23.173Z",
+    "path": "README.md",
+    "op": "Add File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T08:39:03.919Z",
+    "path": "app/companion_pendant/diag_log/diag_flash_journal.h",
+    "op": "Add File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T08:39:03.919Z",
+    "path": "app/companion_pendant/diag_log/diag_flash_journal.c",
+    "op": "Add File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T08:39:03.919Z",
+    "path": "platform/stm32wba55_companion_v11/diag_flash_target.h",
+    "op": "Add File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T08:39:03.919Z",
+    "path": "platform/stm32wba55_companion_v11/diag_flash_target.c",
+    "op": "Add File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T08:39:03.919Z",
+    "path": "app/companion_pendant/update/wba_storage_layout.h",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T08:39:03.919Z",
+    "path": "app/companion_pendant/diag_log/diag_log_events.h",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T08:39:03.919Z",
+    "path": "platform/stm32wba55_companion_v11/main.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T08:39:03.919Z",
+    "path": "tools/build_wba_v11.py",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T08:41:03.441Z",
+    "path": "app/companion_pendant/diag_log/tests/test_diag_flash_journal.c",
+    "op": "Add File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T08:41:03.441Z",
+    "path": "tools/test_diag_flash_journal.py",
+    "op": "Add File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T08:41:53.587Z",
+    "path": "platform/stm32wba55_companion_v11/diag_flash_target.h",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T08:41:53.587Z",
+    "path": "platform/stm32wba55_companion_v11/diag_flash_target.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T08:41:53.587Z",
+    "path": "platform/stm32wba55_companion_v11/main.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T09:12:13.436Z",
+    "path": "app/companion_pendant/recording/wba_recording_product.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T09:12:13.436Z",
+    "path": "platform/stm32wba55_companion_v11/tests/test_product_recording_segmented.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T09:24:57.312Z",
+    "path": "tools/build_wba_factory_loader.py",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T09:24:57.312Z",
+    "path": "tools/wba_stage_catalog.c",
+    "op": "Add File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T09:25:50.710Z",
+    "path": "tools/wba_stage_catalog.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T09:28:09.574Z",
+    "path": "tools/stage_wba_signed_ota.py",
+    "op": "Add File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T09:29:21.005Z",
+    "path": "tools/stage_wba_signed_ota.py",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T09:30:39.415Z",
+    "path": "tools/wba_stage_catalog.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T09:32:04.007Z",
+    "path": "tools/stage_wba_signed_ota.py",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T09:33:09.094Z",
+    "path": "tools/stage_wba_signed_ota.py",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T09:33:09.094Z",
+    "path": "tools/build_wba_factory_loader.py",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T09:48:48.508Z",
+    "path": "tools/stage_wba_signed_ota.py",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T09:49:37.234Z",
+    "path": "tools/stage_wba_signed_ota.py",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T10:09:29.515Z",
+    "path": "app/companion_pendant/recording/wba_recording_pipeline.h",
+    "op": "Update File",
+    "result": "NEEDS_RECONCILIATION",
+    "reason": "Original hunk context absent: comp_segment_result_t comp_wba_recording_pipeline_workspace_snapshot(comp_wba_recording_pipeline_t *,\n    uint"
+  },
+  {
+    "at": "2026-11-04T10:09:29.515Z",
+    "path": "app/companion_pendant/recording/wba_recording_pipeline.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T10:09:29.515Z",
+    "path": "app/companion_pendant/recording/wba_recording_product.h",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T10:09:29.515Z",
+    "path": "app/companion_pendant/recording/wba_recording_product.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T10:09:29.515Z",
+    "path": "platform/stm32wba55_companion_v11/ble/update_product.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T10:10:08.767Z",
+    "path": "app/companion_pendant/recording/wba_recording_pipeline.h",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T10:10:08.767Z",
+    "path": "app/companion_pendant/recording/wba_recording_pipeline.c",
+    "op": "Update File",
+    "result": "NEEDS_RECONCILIATION",
+    "reason": "Original hunk context absent:     if(!bytes){p->workspace_bytes=0u;p->workspace_requested=0u;return COMP_SEG_OK;}"
+  },
+  {
+    "at": "2026-11-04T10:10:08.767Z",
+    "path": "app/companion_pendant/recording/wba_recording_product.h",
+    "op": "Update File",
+    "result": "NEEDS_RECONCILIATION",
+    "reason": "Original hunk context absent:     uint32_t highest_end,largest_gap,cursor,nearest_start,nearest_end;"
+  },
+  {
+    "at": "2026-11-04T10:10:08.767Z",
+    "path": "app/companion_pendant/recording/wba_recording_product.c",
+    "op": "Update File",
+    "result": "NEEDS_RECONCILIATION",
+    "reason": "Original hunk context absent:         if(gap>s->largest_gap)s->largest_gap=gap;"
+  },
+  {
+    "at": "2026-11-04T10:10:08.767Z",
+    "path": "platform/stm32wba55_companion_v11/ble/update_product.c",
+    "op": "Update File",
+    "result": "NEEDS_RECONCILIATION",
+    "reason": "Original hunk context absent:     return base==COMP_WBA_NOR_TOTAL_BYTES-bytes&&base>=COMP_WBA_NOR_RECORDING_BASE;"
+  },
+  {
+    "at": "2026-11-04T10:11:26.989Z",
+    "path": "platform/stm32wba55_companion_v11/tests/test_product_recording_segmented.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T10:27:21.099Z",
+    "path": "tools/stage_wba_signed_ota.py",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T11:35:51.828Z",
+    "path": "tools/build_wba_v11.py",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T12:26:10.585Z",
+    "path": "app/companion_pendant/recording/tests/test_wba_fault_settlement.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T12:27:14.407Z",
+    "path": "app/companion_pendant/recording/tests/test_wba_fault_settlement.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T12:28:10.884Z",
+    "path": "app/companion_pendant/recording/tests/test_wba_fault_settlement.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T12:32:28.004Z",
+    "path": "app/companion_pendant/recording/tests/test_companion_segment_catalog.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T13:09:56.096Z",
+    "path": "app/companion_pendant/board/companion_v11_board.h",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T13:09:56.096Z",
+    "path": "app/companion_pendant/board/companion_v11_board.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T13:09:56.096Z",
+    "path": "platform/stm32wba55_companion_v11/battery_adc.h",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T13:09:56.096Z",
+    "path": "platform/stm32wba55_companion_v11/battery_adc.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T13:09:56.096Z",
+    "path": "platform/stm32wba55_companion_v11/board_hal.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T13:18:08.930Z",
+    "path": "app/companion_pendant/board/companion_v11_board.h",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T13:18:08.930Z",
+    "path": "platform/stm32wba55_companion_v11/main.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T13:18:08.930Z",
+    "path": "app/companion_pendant/board/tests/test_v11_peripherals.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T13:19:18.330Z",
+    "path": "app/companion_pendant/power/tests/test_wba_power_monitor.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T13:19:52.672Z",
+    "path": "app/companion_pendant/board/tests/test_v11_peripherals.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T13:24:04.810Z",
+    "path": "tools/diagnose_wba_uart.py",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T13:31:41.308Z",
+    "path": "platform/stm32wba55_companion_v11/battery_adc.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T13:31:41.308Z",
+    "path": "platform/stm32wba55_companion_v11/board_hal.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T13:31:41.308Z",
+    "path": "platform/stm32wba55_companion_v11/main.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T13:31:41.308Z",
+    "path": "tools/test_wba_battery_adc_async.py",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T13:31:41.308Z",
+    "path": "platform/stm32wba55_companion_v11/tests/test_battery_adc_async.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T13:31:41.308Z",
+    "path": "tools/test_wba_battery_adc_async.py",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T13:32:19.655Z",
+    "path": "tools/diagnose_wba_uart.py",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T13:32:19.655Z",
+    "path": "tools/test_wba_uart_diagnostics.py",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T13:35:24.068Z",
+    "path": "platform/stm32wba55_companion_v11/battery_adc.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T13:35:24.068Z",
+    "path": "tools/test_wba_battery_adc_async.py",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T13:35:24.068Z",
+    "path": "platform/stm32wba55_companion_v11/tests/test_battery_adc_async.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T13:39:31.971Z",
+    "path": "platform/stm32wba55_companion_v11/product_app.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T13:39:31.971Z",
+    "path": "platform/stm32wba55_companion_v11/low_power_target.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T13:39:31.971Z",
+    "path": "tools/build_wba_v11.py",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T13:40:29.430Z",
+    "path": "tools/test_wba_stop_window.py",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T13:40:29.430Z",
+    "path": "platform/stm32wba55_companion_v11/tests/test_product_recording_segmented.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T13:40:29.430Z",
+    "path": "tools/test_wba_product_recording_segmented.py",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T13:47:02.009Z",
+    "path": "platform/stm32wba55_companion_v11/tests/test_product_recording_segmented.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T13:55:15.340Z",
+    "path": "platform/stm32wba55_companion_v11/board_hal.h",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T13:55:15.340Z",
+    "path": "platform/stm32wba55_companion_v11/board_hal.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T13:55:58.506Z",
+    "path": "platform/stm32wba55_companion_v11/board_hal.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T13:55:58.506Z",
+    "path": "platform/stm32wba55_companion_v11/product_app.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T13:55:58.506Z",
+    "path": "platform/stm32wba55_companion_v11/main.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T13:57:09.826Z",
+    "path": "platform/stm32wba55_companion_v11/main.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T13:57:09.826Z",
+    "path": "tools/build_wba_v11.py",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T13:57:09.826Z",
+    "path": "tools/test_wba_product_recording_segmented.py",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T13:57:57.754Z",
+    "path": "platform/stm32wba55_companion_v11/board_hal.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T13:58:24.931Z",
+    "path": "platform/stm32wba55_companion_v11/product_app.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T13:58:24.931Z",
+    "path": "tools/diagnose_wba_uart.py",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T13:58:24.931Z",
+    "path": "tools/test_wba_uart_diagnostics.py",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T13:59:41.434Z",
+    "path": "platform/stm32wba55_companion_v11/low_power_target.h",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T13:59:41.434Z",
+    "path": "platform/stm32wba55_companion_v11/low_power_target.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T14:38:35.059Z",
+    "path": "platform/stm32wba55_companion_v11/product_app.h",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T14:38:35.059Z",
+    "path": "platform/stm32wba55_companion_v11/product_app.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T14:38:35.059Z",
+    "path": "platform/stm32wba55_companion_v11/product_pet_chat.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T14:38:35.059Z",
+    "path": "app/companion_pendant/runtime/companion_preferences.h",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T14:38:35.059Z",
+    "path": "app/companion_pendant/runtime/companion_preferences.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T14:38:35.059Z",
+    "path": "platform/stm32wba55_companion_v11/ble/app_ble.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T14:38:35.059Z",
+    "path": "platform/stm32wba55_companion_v11/ble/ble_product.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T14:38:35.059Z",
+    "path": "platform/stm32wba55_companion_v11/main.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T14:38:35.059Z",
+    "path": "tools/build_wba_v11.py",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T14:40:27.391Z",
+    "path": "tools/test_wba_preferences.py",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T14:40:27.391Z",
+    "path": "app/companion_pendant/runtime/tests/test_companion_preferences.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T14:41:58.812Z",
+    "path": "platform/stm32wba55_companion_v11/product_app.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T15:01:41.424Z",
+    "path": "platform/stm32wba55_companion_v11/tests/test_product_recording_segmented.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T15:01:41.424Z",
+    "path": "tools/test_wba_product_recording_segmented.py",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T15:03:31.385Z",
+    "path": "app/companion_pendant/power/wba_button.h",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T15:03:31.385Z",
+    "path": "app/companion_pendant/power/wba_button.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T15:03:31.385Z",
+    "path": "platform/stm32wba55_companion_v11/main.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T15:03:31.385Z",
+    "path": "app/companion_pendant/power/tests/test_wba_power_monitor.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-04T15:07:03.130Z",
+    "path": "app/companion_pendant/power/tests/test_wba_power_monitor.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-05T00:07:47.987Z",
+    "path": "app/companion_pendant/power/wba_button.h",
+    "op": "Update File",
+    "result": "NEEDS_RECONCILIATION",
+    "reason": "Original hunk context absent: /* Opt in only on the idle pet screen. The first release waits 320 ms so a\n * double click emits only DOUBLE_C"
+  },
+  {
+    "at": "2026-11-05T00:08:16.589Z",
+    "path": "app/companion_pendant/power/wba_button.h",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-05T00:08:16.589Z",
+    "path": "app/companion_pendant/power/wba_button.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-05T00:08:16.589Z",
+    "path": "platform/stm32wba55_companion_v11/product_app.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-05T00:09:22.619Z",
+    "path": "app/companion_pendant/power/tests/test_wba_power_monitor.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-05T00:09:22.619Z",
+    "path": "platform/stm32wba55_companion_v11/tests/test_product_recording_segmented.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-05T00:09:45.064Z",
+    "path": "tools/test_wba_product_recording_segmented.py",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-05T00:10:08.045Z",
+    "path": "platform/stm32wba55_companion_v11/tests/test_product_recording_segmented.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-05T00:11:57.010Z",
+    "path": "platform/stm32wba55_companion_v11/main.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-05T00:57:43.299Z",
+    "path": "platform/stm32wba55_companion_v11/microphone_hal.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-05T01:29:01.411Z",
+    "path": "app/companion_pendant/power/wba_button.h",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-05T01:29:01.411Z",
+    "path": "platform/stm32wba55_companion_v11/wake_events.h",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-05T01:29:01.411Z",
+    "path": "platform/stm32wba55_companion_v11/board_hal.h",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-05T01:29:01.411Z",
+    "path": "platform/stm32wba55_companion_v11/tests/test_product_recording_segmented.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-05T01:32:18.009Z",
+    "path": "app/companion_pendant/power/wba_button.h",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-05T01:32:18.009Z",
+    "path": "app/companion_pendant/power/wba_button.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-05T01:32:18.009Z",
+    "path": "platform/stm32wba55_companion_v11/board_hal.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-05T01:32:18.009Z",
+    "path": "platform/stm32wba55_companion_v11/product_app.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-05T01:32:18.009Z",
+    "path": "platform/stm32wba55_companion_v11/main.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-05T01:33:06.119Z",
+    "path": "platform/stm32wba55_companion_v11/product_app.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-05T01:33:06.119Z",
+    "path": "platform/stm32wba55_companion_v11/main.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-05T01:33:06.119Z",
+    "path": "app/companion_pendant/power/tests/test_wba_power_monitor.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-05T01:34:38.031Z",
+    "path": "platform/stm32wba55_companion_v11/product_app.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-05T01:34:38.031Z",
+    "path": "platform/stm32wba55_companion_v11/tests/test_capture_post_encode_dma.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-05T01:34:38.031Z",
+    "path": "platform/stm32wba55_companion_v11/wake_events.h",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-05T01:37:56.252Z",
+    "path": "platform/stm32wba55_companion_v11/tests/test_wake_events.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-05T01:38:11.115Z",
+    "path": "platform/stm32wba55_companion_v11/board_hal.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-05T02:38:36.231Z",
+    "path": "app/companion_pendant/power/tests/test_wba_power_monitor.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-05T03:30:34.217Z",
+    "path": "tools/wba_stack_usage.py",
+    "op": "Add File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-05T03:30:34.217Z",
+    "path": "tools/test_wba_stack_usage.py",
+    "op": "Add File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-05T03:30:34.217Z",
+    "path": "tools/build_wba_v11.py",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-05T04:23:51.252Z",
+    "path": "app/companion_pendant/power/wba_stop.h",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-05T04:23:51.252Z",
+    "path": "app/companion_pendant/power/wba_stop.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-05T04:23:51.252Z",
+    "path": "platform/stm32wba55_companion_v11/low_power_target.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-05T04:23:51.252Z",
+    "path": "app/companion_pendant/power/tests/test_wba_stop.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-05T05:59:32.400Z",
+    "path": "app/companion_pendant/runtime/companion_preferences.h",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-05T05:59:32.400Z",
+    "path": "app/companion_pendant/runtime/companion_preferences.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-05T05:59:32.400Z",
+    "path": "app/companion_pendant/power/wba_retained_clock.h",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-05T05:59:32.400Z",
+    "path": "app/companion_pendant/power/wba_retained_clock.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-05T05:59:32.400Z",
+    "path": "platform/stm32wba55_companion_v11/clock_target.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-05T06:00:23.304Z",
+    "path": "platform/stm32wba55_companion_v11/product_app.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-05T06:00:23.304Z",
+    "path": "platform/stm32wba55_companion_v11/product_app.h",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-05T06:00:23.304Z",
+    "path": "platform/stm32wba55_companion_v11/ble/ble_product.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-05T06:01:44.193Z",
+    "path": "tools/test_wba_retained_clock.py",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-05T06:01:44.193Z",
+    "path": "app/companion_pendant/power/tests/test_wba_retained_clock.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-05T06:01:44.193Z",
+    "path": "platform/stm32wba55_companion_v11/tests/test_clock_target.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-05T06:01:44.193Z",
+    "path": "app/companion_pendant/runtime/tests/test_companion_preferences.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-05T06:02:06.776Z",
+    "path": "app/companion_pendant/runtime/tests/test_companion_preferences.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-05T06:03:09.797Z",
+    "path": "platform/stm32wba55_companion_v11/tests/test_product_recording_segmented.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-05T06:08:56.783Z",
+    "path": "app/companion_pendant/recording/wba_segment_directory.h",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-05T06:08:56.783Z",
+    "path": "app/companion_pendant/recording/wba_segment_directory.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-05T06:08:56.783Z",
+    "path": "app/companion_pendant/recording/wba_recording_radio.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-05T06:14:07.100Z",
+    "path": "app/companion_pendant/recording/tests/test_wba_segment_directory.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-05T06:14:27.821Z",
+    "path": "app/companion_pendant/recording/tests/test_wba_segment_directory.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-05T06:19:43.366Z",
+    "path": "app/companion_pendant/recording/tests/test_wba_recording_radio.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-05T06:42:53.746Z",
+    "path": "app/companion_pendant/recording/wba_recording_radio.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-05T06:42:53.746Z",
+    "path": "app/companion_pendant/recording/tests/test_wba_recording_radio.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-05T06:43:18.349Z",
+    "path": "app/companion_pendant/recording/tests/test_wba_recording_radio.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-05T06:43:37.936Z",
+    "path": "app/companion_pendant/recording/tests/test_wba_recording_radio.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-05T07:22:03.550Z",
+    "path": "app/companion_pendant/runtime/companion_preferences.h",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-05T07:22:03.550Z",
+    "path": "app/companion_pendant/runtime/companion_preferences.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-05T07:22:03.550Z",
+    "path": "platform/stm32wba55_companion_v11/product_app.h",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-05T07:22:03.550Z",
+    "path": "platform/stm32wba55_companion_v11/product_app.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-05T07:23:52.900Z",
+    "path": "platform/stm32wba55_companion_v11/ble/maintenance_protocol.h",
+    "op": "Add File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-05T07:23:52.900Z",
+    "path": "platform/stm32wba55_companion_v11/ble/ble_product.h",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-05T07:23:52.900Z",
+    "path": "platform/stm32wba55_companion_v11/ble/app_ble.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-05T07:25:34.533Z",
+    "path": "platform/stm32wba55_companion_v11/ble/ble_product.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-05T07:27:21.181Z",
+    "path": "platform/stm32wba55_companion_v11/tests/test_product_recording_segmented.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-05T07:27:21.181Z",
+    "path": "app/companion_pendant/runtime/tests/test_companion_preferences.c",
+    "op": "Update File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  },
+  {
+    "at": "2026-11-05T07:35:40.161Z",
+    "path": "platform/stm32wba55_companion_v11/tests/test_maintenance_protocol.c",
+    "op": "Add File",
+    "result": "APPLIED_ORIGINAL_CHANGE"
+  }
+]

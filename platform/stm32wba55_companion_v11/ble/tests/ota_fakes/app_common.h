@@ -1,0 +1,4 @@
+#ifndef COMPANION_GATT_TEST_APP_COMMON_H
+#define COMPANION_GATT_TEST_APP_COMMON_H
+#define __WEAK
+#endif

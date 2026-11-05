@@ -1,0 +1,25 @@
+{
+  "result": "PASS_PREHARDWARE_SOFTWARE_ONLY",
+  "scope": "actual_dual_bank_codec_fake_backup_registers_not_physical_RTC",
+  "hardwareAcceptance": "NOT_RUN",
+  "fullChainAcceptance": "NOT_RUN",
+  "tests": [
+    "PASS RTC anchor: reset, midnight/counter wrap, torn writes, CRC fallback, domain loss, backward/stale rejection",
+    "PASS calendar: legacy unknown, full date midnight/reset/counter wrap, torn date writes, date CRC fallback and Unix overflow",
+    "PASS actual clock target / mocked RTC: restart, radio registers preserved, capture deferral, oscillator/config failure",
+    "PASS full date retained across reset/midnight, minute checkpoint and lost RTC domain"
+  ],
+  "source_sha256": {
+    "app/companion_pendant/power/wba_retained_clock.c": "f303cae775d09d8fa4ac3375b62e9cd5562be6df8e6c1e1d864382c7c5f303d4",
+    "app/companion_pendant/power/tests/test_wba_retained_clock.c": "554c141ab7795c3fe3c33d3871ba224029287b678f37a7992e491f39297c01b5",
+    "platform/stm32wba55_companion_v11/clock_target.c": "97a8177b1788f738dd4407d057fc38f34308e8e8bf6db33c2355b739f1e78b74",
+    "platform/stm32wba55_companion_v11/tests/test_clock_target.c": "1631b49e756f68348234cf8c0a8762f4759317511bb23df3a3d4f8d6fc7c87dd",
+    "app/companion_pendant/runtime/companion_preferences.c": "69b3f6d86a5f20bf4185b7c9077ad2fef65c0a372bd7d4e1b0a2530c5340714f",
+    "app/companion_pendant/power/power_settings_store.c": "87b72cb984179d9c9b144a401c145f6a0d57bab12c0ccc1ed75e88bfae202beb",
+    "app/companion_pendant/power/wba_retained_clock.h": "c2ba2ced5fbf346a7c44273f599cb56dbbf6e9157a54dc36550652471cff30b4",
+    "platform/stm32wba55_companion_v11/clock_target.h": "ba1d475a380c52b45b98f97328abcc95164edceab54e3d7987e3bb9867c0b0be",
+    "platform/stm32wba55_companion_v11/tests/clock_fakes/stm32wbaxx_hal.h": "372f65eb9a7e71cbecdf3787b8ce87fd14394ef8e3eefc378408c855e0137f9e",
+    "app/companion_pendant/runtime/companion_preferences.h": "70af773010222b160856162b271a9b89f9123b117247c435f5f9e2d7aca52cce",
+    "tools/test_wba_retained_clock.py": "488196b75af21c94c208b4f11ab75cce5ffa85a01d2c8cb3fa8aa8699d9f7ef4"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "result": "PASS_HOST_ONLY",
+  "hardwareAcceptance": "NOT_RUN",
+  "tests": "PASS_PREFERENCES: every torn rollover boundary, partial erase, append retry, persistence, timezone/clock wrap\n",
+  "source_sha256": {
+    "app\\companion_pendant\\runtime\\companion_preferences.c": "69b3f6d86a5f20bf4185b7c9077ad2fef65c0a372bd7d4e1b0a2530c5340714f",
+    "app\\companion_pendant\\power\\power_settings_store.c": "87b72cb984179d9c9b144a401c145f6a0d57bab12c0ccc1ed75e88bfae202beb",
+    "app\\companion_pendant\\runtime\\tests\\test_companion_preferences.c": "5b2538e754253e65e7617fd6dc06b4dcd3a0e6d0d241417551d9d489a5fc0209",
+    "app\\companion_pendant\\recording\\wba_silence_stop.c": "ddaf839286a108984a5669014f21332b930d72df829bf918fe141086c6b12d7c",
+    "app\\companion_pendant\\runtime\\companion_preferences.h": "70af773010222b160856162b271a9b89f9123b117247c435f5f9e2d7aca52cce",
+    "tools\\test_wba_preferences.py": "5e05fe927f68cc0c7d6802c9444d4e0d5131c68457674f9df9fcadef8321bde6"
+  }
+}

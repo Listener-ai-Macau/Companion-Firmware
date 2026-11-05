@@ -1,0 +1,62 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Companion · 原稿还原与局部修整</title>
+<style>
+*{box-sizing:border-box}[hidden]{display:none!important}body{margin:0;background:#f4f1ea;color:#202721;font:16px/1.65 system-ui,'Microsoft YaHei',sans-serif}
+main{max-width:1180px;margin:36px auto;padding:0 28px}a{color:#395e49;text-underline-offset:4px}h1{font-size:clamp(28px,4vw,42px);line-height:1.3;letter-spacing:-1px;max-width:700px;margin:14px 0 24px}h2{font-size:24px;margin:36px 0 12px}p{margin:12px 0}.eyebrow{font-size:13px;letter-spacing:2px;color:#587362}.intro{max-width:680px;color:#5d685e}.hero{display:grid;grid-template-columns:minmax(0,1fr) 440px;gap:36px;align-items:start}.display-column{min-width:0}.viewport{width:100%;overflow-x:auto;padding:12px 0;overscroll-behavior-x:contain}.screen{position:relative;width:400px;height:400px;flex-shrink:0;background:#fff;outline:1px solid #c9cbbf;border-radius:0;margin:0 auto;isolation:isolate}.screen img{position:absolute;inset:0;display:block;width:100%;height:100%;image-rendering:pixelated;border-radius:0}.screen #overlay{mix-blend-mode:multiply;pointer-events:none}.screen.grid:after{content:'';position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(to right,#45613b30 1px,transparent 1px),linear-gradient(to bottom,#45613b30 1px,transparent 1px);background-size:var(--pixel) var(--pixel)}
+button,select{font:inherit;color:inherit;background:#fdfcf7;border:1px solid #bfc8bb;border-radius:6px;padding:7px 12px;cursor:pointer}button:hover{border-color:#45694f}button[aria-pressed=true]{background:#365b43;color:#fff;border-color:#365b43}button:focus-visible,select:focus-visible{outline:3px solid #819d7f;outline-offset:3px}.controls{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}.subtle{font-size:13px;color:#65705f}.status{min-height:26px;font-size:15px;color:#385540}.divider{padding-top:18px;border-top:1px solid #d7d9cc;margin-top:22px}.gallery{display:grid;grid-template-columns:repeat(auto-fit,200px);gap:24px;justify-content:space-between}.tile{display:block;width:200px;padding:0;background:none;border:0;border-radius:0;text-align:left}.tile img{display:block;width:200px;height:200px;border-radius:0;image-rendering:pixelated;outline:1px solid #d4d5ca}.tile .caption{display:block;padding-top:8px;font-size:15px}.tile[aria-pressed=true]{background:none;color:#244f35}.tile[aria-pressed=true] img{outline:2px solid #45694f;outline-offset:3px}.tile small{display:block;font-size:12px;color:#6a7466;margin-top:2px}.legend{display:flex;flex-wrap:wrap;gap:16px}.legend span{font-size:13px;color:#5d685e}details{margin:26px 0}summary{cursor:pointer;color:#45694f}.reference{display:block;max-width:100%;height:auto}.compare{display:flex;flex-wrap:wrap;gap:24px}.compare figure{margin:0}.compare img{display:block;width:200px;height:200px;image-rendering:pixelated;border-radius:0;outline:1px solid #d4d5ca}figcaption{font-size:13px;color:#65705f;margin-top:8px}footer{font-size:13px;color:#687263;border-top:1px solid #d7d9cc;margin:38px 0 24px;padding-top:18px}
+@media(max-width:850px){.hero{grid-template-columns:1fr}.display-column{grid-row:1}.screen{width:200px;height:200px}.gallery{justify-content:center;gap:26px}main{padding:0 20px;margin-top:24px}}
+</style>
+<main><div class="eyebrow">COMPANION / 原稿还原版 02</div><h1>保留原稿，再做局部精修。</h1>
+<p class="intro">上一版改变了脸部比例和五官，方向已撤回。这一页直接使用原生素材；十种默认表情都已与原稿逐像素对齐。</p>
+<div class="hero"><section>
+<h2>原来的表情</h2><label for="family" class="subtle">选择原稿中的表情</label><div class="controls"><select id="family"></select><button id="react">看原有短动作</button><button id="blink">眨一下眼</button></div>
+<p id="face-label" class="status" aria-live="polite">平静 · 放松地看着你</p>
+<div class="controls" id="stories"></div><p class="subtle">点击主屏可以摸摸它，当前表情会眨眼回应。原稿动作播放后回到选中的同一张脸。</p>
+<div class="divider"><h2>再加一个小事件</h2><label for="event" class="subtle">独立饰品层，出现时保留当前的脸</label><div class="controls"><select id="event"><option value="">没有小事件</option></select><button id="event-play">出现 → 停留 → 收回</button><button id="event-stop">收回饰品</button></div><p id="event-label" class="status" aria-live="polite">饰品区空闲</p><p class="subtle">录音等功能饰品在产品中只跟随真实功能状态；此处的选项是效果演示。</p></div>
+</section><section class="display-column" aria-label="原生像素屏幕预览">
+<div class="viewport"><div class="screen" style="--pixel:2px"><img id="face" src="images/calm-rest.png" alt="平静表情，原生200乘200像素"><img id="overlay" hidden alt="独立事件饰品"></div></div>
+<div class="controls"><button data-scale="1">1× 原生</button><button data-scale="2">2× 像素放大</button><button id="grid" aria-pressed="false">像素网格</button></div><p class="subtle" id="scale-label"></p><p class="subtle">直角 · 200×200 · 黑白。整数倍展示，不代表实际物理尺寸。窄屏下放大可在画面区域横向滑动。</p>
+</section></div>
+<h2>原生素材，原来的比例</h2><p class="intro">眼睛、嘴型、眉毛、脸颊和原有小符号均沿用原稿。精修从这套形象继续。</p><div class="gallery" id="gallery"></div>
+<h2>原稿与当前画面</h2><p class="subtle">两张脸应该一致。已验证十种默认表情在状态栏以下差异为 0 像素。</p><div class="compare"><figure><img id="before" src="old/calm.png" alt="原生平静素材"><figcaption>原生素材</figcaption></figure><figure><img id="after" src="images/calm-rest.png" alt="还原后的平静表情"><figcaption>当前画面 · 原稿还原</figcaption></figure></div>
+<details><summary>素材与小事件说明</summary><p>当前画面直接读取保留的 V45 原生 PNG/PBM，沿用原稿锚点。眨眼通过现有 C 合成器完成，再恢复原来的表情。原稿已有问号、叹号或星星时，同义独立饰品自动让位，避免重复。</p><p>小事件与脸部交互分别计时。录音等功能饰品仍然优先，真实产品状态只能由相应服务驱动。上一版 SVG 重画稿保留为被撤回的历史方向。</p></details>
+<footer>这次完成的是原稿还原，尚未宣称新的美术精修通过；未替换板端资源。<a href="../../index.html">返回状态栏与长按预览</a></footer>
+</main><script>
+const ART=/*ART_DATA*/;
+const EVENTS=/*EVENT_DATA*/;
+const $=s=>document.querySelector(s),face=$('#face'),overlay=$('#overlay'),selector=$('#family'),eventSelector=$('#event');
+const names={calm:'原来的安静表情',curious:'原来的好奇神态',delighted:'开心的小笑脸',warm:'亲近的笑容',playful:'嘴角微微翘起来',sleepy:'原稿的困倦入场',bashful:'悄悄看你一眼',thoughtful:'想一想，再看向你',focused:'认真地看着你',alert:'注意到了新动静'};
+let faceTimers=[],eventTimers=[],selected='calm',eventStage=null,scale=matchMedia('(max-width:850px)').matches?1:2,userScale=false;
+function cancelFace(){faceTimers.forEach(clearTimeout);faceTimers=[];}
+function cancelEvent(){eventTimers.forEach(clearTimeout);eventTimers=[];}
+function setFrame(frame,text){face.src='images/'+frame+'.png';face.alt=text;$('#face-label').textContent=text;}
+function markFamily(){selector.value=selected;document.querySelectorAll('.tile').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.family===selected)));$('#before').src='old/'+selected+'.png';$('#after').src='images/'+selected+'-rest.png';}
+function setFamily(n){cancelFace();selected=n;markFamily();setFrame(n+'-rest',ART.families[n]+' · '+names[n]);const event=EVENTS.find(e=>e.id===eventSelector.value);if(event&&eventStage)stage(event,eventStage);}
+function sequence(frames,label){cancelFace();let at=0;for(const [frame,ms] of frames){faceTimers.push(setTimeout(()=>setFrame(frame,label),at));at+=ms;}faceTimers.push(setTimeout(()=>setFrame(selected+'-rest',ART.families[selected]+' · '+names[selected]),at));}
+for(const [name,label] of Object.entries(ART.families)){
+ const o=new Option(label,name);selector.add(o);
+ const b=document.createElement('button');b.className='tile';b.dataset.family=name;b.setAttribute('aria-pressed',String(name==='calm'));
+ b.innerHTML='<img src="images/'+name+'-rest.png" alt="'+label+'，200乘200像素"><span class="caption">'+label+'</span><small>'+names[name]+'</small>';
+ b.onclick=()=>setFamily(name);$('#gallery').append(b);
+}
+selector.onchange=()=>setFamily(selector.value);
+$('#react').onclick=()=>sequence(ART.motions[selected],ART.families[selected]+' · 原稿短动作');
+$('#blink').onclick=()=>sequence([[selected+'-rest',600],[selected+'-rest-blink',600],[selected+'-rest',900]],ART.families[selected]+' · 眨眼');
+function startStory(id){const story=ART.stories[id];sequence([[selected+'-rest',600],[selected+'-rest-blink',650],[selected+'-rest',900]],story.label);const current=EVENTS.find(e=>e.id===eventSelector.value);if(id==='pet'&&(!current||current.kind!=='functional')){eventSelector.value='pet_heart';playEvent();}}
+for(const [id,story] of Object.entries(ART.stories)){const b=document.createElement('button');b.dataset.story=id;b.textContent=story.label;b.onclick=()=>startStory(id);$('#stories').append(b);}
+$('.screen').onclick=()=>startStory('pet');
+function setScale(n){scale=n;$('.screen').style.width=(200*n)+'px';$('.screen').style.height=(200*n)+'px';$('.screen').style.setProperty('--pixel',n+'px');document.querySelectorAll('[data-scale]').forEach(b=>b.setAttribute('aria-pressed',String(+b.dataset.scale===n)));$('#scale-label').textContent=n+'×：画面 '+(200*n)+' × '+(200*n)+' CSS 像素';}
+document.querySelectorAll('[data-scale]').forEach(b=>b.onclick=()=>{userScale=true;setScale(+b.dataset.scale);});
+matchMedia('(max-width:850px)').addEventListener('change',e=>{if(!userScale)setScale(e.matches?1:2);});
+$('#grid').onclick=()=>{$('.screen').classList.toggle('grid');$('#grid').setAttribute('aria-pressed',String($('.screen').classList.contains('grid')));};
+// The collector's explicit event schema is adapted during the build. These
+// layers have no authority to change faceState or claim a real device status.
+for(const event of EVENTS){eventSelector.add(new Option(event.label,event.id));}
+function stage(event,key){eventStage=key;const embedded={curious:'curious_question',alert:'alert_exclamation',playful:'delight_star'};if(embedded[selected]===event.id){overlay.hidden=true;overlay.removeAttribute('src');$('#event-label').textContent='原稿已有该饰品，保留原来的样子';return;}const p=event.layers[key];overlay.hidden=!p;if(p)overlay.src=event.assetRoot+'/'+p;$('#event-label').textContent=event.label+' · '+({entered:'出现',hold:'停留',exit:'收回'}[key]);}
+function clearOverlay(){cancelEvent();eventStage=null;overlay.hidden=true;overlay.removeAttribute('src');$('#event-label').textContent='饰品区空闲';}
+function playEvent(){clearOverlay();const event=EVENTS.find(e=>e.id===eventSelector.value);if(!event)return;stage(event,'entered');eventTimers.push(setTimeout(()=>stage(event,'hold'),700));eventTimers.push(setTimeout(()=>stage(event,'exit'),2500));eventTimers.push(setTimeout(clearOverlay,3200));}
+eventSelector.onchange=()=>{clearOverlay();const event=EVENTS.find(e=>e.id===eventSelector.value);if(event)stage(event,'hold');};
+$('#event-play').onclick=playEvent;$('#event-stop').onclick=clearOverlay;
+document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelFace();clearOverlay();setFrame(selected+'-rest',ART.families[selected]+' · '+names[selected]);}});
+setScale(scale);markFamily();
+</script></html>

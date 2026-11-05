@@ -1,0 +1,65 @@
+{
+  "schema": "companion.wba.internal-flash-geometry.v1",
+  "flash_base": 134217728,
+  "flash_page_bytes": 8192,
+  "boot_bytes": 32768,
+  "nvm_bytes": 16384,
+  "sram_base": 536870912,
+  "layouts": [
+    {
+      "id": "legacy32",
+      "boot_bytes": 32768
+    },
+    {
+      "id": "compact24",
+      "boot_bytes": 24576,
+      "mcu": "STM32WBA55CEU6",
+      "board_target": 1160926787,
+      "hardware_revision": "COMPANION-WBA55CE-V1.1-F24"
+    },
+    {
+      "id": "compact24-nor",
+      "boot_bytes": 24576,
+      "nvm_bytes": 0,
+      "mcu": "STM32WBA55CEU6",
+      "board_target": 1160992323,
+      "hardware_revision": "COMPANION-WBA55CE-V1.1-F24-N0"
+    }
+  ],
+  "variants": [
+    {
+      "mcu": "STM32WBA55CGU6",
+      "flash_kib": 1024,
+      "sram_bytes": 131072,
+      "sram_regions": [
+        [
+          536870912,
+          65536
+        ],
+        [
+          536936448,
+          65536
+        ]
+      ],
+      "board_target": 825316931,
+      "hardware_revision": "COMPANION-WBA55-V1.1"
+    },
+    {
+      "mcu": "STM32WBA55CEU6",
+      "flash_kib": 512,
+      "sram_bytes": 98304,
+      "sram_regions": [
+        [
+          536870912,
+          32768
+        ],
+        [
+          536936448,
+          65536
+        ]
+      ],
+      "board_target": 1160861251,
+      "hardware_revision": "COMPANION-WBA55CE-V1.1"
+    }
+  ]
+}
