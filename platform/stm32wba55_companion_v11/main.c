@@ -215,6 +215,20 @@ static void diagnostic_record_queue(void)
     };
     (void)comp_v11_diag_console_emit_record_queue(&s,diagnostic_write,NULL);
 }
+static void diagnostic_capture_feedback(void)
+{
+#if !COMPANION_WBA_SCREEN_ENABLED
+    bool updating=false;
+#ifdef COMPANION_WBA_BLE_LINKED
+    updating=comp_v11_update_product_busy();
+#endif
+    const comp_capture_feedback_t feedback=comp_v11_product_capture_feedback(&companion_app,updating);
+    char line[96];
+    (void)snprintf(line,sizeof(line),"CAPTURE1 state=%u flags=%u full_reason=%u mark_request=%lu\r\n",
+        feedback.state,feedback.flags,feedback.full_reason,(unsigned long)feedback.bookmark_request);
+    (void)diagnostic_write(NULL,line);
+#endif
+}
 static void diagnostic_record_fault(void)
 {
     const comp_wba_recording_pipeline_t *p=&companion_app.recording.pipeline;
@@ -253,19 +267,7 @@ static void diagnostic_record_fault(void)
         (unsigned long)memory_stats.stack.minimum_free_bytes,
         (unsigned)memory_stats.stack.guard_failed,(unsigned)memory_stats.stack.low_latched);
     (void)comp_v11_hal_debug_write(line);
-#if !COMPANION_WBA_SCREEN_ENABLED
-    {
-        bool updating=false;
-#ifdef COMPANION_WBA_BLE_LINKED
-        updating=comp_v11_update_product_busy();
-#endif
-        const comp_capture_feedback_t feedback=comp_v11_product_capture_feedback(&companion_app,updating);
-        char line[96];
-        (void)snprintf(line,sizeof(line),"CAPTURE1 state=%u flags=%u full_reason=%u mark_request=%lu\r\n",
-            feedback.state,feedback.flags,feedback.full_reason,(unsigned long)feedback.bookmark_request);
-        (void)diagnostic_write(NULL,line);
-    }
-#endif
+    diagnostic_capture_feedback();
     diagnostic_record_queue();
     comp_v11_cpu_emit();
 }
@@ -706,6 +708,7 @@ static void diagnostic_emit_body(comp_v11_diag_console_t *console,uint32_t reset
             (int)companion_app.recording.capture.engine.codec.last_encode_error);
         (void)diagnostic_write(NULL,line);
     }
+    diagnostic_capture_feedback();
     diagnostic_record_queue();
     comp_v11_cpu_emit();
     diagnostic_swd_pins();
