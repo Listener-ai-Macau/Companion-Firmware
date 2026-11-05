@@ -23,7 +23,7 @@
   "historicalInstalledVersion": 66679,
   "historicalUninstalledCandidateVersion": 66680,
   "originalPatchCallsRetained": 93,
-  "replayScope": "Original forward edits recovered after the retained Git base. Historical failed attempts and their retries are preserved. Three original Python source mutations were also restored. The earlier13-file diff is unresolved; later edits touching those files do not recreate that earlier diff.",
+  "replayScope": "Original forward edits recovered after the retained Git base. Historical failed attempts and their retries are preserved. Three original Python source mutations were also restored. The earlier13-file diff is unresolved; later edits touching those files do not recreate that earlier diff. First-pass9479bbf4 was later reconciled against original tool outcomes: three atomic failed requests must be skipped as a whole. Ten affected files were re-derived; only one duplicate diagnostic enum row required correction. Original failure outputs are retained in atomic-failure-evidence.json.",
   "softwareChecks": {
     "capture_controls": {
       "source": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\firmware-recovery\\.cache\\recording-core-20261011\\recovery-r5\\result.json",
@@ -50,5 +50,17 @@
   "physicalDeviceIO": false,
   "fullFirmwareBuild": false,
   "releaseSourceQualified": false,
-  "next": "Find or reconstruct the13-file intermediate diff; recover the matching UI85 resource inputs, then rebuild with the current verified recipe and validate changed code before normal OTA. Do not substitute the older desktop HEAD or label this tree as the original66680."
+  "next": "Find or reconstruct the13-file intermediate diff; recover the matching UI85 resource inputs, then rebuild with the current verified recipe and validate changed code before normal OTA. Do not substitute the older desktop HEAD or label this tree as the original66680.",
+  "forwardReplayCorrection": {
+    "failedRequestsSkipped": [
+      "call_133e053474614ff0bf655911a61280e3",
+      "call_7fa3bb4f72614ec4b84d851f2d4e9aff",
+      "call_f65c2f5d94724fd9a4f39a220ac1fa97"
+    ],
+    "affectedFilesChecked": 10,
+    "correctedFiles": [
+      "app/companion_pendant/diag_log/diag_log_events.h"
+    ],
+    "reason": "Historical apply_patch verification failures were atomic across their request; replay must not retain earlier file operations from a failed request."
+  }
 }

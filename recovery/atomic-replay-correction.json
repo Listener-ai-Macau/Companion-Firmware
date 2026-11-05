@@ -1,0 +1,12 @@
+{
+  "failedRequestsSkipped": [
+    "call_133e053474614ff0bf655911a61280e3",
+    "call_7fa3bb4f72614ec4b84d851f2d4e9aff",
+    "call_f65c2f5d94724fd9a4f39a220ac1fa97"
+  ],
+  "affectedFilesChecked": 10,
+  "correctedFiles": [
+    "app/companion_pendant/diag_log/diag_log_events.h"
+  ],
+  "reason": "Historical apply_patch verification failures were atomic across their request; replay must not retain earlier file operations from a failed request."
+}
