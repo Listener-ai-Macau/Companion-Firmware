@@ -27,6 +27,7 @@
 #include "ble_gate_observation.h"
 #include "ble_credit_wakeup.h"
 #include "maintenance_protocol.h"
+#include "../memory_target.h"
 #include "ble_radio_activity_profile.h"
 #include "ble_route_observation.h" /* existing clock/atomic helpers; no route instance */
 #include "ble_residence_profile.h"
@@ -1001,10 +1002,61 @@ static bool maintenance_idle(void)
         !comp_wba_recording_product_recovering(&product->recording)&&
         comp_v11_ble_recording_recovery_idle();
 }
+static void maintenance_runtime_fields(uint8_t operation,uint8_t response[32])
+{
+    response[6]=0u;response[7]=1u;
+    if(operation==COMP_MAINT_MEMORY) {
+        const comp_v11_memory_stats_t *s=comp_v11_memory_observe();
+        response[6]=(uint8_t)((unsigned)s->stack.sampled|
+            (unsigned)s->stack.guard_failed<<1u|(unsigned)s->stack.low_latched<<2u);
+        comp_maint_put32(response+12u,s->stack_reserved_bytes);
+        comp_maint_put32(response+16u,s->stack.minimum_free_bytes);
+        comp_maint_put32(response+20u,SystemCoreClock);
+        comp_maint_put32(response+24u,HAL_GetTick());
+        return;
+    }
+    const comp_v11_microphone_hal_t *mic=&product->board->microphone;
+    if(operation==COMP_MAINT_AUDIO_TIMING) {
+        const comp_duration_stats_t *encode=&product->recording.capture.engine.stats.encoding_duration;
+        const comp_duration_stats_t *pdm=&mic->pdm_duration;
+        bool media=product->recording.media_ready;
+        uint32_t value=0u;bool valid;
+        response[6]=(uint8_t)((unsigned)media<<4u|(unsigned)mic->running<<5u);
+        comp_maint_put32(response+12u,media?encode->samples:0u);
+        comp_maint_put32(response+16u,pdm->samples);
+        valid=media&&comp_duration_stats_percentile_upper_ms(encode,95u,&value);
+        comp_maint_timing16(response,20u,0u,valid,value);
+        valid=media&&comp_duration_stats_peak_upper_ms(encode,&value);
+        comp_maint_timing16(response,22u,1u,valid,value);
+        valid=comp_duration_stats_percentile_upper_ms(pdm,95u,&value);
+        comp_maint_timing16(response,24u,2u,valid,value);
+        valid=comp_duration_stats_peak_upper_ms(pdm,&value);
+        comp_maint_timing16(response,26u,3u,valid,value);
+        return;
+    }
+    comp_v11_microphone_stats_t s;
+    comp_v11_microphone_hal_get_stats(mic,&s);
+    response[6]=(uint8_t)((unsigned)s.initialized|(unsigned)s.running<<1u);
+    if(operation==COMP_MAINT_AUDIO_FAULTS) {
+        comp_maint_put32(response+12u,s.event_queue_overflows);
+        comp_maint_put32(response+16u,s.stale_dma_halves);
+        comp_maint_put32(response+20u,s.processing_rejections);
+        comp_maint_put32(response+24u,product->capture_deadline_faults);
+    } else {
+        response[6]|=(uint8_t)((unsigned)product->recording.media_ready<<2u);
+        comp_maint_put32(response+12u,s.processed_dma_halves);
+        comp_maint_put32(response+16u,s.error_irqs);
+        comp_maint_put32(response+20u,product->max_capture_foreground_ms);
+        comp_maint_put32(response+24u,product->board->microphone_max_poll_ms);
+    }
+}
 static bool maintenance_reply(uint8_t operation,uint8_t result,uint32_t request)
 {
+    /* A later accepted START may have changed ownership after this read
+     * request was queued. Recheck at the actual scan, including retries. */
+    if(operation==COMP_MAINT_MEMORY&&result==COMP_MAINT_OK&&!maintenance_idle())result=COMP_MAINT_BUSY;
     uint8_t response[32],bonds=255u,flags=0u;
-    if(operation!=COMP_MAINT_BLE_DIAGNOSTICS) {
+    if(operation<COMP_MAINT_BLE_DIAGNOSTICS) {
         if(product->preferences.persisted)flags|=1u;
         if(comp_preferences_are_defaults(&product->preferences.values))flags|=2u;
         if(maintenance_idle()&&comp_v11_ble_bond_count(&bonds))flags|=4u;
@@ -1012,8 +1064,9 @@ static bool maintenance_reply(uint8_t operation,uint8_t result,uint32_t request)
     }
     comp_maint_response(response,operation,result,request,flags,bonds,product->preferences.generation,
         comp_preferences_fingerprint(&product->preferences.values),comp_v11_ble_bond_generation(),maintenance.request_id);
-    if(operation==COMP_MAINT_BLE_DIAGNOSTICS&&result==COMP_MAINT_OK) {
-        comp_v11_ble_maintenance_diagnostics(response);
+    if(operation>=COMP_MAINT_BLE_DIAGNOSTICS&&result==COMP_MAINT_OK) {
+        if(operation==COMP_MAINT_BLE_DIAGNOSTICS)comp_v11_ble_maintenance_diagnostics(response);
+        else maintenance_runtime_fields(operation,response);
         comp_maint_put32(response+28u,companion_crc32(0u,response,28u));
     }
     return publish(NULL,COMPANION_GATT_CHAR_REPAIR_CONTROL,response,sizeof(response));
@@ -1034,6 +1087,12 @@ static void maintenance_request(const companion_gatt_event_t *e)
     /* Read-only cached scalars remain useful during recording/storage work.
      * Keep the existing queued-reply owner and secured subscription checks. */
     if(operation==COMP_MAINT_BLE_DIAGNOSTICS){maintenance.result=COMP_MAINT_OK;return;}
+    if(operation>=COMP_MAINT_MEMORY) {
+        /* Only a stack scan needs a stopped/idle owner; cached audio scalars
+         * remain readable without pausing capture or erasing/resetting state. */
+        if(operation!=COMP_MAINT_MEMORY||maintenance_idle())maintenance.result=COMP_MAINT_OK;
+        return;
+    }
     if(!maintenance_idle())return;
     maintenance.result=COMP_MAINT_FAILED;
     if(operation==COMP_MAINT_QUERY)maintenance.result=COMP_MAINT_OK;

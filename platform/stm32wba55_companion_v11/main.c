@@ -47,7 +47,6 @@ comp_v11_product_app_t companion_app;
 #pragma GCC optimize ("Oz")
 #endif
 
-static comp_v11_memory_stats_t memory_stats;
 #ifdef COMPANION_WBA_BLE_LINKED
 static comp_recording_gap_probe_t recording_gap_probe_state;
 static void recording_gap_probe_poll(void)
@@ -250,7 +249,7 @@ static void diagnostic_record_fault(void)
         .catalog_phase=companion_app.recording.catalog.phase,.future_phase=p->future_phase,.consume_phase=p->consume_phase,
     };
     (void)comp_v11_diag_console_emit_record_fault(&s,diagnostic_write,NULL);
-    comp_v11_memory_sample(&memory_stats);
+    const comp_v11_memory_stats_t *memory_stats=comp_v11_memory_observe();
     /* Only after actual stopped-fault admission, never in a live audio loop.
      * Site1=checkpoint entry,2=after work,3=post-encode DMA,
      * 4=product entry,5=before BLE. Original timing/protection is unchanged. */
@@ -264,8 +263,8 @@ static void diagnostic_record_fault(void)
         (unsigned long)companion_app.max_capture_runtime_ms,
         (unsigned long)companion_app.max_capture_presenter_ms,
         (unsigned long)companion_app.max_capture_render_ms,
-        (unsigned long)memory_stats.stack.minimum_free_bytes,
-        (unsigned)memory_stats.stack.guard_failed,(unsigned)memory_stats.stack.low_latched);
+        (unsigned long)memory_stats->stack.minimum_free_bytes,
+        (unsigned)memory_stats->stack.guard_failed,(unsigned)memory_stats->stack.low_latched);
     (void)comp_v11_hal_debug_write(line);
     diagnostic_capture_feedback();
     diagnostic_record_queue();
@@ -531,7 +530,7 @@ static void diagnostic_emit_body(comp_v11_diag_console_t *console,uint32_t reset
     comp_v11_microphone_stats_t mic={0};
     comp_wba_power_snapshot_t power=comp_wba_power_monitor_snapshot(&companion_v11.power_monitor,tick);
     comp_v11_microphone_hal_get_stats(&companion_v11.microphone,&mic);
-    comp_v11_memory_sample(&memory_stats);
+    const comp_v11_memory_stats_t *memory_stats=comp_v11_memory_observe();
     s.firmware_version=COMPANION_WBA_APP_VERSION;s.build_id=COMPANION_WBA_BUILD_ID;
     s.board_id=COMPANION_WBA_BOARD_ID;s.uptime_ms=tick;
     for(unsigned word=0;word<3u;++word)
@@ -540,8 +539,8 @@ static void diagnostic_emit_body(comp_v11_diag_console_t *console,uint32_t reset
     s.ui_generation=companion_app.assets_ready?companion_app.resources.generation.root.generation:0u;
     s.reset_flags=reset_flags;s.iwdg_reset=(reset_flags&RCC_RESET_FLAG_IWDG)!=0u;
     s.faults=companion_v11.faults;
-    s.ram_gap=memory_stats.static_gap_bytes;s.stack_min_free=memory_stats.stack.minimum_free_bytes;
-    s.stack_low=memory_stats.stack.low_latched;s.stack_guard=memory_stats.stack.guard_failed;
+    s.ram_gap=memory_stats->static_gap_bytes;s.stack_min_free=memory_stats->stack.minimum_free_bytes;
+    s.stack_low=memory_stats->stack.low_latched;s.stack_guard=memory_stats->stack.guard_failed;
     /* Configured protocol is distinct from rendered/failed BUSY-qualified
      * completions below, and does not imply a hardware RESET endpoint. */
     s.panel_bound=companion_v11.panel.status!=COMP_SSD1681_WBA_NOT_READY;

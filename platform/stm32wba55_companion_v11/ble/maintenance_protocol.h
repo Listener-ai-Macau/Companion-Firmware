@@ -5,7 +5,8 @@
 #include <string.h>
 #include "companion_crc32.h"
 enum { COMP_MAINT_QUERY=0,COMP_MAINT_PAIR_WINDOW=1,COMP_MAINT_DEFAULTS=2,COMP_MAINT_CLEAR_BONDS=3,
-       COMP_MAINT_BLE_DIAGNOSTICS=4 };
+       COMP_MAINT_BLE_DIAGNOSTICS=4,COMP_MAINT_MEMORY=5,COMP_MAINT_AUDIO_TIMING=6,
+       COMP_MAINT_AUDIO_FAULTS=7,COMP_MAINT_AUDIO_SERVICE=8 };
 enum { COMP_MAINT_OK=0,COMP_MAINT_PENDING=1,COMP_MAINT_BUSY=2,COMP_MAINT_INVALID=3,COMP_MAINT_FAILED=4 };
 static inline uint32_t comp_maint_get32(const uint8_t *p)
 {return (uint32_t)p[0]|((uint32_t)p[1]<<8u)|((uint32_t)p[2]<<16u)|((uint32_t)p[3]<<24u);}
@@ -14,7 +15,7 @@ static inline void comp_maint_put32(uint8_t *p,uint32_t n)
 /* Existing encrypted4003 characteristic. No new GATT service or database. */
 static inline bool comp_maint_request(const uint8_t *p,uint16_t n,uint8_t *operation,uint32_t *request)
 {
-    if(!p||!operation||!request||n!=16u||memcmp(p,"CRM1",4u)||p[4]>COMP_MAINT_BLE_DIAGNOSTICS||
+    if(!p||!operation||!request||n!=16u||memcmp(p,"CRM1",4u)||p[4]>COMP_MAINT_AUDIO_SERVICE||
        p[5]||p[6]||p[7]||!comp_maint_get32(p+8u)||
        companion_crc32(0u,p,12u)!=comp_maint_get32(p+12u))return false;
     *operation=p[4];*request=comp_maint_get32(p+8u);return true;
@@ -28,6 +29,26 @@ static inline bool comp_maint_request(const uint8_t *p,uint16_t n,uint8_t *opera
  * LE completion counts (u16 each);24..27 bond-lost/rebond counts (saturated
  * u16 each). Nonce/header/CRC stay identical. No addresses, keys or payload.
  * Operations0..3 retain their original preference/bond response fields. */
+/* Operations5..8: same nonce/CRC/header, byte7=1 (scalar schema).
+ * 5 idle-only: flags sampled/guard/low bits0..2; u32 at12 stack reserve,
+ *   16 sticky minimum free,20 core Hz,24 uptime ms. No scan during capture.
+ * 6 cached: flags encodeP95/peak,PDM P95/peak valid bits0..3,media/running
+ *   bits4..5; u32 at12 encode samples,16 PDM samples; u16 at20/22/24/26
+ *   encodeP95/peak and PDM P95/peak conservative upper milliseconds.
+ *   Invalid/overflow timing=FFFF with its validity bit clear, never a zero.
+ * 7 cached: flags initialized/running bits0..1; u32 at12 overflows,16 stale,
+ *   20 rejected,24 deadline faults. No resets or capture commands.
+ * 8 cached: same flags plus mediaReady bit2; u32 at12 processed DMA halves,
+ *   16 error IRQs,20 worst capture foreground ms,24 max microphone poll ms.
+ * These are observations since the counters' existing lifecycle reset, not
+ * CPU utilization, instantaneous timing or physical power measurements. */
+static inline void comp_maint_timing16(uint8_t p[32],unsigned at,unsigned bit,
+    bool valid,uint32_t value)
+{
+    if(!valid||value>=UINT16_MAX)value=UINT16_MAX;
+    else p[6]|=(uint8_t)(1u<<bit);
+    p[at]=(uint8_t)value;p[at+1u]=(uint8_t)(value>>8u);
+}
 static inline void comp_maint_response(uint8_t p[32],uint8_t operation,uint8_t result,uint32_t request,
     uint8_t flags,uint8_t bonds,uint32_t preferences_generation,uint32_t preferences_crc,
     uint32_t bonds_generation,uint32_t last_request)

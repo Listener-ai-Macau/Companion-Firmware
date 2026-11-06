@@ -7,4 +7,7 @@ typedef struct {
 } comp_v11_memory_stats_t;
 /* O(stack size), call only outside capture/playback, at diagnostic cadence. */
 void comp_v11_memory_sample(comp_v11_memory_stats_t *);
+/* One sticky runtime monitor shared by UART and encrypted diagnostics.
+ * Same idle-only sampling restriction; no second monitor/allocation. */
+const comp_v11_memory_stats_t *comp_v11_memory_observe(void);
 #endif
