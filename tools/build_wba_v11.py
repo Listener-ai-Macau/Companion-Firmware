@@ -503,6 +503,7 @@ def main() -> int:
                  f'-DCOMP_V11_DIAG_FLASH_ENABLED={int(args.diag_flash_log)}',
                  f'-DCOMPANION_WBA_ACL_READINESS_PROFILE={int(args.acl_readiness_profile)}',
                  f'-DCOMPANION_WBA_CPU_RESIDENCE_PROFILE={int(args.cpu_residence_profile)}',
+                 '-DCOMPANION_FINE_DURATION_CLOCK=1',
                  f'-DCOMPANION_WBA_CPU_DETAILED_PROFILE={int(args.cpu_detailed_profile)}',
                  f'-DCOMPANION_WBA_BATTERY_RAW_DIAGNOSTIC={int(args.battery_raw_diagnostic)}',
                  f'-DCOMPANION_WBA_OTA_DEV_IGNORE_POWER={int(args.development_ota_ignore_power)}',

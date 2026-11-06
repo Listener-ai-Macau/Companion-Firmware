@@ -1017,6 +1017,7 @@ static void maintenance_runtime_fields(uint8_t operation,uint8_t response[32])
     }
     const comp_v11_microphone_hal_t *mic=&product->board->microphone;
     if(operation==COMP_MAINT_AUDIO_TIMING) {
+        response[7]=2u; /* precise conservative upper microseconds */
         const comp_duration_stats_t *encode=&product->recording.capture.engine.stats.encoding_duration;
         const comp_duration_stats_t *pdm=&mic->pdm_duration;
         bool media=product->recording.media_ready;
@@ -1024,13 +1025,13 @@ static void maintenance_runtime_fields(uint8_t operation,uint8_t response[32])
         response[6]=(uint8_t)((unsigned)media<<4u|(unsigned)mic->running<<5u);
         comp_maint_put32(response+12u,media?encode->samples:0u);
         comp_maint_put32(response+16u,pdm->samples);
-        valid=media&&comp_duration_stats_percentile_upper_ms(encode,95u,&value);
+        valid=media&&comp_duration_stats_percentile_upper_us(encode,95u,&value);
         comp_maint_timing16(response,20u,0u,valid,value);
-        valid=media&&comp_duration_stats_peak_upper_ms(encode,&value);
+        valid=media&&comp_duration_stats_peak_upper_us(encode,&value);
         comp_maint_timing16(response,22u,1u,valid,value);
-        valid=comp_duration_stats_percentile_upper_ms(pdm,95u,&value);
+        valid=comp_duration_stats_percentile_upper_us(pdm,95u,&value);
         comp_maint_timing16(response,24u,2u,valid,value);
-        valid=comp_duration_stats_peak_upper_ms(pdm,&value);
+        valid=comp_duration_stats_peak_upper_us(pdm,&value);
         comp_maint_timing16(response,26u,3u,valid,value);
         return;
     }

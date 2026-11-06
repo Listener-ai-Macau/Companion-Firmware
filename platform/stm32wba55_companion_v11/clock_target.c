@@ -1,4 +1,28 @@
 #include "clock_target.h"
+#include "companion_duration_stats.h"
+#if COMPANION_FINE_DURATION_CLOCK
+#include "stm32wbaxx_hal.h"
+#include "ble/ble_micro_observation.h"
+bool comp_duration_clock_us(uint32_t *stamp)
+{
+    /* Reuse the qualified read-only SysTick projection. DWT is shared with
+     * ST's delay code and must not be enabled/reset for measurement. A clock
+     * transition/masked IRQ or ambiguous read invalidates the observation. */
+    if(!stamp||__get_IPSR()||__get_PRIMASK()||HAL_GetTickFreq()!=HAL_TICK_FREQ_1KHZ||
+       (SysTick->CTRL&(SysTick_CTRL_ENABLE_Msk|SysTick_CTRL_CLKSOURCE_Msk))!=
+           (SysTick_CTRL_ENABLE_Msk|SysTick_CTRL_CLKSOURCE_Msk))return false;
+    for(unsigned tries=0u;tries<4u;tries++) {
+        uint32_t tick=HAL_GetTick(),load=SysTick->LOAD,value=SysTick->VAL;
+        bool pending=(SCB->ICSR&SCB_ICSR_PENDSTSET_Msk)!=0u;
+        uint32_t after=HAL_GetTick(),value_after=SysTick->VAL;
+        if(SystemCoreClock>=1000u&&load==SystemCoreClock/1000u-1u&&
+           comp_v11_ble_micro_consistent(tick,after,load,value,value_after)) {
+            *stamp=comp_v11_ble_micro_stamp(tick,load,value,pending);return true;
+        }
+    }
+    return false;
+}
+#endif
 #ifdef COMPANION_WBA_BLE_LINKED
 #include "wba_retained_clock.h"
 #include "stm32wbaxx_hal.h"

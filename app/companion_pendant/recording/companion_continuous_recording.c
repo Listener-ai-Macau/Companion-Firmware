@@ -307,7 +307,8 @@ static bool encoded_packet(comp_cont_recording_t *r,uint32_t before,size_t bytes
 
 static bool encode_one(comp_cont_recording_t *r)
 {
-    uint32_t before=r->codec.frames_encoded,at=r->config.now_ms(r->config.context);
+    uint32_t before=r->codec.frames_encoded;
+    comp_duration_stamp_t at=comp_duration_begin(r->config.now_ms(r->config.context));
     const bool complete_input=r->codec.pcm_fill+COMP_CONT_PCM_BLOCK_SAMPLES>=r->codec.frame_samples;
     comp_cpu_stage_span_t cpu_span=complete_input?comp_cpu_stage_begin():(comp_cpu_stage_span_t){0};
     if(complete_input)comp_cpu_codec_cache_begin();
@@ -315,7 +316,7 @@ static bool encode_one(comp_cont_recording_t *r)
         COMP_CONT_PCM_BLOCK_SAMPLES,packet(r),PACKET_CAPACITY,false);
     if(complete_input)comp_cpu_stage_end(COMP_CPU_STAGE_OPUS,cpu_span,r->codec.frames_encoded!=before);
     if (r->codec.frames_encoded!=before) {
-        comp_duration_stats_note(&r->stats.encoding_duration,r->config.now_ms(r->config.context)-at);
+        comp_duration_end(&r->stats.encoding_duration,at,r->config.now_ms(r->config.context));
         if (bytes!=COMP_SEG_AUDIO_FRAME_BYTES) {comp_cont_recording_fault(r,COMP_SEG_CORRUPT);return false;}
     } else if (bytes || r->codec.pcm_fill>=r->codec.frame_samples) {
         comp_cont_recording_fault(r,COMP_SEG_CORRUPT);return false;
@@ -558,7 +559,8 @@ static void work(comp_cont_recording_t *r)
         if (!r->flush_complete) {
             if(source_boundary(r)&&!r->source_end_phase){source_end_progress(r);return;}
             if(r->stage_length>PACKET_OFFSET){(void)program_stage(r,false);return;}
-            uint32_t before=r->codec.frames_encoded,at=r->config.now_ms(r->config.context);
+            uint32_t before=r->codec.frames_encoded;
+            comp_duration_stamp_t at=comp_duration_begin(r->config.now_ms(r->config.context));
             bool will_encode=source_boundary(r)||r->codec.pcm_fill!=0u;
             comp_cpu_stage_span_t span=will_encode?comp_cpu_stage_begin():(comp_cpu_stage_span_t){0};
             if(will_encode)comp_cpu_codec_cache_begin();
@@ -566,7 +568,7 @@ static void work(comp_cont_recording_t *r)
                 companion_opus16_rt_flush(&r->codec,packet(r),PACKET_CAPACITY);
             if(will_encode)comp_cpu_stage_end(COMP_CPU_STAGE_OPUS,span,r->codec.frames_encoded!=before);
             if(r->codec.frames_encoded!=before)
-                comp_duration_stats_note(&r->stats.encoding_duration,r->config.now_ms(r->config.context)-at);
+                comp_duration_end(&r->stats.encoding_duration,at,r->config.now_ms(r->config.context));
             if(source_boundary(r)&&(n!=COMP_SEG_AUDIO_FRAME_BYTES||r->codec.frames_encoded!=before+1u)) {
                 comp_cont_recording_fault(r,COMP_SEG_CORRUPT);return;
             }

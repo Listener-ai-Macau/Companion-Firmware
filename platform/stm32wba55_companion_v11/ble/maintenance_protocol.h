@@ -42,6 +42,9 @@ static inline bool comp_maint_request(const uint8_t *p,uint16_t n,uint8_t *opera
  *   16 error IRQs,20 worst capture foreground ms,24 max microphone poll ms.
  * These are observations since the counters' existing lifecycle reset, not
  * CPU utilization, instantaneous timing or physical power measurements. */
+/* FW66699+: operation6 alone uses byte7=2 and the same four u16 fields are
+ * conservative upper microseconds. Others retain schema1. FFFF/valid-mask
+ * rules unchanged; clients must check the schema before interpreting units. */
 static inline void comp_maint_timing16(uint8_t p[32],unsigned at,unsigned bit,
     bool valid,uint32_t value)
 {

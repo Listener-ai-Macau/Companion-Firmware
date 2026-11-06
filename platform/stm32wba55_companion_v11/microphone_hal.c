@@ -407,13 +407,13 @@ static comp_v11_microphone_poll_result_t microphone_hal_poll_body(
     }
     bool priming = microphone->startup_halves_remaining != 0u;
     bool stale=false;
-    uint32_t started_ms = HAL_GetTick();
+    comp_duration_stamp_t started=comp_duration_begin(HAL_GetTick());
     comp_cpu_stage_span_t cpu_span=comp_cpu_stage_begin();
     bool accepted=process_stable_half(microphone,&event,priming,&stale);
     comp_cpu_stage_end(COMP_CPU_STAGE_PDM,cpu_span,true); /* includes priming/failing conversion attempts */
     /* Include bounded DMA copies, the PCM handoff and interrupt time. Idle
      * polls have no sample; priming/failing conversion attempts stay visible. */
-    comp_duration_stats_note(&microphone->pdm_duration, HAL_GetTick() - started_ms);
+    comp_duration_end(&microphone->pdm_duration,started,HAL_GetTick());
     if (!accepted) {
         if (stale) microphone->stale_dma_halves++;
         else microphone->processing_rejections++;
