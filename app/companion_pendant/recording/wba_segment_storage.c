@@ -30,7 +30,13 @@ static comp_segment_result_t gate(comp_wba_segment_storage_t *s,const comp_segme
         if(!n->erase_active)return COMP_SEG_OK;
         if(n->erase_address==io->address) {
             uint32_t bytes=(io->address%65536u==0u&&io->bytes>=65536u)?65536u:4096u;
-            return bytes==n->erase_bytes?COMP_SEG_OK:COMP_SEG_BAD_STATE;
+            if(bytes!=n->erase_bytes)return COMP_SEG_BAD_STATE;
+            /* A reader needs a second slice to finish suspension. Do not
+             * immediately resume its erase between those two slices. One
+             * attempted read buys one yield, so an abandoned reader cannot
+             * hold the erase owner after cancellation or capture preemption. */
+            if(s->transfer_read_yield){s->transfer_read_yield=false;s->arbitration_yields++;return COMP_SEG_PENDING;}
+            return COMP_SEG_OK;
         }
         s->arbitration_yields++;return COMP_SEG_PENDING;
     }
@@ -101,9 +107,11 @@ static comp_segment_result_t read_transfer_audio(void *v,uint32_t at,uint8_t *p,
            s->nor->info.jedec_id!=UINT32_C(0xef6018) || !s->nor->config.transfer_timeout_ms)
             return read_audio(v,at,p,bytes);
         comp_segment_io_t io={at,bytes,COMP_SEG_IO_READ};
+        s->transfer_read_yield=true;
         comp_segment_result_t ready=gate(s,&io);
-        if(ready!=COMP_SEG_OK)return ready;
+        if(ready!=COMP_SEG_OK){if(ready!=COMP_SEG_PENDING)s->transfer_read_yield=false;return ready;}
     }
+    s->transfer_read_yield=false;
     s->transfer_read_released_failure=false;
     bool released=false;
     companion_spi_nor_stm32wba_status_t r=companion_spi_nor_stm32wba_read_transient(s->nor,at,p,bytes,&released);
@@ -237,20 +245,27 @@ static comp_segment_result_t transfer_directory_read(void *v,uint32_t at,uint8_t
     }
     return status(s,r);
 }
+bool comp_wba_segment_storage_reclaim_read_supported(const comp_wba_segment_storage_t *s)
+{
+    const companion_spi_nor_stm32wba_t *n=s?s->nor:NULL;
+    return n&&n->config.target==COMPANION_SPI_NOR_STM32WBA_TARGET_WBA55&&
+        n->info.jedec_id==UINT32_C(0xef6018)&&n->erase_suspend_supported&&n->config.transfer_timeout_ms;
+}
 comp_segment_result_t comp_wba_segment_storage_transfer_entry(comp_wba_segment_storage_t *s,
     comp_segment_catalog_t *c,uint8_t index,comp_segment_entry_t *e)
 {
     if(!matches(s,c)||!e)return COMP_SEG_BAD_ARGUMENT;
+    if(c->phase&&!comp_wba_segment_storage_reclaim_read_supported(s))return COMP_SEG_PENDING;
     s->transfer_read_released_failure=false;
-    comp_segment_io_t io;comp_segment_result_t r=comp_segment_catalog_entry_io(c,index,&io);
-    if(r!=COMP_SEG_OK)return r;
-    r=gate(s,&io);if(r!=COMP_SEG_OK)return r;
+    comp_segment_io_t io;comp_segment_result_t r=comp_segment_catalog_transfer_entry_io(c,index,&io);
+    if(r!=COMP_SEG_OK){s->transfer_read_yield=false;return r;}
+    if(s->nor->erase_active)s->transfer_read_yield=true;
+    r=gate(s,&io);if(r!=COMP_SEG_OK){if(r!=COMP_SEG_PENDING)s->transfer_read_yield=false;return r;}
+    s->transfer_read_yield=false;
     /* gate() already admitted a non-overlapping read while the erase owner is
      * suspended. Use the same bounded/released-payload isolation as audio on
      * the qualified WBA55/NOR combination; leave other parts unchanged. */
-    if(s->nor->erase_active &&
-       (s->nor->config.target!=COMPANION_SPI_NOR_STM32WBA_TARGET_WBA55 ||
-        s->nor->info.jedec_id!=UINT32_C(0xef6018) || !s->nor->config.transfer_timeout_ms))
+    if(s->nor->erase_active && !comp_wba_segment_storage_reclaim_read_supported(s))
         return comp_wba_segment_storage_entry(s,c,index,e);
     r=comp_segment_catalog_read_scoped(c,index,e,transfer_directory_read,s);
     if(r==COMP_SEG_IO_ERROR&&s->poisoned&&!c->phase&&!s->nor->erase_active)

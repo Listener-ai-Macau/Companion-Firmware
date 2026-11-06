@@ -71,6 +71,24 @@ comp_segment_result_t comp_segment_catalog_entry_io(const comp_segment_catalog_t
     return COMP_SEG_OK;
 }
 
+bool comp_segment_catalog_transfer_readable(const comp_segment_catalog_t *c)
+{
+    return c&&c->mounted&&(c->phase==IDLE||
+        (c->phase==RECLAIM&&c->operation==OP_RECLAIM&&c->pending&&
+         c->pending_state==COMP_SEG_ERASING));
+}
+comp_segment_result_t comp_segment_catalog_transfer_entry_io(const comp_segment_catalog_t *c,
+    uint8_t index,comp_segment_io_t *io)
+{
+    if(!c||!io||index>=COMP_SEGMENT_CAPACITY)return COMP_SEG_BAD_ARGUMENT;
+    *io=(comp_segment_io_t){0u,0u,COMP_SEG_IO_NONE};
+    if(!c->mounted)return COMP_SEG_BAD_STATE;
+    if(!comp_segment_catalog_transfer_readable(c))return COMP_SEG_PENDING;
+    if(c->slots[index]==NO_SLOT)return COMP_SEG_NOT_FOUND;
+    *io=(comp_segment_io_t){address(c,c->bank,c->slots[index]),256u,COMP_SEG_IO_READ};
+    return COMP_SEG_OK;
+}
+
 comp_segment_result_t comp_segment_catalog_receipt_io(const comp_segment_catalog_t *c,uint8_t index,comp_segment_io_t *io)
 {
     if(!c||!io||index>=COMP_SEGMENT_RECEIPT_CAPACITY)return COMP_SEG_BAD_ARGUMENT;
@@ -704,7 +722,8 @@ comp_segment_result_t comp_segment_catalog_read_scoped(comp_segment_catalog_t *c
 {
     uint8_t page[256];comp_segment_entry_t e;
     if(!c||!out||!read||index>=64u)return COMP_SEG_BAD_ARGUMENT;
-    if(!c->mounted||c->phase!=IDLE)return COMP_SEG_BAD_STATE;
+    if(!c->mounted)return COMP_SEG_BAD_STATE;
+    if(!comp_segment_catalog_transfer_readable(c))return COMP_SEG_PENDING;
     if(c->slots[index]==NO_SLOT)return COMP_SEG_NOT_FOUND;
     comp_segment_result_t r=read(context,address(c,c->bank,c->slots[index]),page,sizeof(page));
     if(r==COMP_SEG_PENDING)return r;

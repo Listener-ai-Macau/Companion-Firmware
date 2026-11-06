@@ -402,6 +402,15 @@ static bool meeting_control_v3(comp_link_t *l,const uint8_t *wire,uint32_t now)
 bool comp_link_heavy_io_allowed(void *context)
 {
     const comp_link_t *l=context;
+    if(l->segmented&&(l->segmented->negotiated&2u)) {
+        const comp_runtime_t *r=l->config.runtime;
+        const comp_wba_recording_pipeline_t *p=l->segmented->config.pipeline;
+        /* Only the sealed-transfer pump gets the read-only reclaim lease.
+         * All mutation/exclusive callers retain recording_io_idle's barrier. */
+        return !l->maintenance&&!r->capture_active&&!r->command_pending&&!r->start_pending&&!r->prepare_pending&&
+            (p->state==COMP_PIPE_IDLE||p->state==COMP_PIPE_FINISHED)&&!p->config.recording->microphone_active&&
+            comp_wba_recording_radio_read_allowed(l->segmented);
+    }
     if(l->segmented)return !l->maintenance&&!l->segmented->consume_pending&&recording_io_idle(l)&&
         comp_wba_recording_pipeline_page_available(l->segmented->config.pipeline);
 #ifndef COMPANION_RECORDING_SEGMENTED_ONLY

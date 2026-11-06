@@ -67,7 +67,7 @@ static comp_wba_transfer_read_result_t read_logical(void *v,uint32_t id,uint32_t
     const comp_segment_entry_t *e=p->config.selected;
     if(id!=e->descriptor.recording_id||!bytes||bytes>COMP_WBA_RECORDING_TRANSFER_COMPACT_PAYLOAD_BYTES||offset>e->descriptor.encoded_length||
        bytes>e->descriptor.encoded_length-offset)return COMP_WBA_TRANSFER_READ_ERROR;
-    if(c->phase||!p->config.page_available(p->config.context))return COMP_WBA_TRANSFER_READ_WAIT;
+    if(!comp_segment_catalog_transfer_readable(c)||!p->config.page_available(p->config.context))return COMP_WBA_TRANSFER_READ_WAIT;
     if(c->generation!=p->generation) {
         comp_segment_entry_t actual;
         comp_segment_result_t result=transfer_entry(p,p->slot,&actual);
@@ -131,6 +131,7 @@ bool comp_wba_segment_pull_init(comp_wba_segment_pull_t *p,const comp_wba_segmen
 void comp_wba_segment_pull_cancel(comp_wba_segment_pull_t *p)
 {
     if(!p)return;
+    if(p->config.storage)p->config.storage->transfer_read_yield=false;
     comp_wba_recording_transfer_cancel(p->config.transfer);p->phase=PULL_IDLE;
     p->read_bytes=0u;p->read_destination=NULL;p->copied=0u;p->read_retries=0u;p->read_retry_elapsed_ms=0u;p->result=COMP_SEG_OK;p->live=false;
 }
@@ -191,7 +192,7 @@ comp_segment_result_t comp_wba_segment_pull_select_poll(comp_wba_segment_pull_t 
     if(!p->config.transfer->connected)return COMP_SEG_BAD_STATE;
     comp_segment_catalog_t *c=p->config.catalog;
     if(p->phase==PULL_FIND) {
-        if(c->phase||!allowed(p))return COMP_SEG_PENDING;
+        if(!comp_segment_catalog_transfer_readable(c)||!allowed(p))return COMP_SEG_PENDING;
         if(c->generation!=p->generation){p->scan=0u;p->generation=c->generation;}
         if(p->scan==64u)return failure(p,COMP_SEG_NOT_FOUND);
         comp_segment_entry_t e;
@@ -212,7 +213,7 @@ comp_segment_result_t comp_wba_segment_pull_select_poll(comp_wba_segment_pull_t 
     }
     if(p->phase!=PULL_READY)return COMP_SEG_BAD_STATE;
     if(p->config.transfer->state==COMP_WBA_RECORDING_TRANSFER_IDLE) {
-        if(c->phase)return COMP_SEG_PENDING;
+        if(!comp_segment_catalog_transfer_readable(c))return COMP_SEG_PENDING;
         /* Capture can claim the foreground after selection. Keep the exact
          * request on BUSY, but never start from an outdated catalog proof. */
         if(c->generation!=p->generation) {

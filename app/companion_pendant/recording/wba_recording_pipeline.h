@@ -86,6 +86,8 @@ bool comp_wba_recording_pipeline_release_empty_full(comp_wba_recording_pipeline_
 /* Pure shared-scratch ownership gate for the radio reader. The catalog page
  * must remain unchanged across provenance/cancellation/metadata commits. */
 bool comp_wba_recording_pipeline_page_available(const comp_wba_recording_pipeline_t *);
+/* Transfer-only page lease during this pipeline's own physical reclaim. */
+bool comp_wba_recording_pipeline_transfer_page_available(const comp_wba_recording_pipeline_t *);
 /* Tail space is borrowed on demand from the SAME dynamic payload pool. Scan
  * every owned state, including WRITING/ACKED/ERASING, without deleting data or
  * changing catalog geometry. One occupied entry read per continuation.

@@ -7,11 +7,16 @@ static bool publish(comp_wba_recording_radio_t *r,companion_gatt_char_id_t id,co
 static bool notify(void *v,const uint8_t *p,uint16_t n)
 {comp_wba_recording_radio_t *r=v;return r->negotiated&&publish(r,COMPANION_GATT_CHAR_RECORDING_CHUNK_PULL,p,n);}
 static bool page_available(void *v)
-{return comp_wba_recording_pipeline_page_available(((comp_wba_recording_radio_t *)v)->config.pipeline);}
+{
+    const comp_wba_recording_radio_t *r=v;
+    return (r->negotiated&2u)?comp_wba_recording_pipeline_transfer_page_available(r->config.pipeline):
+        comp_wba_recording_pipeline_page_available(r->config.pipeline);
+}
 bool comp_wba_recording_radio_read_allowed(void *v)
 {
     const comp_wba_recording_radio_t *r=v;
-    if(!r||!r->authenticated||!r->negotiated||r->consume_pending||!page_available((void *)r))return false;
+    if(!r||!r->authenticated||!r->negotiated||
+       (r->consume_pending&&(!(r->negotiated&2u)||r->phase!=RADIO_PULL))||!page_available((void *)r))return false;
     const comp_cont_recording_t *e=r->config.pipeline->config.recording;
     /* A closed older segment may send during capture, but PCM/program/drain
      * work always owns the next foreground slice. No microphone stop here. */
@@ -128,7 +133,7 @@ void comp_wba_recording_radio_unsubscribe(comp_wba_recording_radio_t *r,companio
         r->pending_bytes=0u;r->phase=r->consume_pending?RADIO_CONSUME:RADIO_IDLE;
     }
     if(id==COMPANION_GATT_CHAR_RECORDING_CHUNK_PULL&&r->phase==RADIO_PULL) {
-        comp_wba_segment_pull_cancel(&r->pull);r->phase=RADIO_IDLE;
+        comp_wba_segment_pull_cancel(&r->pull);r->phase=r->consume_pending?RADIO_CONSUME:RADIO_IDLE;
     }
     /* Accepted consume retains its exact intent and completes durably even
      * without a notification sink. The next subscribed replay gets its receipt.
@@ -151,7 +156,7 @@ static bool resume_sealed_pull(comp_wba_recording_radio_t *r,const uint8_t p[32]
      * rewind this exact sealed window; never let a new file, live tail or
      * unsent offset replace an in-flight packet. begin() retires the staging
      * generation and revalidates the physical descriptor before reading. */
-    return r->phase==RADIO_PULL&&!r->consume_pending&&transfer_busy(r)&&
+    return r->phase==RADIO_PULL&&(!r->consume_pending||(r->negotiated&2u))&&transfer_busy(r)&&
         !t->snapshot_live&&!r->pull.live&&p[0]==2u&&p[1]==COMP_SEG_PULL_COMMAND&&
         p[2]==r->pull.request.flags&&!p[3]&&
         comp_rec_get32(p+4u)==t->recording_id&&
@@ -238,7 +243,10 @@ bool comp_wba_recording_radio_write(comp_wba_recording_radio_t *r,companion_gatt
      * the previous peer's completion. */
     if(r->discard_running&&r->config.transfer->discard_workspace.owner.connected)return false;
     if(id==COMPANION_GATT_CHAR_RECORDING_CONTROL&&n==32u&&p[0]==2u&&p[1]==0x22u) {
-        uint16_t selected=(uint16_t)((uint16_t)p[2]|((uint16_t)p[3]<<8u));
+        /* Product-private FW66697+ option in the otherwise bounded ATT-value
+         * word. Echoed only on the qualified suspended-read NOR path; legacy
+         * clients/status capabilities and the physical receipt stay intact. */
+        uint16_t selected=(uint16_t)(((uint16_t)p[2]|((uint16_t)p[3]<<8u))&0x7fffu);
         if(!selected)selected=r->config.value_capacity<244u?r->config.value_capacity:244u; /* legacy MTU fallback */
         if(selected<136u||selected>r->config.value_capacity||
            selected>COMP_WBA_RECORDING_TRANSFER_VALUE_BYTES||!comp_rec_get32(p+4u)||memcmp(p+8u,c->uid,12u)||
@@ -250,7 +258,11 @@ bool comp_wba_recording_radio_write(comp_wba_recording_radio_t *r,companion_gatt
         r->selected_value_capacity=selected;
         r->negotiated=false;comp_wba_segment_pull_peer(&r->pull,NULL,0u,false);
         uint8_t *target=r->discard_buffer_owned?r->config.transfer->discard_workspace.response:r->config.transfer->packet;
-        memcpy(target,p,32u);r->pending_bytes=32u;
+        memcpy(target,p,32u);
+        if((p[3]&0x80u)&&!comp_wba_segment_storage_reclaim_read_supported(r->config.pipeline->config.storage)) {
+            target[3]&=0x7fu;comp_rec_put32(target+28u,comp_wba_recording_crc32(0u,target,28u));
+        }
+        r->pending_bytes=32u;
         r->pending_char=id;r->phase=RADIO_NEGOTIATE;return true;
     }
     if(!r->negotiated)return false;
@@ -295,6 +307,13 @@ bool comp_wba_recording_radio_write(comp_wba_recording_radio_t *r,companion_gatt
     }
     if(id==COMPANION_GATT_CHAR_RECORDING_CHUNK_PULL&&n==32u&&r->phase==RADIO_PULL)
         return resume_sealed_pull(r,p);
+    if(id==COMPANION_GATT_CHAR_RECORDING_CHUNK_PULL&&n==32u&&r->phase==RADIO_CONSUME&&
+       r->consume_pending&&(r->negotiated&2u)&&!transfer_busy(r)&&
+       comp_rec_get32(p+4u)!=r->config.pipeline->consume.descriptor.recording_id) {
+        comp_segment_result_t result=comp_wba_segment_pull_begin(&r->pull,p);
+        if(result==COMP_SEG_PENDING){r->phase=RADIO_PULL;return true;}
+        return false;
+    }
     if(r->phase!=RADIO_IDLE||r->consume_pending||transfer_busy(r))return false;
     if(id==COMPANION_GATT_CHAR_RECORDING_CONTROL&&n==32u&&p[0]==2u&&p[1]==0x23u) {
         const comp_cont_recording_t *e=r->config.pipeline->config.recording;
@@ -401,7 +420,8 @@ void comp_wba_recording_radio_poll(comp_wba_recording_radio_t *r,
         if(!publish(r,r->pending_char,r->config.transfer->packet,r->pending_bytes))return;
         if(r->phase==RADIO_NEGOTIATE) {
             comp_segment_catalog_t *c=r->config.pipeline->config.catalog;
-            r->negotiated=comp_wba_segment_pull_peer(&r->pull,c->uid,c->epoch,true);
+            bool overlap=(r->config.transfer->packet[3]&0x80u)!=0u;
+            r->negotiated=comp_wba_segment_pull_peer(&r->pull,c->uid,c->epoch,true)?(overlap?3u:1u):0u;
         }
         r->pending_bytes=0u;r->phase=r->consume_pending?RADIO_CONSUME:RADIO_IDLE;return;
     }
@@ -432,7 +452,7 @@ void comp_wba_recording_radio_poll(comp_wba_recording_radio_t *r,
         bool selecting=r->config.transfer->state==COMP_WBA_RECORDING_TRANSFER_IDLE;
         if(selecting) {
             comp_segment_result_t result=comp_wba_segment_pull_select_poll(&r->pull);
-            if(result!=COMP_SEG_OK&&result!=COMP_SEG_PENDING)r->phase=RADIO_IDLE;
+            if(result!=COMP_SEG_OK&&result!=COMP_SEG_PENDING)r->phase=r->consume_pending?RADIO_CONSUME:RADIO_IDLE;
             return; /* metadata and payload never share this foreground slice */
         }
         if(comp_wba_recording_radio_read_allowed(r)) {
@@ -447,7 +467,7 @@ void comp_wba_recording_radio_poll(comp_wba_recording_radio_t *r,
                 allowed=clock?&live_pair:&live_single;
             (void)comp_wba_recording_transfer_poll_budget(r->config.transfer,clock,clock_context,allowed);
         }
-        if(!transfer_busy(r))r->phase=RADIO_IDLE;
+        if(!transfer_busy(r))r->phase=r->consume_pending?RADIO_CONSUME:RADIO_IDLE;
         return;
     }
     if(r->phase==RADIO_CONSUME) {

@@ -99,6 +99,10 @@ comp_segment_result_t comp_segment_catalog_mount_poll(comp_segment_catalog_t *);
  * commit, scan cursor or phase advances while that arbitration is pending. */
 comp_segment_result_t comp_segment_catalog_next_io(const comp_segment_catalog_t *,comp_segment_io_t *);
 comp_segment_result_t comp_segment_catalog_entry_io(const comp_segment_catalog_t *,uint8_t,comp_segment_io_t *);
+/* A sealed transfer may read committed metadata during another entry's
+ * physical reclaim. Row writes/GC/discard still defer; NOR overlap is gated. */
+bool comp_segment_catalog_transfer_readable(const comp_segment_catalog_t *);
+comp_segment_result_t comp_segment_catalog_transfer_entry_io(const comp_segment_catalog_t *,uint8_t,comp_segment_io_t *);
 comp_segment_result_t comp_segment_catalog_receipt_io(const comp_segment_catalog_t *,uint8_t,comp_segment_io_t *);
 /* Only after mount proved both entire banks blank; deliberately explicit. */
 comp_segment_result_t comp_segment_catalog_format_blank_begin(comp_segment_catalog_t *);

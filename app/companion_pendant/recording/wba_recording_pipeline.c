@@ -52,13 +52,19 @@ bool comp_wba_recording_pipeline_release_empty_full(comp_wba_recording_pipeline_
     p->state=COMP_PIPE_IDLE;return true;
 }
 
-bool comp_wba_recording_pipeline_page_available(const comp_wba_recording_pipeline_t *p)
+static bool page_available(const comp_wba_recording_pipeline_t *p,bool transfer)
 {
-    return p&&!p->discard_exclusive&&p->config.catalog&&!p->config.catalog->phase&&!p->sealing&&
+    return p&&!p->discard_exclusive&&p->config.catalog&&
+        (!p->config.catalog->phase||(transfer&&p->consume_phase==CONSUME_RECLAIM&&
+         p->config.catalog->pending==&p->consume&&comp_segment_catalog_transfer_readable(p->config.catalog)))&&!p->sealing&&
         p->future_phase!=FUTURE_PROVENANCE&&p->future_phase!=FUTURE_CANCEL&&
         !(p->core_cancel_started&&p->config.recording->state==COMP_CONT_CANCELING)&&
         p->state!=COMP_PIPE_PREPARING&&p->state!=COMP_PIPE_FAILED;
 }
+bool comp_wba_recording_pipeline_page_available(const comp_wba_recording_pipeline_t *p)
+{return page_available(p,false);}
+bool comp_wba_recording_pipeline_transfer_page_available(const comp_wba_recording_pipeline_t *p)
+{return page_available(p,true);}
 bool comp_wba_recording_pipeline_storage_busy(const comp_wba_recording_pipeline_t *p)
 {
     return p&&(p->discard_exclusive||p->workspace_bytes||p->workspace_requested||consumer_active(p)||p->sealing||p->config.catalog->phase||

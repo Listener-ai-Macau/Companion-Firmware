@@ -1395,9 +1395,120 @@ static void partial_cross_page_read_failure(void)
     puts("PASS_CROSS_PAGE_FAILURE_RETRIES_EXACT_BYTES_KEEP_CAPTURE_SOFTWARE_ONLY");
 }
 
+static void overlap_tick(void)
+{
+    unsigned reads=f.reads,writes=f.writes;
+    const comp_wba_recording_transfer_budget_t single={1u,1u,1u};
+    link_owner.runtime.capture_active=mic;
+    comp_link_poll_with_budget(&link_owner.link,f.now,NULL,NULL,&single);
+    assert(f.reads-reads<=1u&&f.writes==writes);
+}
+static void consume_pull_overlap(bool legacy,unsigned interruption)
+{
+    bool disconnect=interruption==1u;
+    comp_segment_entry_t first=setup_radio(),next={0};ready(56u);
+    assert(comp_wba_recording_pipeline_start(&pipeline,91u));
+    for(unsigned block=0u;block<36u;block++) {
+        int16_t samples[160];pcm(block+200u,samples);assert(comp_cont_recording_pcm(&engine,samples,160u));
+        for(unsigned i=0u;i<160u;i++)poll();
+    }
+    assert(comp_wba_recording_pipeline_stop(&pipeline,91u));
+    for(unsigned i=0u;i<10000u&&pipeline.state!=COMP_PIPE_FINISHED;i++)poll();
+    assert(pipeline.state==COMP_PIPE_FINISHED);
+    for(uint8_t i=0u;i<64u;i++) {
+        comp_segment_entry_t e;comp_segment_result_t result=comp_wba_segment_storage_entry(&storage,&catalog,i,&e);
+        assert(result==COMP_SEG_OK||result==COMP_SEG_NOT_FOUND);
+        if(result==COMP_SEG_OK&&e.descriptor.recording_id!=first.descriptor.recording_id){next=e;break;}
+    }
+    assert(next.descriptor.recording_id&&next.descriptor.encoded_length<=sizeof(saved));
+    nor.config.transfer_timeout_ms=4u;
+    /* This scenario deliberately holds an erase until the other file is
+     * delivered. Use the production-sized timeout, not fixture make()'s100ms. */
+    nor.config.sector_erase_timeout_ms=30000u;
+    assert(comp_wba_segment_storage_reclaim_read_supported(&storage));
+    assert(comp_wba_recording_radio_set_value_capacity(&radio,136u));connect_peer();
+    uint8_t request[32],proof[84];negotiation(request);
+    if(!legacy) {
+        request[3]|=0x80u;comp_rec_put32(request+28u,comp_rec_crc(request,28u));
+        send(COMPANION_GATT_CHAR_RECORDING_CONTROL,request,32u);overlap_tick();
+        assert(radio.negotiated==3u&&!memcmp(last_reply,request,32u));
+    } else assert(radio.negotiated==1u);
+    consumption_proof(&first,proof);f.automatic_erase=false;
+    send(COMPANION_GATT_CHAR_DELETE_PRIVACY,proof,84u);
+    for(unsigned i=0u;i<10000u&&!(nor.erase_active&&comp_segment_catalog_transfer_readable(&catalog));i++){poll();overlap_tick();}
+    assert(nor.erase_active&&radio.consume_pending&&receipt_count==0u);
+    uint32_t rejected=link_owner.link.rejected_writes;
+    sealed_request(&first,0u,request);send(COMPANION_GATT_CHAR_RECORDING_CHUNK_PULL,request,32u);
+    assert(link_owner.link.rejected_writes==rejected+1u&&radio.consume_pending&&receipt_count==0u);
+    rejected=link_owner.link.rejected_writes;
+    sealed_request(&next,0u,request);send(COMPANION_GATT_CHAR_RECORDING_CHUNK_PULL,request,32u);
+    if(legacy) {
+        assert(link_owner.link.rejected_writes==rejected+1u&&saved_bytes==0u&&receipt_count==0u);
+        assert(!comp_link_heavy_io_allowed(&link_owner.link));
+    } else {
+        assert(link_owner.link.rejected_writes==rejected&&radio.consume_pending);
+        assert(comp_link_heavy_io_allowed(&link_owner.link)); /* actual sequencer pump gate */
+        blocked=2u;
+        for(unsigned i=0u;i<10000u&&saved_bytes<(interruption?100u:next.descriptor.encoded_length);i++){poll();overlap_tick();}
+        if(interruption==3u) {
+            uint32_t before=link_owner.link.rejected_writes;sealed_request(&next,saved_bytes,request);
+            send(COMPANION_GATT_CHAR_RECORDING_CHUNK_PULL,request,32u);assert(link_owner.link.rejected_writes==before);
+            for(unsigned i=0u;i<10000u&&saved_bytes<next.descriptor.encoded_length;i++){poll();overlap_tick();}
+        }
+        if(!(saved_bytes>0u&&nor.erase_active&&radio.consume_pending&&receipt_count==0u))
+            fprintf(stderr,"overlap saved=%lu erase=%u pending=%u receipts=%lu radio=%u transfer=%u pull=%u scan=%u catalog=%u consume=%u readable=%u page=%u allowed=%u retry=%u blocked=%u\n",
+                (unsigned long)saved_bytes,(unsigned)nor.erase_active,(unsigned)radio.consume_pending,(unsigned long)receipt_count,
+                (unsigned)radio.phase,(unsigned)radio.config.transfer->state,(unsigned)radio.pull.phase,(unsigned)radio.pull.scan,
+                (unsigned)catalog.phase,(unsigned)pipeline.consume_phase,(unsigned)comp_segment_catalog_transfer_readable(&catalog),
+                (unsigned)comp_wba_recording_pipeline_transfer_page_available(&pipeline),(unsigned)comp_wba_recording_radio_read_allowed(&radio),
+                (unsigned)retry_bytes,blocked);
+        assert(saved_bytes>0u&&nor.erase_active&&radio.consume_pending&&receipt_count==0u);
+        assert(interruption==1u||interruption==2u||saved_bytes==next.descriptor.encoded_length);
+        for(uint32_t at=0u;at<saved_bytes;at++)assert(saved[at]==f.bytes[DATA_BASE+next.extent_offset+256u+(at/248u)*256u+at%248u]);
+    }
+    if(disconnect) {
+        comp_link_connection(&link_owner.link,false,false,f.now);
+        assert(!radio.negotiated&&receipt_count==0u);
+    }
+    if(interruption==2u) {
+        subscribe(COMPANION_GATT_CHAR_RECORDING_CHUNK_PULL,false);
+        assert(radio.consume_pending&&!storage.transfer_read_yield&&receipt_count==0u);
+    }
+    f.automatic_erase=true;
+    for(unsigned i=0u;i<10000u&&comp_wba_recording_pipeline_consume_result(&pipeline)==COMP_SEG_PENDING;i++) {
+        poll();if(!disconnect)overlap_tick();
+    }
+    assert(comp_wba_recording_pipeline_consume_result(&pipeline)==COMP_SEG_OK&&!nor.erase_active);
+    if(disconnect) {
+        connect_peer();negotiation(request);request[3]|=0x80u;comp_rec_put32(request+28u,comp_rec_crc(request,28u));
+        send(COMPANION_GATT_CHAR_RECORDING_CONTROL,request,32u);overlap_tick();assert(radio.negotiated==3u);
+        send(COMPANION_GATT_CHAR_DELETE_PRIVACY,proof,84u);
+    }
+    for(unsigned i=0u;i<1000u&&receipt_count==0u;i++)overlap_tick();
+    assert(receipt_count==1u&&last_reply_bytes==84u&&!memcmp(last_reply,proof,84u));
+    if(interruption==1u||interruption==2u) {
+        if(interruption==2u)subscribe(COMPANION_GATT_CHAR_RECORDING_CHUNK_PULL,true);
+        sealed_request(&next,saved_bytes,request);send(COMPANION_GATT_CHAR_RECORDING_CHUNK_PULL,request,32u);
+        for(unsigned i=0u;i<10000u&&saved_bytes<next.descriptor.encoded_length;i++)overlap_tick();
+        assert(saved_bytes==next.descriptor.encoded_length);
+    }
+    comp_segment_entry_t retained=recovered_entry();assert(retained.descriptor.recording_id==next.descriptor.recording_id);
+    assert(!storage.poisoned&&catalog.mounted);
+    puts(legacy?"PASS_LEGACY_CONSUME_STAYS_SERIAL":"PASS_OPTIN_DIFFERENT_SEALED_PULL_OVERLAPS_RECLAIM_EXACT_PHYSICAL_RECEIPT_AND_RECONNECT");
+}
+static void unsupported_overlap_negotiation(void)
+{
+    (void)setup_radio();assert(comp_wba_recording_radio_set_value_capacity(&radio,136u));connect_peer();
+    uint8_t request[32],legacy[32];negotiation(legacy);memcpy(request,legacy,32u);request[3]|=0x80u;
+    comp_rec_put32(request+28u,comp_rec_crc(request,28u));nor.info.jedec_id=UINT32_C(0x0b6018);
+    send(COMPANION_GATT_CHAR_RECORDING_CONTROL,request,32u);radio_tick();
+    assert(radio.negotiated==1u&&last_reply_bytes==32u&&!memcmp(last_reply,legacy,32u));
+    puts("PASS_UNQUALIFIED_NOR_NORMALIZES_OVERLAP_OPTION_TO_EXPLICIT_LEGACY_ACK");
+}
 int COMP_RADIO_TEST_MAIN(int argc,char **argv)
 {
     (void)setvbuf(stdout,NULL,_IONBF,0);
+    if(argc==2&&!strcmp(argv[1],"consume-pull-overlap")){consume_pull_overlap(true,0u);consume_pull_overlap(false,0u);consume_pull_overlap(false,1u);consume_pull_overlap(false,2u);consume_pull_overlap(false,3u);unsupported_overlap_negotiation();return 0;}
     if(argc==2&&!strcmp(argv[1],"calendar-directory")){calendar_directory_attribute_budget();return 0;}
     if(argc==2&&!strcmp(argv[1],"cross-page-read-failure")){partial_cross_page_read_failure();return 0;}
     if(argc==2&&!strcmp(argv[1],"live-read-active-capture")){transient_live_read_during_capture();return 0;}
