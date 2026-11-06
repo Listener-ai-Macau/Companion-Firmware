@@ -14,6 +14,7 @@ void comp_cpu_duty_begin(uint32_t token,bool recording);
 void comp_cpu_duty_end(uint32_t token,bool recording);
 void comp_cpu_duty_wait_enter(void);
 void comp_cpu_duty_wait_exit(void);
+void comp_cpu_duty_wfi(void);
 void comp_cpu_duty_poll(void);
 bool comp_cpu_duty_counter_owned(void);
 comp_cpu_duty_snapshot_t comp_cpu_duty_snapshot(void);

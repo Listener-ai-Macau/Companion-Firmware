@@ -40,6 +40,7 @@ static void __disable_irq(void){mask=1u;}
 static void __set_PRIMASK(uint32_t value){mask=value;}
 static void __DSB(void){}
 static void __ISB(void){}
+static void __WFI(void){assert(mask==1u||!timer_on);tim.CNT+=1000u;dwt.CYCCNT+=100u;}
 static uint32_t HAL_RCC_GetPCLK1Freq(void){return 61439820u;}
 static uint32_t NVIC_GetEnableIRQ(unsigned n){(void)n;return timer_irq;}
 #define __HAL_RCC_TIM2_IS_CLK_ENABLED() timer_on
@@ -103,6 +104,7 @@ int main(void){
     for(unsigned i=0;i<101u;i++){comp_cpu_duty_wait_enter();advance(10000u,61440u);comp_cpu_duty_wait_exit();}
     assert(observer.duty.windows>=1u&&observer.duty.peak_busy_upper_us<110000u&&!observer.duty.invalid);
     comp_cpu_duty_snapshot_t shot=comp_cpu_duty_snapshot();assert(shot.enabled&&shot.active&&shot.recording&&shot.token==7u);
+    mask=0u;retained=DWT->CYCCNT;comp_cpu_duty_wfi();assert(mask==0u&&DWT->CYCCNT==retained+100u&&!observer.cycle_lease&&DWT->CTRL==0x100u&&DCB->DEMCR==0x80u);
     comp_cpu_duty_begin(8u,false);assert(observer.token==7u&&observer.recording);
     comp_cpu_duty_end(8u,true);assert(observer.active);
     /* RTC was advanced with a truncated fixture tick per wait; set exact final reference. */

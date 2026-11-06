@@ -151,6 +151,16 @@ void comp_cpu_duty_wait_exit(void)
     if(valid&&busy!=UINT32_MAX&&now-observer.duty.last_us>busy)++observer.duty.proven_waits;
     comp_cpu_duty_account(&observer.duty,now,valid,busy);__set_PRIMASK(mask);
 }
+void comp_cpu_duty_wfi(void)
+{
+    if(!observer.active){__WFI();return;}
+    /* Diagnostic build only: keep the counter lease atomic with respect to
+     * the LL delay. WFI still wakes for a pending enabled interrupt with
+     * PRIMASK set, exactly as the existing atomic Stop1 path does. Restore
+     * before returning so pending IRQ bodies run normally. No NVIC writes. */
+    uint32_t mask=__get_PRIMASK();__disable_irq();
+    comp_cpu_duty_wait_enter();__WFI();comp_cpu_duty_wait_exit();__set_PRIMASK(mask);
+}
 comp_cpu_duty_snapshot_t comp_cpu_duty_snapshot(void)
 {
     uint32_t mask=__get_PRIMASK();__disable_irq();

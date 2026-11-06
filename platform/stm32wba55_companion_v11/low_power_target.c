@@ -6,6 +6,14 @@
 #endif
 #include "low_power_target.h"
 #include "cpu_profile_target.h"
+static inline void observed_wfi(void)
+{
+#if COMPANION_WBA_CPU_DUTY_OBSERVER
+    comp_cpu_duty_wfi();
+#else
+    comp_v11_cpu_wait_enter();__WFI();comp_v11_cpu_wait_exit();
+#endif
+}
 #if COMPANION_WBA_DUAL_PAIR_CAPTURE
 #include "dual_mic_capture.h"
 #endif
@@ -160,7 +168,7 @@ void LPM_SleepMode(uint32_t option)
 {
     (void)option;
     LINKLAYER_PLAT_NotifyWFIEnter(); LL_LPM_EnableSleep(); __DSB();
-    comp_v11_cpu_wait_enter(); __WFI(); comp_v11_cpu_wait_exit();
+    observed_wfi();
     LINKLAYER_PLAT_NotifyWFIExit();
 }
 void LPM_Stop1Mode(uint32_t option)
@@ -349,7 +357,7 @@ void comp_v11_low_power_idle(comp_v11_product_app_t *app)
         app_stop_permission=false;
     }
     if (result==COMP_WBA_STOP_SKIPPED) {
-        comp_v11_cpu_wait_enter(); __WFI(); comp_v11_cpu_wait_exit();
+        observed_wfi();
     }
     /* An aborted atomic recheck means foreground work/IRQ is pending: return
      * to poll immediately, rather than sleeping with a consumed edge. */
@@ -387,7 +395,7 @@ void comp_v11_low_power_init(comp_v11_product_app_t *app, bool ready) { (void)ap
 void comp_v11_low_power_idle(comp_v11_product_app_t *app)
 {
     if (__get_IPSR() || __get_PRIMASK() || foreground_pending(app)) return;
-    comp_v11_cpu_wait_enter(); __WFI(); comp_v11_cpu_wait_exit();
+    observed_wfi();
 }
 const char *comp_v11_low_power_identity(void) { return "WFI_STOP1_DISABLED"; }
 void comp_v11_low_power_stats(uint32_t *entries,uint32_t *ms,uint32_t *failures)
