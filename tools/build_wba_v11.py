@@ -131,7 +131,7 @@ def main() -> int:
     parser.add_argument('--cpu-residence-profile', action='store_true',
                         help='DEV capture-scoped thread/IRQ/WFI-envelope wall ledger; not physical CPU duty or current qualification')
     parser.add_argument('--cpu-duty-observer', action='store_true',
-                        help='Compact opt-in conservative one-second CPU busy upper bound; masked WFI counter lease only, no legacy stage/cache/IRQ tracing')
+                        help='Compact opt-in RTC wall/sleep-gated TIM2 one-second CPU busy upper bound; original WFI retained, no DWT/stage/cache/IRQ tracing')
     parser.add_argument('--codec-phase-profile', action='store_true', help='Bounded recording Opus wall-phase observation; no output while capturing')
     parser.add_argument('--wba-opus-celt16', action='store_true',
                         help='Candidate WBA16k/16kbps/20ms officialOpus1.6.1 restricted CELT with9KiB OTA-shared arena; requires pinned optional third_party/opus-wba-1.6.1 and real audio qualification before release')

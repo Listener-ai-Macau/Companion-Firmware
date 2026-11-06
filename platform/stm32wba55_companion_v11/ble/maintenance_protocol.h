@@ -45,11 +45,15 @@ static inline bool comp_maint_request(const uint8_t *p,uint16_t n,uint8_t *opera
 /* FW66699+: operation6 alone uses byte7=2 and the same four u16 fields are
  * conservative upper microseconds. Others retain schema1. FFFF/valid-mask
  * rules unchanged; clients must check the schema before interpreting units. */
-/* Operation9 cached CPU upper-bound snapshot, schema1. Flags enabled/active/
- * recording/valid bits0..3. Valid requires completed one-second windows,
- * at least one proven masked-WFI sleep interval and no clock/order errors.
+/* Operation9 CPU snapshot. Schema1 (FW700) used masked-WFI/DWT; no useful
+ * bound was observed on the sample. Schema2 (FW701+) uses RTC wall time and
+ * TIM2 Run-only clocks (TIM2SMEN=0), retaining ordinary WFI and all IRQ time.
+ * Flags enabled/active/recording/valid bits0..3. Valid requires completed
+ * one-second windows and no clock/order errors. Schema2 adds2200us busy
+ * per window for RTC endpoint/snapshot/counter uncertainty. A valid100%
+ * bound fails95%; it is not an unmeasured0% result.
  * u32 at12 windows,16 peak busy upper microseconds per1000000us,20 errors,
- * 24 proven waits. Disabled/unmeasured never counts as zero/pass. No reset. */
+ * 24 observed gated gaps. Disabled/unmeasured never zero/pass. No reset. */
 static inline void comp_maint_timing16(uint8_t p[32],unsigned at,unsigned bit,
     bool valid,uint32_t value)
 {

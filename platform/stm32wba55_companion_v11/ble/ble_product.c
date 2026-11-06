@@ -1007,7 +1007,8 @@ static void maintenance_runtime_fields(uint8_t operation,uint8_t response[32])
     response[6]=0u;response[7]=1u;
     if(operation==COMP_MAINT_CPU_DUTY){
         comp_cpu_duty_snapshot_t s=comp_cpu_duty_snapshot();
-        bool valid=s.enabled&&s.windows&&s.proven_waits&&!s.invalid;
+        response[7]=2u; /* RTC wall / sleep-gated TIM2 active time */
+        bool valid=s.enabled&&s.windows&&!s.invalid;
         response[6]=(uint8_t)((unsigned)s.enabled|(unsigned)s.active<<1u|
             (unsigned)s.recording<<2u|(unsigned)valid<<3u);
         comp_maint_put32(response+12u,s.windows);
