@@ -29,9 +29,12 @@ static bool status_transfer(void *v,const uint8_t *tx,uint8_t *rx,size_t n,uint3
 }
 static void profile_start_mode(uint64_t session,uint32_t token,uint8_t mode)
 {
+    uint32_t began=f.now;
     assert(comp_wba_recording_product_prepare_audio_profile(&product_rec,session,mode,0u,token));
     for(unsigned i=0u;i<20000u&&!comp_wba_recording_product_ready(&product_rec,token);++i)product_tick();
     assert(comp_wba_recording_product_ready(&product_rec,token));
+    printf("PREPARE_MODEL_MS=%lu\n",(unsigned long)(f.now-began));
+    assert(f.now-began<=500u); /* Cooperative model; not physical timing. */
     assert(comp_wba_recording_product_control(&product_rec,true,token));
 }
 static void profile_start(uint64_t session,uint32_t token) {profile_start_mode(session,token,1u);}
@@ -126,7 +129,15 @@ int main(void)
     assert(comp_wba_recording_product_bind(&product_rec,&nor,0u,24576u,DATA_BASE,3u*EXTENT_BYTES,
         49152u,device_uid,7u,&cfg,product_report));
     product_mount();comp_wba_recording_product_lease_result(&product_rec,true);
-    profile_start(801u,91u);for(unsigned i=0u;i<8u;++i)block(i);
+    profile_start(801u,91u);
+    if(getenv("COMP_MODEL_CONTROL_LATENCY")) {
+        block(0u);uint32_t began=f.now;
+        assert(comp_wba_recording_product_control(&product_rec,false,91u));settle();
+        printf("STOP_MODEL_MS=%lu\n",(unsigned long)(f.now-began));
+        assert(f.now-began<=500u&&!mic);
+        puts("PASS inactive prepare/cleanup scheduling; active capture retains one IO per product poll. Software only.");return 0;
+    }
+    for(unsigned i=0u;i<8u;++i)block(i);
     assert(comp_wba_recording_product_control(&product_rec,false,91u));settle();
     comp_segment_entry_t retained=product_entry(0u);
     assert(retained.state==COMP_SEG_UNSYNCED&&product_rec.space.reserved_bytes==EXTENT_BYTES);

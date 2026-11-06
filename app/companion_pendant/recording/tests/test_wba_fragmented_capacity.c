@@ -76,7 +76,11 @@ int main(void) {
  unsigned accepted=0u;while(mic&&accepted<4u*SEGMENT_FRAMES+32u)block(accepted++);assert(!mic);settle();
  assert(product_rec.capture.engine.stop_reason==COMP_CONT_STOP_FULL&&product_rec.space.used==3u);assert(product_rec.space.allocatable_segments==0u);unchanged_retained(&middle);
  unsigned n=0u;comp_segment_entry_t e[2];for(uint8_t i=0u;i<64u;i++)if(product_rec.catalog.slots[i]!=255u){comp_segment_entry_t x;assert(comp_wba_segment_storage_entry(&product_rec.storage,&product_rec.catalog,i,&x)==COMP_SEG_OK);if(x.descriptor.session_id==803u){assert(x.descriptor.segment_index<2u);e[x.descriptor.segment_index]=x;n++;}}
- assert(n==2u&&e[0].extent_offset==0u&&e[1].extent_offset==2u*EXTENT_BYTES);uint64_t samples=0u;unsigned ends=0u;inspect(&e[0],&samples,&ends,accepted);inspect(&e[1],&samples,&ends,accepted);
+ /* The persisted-ID rotation may choose either free gap first. Require both
+  * disjoint gaps and continuous logical order, not a fixed physical start. */
+ assert(n==2u&&((e[0].extent_offset==0u&&e[1].extent_offset==2u*EXTENT_BYTES)||
+     (e[1].extent_offset==0u&&e[0].extent_offset==2u*EXTENT_BYTES)));
+ uint64_t samples=0u;unsigned ends=0u;inspect(&e[0],&samples,&ends,accepted);inspect(&e[1],&samples,&ends,accepted);
  assert(ends==1u&&samples==(uint64_t)accepted*160u+320u);
  /* Corrupt only the host NOR fixture: a CRC-valid owner crosses another
   * owner's boundary. The new count must be refused, not over-advertised. */

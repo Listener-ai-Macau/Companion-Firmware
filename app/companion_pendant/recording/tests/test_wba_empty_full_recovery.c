@@ -77,6 +77,9 @@ static void full_start_status_and_retry(void)
     assert(comp_link_init_segmented(&link_owner.link,&cfg,&radio,&product_rec.pipeline,136u));
     comp_link_connection(&link_owner.link,true,true,f.now);subscribe(COMPANION_GATT_CHAR_MEETING_STATUS,true);
     comp_link_test_record_hook=pause_record_hook;
+    comp_wba_pipeline_config_t saved_config=product_rec.pipeline.config;
+    /* A stale/unavailable capacity walk must still report asynchronous FULL. */
+    product_rec.pipeline.config.capacity_snapshot=NULL;
     for(uint32_t request=101u;request<=102u;++request) {
         pause_session=800u+request;uint8_t wire[56];pause_command(wire,1u,request,0u,0u);
         comp_rec_put32(wire+40u,request);comp_rec_put32(wire+52u,comp_rec_crc(wire,52u));
@@ -93,6 +96,13 @@ static void full_start_status_and_retry(void)
         assert(logical_status[1]==0u&&logical_status[2]==COMPANION_V1_MEETING_ERROR_STORAGE_FULL&&
             comp_rec_get32(logical_status+8u)==request);
     }
+    product_rec.pipeline.config=saved_config;
+    uint8_t fast[56];pause_command(fast,1u,103u,0u,0u);
+    comp_rec_put32(fast+40u,103u);comp_rec_put32(fast+52u,comp_rec_crc(fast,52u));
+    unsigned calls=link_owner.record_calls,writes=f.writes,erases=f.erases;
+    send(COMPANION_GATT_CHAR_MEETING_CONTROL,fast,56u);
+    assert(link_owner.record_calls==calls&&f.writes==writes&&f.erases==erases&&!mic);
+    assert(comp_rec_get32(logical_status+8u)==103u&&logical_status[2]==COMPANION_V1_MEETING_ERROR_STORAGE_FULL);
     comp_link_test_record_hook=NULL;
     puts("FULL_START_STATUS: asynchronous empty-full failure reports exact request/error and permits a fresh START; no microphone start. Runtime scheduling is ported.");
 }

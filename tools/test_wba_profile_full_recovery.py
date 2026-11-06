@@ -43,8 +43,8 @@ def main():
         ceMemoryLayoutQualified=False,realAcousticOrEnergyQualified=False,
         hostCodec='portable lowdelay Opus; not actual ARM CELT execution')
     (out/'inputs.json').write_text(json.dumps({str(p):hashlib.sha256(p.read_bytes()).hexdigest()for p in sorted(inputs)},indent=2)+'\n')
-    command=['cl.exe','/nologo','/W4','/WX','/std:c11','/TC','/O2','/MD','/utf-8',
-        '/DCOMP_WBA_INTERNAL_FLASH_KIB=0','/DCOMPANION_RECORDING_SEGMENTED_ONLY=1',
+    command=['cl.exe','/nologo','/W4','/WX','/wd5287','/std:c11','/TC','/O2','/MD','/utf-8',
+        '/D_CRT_SECURE_NO_WARNINGS','/DCOMP_WBA_INTERNAL_FLASH_KIB=0','/DCOMPANION_RECORDING_SEGMENTED_ONLY=1',
         '/DCOMPANION_OPUS16_WBA_LOWDELAY=1','/DCOMPANION_OPUS16_ENCODER_BYTES=65536',
         '/DCOMP_NOR_FIXTURE_BYTES=1048576',*['/I'+str(p)for p in includes],str(frozen),
         *map(str,sources),'/Fe:'+str(out/'test.exe'),'/link',str(library)]

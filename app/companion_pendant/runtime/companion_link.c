@@ -252,6 +252,16 @@ static bool meeting_control(comp_link_t *l,const companion_gatt_meeting_control_
                 meeting_reject(l,request->request_id);return false;
             }
         }
+        if(l->segmented) {
+            const comp_wba_recording_pipeline_t *p=l->segmented->config.pipeline;
+            uint32_t generation=0u;uint8_t segments=0u;
+            /* A current product capacity walk can refuse FULL immediately.
+             * Unknown/stale capacity still uses asynchronous preparation;
+             * never allocate a durable session or scan NOR merely to reject. */
+            if(p->config.capacity_snapshot&&p->config.capacity_snapshot(p,&generation,&segments)&&!segments) {
+                meeting_reject_code(l,request->request_id,COMPANION_V1_MEETING_ERROR_STORAGE_FULL);return false;
+            }
+        }
         uint8_t preparing=l->timeline_prepare;
         uint32_t previous_token=l->config.runtime->record_token;
         if(!l->meeting_extended)l->timeline_prepare=1u;

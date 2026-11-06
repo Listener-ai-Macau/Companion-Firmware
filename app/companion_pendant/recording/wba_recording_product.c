@@ -332,6 +332,11 @@ bool comp_wba_recording_product_recover_begin(comp_wba_recording_product_t *p)
     p->pipeline.engine_bound=false;p->ready=false;p->media_ready=false;
     p->boot_phase=BOOT_RUNTIME_RECOVER;return true;
 }
+static bool inactive_storage_slice(const comp_wba_recording_product_t *p)
+{
+    return (p->pipeline.state==COMP_PIPE_PREPARING||p->pipeline.state==COMP_PIPE_CLEANUP)&&
+        !p->capture.engine.microphone_active&&!p->capture.engine.encoder_owned;
+}
 void comp_wba_recording_product_poll(comp_wba_recording_product_t *p)
 {
     if(!p||p->boot_phase==BOOT_UNBOUND||p->boot_phase==BOOT_FAILED)return;
@@ -375,7 +380,15 @@ void comp_wba_recording_product_poll(comp_wba_recording_product_t *p)
             if(retry){p->media_ready=false;p->reported_state=BOOT_RETRY_IDLE_ARM0;}
         }
     } else {
-        (void)comp_wba_recording_pipeline_poll(&p->pipeline);
+        /* A 270KiB blank walk has over1000 pages. Idle preparation/cleanup
+         * must not wait one foreground round per page. Bound each slice by
+         * both sixteen existing steps and1ms; active/paused/draining capture
+         * retains exactly one step and its original real-time scheduling. */
+        uint8_t steps=1u;uint32_t began=0u;
+        if(inactive_storage_slice(p)){steps=16u;began=p->pipeline.config.now_ms(p->pipeline.config.context);}
+        do {(void)comp_wba_recording_pipeline_poll(&p->pipeline);}
+        while(--steps&&inactive_storage_slice(p)&&
+            (uint32_t)(p->pipeline.config.now_ms(p->pipeline.config.context)-began)<1u);
         /* A failed pre-commit consume lookup is still read-only. Preserve the
          * error for its radio owner; the foreground retry waits until that
          * owner releases it, then uses the existing bounded remount. */

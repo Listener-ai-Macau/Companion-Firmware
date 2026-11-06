@@ -18,8 +18,10 @@ static void product_report(void *v,uint32_t token,denzic_audio_recording_state_v
 static void product_tick(void)
 {
     unsigned reads=f.reads,writes=f.writes;f.now+=2u;
+    unsigned maximum=(product_rec.pipeline.state==COMP_PIPE_PREPARING||product_rec.pipeline.state==COMP_PIPE_CLEANUP)&&
+        !product_rec.capture.engine.microphone_active&&!product_rec.capture.engine.encoder_owned?16u:1u;
     comp_wba_recording_product_poll(&product_rec);
-    assert(f.reads-reads<=1u&&f.writes-writes<=1u);
+    assert(f.reads-reads<=maximum&&f.writes-writes<=maximum);
 }
 static void product_bind(void)
 {
