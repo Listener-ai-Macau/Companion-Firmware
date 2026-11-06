@@ -12,11 +12,14 @@ static bool wr(void *c,uint32_t a,const uint8_t *p,size_t n) {
 }
 static bool er(void *c,uint32_t a) {flash_t *f=c;if(a!=0 && a!=4096)return false;
     memset(f->bytes+a,255,f->erase_fail?2048:4096);return !f->erase_fail;}
-int main(void) {
+int main(int argc,char **argv) {
     flash_t f,baseline;comp_preferences_t store,reboot;comp_preferences_values_t v;
     comp_preferences_port_t p={rd,wr,er,&f};memset(&f,255,sizeof(f));f.budget=-1;f.erase_fail=false;
     CHECK(comp_preferences_mount(&store,&p));CHECK(!store.persisted && store.values.volume==25);
     CHECK(comp_preferences_are_defaults(&store.values));
+    /* Product identity is independent of whether its display is attached. */
+    if(argc>1)CHECK(store.values.name_length==strlen(argv[1]) &&
+        !memcmp(store.values.name,argv[1],store.values.name_length));
     uint32_t default_crc=comp_preferences_fingerprint(&store.values);
     v=store.values;v.volume=26u;CHECK(!comp_preferences_are_defaults(&v)&&comp_preferences_fingerprint(&v)!=default_crc);
     v=store.values;v.imu_screen_axes=0x99u;CHECK(comp_preferences_are_defaults(&v)&&comp_preferences_fingerprint(&v)!=default_crc);
@@ -25,6 +28,10 @@ int main(void) {
     v=store.values;v.name_length=9u;memcpy(v.name,"Companion",9u);
     CHECK(comp_preferences_save(&store,&v) && comp_preferences_mount(&reboot,&p));
     CHECK(reboot.values.name_length==9u && !memcmp(reboot.values.name,"Companion",9u));
+    /* An existing name remains user data across a product/profile change. */
+    v=reboot.values;v.name_length=7u;memcpy(v.name,"Capture",7u);
+    CHECK(comp_preferences_save(&store,&v) && comp_preferences_mount(&reboot,&p));
+    CHECK(reboot.values.name_length==7u && !memcmp(reboot.values.name,"Capture",7u));
     v=reboot.values;v.name_length=10u;memcpy(v.name,"Owner Unit",10u);
     CHECK(comp_preferences_save(&store,&v) && comp_preferences_mount(&reboot,&p));
     CHECK(reboot.values.name_length==10u && !memcmp(reboot.values.name,"Owner Unit",10u));

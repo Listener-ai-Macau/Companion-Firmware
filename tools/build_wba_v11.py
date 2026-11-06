@@ -110,6 +110,7 @@ def main() -> int:
     parser.add_argument('--output', type=Path, default=ROOT / '.cache/wba-v11-prehardware/build')
     parser.add_argument('--bootstrap-sdk', action='store_true')
     parser.add_argument('--with-ble', action='store_true', default=True, help='Link WBA host/radio and product GATT (product default)')
+    parser.add_argument('--product', choices=('companion','capture'), default='companion', help='Product identity is independent of the screen configuration')
     parser.add_argument('--screen-disabled', action='store_true', help='Do not initialize or service the detached screen/touch module')
     parser.add_argument('--periodic-uart-diagnostics', action='store_true', help='Debug only: emit full idle UART snapshots every ten seconds')
     parser.add_argument('--ble-peer-indications', action='store_true', help='Candidate: retain official GATT client indication handling on the unchanged peripheral-only radio controller')
@@ -215,6 +216,7 @@ def main() -> int:
                         default=ROOT.parent/'Companion-Hardware/electronics/companion-v1.1-2026-09-19',
                         help='Read-only hardware inputs; explicit path supports an immutable source checkout')
     args = parser.parse_args()
+    if args.product == 'capture': args.screen_disabled = True
     if not args.current_recipe:
         print('Direct legacy defaults retired. Use the matched current entry:\n'
               'python C:/Users/Billy/Desktop/Denzic/Companion/tools/build_current_firmware.py --show\n'
@@ -369,6 +371,7 @@ def main() -> int:
                                       'preerase_allocator_compiled': True,
                                       'remaining': 'V2 continuous capture/session anchor/NOR priority binding/GATT integration'},
               'stack_reserved_bytes': 21504 if not geometry.nvm_bytes else 24576,
+              'product':args.product,
               'screen_enabled':not args.screen_disabled,
               'periodic_uart_diagnostics':args.periodic_uart_diagnostics,
               'low_power': {'stop1_compiled':args.experimental_stop1,'board_qualified':False,
@@ -528,6 +531,7 @@ def main() -> int:
                  f'-DCOMP_WBA_INTERNAL_NVM_KIB={geometry.nvm_bytes // 1024}u',
                  f'-DCOMPANION_WBA_EXPERIMENTAL_STOP1={int(args.experimental_stop1)}',
                  f'-DCOMPANION_WBA_AUTOMATIC_STOP1={int(args.automatic_stop1)}',
+                 f'-DCOMPANION_PRODUCT_CAPTURE={int(args.product=="capture")}',
                  f'-DCOMPANION_WBA_SCREEN_ENABLED={int(not args.screen_disabled)}',
                  f'-DCOMPANION_WBA_PERIODIC_DIAGNOSTICS={int(args.periodic_uart_diagnostics)}',
                  f'-DCOMPANION_WBA_APP_VERSION={args.firmware_version}u',
