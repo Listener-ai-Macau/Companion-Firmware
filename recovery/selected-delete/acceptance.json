@@ -1,0 +1,29 @@
+{
+  "schema": "capture.selected-delete.acceptance.v1",
+  "at": "2026-11-06T09:38:01+08:00",
+  "result": "PASS_DEVICE_SELECTED_DELETE_CANCEL_SPACE_AND_RECORD_AGAIN",
+  "firmware": 66685,
+  "sourceCommit": "cfedd31",
+  "cancelNoDirectoryOrSpaceChange": true,
+  "selectedNewSessionDeleted": "00000000000000e1",
+  "freedBytes": 270336,
+  "recordAgainDurationMs": 2120,
+  "secondNewSessionDeleted": "00000000000000e2",
+  "oldMetadataEntriesUnchanged": 34,
+  "keptNewSessionForUi": "00000000000000e0",
+  "appBytes": 409252,
+  "appDeltaBytes": 256,
+  "staticRamDeltaBytes": 0,
+  "oldAudioPayloadReads": 0,
+  "oldDeletes": 0,
+  "limits": [
+    "Firmware real hardware path only; ordinary Windows/Android UI acceptance remains open.",
+    "Initial harness read before storage/capacity settled; subsequent e2 preview with ready capacity and exact receipt succeeded.",
+    "Final mic/erase/fault/stack guards clear; BLE still encrypted/linked after own handles closed, so not a disconnected-idle pass. No reset or reboot investigation."
+  ],
+  "inputs": [
+    "hardware-producer.json",
+    "hardware-resume.json",
+    "hardware-final.json"
+  ]
+}
