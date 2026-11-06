@@ -46,6 +46,10 @@ bool comp_wba_recording_product_bind(comp_wba_recording_product_t *,
     const uint8_t uid[12],uint64_t epoch,const comp_wba_pipeline_config_t *,
     comp_wba_recording_report_fn_t);
 void comp_wba_recording_product_poll(comp_wba_recording_product_t *);
+/* Pending inactive storage work should return to the complete product poll,
+ * with IRQs/radio/inputs serviced between bounded slices. Erase waits and
+ * active/paused/draining audio retain their normal idle policy. */
+bool comp_wba_recording_product_foreground_pending(const comp_wba_recording_product_t *);
 /* Operational capture gate; a retained tail alone does not grant OTA space. */
 bool comp_wba_recording_product_capture_available(const comp_wba_recording_product_t *);
 bool comp_wba_recording_product_capture_prepare_available(const comp_wba_recording_product_t *);

@@ -18,11 +18,13 @@ static bool foreground_pending(const comp_v11_product_app_t *app)
 #if COMPANION_WBA_DUAL_PAIR_CAPTURE
     if(comp_v11_dual_pair_foreground_pending(app)) return true;
 #endif
+    if(app&&comp_wba_recording_product_foreground_pending(&app->recording))return true;
     /* A pending ordinary-display row is foreground work, just like FW124's
      * sendable BLE data. Return to the whole product poll rather than paying
      * a WFI/tick gap for every row. One driver poll still sends at most one
      * row; radio and inputs run between rows, IRQs stay enabled. Capture and
-     * playback retain their previous idle policy, including prepare/stop. */
+     * playback retain their previous idle policy. Inactive recorder storage
+     * work above follows the same bounded foreground handoff. */
     if(app && app->board && !app->board->microphone.running &&
        !app->board->playback_active && !app->runtime.prepare_pending &&
        !app->runtime.start_pending && !app->runtime.command_pending &&

@@ -337,6 +337,13 @@ static bool inactive_storage_slice(const comp_wba_recording_product_t *p)
     return (p->pipeline.state==COMP_PIPE_PREPARING||p->pipeline.state==COMP_PIPE_CLEANUP)&&
         !p->capture.engine.microphone_active&&!p->capture.engine.encoder_owned;
 }
+bool comp_wba_recording_product_foreground_pending(const comp_wba_recording_product_t *p)
+{
+    /* Metadata/search/blank reads can progress now. A physical erase still
+     * needs time, so keep its normal WFI policy instead of busy-spinning. */
+    return p&&p->media_ready&&!p->storage.poisoned&&p->storage.nor&&
+        !p->storage.nor->erase_active&&inactive_storage_slice(p);
+}
 void comp_wba_recording_product_poll(comp_wba_recording_product_t *p)
 {
     if(!p||p->boot_phase==BOOT_UNBOUND||p->boot_phase==BOOT_FAILED)return;

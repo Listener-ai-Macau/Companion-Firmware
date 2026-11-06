@@ -138,5 +138,24 @@ static void catalog_gc_during_cancellation(void)
     }
     puts("PASS cancellation with real append-bank GC: erase/commit owner finishes and reboot sees durable removal");
 }
+static void inactive_work_readiness(void)
+{
+    product_fresh();product_mount();comp_wba_recording_product_lease_result(&product_rec,true);
+    assert(!comp_wba_recording_product_foreground_pending(NULL));
+    assert(!comp_wba_recording_product_foreground_pending(&product_rec));
+    assert(comp_wba_recording_product_prepare(&product_rec,901u,1u,0u,71u));
+    assert(comp_wba_recording_product_foreground_pending(&product_rec));
+    product_rec.storage.nor->erase_active=true;assert(!comp_wba_recording_product_foreground_pending(&product_rec));
+    product_rec.storage.nor->erase_active=false;product_rec.capture.engine.microphone_active=true;
+    assert(!comp_wba_recording_product_foreground_pending(&product_rec));
+    product_rec.capture.engine.microphone_active=false;product_rec.capture.engine.encoder_owned=true;
+    assert(!comp_wba_recording_product_foreground_pending(&product_rec));
+    product_rec.capture.engine.encoder_owned=false;product_rec.pipeline.state=COMP_PIPE_CLEANUP;
+    assert(comp_wba_recording_product_foreground_pending(&product_rec));
+    product_rec.storage.poisoned=true;assert(!comp_wba_recording_product_foreground_pending(&product_rec));
+    product_rec.storage.poisoned=false;product_rec.pipeline.state=COMP_PIPE_FINISHED;
+    assert(!comp_wba_recording_product_foreground_pending(&product_rec));
+    puts("PASS inactive foreground readiness: preparation/cleanup run; erase wait, active MIC/encoder, fault and finished states retain idle policy");
+}
 int main(void)
-{prepared_cancellation();reservation_cancellation();hint_still_validates();catalog_gc_during_cancellation();return 0;}
+{prepared_cancellation();reservation_cancellation();hint_still_validates();catalog_gc_during_cancellation();inactive_work_readiness();return 0;}
