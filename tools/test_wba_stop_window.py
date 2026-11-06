@@ -140,7 +140,7 @@ def main():
     root=Path(__file__).resolve().parents[1];target=root/'platform/stm32wba55_companion_v11'
     out=Path(a.output).resolve();out.mkdir(parents=True,exist_ok=False)
     src=(target/'low_power_target.c').read_text()
-    marks=['static void trial_expire(','static void trial_entered(','void comp_v11_low_power_idle(','const char *comp_v11_low_power_identity(','static bool arm_trial(','bool comp_v11_low_power_arm_once(','bool comp_v11_low_power_arm_window(']
+    marks=['static inline void observed_wfi(','static void trial_expire(','static void trial_entered(','void comp_v11_low_power_idle(','const char *comp_v11_low_power_identity(','static bool arm_trial(','bool comp_v11_low_power_arm_once(','bool comp_v11_low_power_arm_window(']
     body='\n'.join(function(src,m)for m in marks)
     (out/'window.c').write_text(STUB+body+TEST)
     vc=Path(r'C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Auxiliary\Build\vcvars64.bat');runs=[]
