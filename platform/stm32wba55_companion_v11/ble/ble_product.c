@@ -1004,12 +1004,18 @@ static bool maintenance_idle(void)
 static bool maintenance_reply(uint8_t operation,uint8_t result,uint32_t request)
 {
     uint8_t response[32],bonds=255u,flags=0u;
-    if(product->preferences.persisted)flags|=1u;
-    if(comp_preferences_are_defaults(&product->preferences.values))flags|=2u;
-    if(maintenance_idle()&&comp_v11_ble_bond_count(&bonds))flags|=4u;
-    if(product->preferences.values.radio_enabled)flags|=8u;
+    if(operation!=COMP_MAINT_BLE_DIAGNOSTICS) {
+        if(product->preferences.persisted)flags|=1u;
+        if(comp_preferences_are_defaults(&product->preferences.values))flags|=2u;
+        if(maintenance_idle()&&comp_v11_ble_bond_count(&bonds))flags|=4u;
+        if(product->preferences.values.radio_enabled)flags|=8u;
+    }
     comp_maint_response(response,operation,result,request,flags,bonds,product->preferences.generation,
         comp_preferences_fingerprint(&product->preferences.values),comp_v11_ble_bond_generation(),maintenance.request_id);
+    if(operation==COMP_MAINT_BLE_DIAGNOSTICS&&result==COMP_MAINT_OK) {
+        comp_v11_ble_maintenance_diagnostics(response);
+        comp_maint_put32(response+28u,companion_crc32(0u,response,28u));
+    }
     return publish(NULL,COMPANION_GATT_CHAR_REPAIR_CONTROL,response,sizeof(response));
 }
 static void maintenance_request(const companion_gatt_event_t *e)
@@ -1025,6 +1031,9 @@ static void maintenance_request(const companion_gatt_event_t *e)
     }
     maintenance.request_id=request;maintenance.operation=operation;maintenance.notify=true;
     maintenance.result=COMP_MAINT_BUSY;
+    /* Read-only cached scalars remain useful during recording/storage work.
+     * Keep the existing queued-reply owner and secured subscription checks. */
+    if(operation==COMP_MAINT_BLE_DIAGNOSTICS){maintenance.result=COMP_MAINT_OK;return;}
     if(!maintenance_idle())return;
     maintenance.result=COMP_MAINT_FAILED;
     if(operation==COMP_MAINT_QUERY)maintenance.result=COMP_MAINT_OK;

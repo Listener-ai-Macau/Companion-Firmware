@@ -40,6 +40,8 @@ uint16_t comp_v11_ble_connection(void);
 uint16_t comp_v11_ble_connection_interval(void);
 /* Current connection events only; encoded BLK1/20B, no controller commands. */
 void comp_v11_ble_link_budget(uint8_t out[20]);
+/* Fill only operation4's cached non-secret maintenance fields; no I/O/state mutation. */
+void comp_v11_ble_maintenance_diagnostics(uint8_t response[32]);
 /* Actual ATT_MTU - 3, capped by the product characteristic; default 20. */
 uint16_t comp_v11_ble_value_capacity(void);
 bool comp_v11_ble_notifications_allowed(void);

@@ -27,6 +27,7 @@
 #include "app_ble.h"
 #include "gatt_public_hash_diagnostic.h"
 #include "gatt_hash_complete.h"
+#include "maintenance_protocol.h"
 extern uint8_t BleStack_ctx[];
 #include "host_stack_if.h"
 #include "ll_sys_if.h"
@@ -508,6 +509,20 @@ static void initial_link_observe(uint8_t kind,uint8_t code,uint16_t handle,bool 
         0x80000000u|kind,handle,code,unowned?1u:0u);
 }
 static bool pairing_open(void) {return pairing_until && (int32_t)(pairing_until-HAL_GetTick())>0;}
+void comp_v11_ble_maintenance_diagnostics(uint8_t response[32])
+{
+    const uint32_t now=HAL_GetTick();
+    response[6]=(uint8_t)((radio_enabled?1u:0u)|(advertising?2u:0u)|(pairing_open()?4u:0u)|
+        (connection!=0xFFFFu?8u:0u)|(connection_allowed?16u:0u)|(connection_secured?32u:0u));
+    response[7]=last_error;
+    response[12]=security_stats.pairing_status;response[13]=security_stats.pairing_reason;
+    response[14]=link_history.last_reason;response[15]=link_history.encryption_status;
+    comp_maint_put32(response+16u,pairing_until&&(int32_t)(pairing_until-now)>0?pairing_until-now:0u);
+    comp_maint_put32(response+20u,(uint32_t)initial_link_observation.seen|((uint32_t)initial_link_observation.failed<<16u));
+    const uint32_t lost=security_stats.bond_lost_events>UINT16_MAX?UINT16_MAX:security_stats.bond_lost_events;
+    const uint32_t retried=security_stats.rebond_attempts>UINT16_MAX?UINT16_MAX:security_stats.rebond_attempts;
+    comp_maint_put32(response+24u,lost|(retried<<16u));
+}
 static void connection_opened(uint16_t handle,uint8_t type,const uint8_t *address)
 {
     uint8_t identity_type,identity_address[6];
