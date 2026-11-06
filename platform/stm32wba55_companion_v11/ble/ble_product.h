@@ -49,7 +49,11 @@ uint16_t comp_v11_ble_recording_capacity(void);
 typedef struct {
     uint32_t bond_lost_events, rebond_attempts;
     uint8_t pairing_status, pairing_reason;
+    /* Reuse the existing alignment padding; successful reconnects must not
+     * erase the failure that the secured maintenance reader came to inspect. */
+    uint8_t pairing_failure_status, pairing_failure_reason;
 } comp_v11_ble_security_stats_t;
+_Static_assert(sizeof(comp_v11_ble_security_stats_t)==12u,"BLE security cause snapshot size");
 const comp_v11_ble_security_stats_t *comp_v11_ble_security_stats(void);
 void comp_v11_ble_advertise_poll(uint32_t now,bool commands_allowed);
 void comp_v11_ble_nvm_poll(uint32_t now,bool writes_allowed);

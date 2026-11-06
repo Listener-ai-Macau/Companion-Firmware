@@ -21,7 +21,9 @@ static inline bool comp_maint_request(const uint8_t *p,uint16_t n,uint8_t *opera
 }
 /* Operation4 alone returns cached BLE scalars in the existing32B reply:
  * byte6 radio/advertising/pair-window/linked/allowed/secured bits0..5;
- * byte7 last host error; bytes12..15 pairing status/reason, last disconnect,
+ * bit6 last failed pairing retained, bit7 last unsecured link was admitted;
+ * byte7 last host error; bytes12..15 last failed pairing status/reason (or
+ * latest result if no failure), last unsecured disconnect (FF if none),
  * last encryption status;16..19 pair-window remaining ms;20..23 seen/failed
  * LE completion counts (u16 each);24..27 bond-lost/rebond counts (saturated
  * u16 each). Nonce/header/CRC stay identical. No addresses, keys or payload.

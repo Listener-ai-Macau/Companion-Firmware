@@ -231,11 +231,14 @@ static struct {
     uint32_t first_secured_disconnect_ms,first_bond_lost_ms;
     uint8_t last_reason,last_secured_reason,last_was_secured,first_secured_reason;
     uint8_t encryption_status,encryption_enabled;
-} link_history={.last_reason=0xFFu,.last_secured_reason=0xFFu,.first_secured_reason=0xFFu,.encryption_status=0xFFu};
+    uint8_t unsecured_reason,unsecured_allowed;
+} link_history={.last_reason=0xFFu,.last_secured_reason=0xFFu,.first_secured_reason=0xFFu,
+    .encryption_status=0xFFu,.unsecured_reason=0xFFu};
 _Static_assert(sizeof(link_history)==28u,"BLE link cause snapshot size");
 static bool radio_enabled=true,auto_reconnect=true,advertising,connection_secured,connection_allowed,reconnect_requested;
 static uint32_t pairing_until;
-static comp_v11_ble_security_stats_t security_stats={.pairing_status=0xFFu,.pairing_reason=0xFFu};
+static comp_v11_ble_security_stats_t security_stats={.pairing_status=0xFFu,.pairing_reason=0xFFu,
+    .pairing_failure_status=0xFFu,.pairing_failure_reason=0xFFu};
 static uint8_t local_name[COMP_PREFS_NAME_BYTES]=COMP_PREFS_DEFAULT_NAME,
     local_name_length=COMP_PREFS_DEFAULT_NAME_BYTES;
 static uint16_t gap_service,gap_name;
@@ -509,14 +512,22 @@ static void initial_link_observe(uint8_t kind,uint8_t code,uint16_t handle,bool 
         0x80000000u|kind,handle,code,unowned?1u:0u);
 }
 static bool pairing_open(void) {return pairing_until && (int32_t)(pairing_until-HAL_GetTick())>0;}
+static void pairing_result(uint8_t status,uint8_t reason)
+{
+    security_stats.pairing_status=status;security_stats.pairing_reason=reason;
+    if(status){security_stats.pairing_failure_status=status;security_stats.pairing_failure_reason=reason;}
+}
 void comp_v11_ble_maintenance_diagnostics(uint8_t response[32])
 {
     const uint32_t now=HAL_GetTick();
+    const bool failed=security_stats.pairing_failure_status!=0xFFu;
     response[6]=(uint8_t)((radio_enabled?1u:0u)|(advertising?2u:0u)|(pairing_open()?4u:0u)|
-        (connection!=0xFFFFu?8u:0u)|(connection_allowed?16u:0u)|(connection_secured?32u:0u));
+        (connection!=0xFFFFu?8u:0u)|(connection_allowed?16u:0u)|(connection_secured?32u:0u)|
+        (failed?64u:0u)|(link_history.unsecured_allowed?128u:0u));
     response[7]=last_error;
-    response[12]=security_stats.pairing_status;response[13]=security_stats.pairing_reason;
-    response[14]=link_history.last_reason;response[15]=link_history.encryption_status;
+    response[12]=failed?security_stats.pairing_failure_status:security_stats.pairing_status;
+    response[13]=failed?security_stats.pairing_failure_reason:security_stats.pairing_reason;
+    response[14]=link_history.unsecured_reason;response[15]=link_history.encryption_status;
     comp_maint_put32(response+16u,pairing_until&&(int32_t)(pairing_until-now)>0?pairing_until-now:0u);
     comp_maint_put32(response+20u,(uint32_t)initial_link_observation.seen|((uint32_t)initial_link_observation.failed<<16u));
     const uint32_t lost=security_stats.bond_lost_events>UINT16_MAX?UINT16_MAX:security_stats.bond_lost_events;
@@ -1117,8 +1128,7 @@ static void gap_security_event(uint16_t code,const uint8_t *data,uint8_t length)
         if(length<sizeof(paired))return;
         memcpy(&paired,data,sizeof(paired));
         if(paired.Connection_Handle!=connection || connection==0xFFFFu)return;
-        security_stats.pairing_status=paired.Status;
-        security_stats.pairing_reason=paired.Reason;
+        pairing_result(paired.Status,paired.Reason);
         comp_diag_log_record_code(COMP_DIAG_EVT_BLE_SECURITY,
             paired.Status?COMP_DIAG_SEV_ERROR:COMP_DIAG_SEV_INFO,
             code,connection,paired.Status,paired.Reason);
@@ -1198,6 +1208,10 @@ SVCCTL_UserEvtFlowStatus_t SVCCTL_App_Notification(void *packet)
         link_history.last_disconnect_ms=HAL_GetTick();
         link_history.last_reason=d->Reason;
         link_history.last_was_secured=connection_secured;
+        if(!connection_secured) {
+            link_history.unsecured_reason=d->Reason;
+            link_history.unsecured_allowed=connection_allowed;
+        }
         if(connection_secured) {
             if(link_history.secured_disconnects==0u) {
                 link_history.first_secured_disconnect_ms=HAL_GetTick();
