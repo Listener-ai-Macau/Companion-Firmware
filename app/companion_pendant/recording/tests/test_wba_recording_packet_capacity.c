@@ -6,6 +6,32 @@
 #include "ble_packet_capacity.h"
 #include "ble_mtu.h"
 
+/* The real segmented NOR port can yield halfway through a large packet.
+ * Its destination, offset and byte count must stay fixed until READ_OK. */
+static const uint8_t *split_source;
+static const comp_recording_journal_t *split_journal;
+static struct {uint8_t *out;uint32_t id,offset,bytes;bool pending;} split_read;
+static bool split_metadata(void *context,uint32_t id,comp_recording_journal_entry_t *out)
+{
+    (void)context;
+    const comp_recording_journal_entry_t *entry=comp_recording_journal_find(split_journal,id);
+    if(!entry)return false;
+    *out=*entry;return true;
+}
+static comp_wba_transfer_read_result_t split_backend_read(void *context,uint32_t id,
+    uint32_t offset,uint8_t *out,uint32_t bytes)
+{
+    (void)context;
+    if(!split_read.pending){
+        split_read.out=out;split_read.id=id;split_read.offset=offset;split_read.bytes=bytes;split_read.pending=true;
+        memcpy(out,split_source+offset,bytes/2u);return COMP_WBA_TRANSFER_READ_WAIT;
+    }
+    if(split_read.out!=out||split_read.id!=id||split_read.offset!=offset||split_read.bytes!=bytes)
+        return COMP_WBA_TRANSFER_READ_ERROR;
+    memcpy(out+bytes/2u,split_source+offset+bytes/2u,bytes-bytes/2u);
+    split_read.pending=false;return COMP_WBA_TRANSFER_READ_OK;
+}
+
 int main(void)
 {
     comp_v11_ble_mtu_t att;
@@ -46,8 +72,8 @@ int main(void)
     CHECK(comp_v11_ble_single_ll_compact_capacity(0u,0u,0u)==0u &&
           comp_v11_ble_single_ll_compact_capacity(27u,328u,1u)==0u &&
           comp_v11_ble_single_ll_compact_capacity(251u,2120u,1u)==224u,"unknown versus actual1M airtime");
-    CHECK(comp_v11_ble_compact_capacity(248u)==224u &&
-          comp_v11_ble_compact_capacity(509u)==224u &&
+    CHECK(comp_v11_ble_compact_capacity(248u)==228u &&
+          comp_v11_ble_compact_capacity(509u)==489u &&
           comp_v11_ble_compact_capacity(136u)==116u &&
           comp_v11_ble_compact_capacity(20u)==0u,"ATT bound independent of single-PDU estimate");
     fixture_t fixture;
@@ -167,6 +193,30 @@ int main(void)
         }
         CHECK(offset==sizeof(original) && comp_recording_journal_find(&journal,id)->sync_state==COMP_RECORDING_JOURNAL_UNSYNCED,"reference receipt does not consume original");
     }
+    fixture.notification_count=0u;split_source=original;split_journal=&journal;memset(&split_read,0,sizeof(split_read));
+    config.journal=NULL;
+    const comp_wba_recording_transfer_backend_t split_backend={split_metadata,split_backend_read};
+    CHECK(comp_wba_recording_transfer_init_backend(&transfer,&config,&split_backend),"asynchronous segmented port");
+    comp_wba_recording_transfer_set_connected(&transfer,true);
+    CHECK(comp_wba_recording_transfer_set_value_capacity(&transfer,509u),"actual large ATT value");
+    transfer.compact_payload_limit=489u;request.byte_offset=0u;
+    CHECK(comp_wba_recording_transfer_start(&transfer,&request)==COMP_WBA_RECORDING_TRANSFER_OK,"start split NOR read");
+    CHECK(comp_wba_recording_transfer_poll(&transfer)==COMP_WBA_RECORDING_TRANSFER_ACTIVE&&split_read.pending&&!transfer.packet_ready,"first NOR slice yields");
+    transfer.compact_payload_limit=475u;
+    CHECK(comp_wba_recording_transfer_poll(&transfer)==COMP_WBA_RECORDING_TRANSFER_ACTIVE&&transfer.packet_ready&&transfer.packet_payload_length==489u,
+          "capacity update must preserve a partially read packet's byte count and destination");
+    comp_wba_recording_transfer_poll(&transfer);
+    CHECK(transfer.next_offset==489u,"publish the unchanged assembled packet once");
+    comp_wba_recording_transfer_poll(&transfer);
+    CHECK(split_read.pending&&split_read.bytes==475u,"next packet adopts the new measured capacity");
+    CHECK(drain(&transfer)==0,"complete dynamic capacity change without reconnect");
+    offset=0u;
+    for(unsigned i=0u;i<fixture.notification_count;++i){
+        const uint8_t *packet=fixture.notifications[i];uint16_t n=get_le16(packet+2u);bool final=(packet[1]&1u)!=0u;
+        CHECK(get_le32(packet+12u)==offset&&get_le32(packet+8u)==i&&packet_crc(packet,sizeof(original))==get_le32(packet+(final?20u:16u)),"split read retains offset, sequence and CRC");
+        CHECK(!memcmp(packet+(final?56u:20u),original+offset,n),"split read original unchanged");offset+=n;
+    }
+    CHECK(offset==sizeof(original)&&transfer.stats.storage_errors==0u,"no I/O fault or lost bytes from radio negotiation");
     puts("PASS_ATT_REFERENCE_PAYLOAD_CRC_RETRY_AND_BYTE_RESUME_SOFTWARE_ONLY_NO_RADIO_FRAGMENTATION_OR_SPEED_PROOF");
     return 0;
 }

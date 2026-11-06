@@ -277,6 +277,10 @@ static bool prepare_packet(comp_wba_recording_transfer_t *transfer)
     if(maximum>value_capacity-normal_header)maximum=value_capacity-normal_header;
     if(transfer->compact_stream && transfer->compact_payload_limit &&
        transfer->compact_payload_limit<maximum)maximum=transfer->compact_payload_limit;
+    /* A segmented NOR read can yield after copying only part of this packet.
+     * Keep its original geometry until READ_OK; a new link packing limit
+     * applies to the next packet, just as it does to a prepared notify retry. */
+    if(transfer->packet_payload_length)maximum=transfer->packet_payload_length;
     if (payload_length > maximum) payload_length = maximum;
     if (payload_length > transfer->snapshot_length - transfer->next_offset) {
         payload_length = transfer->snapshot_length - transfer->next_offset;
@@ -296,6 +300,7 @@ static bool prepare_packet(comp_wba_recording_transfer_t *transfer)
         transfer->last_result=COMP_WBA_RECORDING_TRANSFER_BAD_STATE;
         transfer->state=COMP_WBA_RECORDING_TRANSFER_FAILED;return false;
     }
+    transfer->packet_payload_length=(uint16_t)payload_length;
     comp_wba_transfer_read_result_t read_result;
     if(transfer->backend)read_result=transfer->backend->read(transfer->config.context,
         transfer->recording_id,transfer->next_offset,payload,payload_length);
@@ -314,7 +319,6 @@ static bool prepare_packet(comp_wba_recording_transfer_t *transfer)
         transfer->state = COMP_WBA_RECORDING_TRANSFER_FAILED;
         return false;
     }
-
     transfer->packet[0] = 1u;
     transfer->packet[1] = final_packet ? COMPANION_RECORDING_ADAPTER_FINAL_FLAG :
         transfer->compact_stream ? COMP_WBA_RECORDING_TRANSFER_COMPACT_FLAG : 0u;
@@ -346,7 +350,6 @@ static bool prepare_packet(comp_wba_recording_transfer_t *transfer)
     }
     /* Compact CRC uses the immutable sealed list total; live snapshots keep
      * the explicit total because the recording can grow after discovery. */
-    transfer->packet_payload_length = (uint16_t)payload_length;
     transfer->packet_length = (uint16_t)(header_bytes + payload_length);
     transfer->notify_staged_bytes=0u;
     transfer->notify_staged_lane=0u;
