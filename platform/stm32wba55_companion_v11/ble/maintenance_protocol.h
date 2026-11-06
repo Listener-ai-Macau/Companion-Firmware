@@ -6,7 +6,7 @@
 #include "companion_crc32.h"
 enum { COMP_MAINT_QUERY=0,COMP_MAINT_PAIR_WINDOW=1,COMP_MAINT_DEFAULTS=2,COMP_MAINT_CLEAR_BONDS=3,
        COMP_MAINT_BLE_DIAGNOSTICS=4,COMP_MAINT_MEMORY=5,COMP_MAINT_AUDIO_TIMING=6,
-       COMP_MAINT_AUDIO_FAULTS=7,COMP_MAINT_AUDIO_SERVICE=8 };
+       COMP_MAINT_AUDIO_FAULTS=7,COMP_MAINT_AUDIO_SERVICE=8,COMP_MAINT_CPU_DUTY=9 };
 enum { COMP_MAINT_OK=0,COMP_MAINT_PENDING=1,COMP_MAINT_BUSY=2,COMP_MAINT_INVALID=3,COMP_MAINT_FAILED=4 };
 static inline uint32_t comp_maint_get32(const uint8_t *p)
 {return (uint32_t)p[0]|((uint32_t)p[1]<<8u)|((uint32_t)p[2]<<16u)|((uint32_t)p[3]<<24u);}
@@ -15,7 +15,7 @@ static inline void comp_maint_put32(uint8_t *p,uint32_t n)
 /* Existing encrypted4003 characteristic. No new GATT service or database. */
 static inline bool comp_maint_request(const uint8_t *p,uint16_t n,uint8_t *operation,uint32_t *request)
 {
-    if(!p||!operation||!request||n!=16u||memcmp(p,"CRM1",4u)||p[4]>COMP_MAINT_AUDIO_SERVICE||
+    if(!p||!operation||!request||n!=16u||memcmp(p,"CRM1",4u)||p[4]>COMP_MAINT_CPU_DUTY||
        p[5]||p[6]||p[7]||!comp_maint_get32(p+8u)||
        companion_crc32(0u,p,12u)!=comp_maint_get32(p+12u))return false;
     *operation=p[4];*request=comp_maint_get32(p+8u);return true;
@@ -45,6 +45,11 @@ static inline bool comp_maint_request(const uint8_t *p,uint16_t n,uint8_t *opera
 /* FW66699+: operation6 alone uses byte7=2 and the same four u16 fields are
  * conservative upper microseconds. Others retain schema1. FFFF/valid-mask
  * rules unchanged; clients must check the schema before interpreting units. */
+/* Operation9 cached CPU upper-bound snapshot, schema1. Flags enabled/active/
+ * recording/valid bits0..3. Valid requires completed one-second windows,
+ * at least one proven masked-WFI sleep interval and no clock/order errors.
+ * u32 at12 windows,16 peak busy upper microseconds per1000000us,20 errors,
+ * 24 proven waits. Disabled/unmeasured never counts as zero/pass. No reset. */
 static inline void comp_maint_timing16(uint8_t p[32],unsigned at,unsigned bit,
     bool valid,uint32_t value)
 {

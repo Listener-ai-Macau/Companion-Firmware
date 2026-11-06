@@ -130,6 +130,8 @@ def main() -> int:
     parser.add_argument('--cpu-detailed-profile', action='store_true', help='Explicit high-frequency17-stage engineering costs; default keeps total CPU plus real PDM/Opus/NOR only')
     parser.add_argument('--cpu-residence-profile', action='store_true',
                         help='DEV capture-scoped thread/IRQ/WFI-envelope wall ledger; not physical CPU duty or current qualification')
+    parser.add_argument('--cpu-duty-observer', action='store_true',
+                        help='Compact opt-in conservative one-second CPU busy upper bound; masked WFI counter lease only, no legacy stage/cache/IRQ tracing')
     parser.add_argument('--codec-phase-profile', action='store_true', help='Bounded recording Opus wall-phase observation; no output while capturing')
     parser.add_argument('--wba-opus-celt16', action='store_true',
                         help='Candidate WBA16k/16kbps/20ms officialOpus1.6.1 restricted CELT with9KiB OTA-shared arena; requires pinned optional third_party/opus-wba-1.6.1 and real audio qualification before release')
@@ -290,6 +292,8 @@ def main() -> int:
         parser.error('--firmware-version must be a nonzero uint32')
     if args.diag_flash_log and (args.cpu_residence_profile or not args.with_ble):
         parser.error('--diag-flash-log requires BLE and CPU residence tracing disabled')
+    if args.cpu_duty_observer and (args.cpu_residence_profile or not args.with_ble):
+        parser.error('--cpu-duty-observer requires BLE and legacy CPU residence tracing disabled')
     if bool(args.update_public_key)!=(0<args.update_key_id<=0xFFFFFFFF):
         parser.error('Specify both --update-public-key and a nonzero uint32 --update-key-id')
     if args.with_ble and not args.update_public_key:
@@ -503,6 +507,7 @@ def main() -> int:
                  f'-DCOMP_V11_DIAG_FLASH_ENABLED={int(args.diag_flash_log)}',
                  f'-DCOMPANION_WBA_ACL_READINESS_PROFILE={int(args.acl_readiness_profile)}',
                  f'-DCOMPANION_WBA_CPU_RESIDENCE_PROFILE={int(args.cpu_residence_profile)}',
+                 f'-DCOMPANION_WBA_CPU_DUTY_OBSERVER={int(args.cpu_duty_observer)}',
                  '-DCOMPANION_FINE_DURATION_CLOCK=1',
                  f'-DCOMPANION_WBA_CPU_DETAILED_PROFILE={int(args.cpu_detailed_profile)}',
                  f'-DCOMPANION_WBA_BATTERY_RAW_DIAGNOSTIC={int(args.battery_raw_diagnostic)}',
@@ -593,6 +598,9 @@ def main() -> int:
         if args.microphone_dual_pair_source is not None:
             sources.append(PLATFORM / 'dual_mic_capture.c')
         result['diag_flash_logging_enabled']=args.diag_flash_log
+        result['cpu_duty_observer_enabled']=args.cpu_duty_observer
+        if args.cpu_duty_observer:
+            sources.append(PLATFORM/'cpu_duty_target.c')
         if args.diag_flash_log:
             sources += [PLATFORM/'diag_flash_target.c', APP/'diag_log/diag_flash_journal.c']
         if args.cpu_residence_profile:

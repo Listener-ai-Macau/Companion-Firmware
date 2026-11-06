@@ -1005,6 +1005,16 @@ static bool maintenance_idle(void)
 static void maintenance_runtime_fields(uint8_t operation,uint8_t response[32])
 {
     response[6]=0u;response[7]=1u;
+    if(operation==COMP_MAINT_CPU_DUTY){
+        comp_cpu_duty_snapshot_t s=comp_cpu_duty_snapshot();
+        bool valid=s.enabled&&s.windows&&s.proven_waits&&!s.invalid;
+        response[6]=(uint8_t)((unsigned)s.enabled|(unsigned)s.active<<1u|
+            (unsigned)s.recording<<2u|(unsigned)valid<<3u);
+        comp_maint_put32(response+12u,s.windows);
+        comp_maint_put32(response+16u,s.peak_busy_upper_us);
+        comp_maint_put32(response+20u,s.invalid);
+        comp_maint_put32(response+24u,s.proven_waits);return;
+    }
     if(operation==COMP_MAINT_MEMORY) {
         const comp_v11_memory_stats_t *s=comp_v11_memory_observe();
         response[6]=(uint8_t)((unsigned)s->stack.sampled|
