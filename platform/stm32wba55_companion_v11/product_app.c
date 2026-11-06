@@ -1385,7 +1385,10 @@ void comp_v11_product_app_poll(comp_v11_product_app_t *app)
         return; /* Engineering window owns the idle PCM ring; no UI/NOR writer. */
     }
 #endif
-    comp_runtime_frame_t frame; uint32_t now=HAL_GetTick();
+#if COMPANION_WBA_SCREEN_ENABLED
+    comp_runtime_frame_t frame;
+#endif
+    uint32_t now=HAL_GetTick();
     if(app->pet_profile.writing)comp_pet_profile_expire(&app->pet_profile,now);
     comp_v11_hal_t *board=app->board;
     bool was_sleeping=COMPANION_WBA_SCREEN_ENABLED && app->runtime.surface==COMP_SCREEN_SURFACE_LOW_POWER;
@@ -1710,8 +1713,8 @@ void comp_v11_product_app_poll(comp_v11_product_app_t *app)
          * this span; an inactive begin never acquires a later owner. */
         comp_cpu_stage_span_t cpu_service=(board->microphone.running||comp_cpu_bulk_owned())?
             comp_cpu_detail_begin():(comp_cpu_stage_span_t){0};
+#if COMPANION_WBA_SCREEN_ENABLED
     bool new_frame_allowed=true;
-    (void)new_frame_allowed; /* Disabled screen folds away the consumer. */
 #ifdef COMPANION_WBA_BLE_LINKED
     new_frame_allowed=!comp_v11_update_product_bulk_transfer();
 #endif
@@ -1733,6 +1736,7 @@ void comp_v11_product_app_poll(comp_v11_product_app_t *app)
         if (result==COMP_SCREEN_PRESENTER_WBA_SUBMIT_BUSY || result==COMP_SCREEN_PRESENTER_WBA_SUBMIT_BAD_ARGUMENT)
             complete(app,frame.token,false,now);
     }
+#endif
         comp_cpu_detail_end(COMP_CPU_STAGE_RENDER_SERVICE,cpu_service,true);
     }
 #if defined(COMPANION_WBA_BLE_LINKED) && defined(__arm__)
