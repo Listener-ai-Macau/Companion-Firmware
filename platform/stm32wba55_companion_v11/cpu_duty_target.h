@@ -6,8 +6,9 @@
 #define COMPANION_WBA_CPU_DUTY_OBSERVER 0
 #endif
 typedef struct {
-    uint32_t windows,peak_busy_upper_us,invalid,waits,proven_waits,token;
+    uint32_t windows,peak_busy_upper_us,invalid,waits,token;
     bool enabled,active,recording;
+    uint8_t invalid_reason;
 } comp_cpu_duty_snapshot_t;
 #if COMPANION_WBA_CPU_DUTY_OBSERVER
 void comp_cpu_duty_begin(uint32_t token,bool recording);

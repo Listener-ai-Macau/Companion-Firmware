@@ -12,10 +12,10 @@
  * current, instruction attribution or an all-alignment rolling maximum. */
 typedef struct {
     uint32_t last_us,window_us,busy_upper_us;
-    uint32_t windows,peak_busy_upper_us,invalid,waits,proven_waits;
+    uint32_t windows,peak_busy_upper_us,invalid,waits;
     bool have_stamp;
 } comp_cpu_duty_bound_t;
-_Static_assert(sizeof(comp_cpu_duty_bound_t)<=36u,"bounded CPU duty ledger");
+_Static_assert(sizeof(comp_cpu_duty_bound_t)<=32u,"bounded CPU duty ledger");
 
 static inline void comp_cpu_duty_account(comp_cpu_duty_bound_t *s,
     uint32_t now,bool valid,uint32_t busy_upper_us)

@@ -53,7 +53,11 @@ static inline bool comp_maint_request(const uint8_t *p,uint16_t n,uint8_t *opera
  * per window for RTC endpoint/snapshot/counter uncertainty. A valid100%
  * bound fails95%; it is not an unmeasured0% result.
  * u32 at12 windows,16 peak busy upper microseconds per1000000us,20 errors,
- * 24 observed gated gaps. Disabled/unmeasured never zero/pass. No reset. */
+ * 24 observed gated gaps. FW702 schema3 instead puts actual WFI entries at24,
+ * first invalid reason in flags4..7:1 foreign timer/IRQ,2 RTC domain,3 timer
+ * configuration,4 slow snapshot,5 late sample,6 stuck counter,7 conversion,
+ * 8 excess active span,9 debug freeze,10 clock setup. Bound/validity unchanged;
+ * a fault is never silently turned into a valid sample. No reset. */
 static inline void comp_maint_timing16(uint8_t p[32],unsigned at,unsigned bit,
     bool valid,uint32_t value)
 {
