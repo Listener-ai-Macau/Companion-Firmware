@@ -1,6 +1,6 @@
 {
-  "at": "2026-11-05T20:26:21+08:00",
-  "status": "REBUILDABLE_NEW_CANDIDATE_SIGNED_HARDWARE_REQUALIFICATION_PENDING",
+  "at": "2026-11-06T08:06:23+08:00",
+  "status": "REBUILT_SOURCE_SCOPED_CORE_AND_MAINTENANCE_HARDWARE_ACCEPTED",
   "sourceRoot": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\firmware-recovery",
   "retainedGitBase": "cd200644f8e9b6babd101bc26a31cc569b2a523a",
   "missingIntermediateCommit": "2a6c0f7c1dc132ef76df595b0e467d19ab390fb0",
@@ -43,11 +43,11 @@
       "result": "PASS_HOST_ONLY"
     }
   },
-  "maintenanceProtocol": "PASS exact command/nonce/CRC/length/reserved bytes on existing32B attribute; source host executable only",
-  "physicalDeviceIO": false,
+  "maintenanceProtocol": "PASS actual encrypted CRM defaults/repeat/clear4bonds/re-pair1bond; original34 metadata rows unchanged; defaults/bond retained across next normal OTA boot; busy restore refusal while recording.",
+  "physicalDeviceIO": true,
   "fullFirmwareBuild": true,
   "releaseSourceQualified": false,
-  "next": "Normal signed OTA66681 via installed Windows050 (phone currently absent), then actual cleared bonds/default preferences and new-own recording/status/concurrency acceptance. No debug access in the wireless acceptance job.",
+  "next": "Capture compile-time screen RAM trim by measured benefit. Ordinary App recovery UI and physical first-word/LED experience stay separate; original hardware/power/production blocks unchanged.",
   "forwardReplayCorrection": {
     "failedRequestsSkipped": [
       "call_133e053474614ff0bf655911a61280e3",
@@ -91,5 +91,13 @@
   "currentCandidateVersion": 66681,
   "recoveredResource": "resource-inputs/ui85/recovery.json",
   "candidateBuild": "recovery/rebuilt66681/build-result.json",
-  "historicalSourceQualification": "Ten historical intermediate file differences are still not byte-exact original restoration. Current inputs now produce a complete image; affected production models and whole target link pass. Actual behavior/stack/normalOTA must qualify this new candidate, not a claim that deleted2a6/66679 source was fully recovered."
+  "historicalSourceQualification": "Ten historical intermediate file differences are still not byte-exact original restoration. Current inputs now produce a complete image; affected production models and whole target link pass. Actual behavior/stack/normalOTA must qualify this new candidate, not a claim that deleted2a6/66679 source was fully recovered.",
+  "sourceCommit": "d3afe95ca54c6802f8d0aa3b507ae7ed00ff8130",
+  "qualificationScope": "Current reconstructed source builds and is normally signed OTA installed. Real138s capture/live receive, normal-boot maintenance persistence, first accepted PCM ACK, short original/date/durable mark and exact own receive passed. Not a byte-exact recreation of lost intermediate history or whole-product sale qualification.",
+  "installedFirmware": 66683,
+  "uiGeneration": 85,
+  "buildReceipt": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\firmware-recovery\\recovery\\rebuilt66683\\build-result.json",
+  "otaReceipt": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\firmware-recovery\\recovery\\rebuilt66683\\ota-result.json",
+  "currentAcceptance": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\firmware-recovery\\recovery\\rebuilt66683\\hardware-acceptance.json",
+  "coreConcurrencyAcceptance": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\firmware-recovery\\recovery\\rebuilt66682\\hardware-acceptance.json"
 }
