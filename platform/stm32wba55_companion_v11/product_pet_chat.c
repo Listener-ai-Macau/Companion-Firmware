@@ -138,7 +138,9 @@ void comp_v11_product_pet_caption_status(const comp_v11_product_app_t *app,uint8
 bool comp_v11_product_render_pet_caption(comp_v11_product_app_t *app,
     const comp_runtime_frame_t *request,uint8_t frame[5000])
 {
-    if(!COMPANION_WBA_SCREEN_ENABLED)return false;
+#if !COMPANION_WBA_SCREEN_ENABLED
+    (void)app;(void)request;(void)frame;return false;
+#else
     if(!request->chat_caption_token)
         return comp_runtime_renderer_render(&app->renderer,request,frame);
     /* Preserve only one small strip on this call's stack while composing the
@@ -154,4 +156,5 @@ bool comp_v11_product_render_pet_caption(comp_v11_product_app_t *app,
     } else return false;
     if(!comp_runtime_renderer_render(&app->renderer,request,frame))return false;
     memcpy(frame+COMP_REPLY_TEXT_Y*25u,strip,sizeof(strip));return true;
+#endif
 }

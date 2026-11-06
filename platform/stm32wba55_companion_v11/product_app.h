@@ -18,7 +18,9 @@
 typedef struct {
     comp_v11_hal_t *board;
     comp_runtime_t runtime;
+#if COMPANION_WBA_SCREEN_ENABLED
     comp_runtime_renderer_t renderer;
+#endif
     comp_runtime_resources_t resources;
     comp_screen_presenter_wba_t presenter;
     companion_spi_nor_stm32wba_partition_t resource_partition;
@@ -41,7 +43,9 @@ typedef struct {
     union {uint64_t identity_entropy,recording_session_id;};
     comp_wba_recording_product_t recording;
     comp_v11_microphone_fault_baseline_t capture_baseline;
+#if COMPANION_WBA_SCREEN_ENABLED
     uint8_t asset_cache[256];
+#endif
 #if !COMPANION_WBA_SCREEN_ENABLED
     uint8_t panel_committed[1];
 #elif COMP_WBA_PACKED_OLD_FRAME

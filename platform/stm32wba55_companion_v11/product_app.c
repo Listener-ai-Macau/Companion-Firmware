@@ -655,6 +655,7 @@ static bool runtime_random(void *c,uint32_t *value)
     comp_v11_product_app_t *app=c;
     return app!=NULL && comp_v11_hal_random_u32(app->board,value);
 }
+#if COMPANION_WBA_SCREEN_ENABLED
 static bool render(void *context,const comp_runtime_frame_t *request,uint8_t frame[5000])
 {
     comp_v11_product_app_t *app=context;
@@ -799,6 +800,7 @@ static void complete(void *context,uint32_t token,bool visible,uint32_t now)
     (void)previous_chat_state;
 #endif
 }
+#endif
 static bool settings_write(void *c,uint32_t offset,const uint8_t *data,size_t length)
 {
     return companion_spi_nor_stm32wba_partition_program(c,offset,data,length)==COMPANION_SPI_NOR_STM32WBA_OK;
@@ -1077,7 +1079,9 @@ void comp_v11_product_app_init(comp_v11_product_app_t *app,comp_v11_hal_t *board
 {
     comp_runtime_config_t runtime={0};
     companion_screen_assets_stm32wba_config_t assets;
+#if COMPANION_WBA_SCREEN_ENABLED
     comp_screen_presenter_wba_config_t presenter;
+#endif
     comp_power_settings_port_t settings;
     if (!app || !board) return;
 #if COMP_V11_PANEL_SOFTWARE_SPI && COMP_V11_PANEL_STARTUP_READBACK
@@ -1136,26 +1140,32 @@ void comp_v11_product_app_init(comp_v11_product_app_t *app,comp_v11_hal_t *board
     /* Foreground boot polls mount/recover the segmented catalog. Capture and
      * CRV2 remain unavailable until the existing WUS2 lease is reconciled. */
     if(!ports)recording_namespace_poll(app);
-    if(COMPANION_WBA_SCREEN_ENABLED) {
+#if COMPANION_WBA_SCREEN_ENABLED
     comp_runtime_renderer_init(&app->renderer,comp_runtime_resources_read,&app->resources);
     comp_runtime_renderer_set_ui_reader(&app->renderer,comp_runtime_resources_read_ui);
     comp_runtime_renderer_set_progress(&app->renderer,render_progress,app);
-    }
+#endif
     companion_screen_assets_stm32wba_init(&app->asset_reader);
     /* Static bank extent comes from its build profile; system data follows it. */
     assets=(companion_screen_assets_stm32wba_config_t){COMPANION_EPAPER_PANEL_STM32WBA_TARGET_WBA55,
         COMP_WBA_NOR_UI_BYTES,resource_read,app};
     if (companion_spi_nor_stm32wba_partition_init(&app->resource_partition,&board->nor,0,COMP_WBA_NOR_UI_BYTES) &&
         companion_screen_assets_stm32wba_bind(&app->asset_reader,&app->asset_store,&assets)) {
+#if COMPANION_WBA_SCREEN_ENABLED
         (void)companion_screen_assets_stm32wba_set_cache(&app->asset_reader,app->asset_cache,sizeof(app->asset_cache));
+#endif
+        /* Capture retains the same resource identity/CRC mount through direct
+         * bounded NOR reads, without a resident display-only read cache. */
         app->assets_ready=comp_runtime_resources_mount(&app->resources,&app->asset_store);
     }
-    if(COMPANION_WBA_SCREEN_ENABLED) {
+#if COMPANION_WBA_SCREEN_ENABLED
     presenter=(comp_screen_presenter_wba_config_t){&board->panel,render,complete,app,
         app->panel_committed,app->panel_staging,UINT8_MAX,render_opens_eyes};
     (void)comp_screen_presenter_wba_init(&app->presenter,&presenter);
     comp_screen_presenter_wba_set_progress(&app->presenter,presenter_cpu_progress);
-    } else app->presenter.status=COMP_SCREEN_PRESENTER_WBA_NOT_READY;
+#else
+    app->presenter.status=COMP_SCREEN_PRESENTER_WBA_NOT_READY;
+#endif
 }
 bool comp_v11_product_update_idle_policy(comp_v11_product_app_t *app)
 {
