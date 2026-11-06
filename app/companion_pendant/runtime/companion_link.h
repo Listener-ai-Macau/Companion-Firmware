@@ -50,12 +50,15 @@ typedef struct {
     uint32_t meeting_start_request_id;
     uint32_t meeting_record_token;
     uint32_t meeting_control_sequence;
+    uint32_t meeting_reject_request_id;
     uint16_t meeting_max_seconds;
     uint8_t last_recording_state;
     uint8_t meeting_command;
-    bool meeting_status_dirty;
-    bool meeting_extended,meeting_timeline;
+    bool meeting_status_dirty : 1;
+    bool meeting_extended : 1;
+    bool meeting_timeline : 1;
     uint8_t timeline_prepare; /*0 local/default,1 legacy,2 CMC3 plain,3 CMC3 timeline*/
+    uint8_t meeting_reject_error; /* One bounded rejection per protected link. */
     uint32_t rejected_writes,publish_failures;
     /* Product V2 retires the V1 reclaim/offer workers. They never coexist;
      * reuse their RAM for the actual negotiated segmented radio owner. */

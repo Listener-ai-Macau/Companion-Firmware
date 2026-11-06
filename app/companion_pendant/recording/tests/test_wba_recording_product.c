@@ -195,6 +195,28 @@ static void logical_command(uint8_t wire[52],uint8_t command,uint32_t request,ui
     comp_rec_put32(wire+36u,request);comp_rec_put32(wire+40u,101u);
     comp_rec_put32(wire+48u,comp_rec_crc(wire,48u));
 }
+static void rejected_control_reply_retries(void)
+{
+    initial_status_without_subscription();
+    uint8_t wire[52];logical_command(wire,1u,404u,0u);
+    wire[8]^=1u;comp_rec_put32(wire+48u,comp_rec_crc(wire,48u));
+    companion_gatt_meeting_status_v1_t before=link_owner.features.meeting;
+    logical_publish_failures=2u;
+    send(COMPANION_GATT_CHAR_MEETING_CONTROL,wire,52u);
+    assert(!memcmp(&before,&link_owner.features.meeting,sizeof(before)) && !mic && !link_owner.record_calls);
+    comp_link_poll(&link_owner.link,f.now);
+    comp_link_poll(&link_owner.link,f.now);
+    assert(comp_rec_get32(logical_status+8u)==404u && logical_status[2]==COMPANION_V1_MEETING_ERROR_REJECTED);
+    assert(comp_rec_get32(logical_status+60u)==comp_rec_crc(logical_status,60u));
+    /* A reply awaiting controller space belongs only to this encrypted link. */
+    logical_command(wire,1u,405u,0u);wire[8]^=1u;comp_rec_put32(wire+48u,comp_rec_crc(wire,48u));
+    logical_publish_failures=1u;send(COMPANION_GATT_CHAR_MEETING_CONTROL,wire,52u);
+    comp_link_connection(&link_owner.link,false,false,f.now);
+    comp_link_connection(&link_owner.link,true,true,f.now);comp_link_poll(&link_owner.link,f.now);
+    assert(comp_rec_get32(logical_status+8u)!=405u && !logical_status[2] && !mic && !link_owner.record_calls);
+    puts("REJECT_REPLY: failed controller admission retries the exact command error without altering capture; disconnect drops the old reply. Software only");
+}
+
 static void logical_control_across_segments(void)
 {
     product_fresh();product_mount();comp_wba_recording_product_lease_result(&product_rec,true);
@@ -521,7 +543,7 @@ int COMP_PRODUCT_TEST_MAIN(int argc,char **arguments)
     if(argc==2&&!strcmp(arguments[1],"wide-index"))return pipeline_fixture_main(argc,arguments);
     if(argc==3&&!strcmp(arguments[1],"terminal-cause")){terminal_cause_status(arguments[2]);return 0;}
     if(argc==2&&!strcmp(arguments[1],"workspace-restart")){workspace_restart_same_catalogue();return 0;}
-    if(argc==2&&!strcmp(arguments[1],"initial-status")){initial_status_without_subscription();return 0;}
+    if(argc==2&&!strcmp(arguments[1],"initial-status")){initial_status_without_subscription();rejected_control_reply_retries();return 0;}
     if(argc==3&&!strcmp(arguments[1],"local-control")){local_controls(arguments[2]);return 0;}
     if(argc==3&&!strcmp(arguments[1],"pause-control")){pause_controls(arguments[2]);return 0;}
     if(argc==2&&!strcmp(arguments[1],"logical-control")){logical_control_across_segments();return 0;}

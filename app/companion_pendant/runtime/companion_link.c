@@ -64,11 +64,23 @@ static bool meeting_publish(comp_link_t *l,const companion_gatt_meeting_status_v
     }
     return publish(l,COMPANION_GATT_CHAR_MEETING_STATUS,status,sizeof(*status));
 }
+static bool meeting_reject_flush(comp_link_t *l)
+{
+    if(!l->meeting_reject_error)return true;
+    companion_gatt_meeting_status_v1_t status=l->config.features->meeting;
+    status.schema_version=1u;status.request_id=l->meeting_reject_request_id;
+    status.last_error=l->meeting_reject_error;
+    if(!meeting_publish(l,&status))return false;
+    l->meeting_reject_error=0u;return true;
+}
 static void meeting_reject_code(comp_link_t *l,uint32_t request_id,uint8_t error)
 {
-    companion_gatt_meeting_status_v1_t status=l->config.features->meeting;
-    status.schema_version=1u;status.request_id=request_id;status.last_error=error;
-    (void)meeting_publish(l,&status);
+    /* Keep the first pending reply while the controller has no credit.
+     * The authoritative recording state and its active request stay intact. */
+    if(!l->meeting_reject_error) {
+        l->meeting_reject_request_id=request_id;l->meeting_reject_error=error;
+    }
+    (void)meeting_reject_flush(l);
 }
 static void meeting_reject(comp_link_t *l,uint32_t request_id)
 {
@@ -550,6 +562,7 @@ void comp_link_connection(comp_link_t *l,bool connected,bool encrypted,uint32_t 
     /* An encryption-change event must not clear already enabled subscriptions. */
     if(!connected || !l->connected)memset(l->subscribed,0,sizeof(l->subscribed));
     l->connected=connected;l->encrypted=connected&&encrypted;
+    if(!l->encrypted)l->meeting_reject_error=0u;
     /* A READ may precede CCCD subscription or the first recorder command.
      * Refresh on each protected link so a freshly registered zero-filled
      * attribute, or an old offline snapshot, cannot masquerade as status.
@@ -865,8 +878,9 @@ void comp_link_poll_with_budget(comp_link_t *l,uint32_t now,
      * CCCD controls notifications in the stack, not database freshness;
      * disconnect clears CCCD while the original recording may seal offline.
      * meeting_publish still requires an encrypted connection. */
-    if(l->meeting_status_dirty&&
-       meeting_publish(l,&l->config.features->meeting))l->meeting_status_dirty=false;
+    if(l->meeting_reject_error)(void)meeting_reject_flush(l);
+    else if(l->meeting_status_dirty&&
+            meeting_publish(l,&l->config.features->meeting))l->meeting_status_dirty=false;
 #ifndef COMPANION_RECORDING_SEGMENTED_ONLY
     if(!l->segmented&&l->last_catalog_generation!=l->config.journal->catalog.generation) {
         uint32_t bytes=0,count=0;
