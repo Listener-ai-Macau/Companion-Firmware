@@ -50,6 +50,12 @@ comp_segment_result_t comp_segment_audio_poll(comp_segment_audio_t *);
  * audio page blank before the durable catalog tombstone. No audio deletion,
  * optimistic cursor reset or leaked reservation between logical sessions. */
 comp_segment_result_t comp_segment_audio_cancel_begin(comp_segment_audio_t *,comp_segment_catalog_t *);
+/* Live producer only: prepare_begin followed the reservation's full blank
+ * proof, this exact writer has never been claimed or offered an audio page,
+ * and no foreign writer can access its extent. Recheck its provenance then
+ * tombstone without scanning the same unused pages again. Reconstructed/boot
+ * recovery must retain the full scan above; this is not a remote delete. */
+comp_segment_result_t comp_segment_audio_cancel_fresh_begin(comp_segment_audio_t *,comp_segment_catalog_t *);
 /* Cancellation includes a catalog transaction. A real NOR adapter supplies
  * its arbitration-aware poll here; raw comp_segment_audio_poll remains the
  * software/exclusive-port default. The callback is used only for that owned

@@ -476,9 +476,18 @@ bool comp_wba_recording_product_prepare_timeline(comp_wba_recording_product_t *p
     uint64_t session,uint8_t mode,uint32_t started,uint32_t token,bool timeline)
 {
     if(!comp_wba_recording_product_capture_prepare_available(p))return false;
+    /* A known free gap avoids repeatedly starting inside old owners. This
+     * only chooses the first candidate: the allocator still checks every
+     * occupied extent and restarts on a changed catalog generation. */
+    const bool gap=comp_wba_recording_product_space_current(p)&&!p->space.allocation_uncertain&&
+        p->space.largest_gap>=p->pipeline.config.extent_bytes;
+    const uint32_t offset=gap?p->space.largest_gap_offset:0u;
+    const uint32_t slots=gap?p->space.largest_gap/p->pipeline.config.extent_bytes:0u;
     if(p->ready)p->last_fault=COMP_WBA_RECORDING_FAULT_NONE;
     comp_segment_result_t r=comp_wba_recording_pipeline_begin_timeline(&p->pipeline,session,mode,started,token,timeline);
     if(r!=COMP_SEG_PENDING){p->last_fault=r==COMP_SEG_FULL?COMP_WBA_RECORDING_FAULT_STORAGE_FULL:COMP_WBA_RECORDING_FAULT_STORAGE_IO;return false;}
+    if(gap)(void)comp_segment_reserve_set_search_hint(&p->pipeline.reserve,
+        offset+(p->pipeline.reserve.hint/p->pipeline.config.extent_bytes%slots)*p->pipeline.config.extent_bytes);
     p->reported_state=255u;report(p);return true;
 }
 bool comp_wba_recording_product_ready(const comp_wba_recording_product_t *p,uint32_t token)

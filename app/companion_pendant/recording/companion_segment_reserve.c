@@ -1,5 +1,5 @@
 #include "companion_segment_reserve.h"
-enum { FREE=0, SEARCH, COMMIT, ERASE, VERIFY, READY, FAILED, CHECK_BLANK };
+enum { FREE=0, SEARCH, COMMIT, ERASE, VERIFY, READY, FAILED, CHECK_BLANK, CANCEL_COMMIT, CANCELED };
 
 comp_segment_result_t comp_segment_reserve_next_io(const comp_segment_reserve_t *r,comp_segment_io_t *io)
 {
@@ -7,8 +7,8 @@ comp_segment_result_t comp_segment_reserve_next_io(const comp_segment_reserve_t 
     const comp_segment_catalog_t *c=r->catalog;
     *io=(comp_segment_io_t){0u,0u,COMP_SEG_IO_NONE};
     if(!c->mounted||r->phase==FREE||r->phase==FAILED)return COMP_SEG_BAD_STATE;
-    if(r->phase==READY)return COMP_SEG_OK;
-    if(r->phase==COMMIT)return comp_segment_catalog_next_io(c,io);
+    if(r->phase==READY||r->phase==CANCELED)return COMP_SEG_OK;
+    if(r->phase==COMMIT||r->phase==CANCEL_COMMIT)return comp_segment_catalog_next_io(c,io);
     if(c->phase)return COMP_SEG_OK; /* unrelated transaction; worker yields */
     if(r->phase==SEARCH) {
         uint32_t candidate=r->generation!=c->generation?r->hint:r->candidate;
@@ -25,6 +25,41 @@ comp_segment_result_t comp_segment_reserve_next_io(const comp_segment_reserve_t 
 
 static comp_segment_result_t failed(comp_segment_reserve_t *r,comp_segment_result_t why)
 { r->phase=FAILED;return why; }
+
+comp_segment_result_t comp_segment_reserve_set_search_hint(comp_segment_reserve_t *r,uint32_t hint)
+{
+    if(!r||!r->catalog||!r->entry)return COMP_SEG_BAD_ARGUMENT;
+    if(r->phase!=SEARCH||r->scan||r->cursor||r->wrapped||r->candidate!=r->hint||r->entry->descriptor.recording_id||
+       r->generation!=r->catalog->generation)return COMP_SEG_BAD_STATE;
+    if(hint>=r->catalog->data_bytes||hint%COMP_SEGMENT_SECTOR_BYTES)return COMP_SEG_BAD_ARGUMENT;
+    r->hint=hint;r->candidate=hint;return COMP_SEG_OK;
+}
+
+comp_segment_result_t comp_segment_reserve_cancel_poll(comp_segment_reserve_t *r)
+{
+    if(!r||!r->catalog||!r->entry)return COMP_SEG_BAD_ARGUMENT;
+    comp_segment_catalog_t *c=r->catalog;
+    if(!c->mounted||r->phase==FREE||r->phase==FAILED)return COMP_SEG_BAD_STATE;
+    if(r->phase==CANCELED)return COMP_SEG_OK;
+    if(r->phase==COMMIT||r->phase==CANCEL_COMMIT) {
+        if(!c->phase||c->pending!=r->entry)return failed(r,COMP_SEG_BAD_STATE);
+        comp_segment_result_t result=comp_segment_catalog_poll(c);
+        if(result==COMP_SEG_PENDING)return result;
+        if(result!=COMP_SEG_OK)return failed(r,result);
+        if(r->phase==CANCEL_COMMIT){r->phase=CANCELED;return COMP_SEG_OK;}
+        r->phase=CHECK_BLANK;r->cursor=0u;return COMP_SEG_PENDING;
+    }
+    if(r->phase==SEARCH&&!r->entry->descriptor.recording_id){r->phase=CANCELED;return COMP_SEG_OK;}
+    if(c->phase)return COMP_SEG_PENDING;
+    if(r->phase!=CHECK_BLANK&&r->phase!=ERASE&&r->phase!=VERIFY&&r->phase!=READY)
+        return failed(r,COMP_SEG_BAD_STATE);
+    /* The adapter has retired any owned physical erase. This live allocator
+     * never handed the extent to a writer; dirty old bytes are not new audio.
+     * Keep the durable WRITING owner until its exact tombstone commits. */
+    comp_segment_result_t result=comp_segment_catalog_cancel_unwritten_begin(c,r->entry);
+    if(result!=COMP_SEG_PENDING)return failed(r,result);
+    r->phase=CANCEL_COMMIT;return result;
+}
 
 comp_segment_result_t comp_segment_reserve_begin(comp_segment_reserve_t *r,
     comp_segment_catalog_t *c,comp_segment_entry_t *e,uint32_t bytes,uint32_t hint)

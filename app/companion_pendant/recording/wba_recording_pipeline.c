@@ -301,6 +301,8 @@ comp_segment_result_t comp_wba_recording_pipeline_begin_timeline(comp_wba_record
     if(!p||!session||!token||mode>2u)return COMP_SEG_BAD_ARGUMENT;
     if((p->state!=COMP_PIPE_IDLE&&p->state!=COMP_PIPE_FINISHED)||p->discard_exclusive||p->workspace_bytes||p->workspace_requested||consumer_active(p)||
        p->config.catalog->phase||p->config.storage->poisoned)return COMP_SEG_BAD_STATE;
+    const bool previous=p->state==COMP_PIPE_FINISHED&&p->engine_bound;
+    const uint32_t end=previous?p->config.recording->active.extent_offset+p->config.recording->active.reserved_bytes:0u;
     p->engine_bound=false;p->stop_requested=false;p->seal_started=false;p->core_cancel_started=false;p->sealing=NULL;
     p->fault_stop_attempts=0u;
     p->pause_timeline=timeline;
@@ -309,6 +311,8 @@ comp_segment_result_t comp_wba_recording_pipeline_begin_timeline(comp_wba_record
     p->future.descriptor.format_epoch=p->config.catalog->epoch;p->future.descriptor.source_mode=mode;
     memcpy(p->future.descriptor.device_uid,p->config.catalog->uid,12u);p->future.started_unix_s=started;p->token=token;
     comp_segment_result_t r=comp_segment_reserve_begin_rotated(&p->reserve,p->config.catalog,&p->future,p->config.extent_bytes);
+    if(r==COMP_SEG_PENDING&&previous&&end<=p->config.catalog->data_bytes)
+        (void)comp_segment_reserve_set_search_hint(&p->reserve,end==p->config.catalog->data_bytes?0u:end);
     if(r==COMP_SEG_PENDING){p->state=COMP_PIPE_PREPARING;p->future_phase=FUTURE_RESERVE;}
     return r;
 }
@@ -353,10 +357,16 @@ bool comp_wba_recording_pipeline_stop_reason(comp_wba_recording_pipeline_t *p,ui
 }
 static comp_segment_result_t cleanup(comp_wba_recording_pipeline_t *p)
 {
+    if(p->future_phase==FUTURE_RESERVE) {
+        if(p->config.catalog->phase&&p->config.catalog->pending!=&p->future)return other_owner(p);
+        comp_segment_result_t r=comp_wba_segment_storage_reserve_cancel_poll(p->config.storage,&p->reserve);
+        if(r==COMP_SEG_OK)p->future_phase=FUTURE_NONE;
+        return r;
+    }
     if(p->config.catalog->phase&&p->future_phase!=FUTURE_CANCEL)return other_owner(p);
-    if(p->future_phase==FUTURE_RESERVE||p->future_phase==FUTURE_PROVENANCE)return future_progress(p);
+    if(p->future_phase==FUTURE_PROVENANCE)return future_progress(p);
     if(p->future_phase==FUTURE_READY) {
-        comp_segment_result_t r=comp_segment_audio_cancel_begin(&p->future_writer,p->config.catalog);
+        comp_segment_result_t r=comp_segment_audio_cancel_fresh_begin(&p->future_writer,p->config.catalog);
         if(r==COMP_SEG_PENDING)p->future_phase=FUTURE_CANCEL;
         return r;
     }

@@ -34,6 +34,15 @@ comp_segment_result_t comp_segment_reserve_begin(comp_segment_reserve_t *,
  * full-sized free slots on both sides. No extra persistent cursor writes. */
 comp_segment_result_t comp_segment_reserve_begin_rotated(comp_segment_reserve_t *,
     comp_segment_catalog_t *,comp_segment_entry_t *,uint32_t bytes);
+/* A search hint only: all occupied entries/generation checks still run.
+ * Allowed before the first search step, never for a persisted owner. */
+comp_segment_result_t comp_segment_reserve_set_search_hint(comp_segment_reserve_t *,uint32_t);
+
+/* Cancel this live, not-yet-taken allocator. The adapter must first settle
+ * its exact in-flight physical erase (without starting another chunk) and
+ * arbitrate catalog I/O. No full erase/blank/provenance work is started.
+ * Failed/uncertain workers stay owned; boot recovery cannot use this API. */
+comp_segment_result_t comp_segment_reserve_cancel_poll(comp_segment_reserve_t *);
 
 comp_segment_result_t comp_segment_reserve_poll(comp_segment_reserve_t *);
 /* Optional read-only callback for bounded single-page access. PENDING must

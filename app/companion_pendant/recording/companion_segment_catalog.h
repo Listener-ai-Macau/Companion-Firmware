@@ -129,9 +129,9 @@ comp_segment_result_t comp_segment_catalog_discard_begin(comp_segment_catalog_t 
 /* Rewrite only live legacy-compatible entries into a fresh committed bank.
  * Reject pending discard intents; preserves receipts and does not erase data. */
 comp_segment_result_t comp_segment_catalog_compact_legacy_begin(comp_segment_catalog_t *);
-/* Internal producer handoff only: companion_segment_audio_cancel_begin/poll
- * first verifies the matching provenance and the entire empty audio extent.
- * Never expose this as a remote WRITING-delete command. */
+/* Internal producer handoff only: verified empty audio, or a fresh live
+ * allocator/writer that never offered audio and has retired its exact I/O.
+ * Boot recovery still proves all empty pages. Never a remote WRITING delete. */
 comp_segment_result_t comp_segment_catalog_cancel_unwritten_begin(comp_segment_catalog_t *,
     const comp_segment_entry_t *);
 

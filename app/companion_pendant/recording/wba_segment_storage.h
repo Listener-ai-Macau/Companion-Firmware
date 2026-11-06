@@ -30,6 +30,7 @@ comp_segment_audio_port_t comp_wba_segment_storage_transfer_audio_port(comp_wba_
  * Pending never poisons the catalog or advances its durable ownership. */
 comp_segment_result_t comp_wba_segment_storage_catalog_poll(comp_wba_segment_storage_t *,comp_segment_catalog_t *);
 comp_segment_result_t comp_wba_segment_storage_reserve_poll(comp_wba_segment_storage_t *,comp_segment_reserve_t *);
+comp_segment_result_t comp_wba_segment_storage_reserve_cancel_poll(comp_wba_segment_storage_t *,comp_segment_reserve_t *);
 comp_segment_result_t comp_wba_segment_storage_entry(comp_wba_segment_storage_t *,comp_segment_catalog_t *,uint8_t,comp_segment_entry_t *);
 /* Only for a radio-owned, read-only directory lookup. */
 comp_segment_result_t comp_wba_segment_storage_transfer_entry(comp_wba_segment_storage_t *,comp_segment_catalog_t *,uint8_t,comp_segment_entry_t *);

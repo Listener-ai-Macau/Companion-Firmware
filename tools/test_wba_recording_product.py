@@ -34,7 +34,8 @@ def main():
     capacity_only='--pause-capacity' in sys.argv[2:]
     selected_only='--selected-discard' in sys.argv[2:]
     bookmarks_only='--bookmarks' in sys.argv[2:]
-    sources = [REC / ('tests/test_wba_recording_bookmarks.c' if bookmarks_only else 'tests/test_wba_recording_pause_capacity.c' if capacity_only else 'tests/test_wba_recording_product.c'), APP / 'runtime/companion_link.c',
+    unused_only='--unused-future' in sys.argv[2:]
+    sources = [REC / ('tests/test_wba_unused_future.c' if unused_only else 'tests/test_wba_recording_bookmarks.c' if bookmarks_only else 'tests/test_wba_recording_pause_capacity.c' if capacity_only else 'tests/test_wba_recording_product.c'), APP / 'runtime/companion_link.c',
                *[REC / (n + '.c') for n in NAMES], APP / 'storage/spi_nor_stm32wba.c']
     files = set(sources) | set(APP.rglob('*.h'))
     files |= {REC / 'tests/test_wba_recording_product.c', REC / 'tests/test_wba_recording_radio.c', REC / 'tests/test_wba_recording_recovery.c', REC / 'tests/test_wba_recording_pipeline.c',
@@ -85,6 +86,7 @@ def main():
         for relative in ['runtime/companion_link.c', 'recording/wba_recording_radio.c',
                          'recording/wba_recording_pipeline.c', 'recording/wba_segment_pull.c',
                          'recording/wba_recording_transfer.c', 'recording/wba_recording_product.c',
+                         *(['recording/companion_segment_reserve.c','recording/companion_segment_audio.c','recording/wba_segment_storage.c'] if unused_only else []),
                          *(['recording/wba_segment_discard_preview.c','recording/wba_segment_discard_control.c','recording/wba_segment_discard_wire.c'] if selected_only else []),
                          *(['recording/companion_continuous_recording.c','recording/companion_segment_audio.c'] if capacity_only or bookmarks_only else [])]:
             if capacity_only and relative not in ['recording/companion_continuous_recording.c','recording/wba_recording_pipeline.c']:continue

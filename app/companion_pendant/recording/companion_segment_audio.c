@@ -3,7 +3,7 @@
 
 enum { IDLE=0, PROVENANCE_BODY, PROVENANCE_VERIFY, PROVENANCE_COMMIT,
        PROVENANCE_COMMIT_VERIFY, PAGE_BODY, PAGE_VERIFY, PAGE_COMMIT,
-       PAGE_COMMIT_VERIFY,CANCEL_PROVENANCE,CANCEL_PAGES,CANCEL_BEGIN,CANCEL_DIRECTORY,
+       PAGE_COMMIT_VERIFY,CANCEL_PROVENANCE,CANCEL_PAGES,CANCEL_BEGIN,CANCEL_DIRECTORY,CANCEL_FRESH_PROVENANCE,
        REC_PROVENANCE=1, REC_PAGES=2, REC_DONE=3 };
 enum { PROVENANCE_CRC=92, AUDIO_CRC=248, COMMIT=252 };
 
@@ -146,21 +146,28 @@ comp_segment_result_t comp_segment_audio_cancel_begin(comp_segment_audio_t *a,co
     a->cancellation=c;a->phase=CANCEL_PROVENANCE;return COMP_SEG_PENDING;
 }
 
+comp_segment_result_t comp_segment_audio_cancel_fresh_begin(comp_segment_audio_t *a,comp_segment_catalog_t *c)
+{
+    comp_segment_result_t result=comp_segment_audio_cancel_begin(a,c);
+    if(result==COMP_SEG_PENDING)a->phase=CANCEL_FRESH_PROVENANCE;
+    return result;
+}
+
 static comp_segment_result_t cancel_poll(comp_segment_audio_t *a,
     comp_segment_result_t (*poll)(void *,comp_segment_catalog_t *),void *context)
 {
     comp_segment_result_t result;
-    if (a->phase==CANCEL_PROVENANCE || a->phase==CANCEL_PAGES) {
-        uint32_t at=a->phase==CANCEL_PROVENANCE?a->data_base+a->entry->extent_offset:
+    if (a->phase==CANCEL_PROVENANCE || a->phase==CANCEL_FRESH_PROVENANCE || a->phase==CANCEL_PAGES) {
+        uint32_t at=a->phase!=CANCEL_PAGES?a->data_base+a->entry->extent_offset:
             page_address(a->data_base,a->entry,a->pages);
         result=a->port.read(a->port.context,at,a->page,256u);
         if (result==COMP_SEG_RETRYABLE_READ) return read_retry(a);
         if (result==COMP_SEG_PENDING) return result;
         if (result!=COMP_SEG_OK) return failure(a,result);
         a->read_retries=0u;
-        if (a->phase==CANCEL_PROVENANCE) {
+        if (a->phase!=CANCEL_PAGES) {
             if (!provenance_valid(a->entry,a->page,true)) return failure(a,COMP_SEG_CORRUPT);
-            a->phase=CANCEL_PAGES;
+            a->phase=a->phase==CANCEL_FRESH_PROVENANCE?CANCEL_BEGIN:CANCEL_PAGES;
         } else {
             if (!uniform(a->page,256u,255u)) return failure(a,COMP_SEG_CORRUPT);
             if (++a->pages==a->entry->reserved_bytes/256u-1u) a->phase=CANCEL_BEGIN;

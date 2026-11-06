@@ -259,6 +259,27 @@ comp_segment_result_t comp_wba_segment_storage_transfer_entry(comp_wba_segment_s
 }
 static comp_segment_result_t cancellation_catalog(void *s,comp_segment_catalog_t *c)
 {return comp_wba_segment_storage_catalog_poll(s,c);}
+comp_segment_result_t comp_wba_segment_storage_reserve_cancel_poll(comp_wba_segment_storage_t *s,comp_segment_reserve_t *r)
+{
+    if(!r||!matches(s,r->catalog))return COMP_SEG_BAD_ARGUMENT;
+    if(s->poisoned||!s->nor)return COMP_SEG_BAD_STATE;
+    comp_segment_io_t io;comp_segment_result_t result=comp_segment_reserve_next_io(r,&io);
+    if(result!=COMP_SEG_OK)return result;
+    if(r->catalog->phase&&r->catalog->pending==r->entry) {
+        result=gate(s,&io);if(result!=COMP_SEG_OK)return result;
+        return comp_segment_reserve_cancel_poll(r);
+    }
+    if(s->nor->erase_active) {
+        /* A live allocator may retire only its exact outstanding chunk.
+         * Never cancel a catalog owner while NOR still owns an erase. */
+        if(io.kind!=COMP_SEG_IO_ERASE||io.address!=s->nor->erase_address||
+           ((io.address%65536u==0u&&io.bytes>=65536u)?65536u:4096u)!=s->nor->erase_bytes)
+            return COMP_SEG_PENDING;
+        result=comp_wba_segment_storage_reserve_poll(s,r);
+        return result==COMP_SEG_OK?COMP_SEG_PENDING:result;
+    }
+    return comp_segment_reserve_cancel_poll(r);
+}
 comp_segment_result_t comp_wba_segment_storage_receipt(comp_wba_segment_storage_t *s,
     comp_segment_catalog_t *c,uint8_t index,comp_segment_entry_t *e)
 {
