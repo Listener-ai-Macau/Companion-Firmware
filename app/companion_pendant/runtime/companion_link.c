@@ -142,6 +142,11 @@ static void meeting_refresh(comp_link_t *l,uint32_t now)
             status->state=MEETING_STATE_IDLE;status->meeting_id=0u;status->duration_ms=0u;
             status->last_error=why==COMP_RECORD_STOP_LOW_BATTERY?COMPANION_V1_MEETING_ERROR_POWER_LOW:
                 why==COMP_RECORD_STOP_POWER_UNKNOWN?COMPANION_V1_MEETING_ERROR_POWER_UNKNOWN:COMPANION_V1_MEETING_ERROR_REJECTED;
+        } else if(p->state==COMP_PIPE_IDLE&&!p->engine_bound&&p->failure==COMP_SEG_FULL) {
+            /* Product reports a failed empty START, then releases its storage
+             * owner before this poll. Keep the request's terminal failure:
+             * an idle/pending snapshot would hide FULL and fence every retry. */
+            status->last_error=COMPANION_V1_MEETING_ERROR_STORAGE_FULL;
         } else if(p->state==COMP_PIPE_FAILED)status->last_error=COMPANION_V1_MEETING_ERROR_REJECTED;
         else if(p->engine_bound&&(p->state==COMP_PIPE_RECORDING||p->state==COMP_PIPE_STOPPING||p->state==COMP_PIPE_FINISHED)) {
             /* Opening the microphone is still START preparation: its first

@@ -20,6 +20,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('label')
     parser.add_argument('--control-source', type=Path)
+    parser.add_argument('--full-only', action='store_true', help='Run only the affected empty-full control and storage case')
     args = parser.parse_args()
     if Path(args.label).name != args.label or args.label in ('', '.', '..'):
         parser.error('label must be one fresh directory name')
@@ -28,7 +29,9 @@ def main():
     cases = []
     if args.control_source:
         cases.append(('control', args.control_source.resolve(), 0))
-    cases += [('candidate', ROOT, 1), ('stoppedFaultRecovery', ROOT, 1)]
+    cases += [('candidate', ROOT, 1)]
+    if not args.full_only:
+        cases += [('stoppedFaultRecovery', ROOT, 1)]
     library = ROOT / '.cache/opus-host-fixed/opus.lib'
     if not library.is_file():
         # Frozen source trees deliberately do not vendor generated libraries.
@@ -55,7 +58,7 @@ def main():
                     ('runtime', 'storage', 'gatt', 'v1_features', 'playback', 'touch', 'epaper', 'imu', 'power')],
                     source / 'third_party/denzic-platform/audio/embedded/c/include',
                     source / 'third_party/opus/include']
-        command = ['cl.exe', '/nologo', '/W4', '/WX', '/std:c11', '/TC', '/O2', '/MD',
+        command = ['cl.exe', '/nologo', '/W4', '/WX', '/wd5287', '/std:c11', '/TC', '/O2', '/MD',
                    '/DCOMP_WBA_INTERNAL_FLASH_KIB=0', '/DCOMPANION_RECORDING_SEGMENTED_ONLY=1',
                    '/DCOMPANION_OPUS16_WBA_LOWDELAY=1', '/DCOMPANION_OPUS16_ENCODER_BYTES=65536',
                    '/DCOMP_NOR_FIXTURE_BYTES=1048576', f'/DTEST_FIXED={fixed}',

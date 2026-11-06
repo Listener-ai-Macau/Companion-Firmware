@@ -69,6 +69,33 @@ static void reject_full(void)
     assert(writes==f.writes&&erases==f.erases&&!memcmp(saved_extent,f.bytes+DATA_BASE,sizeof(saved_extent)));
 }
 #if TEST_FIXED
+static void full_start_status_and_retry(void)
+{
+    memset(&link_owner,0,sizeof(link_owner));memset(logical_status,0,sizeof(logical_status));
+    logical_status_bytes=0u;logical_publish_failures=0u;
+    comp_link_config_t cfg={&link_owner.runtime,NULL,NULL,&link_owner.features,logical_publish,NULL};
+    assert(comp_link_init_segmented(&link_owner.link,&cfg,&radio,&product_rec.pipeline,136u));
+    comp_link_connection(&link_owner.link,true,true,f.now);subscribe(COMPANION_GATT_CHAR_MEETING_STATUS,true);
+    comp_link_test_record_hook=pause_record_hook;
+    for(uint32_t request=101u;request<=102u;++request) {
+        pause_session=800u+request;uint8_t wire[56];pause_command(wire,1u,request,0u,0u);
+        comp_rec_put32(wire+40u,request);comp_rec_put32(wire+52u,comp_rec_crc(wire,52u));
+        unsigned calls=link_owner.record_calls;
+        send(COMPANION_GATT_CHAR_MEETING_CONTROL,wire,56u);
+        assert(link_owner.record_calls==calls+1u); /* A fresh request must reach prepare. */
+        for(unsigned i=0u;i<20000u&&product_rec.pipeline.state==COMP_PIPE_PREPARING;++i)product_tick();
+        assert(product_rec.pipeline.state==COMP_PIPE_IDLE&&!product_rec.pipeline.engine_bound&&!mic);
+        /* This fixture ports runtime scheduling. Apply the terminal callback
+         * already emitted by the production product before the link polls. */
+        assert(reported_audio==DENZIC_AUDIO_RECORDING_STATE_ERROR_RECOVERY);
+        link_owner.runtime.prepare_pending=link_owner.runtime.command_pending=false;
+        link_owner.runtime.recording=reported_audio;comp_link_poll(&link_owner.link,f.now);
+        assert(logical_status[1]==0u&&logical_status[2]==COMPANION_V1_MEETING_ERROR_STORAGE_FULL&&
+            comp_rec_get32(logical_status+8u)==request);
+    }
+    comp_link_test_record_hook=NULL;
+    puts("FULL_START_STATUS: asynchronous empty-full failure reports exact request/error and permits a fresh START; no microphone start. Runtime scheduling is ported.");
+}
 static void guards(void)
 {
     /* Exercise the real release predicate against the actual rejected state;
@@ -117,7 +144,11 @@ int main(void)
     _set_error_mode(_OUT_TO_STDERR);_set_abort_behavior(0,_WRITE_ABORT_MSG|_CALL_REPORTFAULT);
 #endif
     printf("MODEL opus=%s\n",opus_get_version_string());
-    comp_segment_entry_t old=fill_with_one_original();puts("MODEL full arena ready");reject_full();
+    comp_segment_entry_t old=fill_with_one_original();puts("MODEL full arena ready");
+#if TEST_FIXED
+    full_start_status_and_retry();
+#endif
+    reject_full();
 #if TEST_FIXED
     assert(product_rec.pipeline.state==COMP_PIPE_IDLE&&comp_wba_recording_pipeline_page_available(&product_rec.pipeline)&&!comp_wba_recording_pipeline_storage_busy(&product_rec.pipeline));
     reject_full();assert(product_rec.pipeline.state==COMP_PIPE_IDLE);guards();sync_consume_and_record_again(&old);
