@@ -1,0 +1,479 @@
+{
+  "schema": "companion.wba.v11.board-package.v1",
+  "result": "FAIL",
+  "mcu": "STM32WBA55CEU6",
+  "internal_flash_geometry": {
+    "mcu": "STM32WBA55CEU6",
+    "flash_kib": 512,
+    "board_target": 1160992323,
+    "hardware_revision": "COMPANION-WBA55CE-V1.1-F24-N0",
+    "sram_bytes": 98304,
+    "sram_regions": [
+      [
+        536870912,
+        32768
+      ],
+      [
+        536936448,
+        65536
+      ]
+    ],
+    "flash_base": 134217728,
+    "flash_page_bytes": 8192,
+    "boot_bytes": 24576,
+    "nvm_bytes": 0,
+    "sram_base": 536870912,
+    "flash_bytes": 524288,
+    "app_address": 134242304,
+    "app_bytes": 499712,
+    "nvm_offset": 524288
+  },
+  "codec_optimization": {
+    "opus": "-Os",
+    "application_16khz": "RESTRICTED_CELT",
+    "complexity_16khz": 0,
+    "pdm": "-O3",
+    "resource_cpu": "-O3",
+    "celt": "-O3",
+    "lto": true,
+    "sources_and_features_removed": false,
+    "physical_realtime_timing": "NOT_RUN",
+    "unused_silk_hybrid_encoding_excluded": true
+  },
+  "board": "V1.1 2026-09-19",
+  "image_role": "INTERACTION_PREHARDWARE_NOT_RELEASE",
+  "hardwareAcceptance": "NOT_RUN",
+  "fullChainAcceptance": "NOT_RUN",
+  "flashed": false,
+  "sdk_commit": "e455b860ceb52aaa0332a98f1e7a10bbd7014fc9",
+  "sdk_modules": {
+    "Drivers/CMSIS/Device/ST/STM32WBAxx": "3373b40fa3b71ce114f58b170acd0f8833d42508",
+    "Drivers/STM32WBAxx_HAL_Driver": "c36d9aabc6068051ed27a3a683a6b4f35f04d815"
+  },
+  "trustzone": "disabled; no option bytes changed",
+  "load_address": "0x08006000",
+  "firmware_version": 66684,
+  "battery_raw_diagnostic_enabled": false,
+  "development_ota_power_unrestricted": true,
+  "battery_linear_estimate_enabled": false,
+  "product_ble_linked": false,
+  "product_codec3_recording_linked": true,
+  "product_interaction_runtime_linked": true,
+  "panel_initialization_enabled": true,
+  "panel_transaction_driver": "SSD1681 full/partial; explicit software reset only, physical refresh unqualified",
+  "panel_reset_mode": "SOFTWARE_ONLY_NO_POWER_CYCLE",
+  "panel_vendor_quick_full_compiled": true,
+  "panel_vendor_quick_software_reset_compiled": true,
+  "panel_vendor_quick_full_requires_hardware_reset": true,
+  "screen_power_switch_available": false,
+  "panel_bus": "SOFTWARE_SPI_ENGINEERING_AUDIT",
+  "panel_startup_readback_enabled": false,
+  "panel_exclusive_spi_enabled": true,
+  "panel_defer_imu_start_enabled": true,
+  "panel_isolation_refreshes": 3,
+  "panel_isolation_idle_timeout_ms": 20000,
+  "panel_staged_mode2_power_enabled": false,
+  "panel_power_sensing_enabled": false,
+  "panel_stuck_busy_audit_enabled": false,
+  "panel_start_retry_enabled": false,
+  "panel_window_repair_enabled": false,
+  "panel_status_gate_enabled": false,
+  "panel_idle_clock_divider": 1,
+  "panel_passive_trace_enabled": true,
+  "panel_low_slew_enabled": false,
+  "panel_open_drain_enabled": false,
+  "panel_stuck_busy_audit_previous_command": null,
+  "panel_vci_detect_floor_mv": null,
+  "shared_spi_gpio_enabled": true,
+  "imu_bus": "SOFTWARE_SPI_MODE0",
+  "panel_refresh_policy": "FULL_FAST_PARTIAL",
+  "microphone_default_sink": "Opus16_COP1_NOR_journal_when_mounted",
+  "microphone_dual_processing": {
+    "probe_enabled": true,
+    "session_policy": "VOICE_ONLY_MEETING_LEFT_PREPARE_SNAPSHOT",
+    "boot_and_pair_diagnostic_output": "LEFT",
+    "per_recording_durable_processing_metadata": false,
+    "enabled": false,
+    "algorithm": "LEFT_MONO_BASELINE",
+    "delay_q8": null,
+    "right_gain_q15": 32768,
+    "invert_right": false,
+    "physical_calibration": "NOT_RUN",
+    "physical_noise_reduction": "NOT_QUALIFIED",
+    "speaker_identity_extraction": false
+  },
+  "microphone_gain": {
+    "linear": 128,
+    "q15": 4194304,
+    "stage": "PDM_TO_PCM_BEFORE_OPUS",
+    "physical_calibration": "NOT_RUN",
+    "automatic_gain_control": false
+  },
+  "recording_format": "codec=3 COP1 16kHz mono 16kbps CBR 20ms; physical timing NOT_RUN",
+  "segmented_directory": {
+    "source_compiled": true,
+    "runtime_active": false,
+    "live_capacity": 64,
+    "wire_advertised": false,
+    "preerase_allocator_compiled": true,
+    "remaining": "V2 continuous capture/session anchor/NOR priority binding/GATT integration"
+  },
+  "stack_reserved_bytes": 21504,
+  "screen_enabled": false,
+  "periodic_uart_diagnostics": false,
+  "low_power": {
+    "stop1_compiled": true,
+    "board_qualified": false,
+    "mode": "STOP1_AUTOMATIC"
+  },
+  "ota_protocol": "companion_simple_ota_v3",
+  "remaining": [
+    "Current screen power switch disabled by hardware rework; software-reset-only physical panel validation",
+    "Battery divider and charger pull-up confirmation",
+    "Measured SAI/PDM clocks, raw channel order and concurrent audio continuity",
+    "WBA simple full-package OTA reboot and interrupted-install physical validation",
+    "WBA BLE pairing/NVM/disconnect-resume physical validation",
+    "Actual microphone/Opus/NOR/radio concurrency timing, RAM/stack high-water and RTC/Stop power",
+    "Stop1 and RTC time retention implemented in software; real reset/clock continuity/power remain unqualified",
+    "Real-board full-chain accuracy acceptance and blocking owner handoff"
+  ],
+  "hardware_source_sha256": {
+    "Companion V1.1.pdf": "d7d91f37dfa2655509697e836fc708ac3f6cf5934b8edf41ab61d1d279dc8057",
+    "EPD.SchDoc": "cadc1ff914e48916d83aca2a84fc2e99281ab91c4d5e0413c8ac3134780da3cd",
+    "Function.SchDoc": "407c46aafb0587f13bc31d58c001d3cb0d317f2de5049406f04e8b56dda4cc5a",
+    "MCU.SchDoc": "3694d1336b8b18b3545a6cadc40e266cf5908314983a0210bfa50ddbb2a998bb",
+    "panel-source-evidence.json": "a30cd8769f7c23a5e1cc2fea4015582dd491522716c4f464645aedcccce361fa",
+    "pcb-net-evidence.json": "0acf30fc564ec2cac87055f3fb28fa2253f92f7612ff77862ca709fc17aa6104",
+    "Power.SchDoc": "c8a88ba25f0f540f111684454535faf4818a753b8c48dedfa5b3e7e37c0d5f0e",
+    "README.md": "ea3755c4258b619e910e193dcd6fe09c33ef19db6bc057ed32fedb62ed068673",
+    "source-manifest.json": "0702cb1da14ad58847b6cee97ce714b8f5bc386024101e63205ab4a2fffe0090"
+  },
+  "power_profile": {
+    "parameters": {
+      "schema": "companion.wba_v11.power_profile.v2",
+      "topOhm": 100000,
+      "bottomOhm": 68000,
+      "referenceMv": 1800,
+      "referenceMinMv": 1700,
+      "maximumBatteryMv": 4350,
+      "minimumBatteryMv": 2800,
+      "minimumUpdateMv": 3600,
+      "dividerVerified": false,
+      "referenceVerified": false,
+      "chargerPullupsVerified": true,
+      "socCurveVerified": false,
+      "socPoints": [],
+      "qualificationEvidence": "Owner 2026-11-04 confirms PG/P5 and STAT/P2 pullups to 1.8V fitted; battery-only DMM 4.047V. No voltage/SOC qualification inferred.",
+      "recordingStopMv": 0,
+      "recordingResumeMv": 0,
+      "recordingLimitsVerified": false
+    },
+    "divider_safe": false,
+    "sampling_qualified": false,
+    "recording_protection_qualified": false,
+    "source_path": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\config\\companion-v11-power.json",
+    "source_sha256": "d65784cb7b2ecff93639b6f9c7b41e5c7dfb62f591d59060d23e279087a9cc58",
+    "generated_header_sha256": "c50b47bb09aa106bb212e93a3a8097e3ebd2a963e021cf9e15dc166fbf7104da"
+  },
+  "recording_audio_profile": {
+    "enabled": true,
+    "firmwareSource": "cd200644f8e9b6babd101bc26a31cc569b2a523a",
+    "calibrationSha256": null,
+    "calibrationDeviceUid": null,
+    "normalPhysicalCalibrationQualified": false,
+    "noiseReductionQualified": false,
+    "automaticEnable": false,
+    "containerSchema": 5,
+    "identityHeaderSha256": "87360330f2ad820a398c0a6d1120c508462e5b9a94870a799ca6bc8e7d5a9ff6",
+    "receiverCapabilityBit": 512,
+    "installed": false
+  },
+  "external_ui_resources": {
+    "schema": "companion.wba.external-pet-labels.v1",
+    "generation": 85,
+    "sourceGeneration": 68,
+    "extensionOffset": 878709,
+    "extensionBytes": 62994,
+    "addedOffset": 893936,
+    "addedBytes": 2391,
+    "atlas": [
+      {
+        "name": "comp_wba_live_values",
+        "glyphs": 33,
+        "decodedBytes": 7392,
+        "encodedBytes": 2865,
+        "originalSha256": "a66a0ffafd65171321ed5b6003e06e2459d15b6334e14d8d1f93e30d20ed27be",
+        "lossless": true
+      },
+      {
+        "name": "comp_wba_value_digits",
+        "glyphs": 18,
+        "decodedBytes": 504,
+        "encodedBytes": 290,
+        "originalSha256": "1f619a5b6955622821f1968399cfc92e0670eecf0e7c4c8c6fab50adde8d2345",
+        "lossless": true
+      },
+      {
+        "name": "comp_wba_clock_digits",
+        "glyphs": 18,
+        "decodedBytes": 432,
+        "encodedBytes": 450,
+        "originalSha256": "9c9c33fbb3cb4df9710aad40bb8bc2add172e901f24e176ec40acfff33807231",
+        "lossless": true
+      },
+      {
+        "name": "comp_wba_count_digits",
+        "glyphs": 10,
+        "decodedBytes": 750,
+        "encodedBytes": 516,
+        "originalSha256": "e25d2aea1876ac175cf3ea1e8fa7990802fa75c64cdb27f5ad9f669f5a7393bd",
+        "lossless": true
+      },
+      {
+        "name": "comp_wba_menu_feedback",
+        "glyphs": 39,
+        "decodedBytes": 12012,
+        "encodedBytes": 4858,
+        "originalSha256": "828dfffdfcb94ac3c6d6afe1d637429748787f0b522e5ed56e2494b2c63d36c4",
+        "lossless": true
+      },
+      {
+        "name": "comp_pet_reply_captions",
+        "glyphs": 36,
+        "decodedBytes": 9360,
+        "encodedBytes": 4565,
+        "originalSha256": "5e723fd21e2c850784991d25b11ef70e0b4cb1ec338ed97b55136e2d21b709db",
+        "lossless": true
+      },
+      {
+        "name": "comp_pet_help_labels",
+        "shape": [
+          3,
+          5
+        ],
+        "glyphs": 15,
+        "decodedBytes": 5400,
+        "encodedBytes": 1340,
+        "originalSha256": "8c0f41e060340c20434a4d3be3cfdc8533c3d33f81212e60ec8452bf6e39ba0f",
+        "lossless": true
+      },
+      {
+        "name": "comp_pet_discovery_slices",
+        "shape": [
+          3,
+          1
+        ],
+        "glyphs": 3,
+        "decodedBytes": 780,
+        "encodedBytes": 490,
+        "originalSha256": "bd2b8332f8049751402a3201314d5cb02043328efd7e0379ae0258612d33beae",
+        "lossless": true
+      },
+      {
+        "name": "comp_battery_display_labels",
+        "shape": [
+          3,
+          3
+        ],
+        "glyphs": 9,
+        "decodedBytes": 1134,
+        "encodedBytes": 730,
+        "originalSha256": "066d6b7f88420165d222692bf54dd63dd950fb6e5e63acc1be1017fe76d7d604",
+        "lossless": true
+      },
+      {
+        "name": "comp_wba_quick_labels",
+        "shape": [
+          3,
+          3
+        ],
+        "glyphs": 9,
+        "decodedBytes": 1620,
+        "originalSha256": "00f57fc1d343fae0622f035cbff586794e5af99288320742b4764e5d1d8121b6",
+        "lossless": true
+      },
+      {
+        "name": "comp_record_reason_external",
+        "shape": [
+          3,
+          4
+        ],
+        "glyphs": 12,
+        "decodedBytes": 2688,
+        "encodedBytes": 1203,
+        "originalSha256": "4d5ce78a96546767e2b3de37e431990dd90b56d849c65366465a878fdfb1caa3",
+        "lossless": true
+      }
+    ],
+    "accessorySpansBytes": 3117,
+    "accessoryVariants": 30,
+    "maxGlyphBytes": 199,
+    "maxAccessoryBytes": 186,
+    "headerSha256": "efc317bad1674def31d270faee5ec971f9b3a5cec513571e7c97f6c663d25af7",
+    "cempAndOriginalManifestUnchanged": false,
+    "existingExternalAtlasUnchanged": true,
+    "sourceBankSha256": "3e8ed94a64e1584745fc7fef22fd7f907f7282c3a6bb067177982b3cfb318a26",
+    "newBankSha256": "5c16dfabdb1a59e4280f2eb867050d870273c717dbf4a571e3ee9f72ccb12b09",
+    "oldGeometry": {
+      "norBytes": 16777216,
+      "staticBytes": 905216,
+      "rootA": 897024,
+      "rootB": 901120,
+      "dynamicBase": 905216,
+      "dynamicBytes": 15872000,
+      "systemBytes": 131072,
+      "recordingCatalog": 970752,
+      "payloadBase": 1036288,
+      "payloadBytes": 15740928
+    },
+    "newGeometry": {
+      "norBytes": 16777216,
+      "staticBytes": 905216,
+      "rootA": 897024,
+      "rootB": 901120,
+      "dynamicBase": 905216,
+      "dynamicBytes": 15872000,
+      "systemBytes": 131072,
+      "recordingCatalog": 970752,
+      "payloadBase": 1036288,
+      "payloadBytes": 15740928
+    },
+    "pairedGeometryInstallationRequired": false,
+    "matchedAppResourcesRequired": true,
+    "arenaFreeBytes": 377,
+    "discoverySlices": 1,
+    "discoverySliceRows": 13,
+    "originalRasterHashes": {
+      "comp_pet_help_labels": "8c0f41e060340c20434a4d3be3cfdc8533c3d33f81212e60ec8452bf6e39ba0f",
+      "comp_pet_discovery_slices": "bd2b8332f8049751402a3201314d5cb02043328efd7e0379ae0258612d33beae",
+      "comp_battery_display_labels": "066d6b7f88420165d222692bf54dd63dd950fb6e5e63acc1be1017fe76d7d604"
+    },
+    "executableCodeMoved": false,
+    "codecTablesMoved": false,
+    "testsRun": false,
+    "originalStatePixelsUnchanged": true,
+    "originalManifestReindexedWithOffsets": true,
+    "atlasRelocationBytes": 24,
+    "recordReasonBytes": 1203
+  },
+  "recording_ui_lossless_pack": {
+    "storage": "EXTERNAL_NOR",
+    "internalAtlasBytes": 0
+  },
+  "ui_resource_profile": {
+    "generation": 85,
+    "profileRevision": 5800,
+    "resourceId": "90BB8C54A0CE7F493F4E5561AA8DDFBF5C41CFEEB3B8F0B1C9C80382EB73923F",
+    "uiPartitionSha256": "5C16DFABDB1A59E4280F2EB867050D870273C717DBF4A571E3EE9F72CCB12B09",
+    "uiPartitionBytes": 950272
+  },
+  "flash_geometry": {
+    "norBytes": 16777216,
+    "staticBytes": 950272,
+    "rootA": 942080,
+    "rootB": 946176,
+    "dynamicBase": 950272,
+    "dynamicBytes": 15826944,
+    "systemBytes": 131072,
+    "recordingCatalog": 1015808,
+    "payloadBase": 1081344,
+    "payloadBytes": 15695872
+  },
+  "screen_face_cache": {
+    "result": "FACE_CACHE_BANK_FITS",
+    "uiSha256": "5c16dfabdb1a59e4280f2eb867050d870273c717dbf4a571e3ee9f72ccb12b09",
+    "generation": 85,
+    "states": 6151,
+    "distinctStoredRepresentations": 675,
+    "nativeFrameBytes": 5000,
+    "cacheBytes": 1664,
+    "maximumEncodedBytes": 1309,
+    "largestStateHash": 1130755194,
+    "cacheCapacityFits": true,
+    "hardwareOperations": 0,
+    "cCodecQualified": false,
+    "physicalQualified": false,
+    "scope": "Complete exact UI bank capacity only; not C round-trip, runtime timing, stack, art acceptance or SRAM-layout qualification"
+  },
+  "update_trust_anchor": {
+    "key_id": 1145394737,
+    "public_key_sha256": "3cf111a3787d31d4cc597dbff5dd6f200ccebc350a53494d8b5a7053ec920085",
+    "enabled": true
+  },
+  "native_tests": "NOT_RUN",
+  "compiler": "arm-none-eabi-gcc.EXE (Arm GNU Toolchain 14.2.Rel1 (Build arm-14.52)) 14.2.1 20241119",
+  "codec_profile": {
+    "name": "wba16-restricted-celt-1.6.1",
+    "sample_rate_hz": 16000,
+    "bitrate_bps": 16000,
+    "frame_ms": 20,
+    "channels": 1,
+    "encoder_arena_bytes": 13136,
+    "encoder_state_capacity_bytes": 5456,
+    "dma_bytes": 7680,
+    "ota_borrow_limit_bytes": 8744,
+    "physical_qualified": false,
+    "upstream_archive_sha256": "6ffcb593207be92584df15b32466ed64bbec99109f007c82205f0194572411a1",
+    "specialization": {
+      "define": "COMPANION_OPUS_CELT_ONLY=1",
+      "patch": "companion-celt-only.patch",
+      "original_encoder_sha256": "c9e0a841e60fb904c9918f9f9a82f744cefed0b55ea47d9d7027dd6b95ac2a2c",
+      "scope": "Fixed16kHz mono restricted-CELT;20ms only. Same upstream preprocessing and Opus framing. No SILK/hybrid encoding."
+    }
+  },
+  "screen_face_storage": {
+    "mode": "immutable_resource_references",
+    "identity_bytes_each": 112,
+    "blink_glyph_bytes_each": 256,
+    "committed_and_staging_controller_frames_retained": true,
+    "committed_representation": "lossless_row_delta_rle_canonical_huffman",
+    "committed_capacity_bytes": 1280,
+    "staging_bytes": 5000,
+    "physical_timing_qualified": false
+  },
+  "codec_fast_memory": "Opus-only word copies with bounded tails/overlap, system libc unchanged; physical timing NOT_RUN",
+  "codec_exact_wide_multiply": "16x32 products only; original32x32 rounding unchanged; physical timing NOT_RUN",
+  "codec_official_arm_inline_edsp": "Pinned upstream ARM arithmetic; codec parameters unchanged, rounding may differ; physical timing/quality NOT_RUN",
+  "codec_exact_m33_tone_covariance": "Three delayed signed16 covariance sums only, exact original arithmetic, actually executed in complexity0; physical timing NOT_RUN",
+  "diag_flash_logging_enabled": false,
+  "speaker_ram_profile": {
+    "cue_only": true,
+    "fifo_bytes": 256,
+    "dma_block_frames": 64,
+    "sample_rate": 16000,
+    "product_pcm_streaming_endpoint": false,
+    "physical_qualified": false
+  },
+  "ble_stack_profile": {
+    "host": "BLE_STACK_BASIC_FEATURES",
+    "controller": "LinkLayer_BLE_Peripheral_Only_V3_0.a",
+    "gatt_server": true,
+    "gatt_client": true,
+    "central": false,
+    "peer_indication_confirmation": true,
+    "physical_qualified": false
+  },
+  "ble_ram_budget": {
+    "gatt_values": "schema_derived_with_128B_auto_and_128B_margin",
+    "compact_amm": false,
+    "logical_event_shared_capacity_preserved": true,
+    "physical_allocator_burst_qualified": false
+  },
+  "ble_bond_persistence": {
+    "backend": "EXTERNAL_NOR_ONLY",
+    "ram_cache_unchanged": true,
+    "internal_nvm_reclaimed": true,
+    "new_board_provisioning": true,
+    "torn_first_provisioning": "permanent_BPS1_intent_then_verified_BND1_then_complete_before_HOST; compatible_first_torn_writes_retry_without_seal_erase",
+    "provisioning_seal": {
+      "relative_offset": 57344,
+      "bytes": 4096,
+      "header_bytes": 48,
+      "never_runtime_erased": true,
+      "cryptographic_authority": false
+    },
+    "at_rest_security_qualified": false,
+    "physical_qualified": false
+  },
+  "error": "command exited 1: C:\\Program Files (x86)\\Arm GNU Toolchain arm-none-eabi\\14.2 rel1\\bin\\arm-none-eabi-gcc.EXE\nC:\\Users\\Billy\\Desktop\\Denzic\\Companion\\firmware-recovery\\platform\\stm32wba55_companion_v11\\product_app.c: In function 'comp_v11_product_app_poll':\nC:\\Users\\Billy\\Desktop\\Denzic\\Companion\\firmware-recovery\\platform\\stm32wba55_companion_v11\\product_app.c:1734:13: error: implicit declaration of function 'complete' [-Wimplicit-function-declaration]\n 1734 |             complete(app,frame.token,false,now);\n      |             ^~~~~~~~\n"
+}

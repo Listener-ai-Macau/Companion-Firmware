@@ -1,6 +1,6 @@
 {
-  "at": "2026-11-06T08:06:23+08:00",
-  "status": "REBUILT_SOURCE_SCOPED_CORE_AND_MAINTENANCE_HARDWARE_ACCEPTED",
+  "at": "2026-11-06T08:20:42+08:00",
+  "status": "REBUILT_SOURCE_SCOPED_CORE_MAINTENANCE_AND_CAPTURE_RAM_TRIM_ACCEPTED",
   "sourceRoot": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\firmware-recovery",
   "retainedGitBase": "cd200644f8e9b6babd101bc26a31cc569b2a523a",
   "missingIntermediateCommit": "2a6c0f7c1dc132ef76df595b0e467d19ab390fb0",
@@ -47,7 +47,7 @@
   "physicalDeviceIO": true,
   "fullFirmwareBuild": true,
   "releaseSourceQualified": false,
-  "next": "Capture compile-time screen RAM trim by measured benefit. Ordinary App recovery UI and physical first-word/LED experience stay separate; original hardware/power/production blocks unchanged.",
+  "next": "本轮后台P1设备协议/状态与P2资源/必要职责边界已完成。实体首句体验按Owner明确延后；普通App维护入口归前端当前任务，原6项硬件block与既有音质后置保留；不新增重启检查。",
   "forwardReplayCorrection": {
     "failedRequestsSkipped": [
       "call_133e053474614ff0bf655911a61280e3",
@@ -92,12 +92,20 @@
   "recoveredResource": "resource-inputs/ui85/recovery.json",
   "candidateBuild": "recovery/rebuilt66681/build-result.json",
   "historicalSourceQualification": "Ten historical intermediate file differences are still not byte-exact original restoration. Current inputs now produce a complete image; affected production models and whole target link pass. Actual behavior/stack/normalOTA must qualify this new candidate, not a claim that deleted2a6/66679 source was fully recovered.",
-  "sourceCommit": "d3afe95ca54c6802f8d0aa3b507ae7ed00ff8130",
+  "sourceCommit": "c1bbc42a151853f25439db69767b7bee0628ba37",
   "qualificationScope": "Current reconstructed source builds and is normally signed OTA installed. Real138s capture/live receive, normal-boot maintenance persistence, first accepted PCM ACK, short original/date/durable mark and exact own receive passed. Not a byte-exact recreation of lost intermediate history or whole-product sale qualification.",
-  "installedFirmware": 66683,
+  "installedFirmware": 66684,
   "uiGeneration": 85,
-  "buildReceipt": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\firmware-recovery\\recovery\\rebuilt66683\\build-result.json",
-  "otaReceipt": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\firmware-recovery\\recovery\\rebuilt66683\\ota-result.json",
-  "currentAcceptance": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\firmware-recovery\\recovery\\rebuilt66683\\hardware-acceptance.json",
-  "coreConcurrencyAcceptance": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\firmware-recovery\\recovery\\rebuilt66682\\hardware-acceptance.json"
+  "buildReceipt": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\firmware-recovery\\recovery\\rebuilt66684\\build-result.json",
+  "otaReceipt": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\firmware-recovery\\recovery\\rebuilt66684\\ota-result.json",
+  "currentAcceptance": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\firmware-recovery\\recovery\\rebuilt66684\\hardware-acceptance.json",
+  "coreConcurrencyAcceptance": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\firmware-recovery\\recovery\\rebuilt66682\\hardware-acceptance.json",
+  "firstPcmAndMarkAcceptance": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\firmware-recovery\\recovery\\rebuilt66683\\hardware-acceptance.json",
+  "captureRamTrim": {
+    "savedBytes": 528,
+    "appDeltaBytes": -120,
+    "companionFullBuildPassed": true,
+    "receipt": "C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\firmware-recovery\\recovery\\rebuilt66684\\hardware-acceptance.json"
+  },
+  "ownerPhysicalExperienceDeferredAt": "2026-11-06T08:22:48+08:00"
 }

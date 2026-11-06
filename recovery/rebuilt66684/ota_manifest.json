@@ -1,0 +1,51 @@
+{
+  "schema": "companion.wba.simple-ota.v3",
+  "package_type": "companion-system-ota",
+  "capability": "companion_simple_ota_v3",
+  "mcu": "STM32WBA55CEU6",
+  "hardware_revision": "COMPANION-WBA55CE-V1.1-F24-N0",
+  "internal_flash_geometry": {
+    "mcu": "STM32WBA55CEU6",
+    "flash_kib": 512,
+    "board_target": 1160992323,
+    "hardware_revision": "COMPANION-WBA55CE-V1.1-F24-N0",
+    "sram_bytes": 98304,
+    "sram_regions": [
+      [
+        536870912,
+        32768
+      ],
+      [
+        536936448,
+        65536
+      ]
+    ],
+    "flash_base": 134217728,
+    "flash_page_bytes": 8192,
+    "boot_bytes": 24576,
+    "nvm_bytes": 0,
+    "sram_base": 536870912,
+    "flash_bytes": 524288,
+    "app_address": 134242304,
+    "app_bytes": 499712,
+    "nvm_offset": 524288
+  },
+  "board_target": 1160992323,
+  "app_address": 134242304,
+  "file": "companion-update.cup",
+  "bytes": 1359444,
+  "sha256": "8e78a62d524d0f5fe01253144f2fe1a8c58d10e638253d93e7301687d1b523c5",
+  "payload_sha256": "6fef97bbdac62ccdb6a3c28ba6859c9de8683a0dd9a42e7c91d97c5e1e1708a8",
+  "firmware_version": 66684,
+  "resource_version": 85,
+  "firmware_bytes": 408996,
+  "resource_bytes": 950272,
+  "static_bytes": 950272,
+  "key_id": 1145394737,
+  "public_key_sha256": "3cf111a3787d31d4cc597dbff5dd6f200ccebc350a53494d8b5a7053ec920085",
+  "dev_only": true,
+  "download_resume": false,
+  "interrupted_install": "restart_from_retained_full_package",
+  "hardwareAcceptance": "NOT_RUN",
+  "fullChainAcceptance": "NOT_RUN"
+}
