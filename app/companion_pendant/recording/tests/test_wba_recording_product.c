@@ -517,6 +517,7 @@ static void terminal_cause_status(const char *path)
 int COMP_PRODUCT_TEST_MAIN(int argc,char **arguments)
 {
     setvbuf(stdout,NULL,_IONBF,0);
+    if(argc==2&&!strcmp(arguments[1],"selected-discard"))return product_radio_fixture_main(argc,arguments);
     if(argc==2&&!strcmp(arguments[1],"wide-index"))return pipeline_fixture_main(argc,arguments);
     if(argc==3&&!strcmp(arguments[1],"terminal-cause")){terminal_cause_status(arguments[2]);return 0;}
     if(argc==2&&!strcmp(arguments[1],"workspace-restart")){workspace_restart_same_catalogue();return 0;}

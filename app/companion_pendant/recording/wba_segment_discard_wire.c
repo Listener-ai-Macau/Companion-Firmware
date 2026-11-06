@@ -10,6 +10,15 @@ bool comp_discard_v3_preview(const uint8_t *p,size_t n,uint32_t *request_id)
     for(unsigned i=6u;i<92u;i++)if((i<8u||i>=12u)&&p[i])return false;
     *request_id=comp_rec_get32(p+8u);return true;
 }
+bool comp_discard_v3_selection(const uint8_t *p,size_t n,uint32_t *request_id,uint8_t uid[12],uint64_t *epoch,uint64_t *session)
+{
+    if(!request_id||!uid||!epoch||!session||!frame(p,n,COMP_DISCARD_V3_PREVIEW,0u)||!comp_rec_get32(p+8u))return false;
+    for(unsigned i=6u;i<92u;i++)if((i<8u||(i>=12u&&i<16u)||i>=44u)&&p[i])return false;
+    if(!comp_rec_not_uniform(p+16u,12u,0u)||!comp_rec_not_uniform(p+16u,12u,255u)||
+       !comp_rec_get64(p+28u)||!comp_rec_get64(p+36u))return false;
+    *request_id=comp_rec_get32(p+8u);memcpy(uid,p+16u,12u);
+    *epoch=comp_rec_get64(p+28u);*session=comp_rec_get64(p+36u);return true;
+}
 bool comp_discard_v3_encode(uint8_t out[COMP_DISCARD_V3_BYTES],uint8_t operation,uint8_t status,const comp_discard_offer_t *o)
 {
     if(!out||!o||operation<COMP_DISCARD_V3_PREVIEW||operation>COMP_DISCARD_V3_CANCEL||status>COMP_DISCARD_V3_REFUSED||

@@ -1,0 +1,5 @@
+{
+  "result": "FAILED_RADIO_RUNTIME_SOFTWARE",
+  "error": "result.txt: exit 3221226505\nradio setup: NOR/catalog initialized\nradio setup: initial extent prepared\nradio setup: capture started\nradio setup: original capture sealed\nradio setup: segmented product link initialized\nselected slot=1 samples=1600 id=3 previous=1 state=2 flags=11\n\nAssertion failed: selected_slot<64u&&selected.descriptor.sample_count==1440u&&selected.descriptor.recording_id>original.descriptor.recording_id, file C:\\Users\\Billy\\Desktop\\Denzic\\Companion\\firmware-recovery\\.cache\\recording-core-20261011\\selected-discard-r3\\source\\app\\companion_pendant\\recording\\tests\\test_wba_recording_radio.c, line 851\n",
+  "installed": false
+}

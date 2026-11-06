@@ -816,6 +816,94 @@ static void discard_product_dispatch(void)
     puts("PASS_CDS3_PRODUCT_LINK actual dispatcher preview tamper unsubscribe reconnect exclusive recovery; SOFTWARE ONLY");
 }
 
+static void selected_discard_request(uint8_t frame[96],uint32_t request,uint64_t session)
+{
+    memset(frame,0,96u);memcpy(frame,"CDS3",4u);frame[4]=COMP_DISCARD_V3_PREVIEW;
+    comp_rec_put32(frame+8u,request);memcpy(frame+16u,device_uid,12u);
+    comp_rec_put64(frame+28u,catalog.epoch);comp_rec_put64(frame+36u,session);
+    comp_rec_put32(frame+92u,comp_rec_crc(frame,92u));
+}
+static void selected_discard_dispatch(void)
+{
+    test_value_capacity=136u;comp_segment_entry_t original=setup_radio();
+    uint8_t untouched[4096];assert(original.reserved_bytes==sizeof(untouched));
+    memcpy(untouched,f.bytes+DATA_BASE+original.extent_offset,sizeof(untouched));
+    assert(comp_wba_recording_pipeline_begin_timeline(&pipeline,56u,1u,1700000000u,92u,true)==COMP_SEG_PENDING);
+    pipeline.pause_timeline=COMP_CONT_TIMELINE_SOURCE_BOUNDARY;
+    for(unsigned i=0;i<10000u&&pipeline.state!=COMP_PIPE_READY;i++)poll();
+    assert(comp_wba_recording_pipeline_start(&pipeline,92u));
+    for(unsigned block=0;block<9u;block++) {
+        int16_t samples[160];pcm(block,samples);assert(comp_cont_recording_pcm(&engine,samples,160u));
+        for(unsigned i=0;i<160u;i++)poll();
+    }
+    assert(comp_wba_recording_pipeline_stop(&pipeline,92u));
+    for(unsigned i=0;i<10000u&&pipeline.state!=COMP_PIPE_FINISHED;i++)poll();
+    assert(pipeline.state==COMP_PIPE_FINISHED&&!mic);
+    comp_segment_entry_t selected={0};unsigned selected_slot=64u;
+    for(uint8_t i=0;i<64u;i++) {
+        comp_segment_entry_t entry;
+        if(comp_segment_catalog_read(&catalog,i,&entry)==COMP_SEG_OK&&entry.descriptor.session_id==56u)
+            {selected=entry;selected_slot=i;}
+    }
+    printf("selected slot=%u samples=%llu id=%lu previous=%lu state=%u flags=%lu\n",selected_slot,
+        (unsigned long long)selected.descriptor.sample_count,(unsigned long)selected.descriptor.recording_id,
+        (unsigned long)original.descriptor.recording_id,(unsigned)selected.state,(unsigned long)selected.descriptor.flags);
+    /* Descriptor counts encoded20ms frames; CDB1 retains the exact1440 valid
+     * source samples. The existing CDS3 frame-alignment check stays strict. */
+    assert(engine.stats.accepted_pcm_blocks==9u&&selected_slot<64u&&selected.descriptor.sample_count==1600u&&selected.descriptor.recording_id>original.descriptor.recording_id);
+    link_owner.runtime.config.random_u32=test_discard_random;
+    assert(comp_wba_recording_radio_set_value_capacity(&radio,136u));connect_peer();
+    uint8_t frame[96];comp_discard_offer_t offer={0};
+    selected_discard_request(frame,7001u,56u);last_reply_bytes=0u;
+    unsigned erases=f.erases,writes=f.writes;
+    send(COMPANION_GATT_CHAR_DELETE_PRIVACY,frame,96u);
+    for(unsigned i=0;i<10000u&&!last_reply_bytes;i++){f.now+=2u;comp_link_poll(&link_owner.link,f.now);}
+    assert(last_reply_bytes==96u&&comp_discard_v3_decode(last_reply,96u,COMP_DISCARD_V3_PREVIEW,0u,&offer));
+    assert(offer.session==56u&&offer.oldest_id==selected.descriptor.recording_id&&offer.samples==1600u&&offer.segments==1u);
+    assert(f.erases==erases&&f.writes==writes);
+    assert(comp_discard_v3_encode(frame,COMP_DISCARD_V3_CANCEL,0u,&offer));last_reply_bytes=0u;
+    send(COMPANION_GATT_CHAR_DELETE_PRIVACY,frame,96u);radio_tick();
+    assert(last_reply_bytes==96u&&last_reply[4]==COMP_DISCARD_V3_CANCEL&&last_reply[5]==COMP_DISCARD_V3_COMPLETE);
+    assert(f.erases==erases&&f.writes==writes&&!pipeline.discard_exclusive);
+    selected_discard_request(frame,7002u,999u);last_reply_bytes=0u;
+    send(COMPANION_GATT_CHAR_DELETE_PRIVACY,frame,96u);
+    for(unsigned i=0;i<10000u&&!last_reply_bytes;i++){f.now+=2u;comp_link_poll(&link_owner.link,f.now);}
+    assert(last_reply_bytes==16u&&!memcmp(last_reply,"CDX3",4u));
+    assert(comp_rec_get32(last_reply+8u)==COMP_SEG_NOT_FOUND&&f.erases==erases&&f.writes==writes);
+    selected_discard_request(frame,7003u,56u);frame[16]^=1u;comp_rec_put32(frame+92u,comp_rec_crc(frame,92u));
+    uint32_t rejected=link_owner.link.rejected_writes;send(COMPANION_GATT_CHAR_DELETE_PRIVACY,frame,96u);
+    assert(link_owner.link.rejected_writes==rejected+1u&&f.erases==erases&&f.writes==writes);
+    selected_discard_request(frame,7004u,56u);last_reply_bytes=0u;
+    send(COMPANION_GATT_CHAR_DELETE_PRIVACY,frame,96u);
+    for(unsigned i=0;i<10000u&&!last_reply_bytes;i++){f.now+=2u;comp_link_poll(&link_owner.link,f.now);}
+    assert(comp_discard_v3_decode(last_reply,96u,COMP_DISCARD_V3_PREVIEW,0u,&offer));
+    assert(comp_discard_v3_encode(frame,COMP_DISCARD_V3_CONFIRM,0u,&offer));last_reply_bytes=0u;
+    send(COMPANION_GATT_CHAR_DELETE_PRIVACY,frame,96u);
+    for(unsigned i=0;i<30000u&&radio.discard_running;i++){f.now+=2u;comp_link_poll(&link_owner.link,f.now);}
+    assert(last_reply_bytes==96u&&last_reply[4]==COMP_DISCARD_V3_CONFIRM&&last_reply[5]==COMP_DISCARD_V3_COMPLETE);
+    assert(!pipeline.discard_exclusive&&!radio.discard_buffer_owned&&f.erases>erases);
+    comp_segment_entry_t after;
+    assert(comp_segment_catalog_read(&catalog,(uint8_t)selected_slot,&after)==COMP_SEG_NOT_FOUND);
+    assert(!memcmp(untouched,f.bytes+DATA_BASE+original.extent_offset,sizeof(untouched)));
+    bool retained=false;
+    for(uint8_t i=0;i<64u;i++)if(comp_segment_catalog_read(&catalog,i,&after)==COMP_SEG_OK) {
+        assert(after.descriptor.session_id!=56u);
+        if(after.descriptor.recording_id==original.descriptor.recording_id) {
+            assert(!memcmp(&after.descriptor,&original.descriptor,sizeof(after.descriptor)));retained=true;
+        }
+    }
+    assert(retained&&!storage.poisoned);
+    ready(57u);assert(comp_wba_recording_pipeline_start(&pipeline,91u));
+    for(unsigned block=0;block<4u;block++) {
+        int16_t samples[160];pcm(block,samples);assert(comp_cont_recording_pcm(&engine,samples,160u));
+        for(unsigned i=0;i<160u;i++)poll();
+    }
+    assert(comp_wba_recording_pipeline_stop(&pipeline,91u));
+    for(unsigned i=0;i<10000u&&pipeline.state!=COMP_PIPE_FINISHED;i++)poll();
+    assert(pipeline.state==COMP_PIPE_FINISHED&&!mic&&
+        !memcmp(untouched,f.bytes+DATA_BASE+original.extent_offset,sizeof(untouched)));
+    puts("PASS_SELECTED_CDS3 actual dispatcher deletes newer chosen session with10ms tail; cancel/absent/wrongUID never erase; older original byte-identical; SOFTWARE ONLY");
+}
 static void discard_workspace_lifetimes(void)
 {
     test_value_capacity=136u;comp_segment_entry_t original=setup_radio();
@@ -1326,6 +1414,7 @@ int COMP_RADIO_TEST_MAIN(int argc,char **argv)
     if(argc==2&&!strcmp(argv[1],"release-failure")){discard_release_failure_retains_workspace(false,false);discard_release_failure_retains_workspace(false,true);discard_release_failure_retains_workspace(true,false);discard_release_failure_retains_workspace(true,true);return 0;}
     if(argc==2&&!strcmp(argv[1],"discard-workspace")){discard_workspace_lifetimes();return 0;}
     if(argc==2&&!strcmp(argv[1],"discard-cds3")){discard_product_dispatch();return 0;}
+    if(argc==2&&!strcmp(argv[1],"selected-discard")){selected_discard_dispatch();discard_product_dispatch();discard_workspace_lifetimes();return 0;}
     if(argc==2&&!strcmp(argv[1],"large-packets")){large_packet_profiles();return 0;}
     if(argc==2&&!strcmp(argv[1],"active-resume")){active_sealed_resume();return 0;}
     if(argc==2&&!strcmp(argv[1],"capture-pair-sealed")){capture_pair_sealed();return 0;}

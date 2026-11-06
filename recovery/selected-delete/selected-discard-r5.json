@@ -1,0 +1,11 @@
+{
+  "result": "PASS_PRODUCT_PORTS_SOFTWARE_ONLY",
+  "softwareOutput": "radio setup: NOR/catalog initialized\nradio setup: initial extent prepared\nradio setup: capture started\nradio setup: original capture sealed\nradio setup: segmented product link initialized\nselected slot=1 samples=1600 id=3 previous=1 state=2 flags=11\nPASS_SELECTED_CDS3 actual dispatcher deletes newer chosen session with10ms tail; cancel/absent/wrongUID never erase; older original byte-identical; SOFTWARE ONLY\nradio setup: NOR/catalog initialized\nradio setup: initial extent prepared\nradio setup: capture started\nradio setup: original capture sealed\nradio setup: segmented product link initialized\nPASS_CDS3_PRODUCT_LINK actual dispatcher preview tamper unsubscribe reconnect exclusive recovery; SOFTWARE ONLY\nradio setup: NOR/catalog initialized\nradio setup: initial extent prepared\nradio setup: capture started\nradio setup: original capture sealed\nradio setup: segmented product link initialized\nPASS_CDS3_SHARED_BUFFER offer_invalidation cancel_backpressure no_loss; SOFTWARE ONLY\n",
+  "physicalBoard": false,
+  "realBle": false,
+  "typeDurability": false,
+  "timingQualification": false,
+  "productionAppBound": true,
+  "installed": false,
+  "opusHostLibrarySha256": "48b4227fea393d2343587e608d6a3ae28d0c4de8120900e45b274f9197b9e824"
+}

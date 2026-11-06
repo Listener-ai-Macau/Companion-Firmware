@@ -185,11 +185,16 @@ static bool discard_write(comp_wba_recording_radio_t *r,const uint8_t *p,uint16_
        r->config.value_capacity<COMP_DISCARD_V3_BYTES)return false;
     uint32_t now=r->config.pipeline->config.now_ms(r->config.pipeline->config.context);
     if(p[4]==COMP_DISCARD_V3_PREVIEW) {
-        uint32_t request=0u;if(!comp_discard_v3_preview(p,n,&request))return false;
+        uint32_t request=0u;uint8_t uid[12];uint64_t epoch=0u,session=0u;
+        if(!comp_discard_v3_preview(p,n,&request)) {
+            comp_segment_catalog_t *c=r->config.pipeline->config.catalog;
+            if(!comp_discard_v3_selection(p,n,&request,uid,&epoch,&session)||
+               epoch!=c->epoch||memcmp(uid,c->uid,12u))return false;
+        }
         if(r->discard_buffer_owned)return false;
         comp_discard_control_port_t port={discard_random,discard_acquire,discard_release,discard_read,discard_poll,r};
         memset(&r->config.transfer->discard_workspace.owner,0,sizeof(r->config.transfer->discard_workspace.owner));
-        if(comp_discard_control_begin(&r->config.transfer->discard_workspace.owner,r->config.pipeline->config.catalog,&port,r->discard_peer,request)!=COMP_SEG_PENDING)return false;
+        if(comp_discard_control_begin_selected(&r->config.transfer->discard_workspace.owner,r->config.pipeline->config.catalog,&port,r->discard_peer,request,session)!=COMP_SEG_PENDING)return false;
         r->capacity_token=0u;r->discard_buffer_owned=true;
         r->discard_confirming=false;r->discard_running=true;r->discard_subscribed=true;return true;
     }

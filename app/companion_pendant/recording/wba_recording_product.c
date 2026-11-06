@@ -339,6 +339,9 @@ void comp_wba_recording_product_poll(comp_wba_recording_product_t *p)
        p->boot_phase==BOOT_RUNTIME_SPACE||p->boot_phase==BOOT_SALVAGE_SPACE||
        p->boot_phase==BOOT_SALVAGE_RUNTIME_SPACE){boot_poll(p);return;}
     if(!p->ready&&p->boot_phase!=BOOT_SALVAGE_READY)return;
+    /* CDS3 owns the catalog worker until its durable intent has finished.
+     * The BLE foreground continues that worker; capacity refresh follows it. */
+    if(p->pipeline.discard_exclusive)return;
     bool idle=p->pipeline.state==COMP_PIPE_IDLE||p->pipeline.state==COMP_PIPE_FINISHED;
     /* A peer's phase-free directory or sealed-audio read may fail after capacity was
      * cached; the cached walk must not hide the poisoned adapter forever.

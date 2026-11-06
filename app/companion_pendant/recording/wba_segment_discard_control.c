@@ -31,13 +31,16 @@ static bool same_offer(const comp_discard_offer_t *a,const comp_discard_offer_t 
 }
 comp_segment_result_t comp_discard_control_begin(comp_discard_control_t *c,comp_segment_catalog_t *catalog,
     const comp_discard_control_port_t *port,uint32_t peer,uint32_t request_id)
+{return comp_discard_control_begin_selected(c,catalog,port,peer,request_id,0u);}
+comp_segment_result_t comp_discard_control_begin_selected(comp_discard_control_t *c,comp_segment_catalog_t *catalog,
+    const comp_discard_control_port_t *port,uint32_t peer,uint32_t request_id,uint64_t session)
 {
     if(!c||!catalog||!port||!port->random_u32||!port->acquire||!port->release||!port->read||!port->poll||!peer||!request_id)
         return COMP_SEG_BAD_ARGUMENT;
     if(c->owns||(c->phase&&c->phase!=CTRL_DONE))return COMP_SEG_BAD_STATE;
     memset(c,0,sizeof(*c));c->catalog=catalog;c->port=*port;c->peer=peer;c->connected=true;
-    c->offer.request_id=request_id;c->phase=CTRL_PREVIEW;c->result=COMP_SEG_PENDING;
-    comp_segment_result_t r=comp_discard_preview_begin(&c->preview,catalog,port->read,port->context);
+    c->offer.request_id=request_id;c->offer.session=session;c->phase=CTRL_PREVIEW;c->result=COMP_SEG_PENDING;
+    comp_segment_result_t r=comp_discard_preview_begin_selected(&c->preview,catalog,port->read,port->context,session);
     if(r!=COMP_SEG_PENDING)return done(c,r,true);
     return r;
 }
@@ -49,7 +52,7 @@ comp_segment_result_t comp_discard_control_confirm(comp_discard_control_t *c,uin
        (uint32_t)(now-c->issued_ms)>=60000u||!same_offer(&c->offer,o))return COMP_SEG_BAD_ARGUMENT;
     if(!c->port.acquire(c->port.context))return COMP_SEG_BAD_STATE;
     c->owns=true;c->phase=CTRL_RECHECK;
-    comp_segment_result_t r=comp_discard_preview_begin(&c->preview,c->catalog,c->port.read,c->port.context);
+    comp_segment_result_t r=comp_discard_preview_begin_selected(&c->preview,c->catalog,c->port.read,c->port.context,c->offer.session);
     if(r!=COMP_SEG_PENDING)return done(c,r,true);
     return r;
 }

@@ -436,6 +436,7 @@ static void run_foreground_tasks(uint32_t tasks)
 static bool stack_writes_allowed(void)
 {
     return product && !(product->board->microphone.running ||
+        product->recording.pipeline.discard_exclusive ||
         comp_wba_recording_product_recovering(&product->recording) ||
         product->runtime.command_pending || product->runtime.start_pending ||
         (comp_v11_update_product_busy() && !comp_v11_update_product_reboot_pending()));

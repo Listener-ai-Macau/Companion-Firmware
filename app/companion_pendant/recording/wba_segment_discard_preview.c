@@ -4,10 +4,13 @@ enum { PREVIEW_FIND=1,PREVIEW_GROUP,PREVIEW_DONE };
 static comp_segment_result_t finish(comp_discard_preview_t *p,comp_segment_result_t r)
 {p->phase=PREVIEW_DONE;p->result=r;return r;}
 comp_segment_result_t comp_discard_preview_begin(comp_discard_preview_t *p,comp_segment_catalog_t *c,comp_discard_entry_fn read,void *context)
+{return comp_discard_preview_begin_selected(p,c,read,context,0u);}
+comp_segment_result_t comp_discard_preview_begin_selected(comp_discard_preview_t *p,comp_segment_catalog_t *c,comp_discard_entry_fn read,void *context,uint64_t session)
 {
     if(!p||!c||!read)return COMP_SEG_BAD_ARGUMENT;
     if(!c->mounted||c->phase)return COMP_SEG_BAD_STATE;
     memset(p,0,sizeof(*p));p->catalog=c;p->read=read;p->context=context;
+    p->selected=session!=0u;p->session_id=session;
     p->epoch=c->epoch;p->generation=c->generation;memcpy(p->uid,c->uid,12u);
     p->oldest_id=UINT32_MAX;p->phase=PREVIEW_FIND;p->result=COMP_SEG_PENDING;return COMP_SEG_PENDING;
 }
@@ -22,7 +25,7 @@ comp_segment_result_t comp_discard_preview_poll(comp_discard_preview_t *p)
     if(c->phase)return COMP_SEG_PENDING;
     if(p->slot==COMP_SEGMENT_CAPACITY) {
         if(p->phase==PREVIEW_FIND) {
-            if(!p->session_id)return finish(p,COMP_SEG_NOT_FOUND);
+            if(p->oldest_id==UINT32_MAX)return finish(p,COMP_SEG_NOT_FOUND);
             p->slot=0u;p->phase=PREVIEW_GROUP;return COMP_SEG_PENDING;
         }
         if(p->phase!=PREVIEW_GROUP||!p->segments||!p->last_seen||p->max_index!=p->last_index)return finish(p,COMP_SEG_BAD_STATE);
@@ -37,7 +40,8 @@ comp_segment_result_t comp_discard_preview_poll(comp_discard_preview_t *p)
         return finish(p,COMP_SEG_STALE_SNAPSHOT);
     p->slot++;
     if(p->phase==PREVIEW_FIND) {
-        if(e.state==COMP_SEG_UNSYNCED&&e.descriptor.recording_id<p->oldest_id) {
+        if(e.state==COMP_SEG_UNSYNCED&&(!p->selected||e.descriptor.session_id==p->session_id)&&
+           e.descriptor.recording_id<p->oldest_id) {
             p->oldest_id=e.descriptor.recording_id;p->session_id=e.descriptor.session_id;
         }
         return COMP_SEG_PENDING;

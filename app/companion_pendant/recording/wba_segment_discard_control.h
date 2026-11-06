@@ -24,6 +24,8 @@ typedef struct {
 /* Zero-initialize the control object before its first begin. */
 comp_segment_result_t comp_discard_control_begin(comp_discard_control_t *,comp_segment_catalog_t *,
     const comp_discard_control_port_t *,uint32_t peer,uint32_t request_id);
+comp_segment_result_t comp_discard_control_begin_selected(comp_discard_control_t *,comp_segment_catalog_t *,
+    const comp_discard_control_port_t *,uint32_t peer,uint32_t request_id,uint64_t session);
 comp_segment_result_t comp_discard_control_poll(comp_discard_control_t *,uint32_t now_ms);
 /* Only expose this offer on the original encrypted peer. */
 const comp_discard_offer_t *comp_discard_control_offer(const comp_discard_control_t *);

@@ -32,6 +32,7 @@ def main():
     out.mkdir(exist_ok=False)
     frozen = out / 'source'
     capacity_only='--pause-capacity' in sys.argv[2:]
+    selected_only='--selected-discard' in sys.argv[2:]
     bookmarks_only='--bookmarks' in sys.argv[2:]
     sources = [REC / ('tests/test_wba_recording_bookmarks.c' if bookmarks_only else 'tests/test_wba_recording_pause_capacity.c' if capacity_only else 'tests/test_wba_recording_product.c'), APP / 'runtime/companion_link.c',
                *[REC / (n + '.c') for n in NAMES], APP / 'storage/spi_nor_stm32wba.c']
@@ -60,7 +61,7 @@ def main():
     args = ['cl.exe', '/nologo', '/W4', '/WX', '/wd5287', '/std:c11', '/TC', '/O2', '/MD',
             '/DCOMPANION_OPUS16_WBA_LOWDELAY=1', '/DCOMPANION_OPUS16_ENCODER_BYTES=65536',
             *(['/DCOMP_NOR_FIXTURE_BYTES=1048576'] if capacity_only or bookmarks_only else []),
-            *(['/DCOMPANION_RECORDING_SEGMENTED_ONLY=1'] if capacity_only or bookmarks_only or any(a in sys.argv[2:] for a in ['--local-control','--logical-control','--pause-control','--initial-status','--workspace-restart','--terminal-cause']) else []),
+            *(['/DCOMPANION_RECORDING_SEGMENTED_ONLY=1'] if selected_only or capacity_only or bookmarks_only or any(a in sys.argv[2:] for a in ['--local-control','--logical-control','--pause-control','--initial-status','--workspace-restart','--terminal-cause']) else []),
             *['/I' + str(p) for p in includes], '/I' + str(ROOT / 'third_party/opus/include'),
             *[str(frozen / p.relative_to(ROOT)) for p in sources],
             '/Fe:' + str(out / 'radio.exe'), '/link', str(lib)]
@@ -78,12 +79,13 @@ def main():
         workspace_only='--workspace-restart' in sys.argv[2:]
         terminal_only='--terminal-cause' in sys.argv[2:]
         wide_only='--wide-index' in sys.argv[2:]
-        result = run([str(out / 'radio.exe')]+(['wide-index'] if wide_only else ['terminal-cause','terminal-cause.cms3'] if terminal_only else ['engine-bookmarks.cmb3'] if bookmarks_only else ['local-control','local-control.cms3'] if local_only else ['workspace-restart'] if workspace_only else ['initial-status'] if initial_only else ['pause-control','pause-control.cpc3'] if pause_only else
+        result = run([str(out / 'radio.exe')]+(['selected-discard'] if selected_only else ['wide-index'] if wide_only else ['terminal-cause','terminal-cause.cms3'] if terminal_only else ['engine-bookmarks.cmb3'] if bookmarks_only else ['local-control','local-control.cms3'] if local_only else ['workspace-restart'] if workspace_only else ['initial-status'] if initial_only else ['pause-control','pause-control.cpc3'] if pause_only else
             ['logical-control'] if logical_only else []), out, 'result.txt')
         cc = shutil.which('arm-none-eabi-gcc'); assert cc
         for relative in ['runtime/companion_link.c', 'recording/wba_recording_radio.c',
                          'recording/wba_recording_pipeline.c', 'recording/wba_segment_pull.c',
                          'recording/wba_recording_transfer.c', 'recording/wba_recording_product.c',
+                         *(['recording/wba_segment_discard_preview.c','recording/wba_segment_discard_control.c','recording/wba_segment_discard_wire.c'] if selected_only else []),
                          *(['recording/companion_continuous_recording.c','recording/companion_segment_audio.c'] if capacity_only or bookmarks_only else [])]:
             if capacity_only and relative not in ['recording/companion_continuous_recording.c','recording/wba_recording_pipeline.c']:continue
             if local_only and relative not in ['runtime/companion_link.c','recording/wba_recording_product.c']:continue

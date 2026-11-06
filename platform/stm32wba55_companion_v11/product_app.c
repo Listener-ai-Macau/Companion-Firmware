@@ -512,8 +512,9 @@ bool comp_v11_product_recording_capacity(const comp_v11_product_app_t *app,
     const comp_wba_recording_space_t *space=&app->recording.space;
     bool current=comp_wba_recording_product_space_current(&app->recording);
     value->flags=current?COMPANION_RECORDING_CAPACITY_VALID:0u;
-    /* V2 explicit user-loss worker is not yet bound. Never advertise its
-     * legacy discard flag or turn a consume proof into a loss confirmation. */
+    /* The existing CDS3 worker is bound by comp_link_init_segmented. Loss
+     * approval remains separate from a receiver's durable-copy consume. */
+    if(current)value->flags|=COMPANION_RECORDING_CAPACITY_CONFIRMED_DISCARD;
     if (app->runtime.capture_active || app->runtime.prepare_pending ||
         app->runtime.start_pending || app->runtime.command_pending ||
         !current || space->allocation_uncertain ||
