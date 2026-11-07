@@ -1578,6 +1578,27 @@ static void lookup_hint_scope(void)
     }
     puts("PASS_LOOKUP_HINT physical_row_rechecked=1 one_read_hit=1 wrong_empty_stale_fallback=1 consume_one_read=1 duplicate_owner_preserved=1 forged_SHA_no_erase=1 old_audio_unchanged=1");
 }
+static void directory_hint_scope(void)
+{
+    for(unsigned older=0;older<2;older++) {
+        comp_segment_entry_t original=setup_radio(),latest=second_lookup_recording();
+        directory_pages=0u;directory_starts=0u;
+        test_value_capacity=509u;assert(comp_wba_recording_radio_set_value_capacity(&radio,509u));connect_peer();
+        uint8_t directory[16]={2,0x20,3,0};comp_rec_put32(directory+8,97);
+        unsigned writes=f.writes,erases=f.erases;
+        send(COMPANION_GATT_CHAR_RECORDING_CONTROL,directory,16);
+        for(unsigned i=0;i<1000u&&comp_wba_recording_radio_busy(&radio);i++)radio_tick();
+        assert(!comp_wba_recording_radio_busy(&radio)&&directory_pages==2&&radio.pull.slot==1);
+        assert(f.writes==writes&&f.erases==erases&&saved_bytes==0);
+        uint8_t request[32];sealed_request(older?&original:&latest,0,request);
+        unsigned reads=f.reads;send(COMPANION_GATT_CHAR_RECORDING_CHUNK_PULL,request,32);
+        for(unsigned i=0;i<100u&&radio.config.transfer->state==COMP_WBA_RECORDING_TRANSFER_IDLE;i++)lookup_tick();
+        assert(radio.config.transfer->state!=COMP_WBA_RECORDING_TRANSFER_IDLE);
+        assert(f.reads-reads==(older?2u:1u));
+        assert(f.writes==writes&&f.erases==erases);
+    }
+    puts("PASS_DIRECTORY_HINT no_extra_IO=1 no_payload_cache=1 latest_row_rechecked_once=1 older_selection_falls_back=1 no_mutation=1");
+}
 static void unsupported_overlap_negotiation(void)
 {
     (void)setup_radio();assert(comp_wba_recording_radio_set_value_capacity(&radio,136u));connect_peer();
@@ -1591,6 +1612,7 @@ int COMP_RADIO_TEST_MAIN(int argc,char **argv)
 {
     (void)setvbuf(stdout,NULL,_IONBF,0);
     if(argc==2&&!strcmp(argv[1],"lookup-hint")){lookup_hint_scope();return 0;}
+    if(argc==2&&!strcmp(argv[1],"directory-hint")){directory_hint_scope();return 0;}
     if(argc==2&&!strcmp(argv[1],"consume-pull-overlap")){consume_pull_overlap(true,0u);consume_pull_overlap(false,0u);consume_pull_overlap(false,1u);consume_pull_overlap(false,2u);consume_pull_overlap(false,3u);unsupported_overlap_negotiation();return 0;}
     if(argc==2&&!strcmp(argv[1],"calendar-directory")){calendar_directory_attribute_budget();return 0;}
     if(argc==2&&!strcmp(argv[1],"cross-page-read-failure")){partial_cross_page_read_failure();return 0;}

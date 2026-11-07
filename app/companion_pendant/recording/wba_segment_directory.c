@@ -51,7 +51,7 @@ comp_segment_result_t comp_wba_segment_directory_poll(comp_wba_segment_directory
            !comp_rec_v2_encode(&entry.descriptor,row,112u))
             return finish(p,COMP_SEG_CORRUPT);
         if(p->options&1u)comp_rec_put32(row+112u,entry.started_unix_s);
-        p->count++;return COMP_SEG_PENDING;
+        p->scan=index;p->count++;return COMP_SEG_PENDING;
     }
     uint8_t *out=p->output;
     const uint16_t row_bytes=(p->options&1u)?116u:112u;

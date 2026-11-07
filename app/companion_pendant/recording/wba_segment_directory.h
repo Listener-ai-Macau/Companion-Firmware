@@ -17,7 +17,7 @@ typedef struct {
     uint8_t *output; /* caller-owned existing248B GATT value buffer */
     uint32_t snapshot,nonce,start,total;
     uint16_t capacity,bytes;
-    uint8_t scan,count,target;
+    uint8_t scan,count,target; /* scan is the last successfully emitted physical slot hint */
     comp_segment_result_t result;
     bool active;
     uint8_t options;

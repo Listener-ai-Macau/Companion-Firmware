@@ -445,7 +445,10 @@ void comp_wba_recording_radio_poll(comp_wba_recording_radio_t *r,
     if(r->phase==RADIO_DIRECTORY) {
         if(!page_available(r))return;
         comp_segment_result_t result=comp_wba_segment_directory_poll(&r->io.directory);
-        if(result==COMP_SEG_OK)reply(r,COMPANION_GATT_CHAR_RECORDING_LIST,r->io.directory.bytes);
+        if(result==COMP_SEG_OK) {
+            if(r->io.directory.count)r->pull.slot=r->io.directory.scan;
+            reply(r,COMPANION_GATT_CHAR_RECORDING_LIST,r->io.directory.bytes);
+        }
         else if(result!=COMP_SEG_PENDING) {
             /* Keep the correlated refusal across notification backpressure. */
             uint8_t *p=r->config.transfer->packet;memset(p,0,16u);memcpy(p,"CRE2",4u);

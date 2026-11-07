@@ -88,7 +88,9 @@ comp_segment_result_t comp_segment_reserve_begin_rotated(comp_segment_reserve_t 
     x^=x>>16; x*=0x7feb352du; x^=x>>15; x*=0x846ca68bu; x^=x>>16;
     uint32_t hint=(x%(c->data_bytes/COMP_SEGMENT_SECTOR_BYTES))*COMP_SEGMENT_SECTOR_BYTES;
     comp_segment_result_t result=comp_segment_reserve_begin(r,c,e,bytes,hint);
-    if(result==COMP_SEG_PENDING)r->align_to_gap=true;
+    if(result==COMP_SEG_PENDING){r->align_to_gap=true;e->reserved_bytes=0u;}
+    /* A SEARCH-only fallback uses this not-yet-owned entry, not extra RAM.
+     * No descriptor, provenance or durable row is changed until COMMIT. */
     return result;
 }
 
@@ -96,10 +98,17 @@ static bool move_candidate(comp_segment_reserve_t *r,uint32_t next)
 {
     comp_segment_catalog_t *c=r->catalog;
     if (next>c->data_bytes || r->bytes>c->data_bytes-next) {
-        if (r->wrapped || r->hint==0u) return false;
+        if (r->wrapped || r->hint==0u) goto exhausted;
         r->wrapped=true;next=0u;
     }
-    if (r->wrapped && next>=r->hint) return false;
+    if (r->wrapped && next>=r->hint) goto exhausted;
+    goto moved;
+exhausted:
+    if(!r->align_to_gap||r->block_search_exhausted||!r->entry->reserved_bytes)return false;
+    /* All available gaps lacked a capacity-preserving block placement. Re-read
+     * the first ordinary fit; a changed generation still restarts the search. */
+    next=r->entry->extent_offset;r->hint=next;r->wrapped=false;r->block_search_exhausted=true;
+moved:
     r->candidate=next;r->scan=0u;r->cursor=0u;r->gap_end=c->data_bytes;return true;
 }
 
@@ -124,6 +133,7 @@ comp_segment_result_t comp_segment_reserve_poll_scoped(comp_segment_reserve_t *r
         if (r->generation!=c->generation) {
             r->generation=c->generation;r->candidate=r->hint;r->wrapped=false;r->scan=0u;r->cursor=0u;
             r->gap_end=c->data_bytes;
+            if(r->align_to_gap){r->entry->reserved_bytes=0u;r->block_search_exhausted=false;}
         }
         if (r->candidate>c->data_bytes || r->bytes>c->data_bytes-r->candidate) {
             if (!move_candidate(r,c->data_bytes)) return failed(r,COMP_SEG_FULL);
@@ -157,7 +167,7 @@ comp_segment_result_t comp_segment_reserve_poll_scoped(comp_segment_reserve_t *r
              * no greater than its remainder preserves every other whole slot,
              * even when the preceding legacy owner ends one sector off-grid.
              * Eight strides exhaust the 32K residues of sector-aligned slots. */
-            if(c->port.reclaim_block_bytes==32768u && r->bytes>=32768u) {
+            if(!r->block_search_exhausted&&c->port.reclaim_block_bytes==32768u && r->bytes>=32768u) {
                 const uint32_t slots=(r->gap_end-r->cursor)/r->bytes;
                 const uint32_t slack=(r->gap_end-r->cursor)%r->bytes;
                 const uint32_t chosen=(r->candidate-r->cursor)/r->bytes;
@@ -167,6 +177,13 @@ comp_segment_result_t comp_segment_reserve_poll_scoped(comp_segment_reserve_t *r
                     const uint32_t at=r->cursor+slot*r->bytes;
                     const uint32_t padding=(0u-c->data_base-at)&32767u;
                     if(padding<=slack){r->candidate=at+padding;break;}
+                }
+                if((c->data_base+r->candidate)%32768u) {
+                    if(!r->entry->reserved_bytes){r->entry->extent_offset=r->candidate;r->entry->reserved_bytes=r->bytes;}
+                    /* An early exact-size legacy hole must not hide a later
+                     * aligned fit. Keep the first fit as the no-loss fallback. */
+                    if(!move_candidate(r,r->gap_end))return failed(r,COMP_SEG_FULL);
+                    return COMP_SEG_PENDING;
                 }
             }
         }
