@@ -26,7 +26,7 @@ static uint32_t reclaim_bytes(const comp_segment_catalog_t *c)
                         COMP_SEGMENT_PAGE_DATA_BYTES-1u)/COMP_SEGMENT_PAGE_DATA_BYTES;
         uint64_t bytes=(pages+1u)*COMP_SEGMENT_PAGE_BYTES;
         bytes=(bytes+COMP_SEGMENT_SECTOR_BYTES-1u)/COMP_SEGMENT_SECTOR_BYTES*COMP_SEGMENT_SECTOR_BYTES;
-        if(c->port.reclaim_block_bytes==32768u && bytes>=16384u &&
+        if(c->reclaim_block_sectors==8u && bytes>=16384u &&
            (c->data_base+e->extent_offset)%32768u==0u) {
             uint64_t block_end=(bytes+32767u)&~UINT64_C(32767);
             if(block_end<=e->reserved_bytes)bytes=block_end;

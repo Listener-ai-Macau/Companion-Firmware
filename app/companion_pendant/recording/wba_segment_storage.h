@@ -21,6 +21,10 @@ bool comp_wba_segment_storage_init(comp_wba_segment_storage_t *,companion_spi_no
     uint32_t bank_a,uint32_t bank_b,uint32_t data_base,uint32_t data_bytes);
 /* Only the already-qualified bounded suspended-read path can overlap reclaim. */
 bool comp_wba_segment_storage_reclaim_read_supported(const comp_wba_segment_storage_t *);
+/* Mount plus the platform's cached SFDP policy, including runtime remounts.
+ * Generic/read-only mounts retain their default sector policy. No NOR I/O. */
+comp_segment_result_t comp_wba_segment_storage_mount_begin(comp_wba_segment_storage_t *,
+    comp_segment_catalog_t *,const uint8_t uid[12],uint64_t epoch);
 comp_segment_port_t comp_wba_segment_storage_catalog_port(comp_wba_segment_storage_t *);
 comp_segment_audio_port_t comp_wba_segment_storage_audio_port(comp_wba_segment_storage_t *);
 /* Recorder-owned verification: only a fast, fully released read failure may

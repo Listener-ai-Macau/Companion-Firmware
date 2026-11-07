@@ -38,7 +38,7 @@ static comp_segment_result_t finish(comp_segment_catalog_t *c)
 {comp_segment_result_t r=COMP_SEG_PENDING;for(unsigned i=0;i<20000u&&r==COMP_SEG_PENDING;i++)r=poll(c);return r;}
 static comp_segment_result_t mount(comp_segment_catalog_t *c)
 {
-    const comp_segment_port_t p={read_media,program_media,erase_media,NULL,0u};
+    const comp_segment_port_t p={read_media,program_media,erase_media,NULL};
     comp_segment_result_t r=comp_segment_catalog_mount_begin(c,&p,0,BANK,BASE,DATA,uid,7);
     return r==COMP_SEG_PENDING?finish(c):r;
 }

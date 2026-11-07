@@ -161,8 +161,17 @@ bool comp_wba_segment_storage_init(comp_wba_segment_storage_t *s,companion_spi_n
     return true;
 }
 comp_segment_port_t comp_wba_segment_storage_catalog_port(comp_wba_segment_storage_t *s)
-{return (comp_segment_port_t){read_bool,program_bool,erase_bool,s,
-    s&&s->nor&&s->nor->info.erase_32k_supported?32768u:0u};}
+{return (comp_segment_port_t){read_bool,program_bool,erase_bool,s};}
+comp_segment_result_t comp_wba_segment_storage_mount_begin(comp_wba_segment_storage_t *s,
+    comp_segment_catalog_t *c,const uint8_t uid[12],uint64_t epoch)
+{
+    if(!s||!s->nor)return COMP_SEG_BAD_ARGUMENT;
+    comp_segment_port_t port=comp_wba_segment_storage_catalog_port(s);
+    comp_segment_result_t result=comp_segment_catalog_mount_begin(c,&port,s->banks[0],s->banks[1],
+        s->data_base,s->data_bytes,uid,epoch);
+    if(result==COMP_SEG_PENDING)c->reclaim_block_sectors=s->nor->info.erase_32k_supported?8u:0u;
+    return result;
+}
 comp_segment_audio_port_t comp_wba_segment_storage_audio_port(comp_wba_segment_storage_t *s)
 {return (comp_segment_audio_port_t){read_audio,program_audio,s};}
 comp_segment_audio_port_t comp_wba_segment_storage_writer_audio_port(comp_wba_segment_storage_t *s)

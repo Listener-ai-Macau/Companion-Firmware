@@ -61,9 +61,6 @@ typedef struct {
      * advance a cursor. This is the same cooperative erase contract as V1. */
     bool (*erase_step)(void *,uint32_t,uint32_t,uint32_t *);
     void *context;
-    /* Optional qualified block size for a normal STOP's proven blank suffix.
-     * Zero retains the sector prefix; this never enlarges the owned extent. */
-    uint32_t reclaim_block_bytes;
 } comp_segment_port_t;
 
 typedef struct {
@@ -85,6 +82,9 @@ typedef struct {
     uint8_t snapshot_count, pending_state, root_valid_mask, root_blank_mask, invalid_root_mask;
     bool mounted, blank_verified, retire_authorized;
     bool legacy_dirty,gc_has_v3; /* committed rows newer than resident readers */
+    /* Optional platform policy, in existing tail padding. 0 keeps4K sectors;
+     * 8 means SFDP-qualified32K normal-prefix coalescing, never more ownership. */
+    uint8_t reclaim_block_sectors;
 } comp_segment_catalog_t;
 
 /* Mount and every mutation are cooperative. Each poll issues at most one

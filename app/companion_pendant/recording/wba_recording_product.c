@@ -62,8 +62,7 @@ bool comp_wba_recording_product_bind(comp_wba_recording_product_t *p,
     p->pipeline.config=*cfg;p->pipeline.config.recording=&p->capture.engine;
     p->pipeline.config.catalog=&p->catalog;p->pipeline.config.storage=&p->storage;
     p->pipeline.config.capacity_snapshot=capacity_snapshot;
-    comp_segment_port_t port=comp_wba_segment_storage_catalog_port(&p->storage);
-    if(comp_segment_catalog_mount_begin(&p->catalog,&port,a,b,base,bytes,uid,epoch)!=COMP_SEG_PENDING) {
+    if(comp_wba_segment_storage_mount_begin(&p->storage,&p->catalog,uid,epoch)!=COMP_SEG_PENDING) {
         fail(p,COMP_SEG_BAD_STATE);return false;
     }
     p->boot_phase=BOOT_MOUNT;return true;
@@ -318,10 +317,8 @@ bool comp_wba_recording_product_recover_begin(comp_wba_recording_product_t *p)
         if(companion_spi_nor_stm32wba_recovery_observe(p->storage.nor)!=COMPANION_SPI_NOR_STM32WBA_OK)return false;
         uint8_t uid[12];memcpy(uid,p->catalog.uid,sizeof(uid));
         uint64_t epoch=p->catalog.epoch;
-        comp_segment_port_t port=comp_wba_segment_storage_catalog_port(&p->storage);
         p->storage.idle_lookup_read_failed=false;p->storage.poisoned=false;
-        comp_segment_result_t r=comp_segment_catalog_mount_begin(&p->catalog,&port,
-            p->storage.banks[0],p->storage.banks[1],p->storage.data_base,p->storage.data_bytes,uid,epoch);
+        comp_segment_result_t r=comp_wba_segment_storage_mount_begin(&p->storage,&p->catalog,uid,epoch);
         if(r!=COMP_SEG_PENDING){p->storage.poisoned=true;return false;}
         p->pipeline.engine_bound=false;p->ready=false;p->media_ready=false;
         p->boot_phase=BOOT_RUNTIME_REMOUNT;return true;
@@ -442,10 +439,8 @@ bool comp_wba_recording_product_boot_retry(comp_wba_recording_product_t *p,uint3
     p->boot.boot_cursor=now_ms+1000u;
     if(companion_spi_nor_stm32wba_recovery_observe(p->storage.nor)!=COMPANION_SPI_NOR_STM32WBA_OK)return false;
     uint8_t uid[12];memcpy(uid,p->catalog.uid,sizeof(uid));uint64_t epoch=p->catalog.epoch;
-    comp_segment_port_t port=comp_wba_segment_storage_catalog_port(&p->storage);
     p->storage.idle_lookup_read_failed=false;p->storage.poisoned=false;
-    comp_segment_result_t r=comp_segment_catalog_mount_begin(&p->catalog,&port,
-        p->storage.banks[0],p->storage.banks[1],p->storage.data_base,p->storage.data_bytes,uid,epoch);
+    comp_segment_result_t r=comp_wba_segment_storage_mount_begin(&p->storage,&p->catalog,uid,epoch);
     if(r!=COMP_SEG_PENDING){p->storage.poisoned=true;p->reported_state=255u;return false;}
     p->reported_state=idle?(first?BOOT_RETRY_IDLE_OWN1:BOOT_RETRY_IDLE_OWN2):
                            (first?BOOT_RETRY_OWN1:BOOT_RETRY_OWN2);

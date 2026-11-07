@@ -31,7 +31,7 @@ static comp_segment_result_t finish_catalog(comp_segment_catalog_t *c)
 }
 static void mount(comp_segment_catalog_t *c)
 {
-    comp_segment_port_t port={read_port,program_port,erase_port,NULL,0u};
+    comp_segment_port_t port={read_port,program_port,erase_port,NULL};
     assert(comp_segment_catalog_mount_begin(c,&port,0,BANK,BASE,DATA,uid,7)==COMP_SEG_PENDING);
 }
 static void setup(comp_segment_catalog_t *c)

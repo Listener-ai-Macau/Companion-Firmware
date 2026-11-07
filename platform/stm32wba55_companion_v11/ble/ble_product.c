@@ -1010,7 +1010,7 @@ static void maintenance_storage_fields(const companion_spi_nor_stm32wba_t *n,
     response[6]=(uint8_t)((unsigned)n->probed|(unsigned)n->erase_suspend_supported<<1u|
         (unsigned)n->info.erase_32k_supported<<2u|(unsigned)n->erase_active<<3u|
         (unsigned)n->erase_command_failed<<4u|(unsigned)known<<5u|
-        (unsigned)(p->config.catalog->port.reclaim_block_bytes==32768u)<<6u);
+        (unsigned)(p->config.catalog->reclaim_block_sectors==8u)<<6u);
     response[7]=2u;
     comp_maint_put32(response+12u,known?p->config.catalog->data_base+e->extent_offset:0u);
     comp_maint_put32(response+16u,n->erase_address);

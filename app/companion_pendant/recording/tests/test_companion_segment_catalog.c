@@ -54,7 +54,7 @@ static bool erase_media(void *v,uint32_t at,uint32_t remaining,uint32_t *done)
     return true;
 }
 static comp_segment_port_t port(media_t *m)
-{ comp_segment_port_t p={read_media,program_media,erase_media,m,0u}; return p; }
+{ comp_segment_port_t p={read_media,program_media,erase_media,m}; return p; }
 static comp_segment_result_t finish(comp_segment_catalog_t *c,media_t *m)
 {
     comp_segment_result_t result=COMP_SEG_PENDING;
@@ -158,7 +158,7 @@ static bool basic_directory(void)
     CHECK(comp_segment_catalog_read(&c,0u,&e)==COMP_SEG_OK && e.descriptor.recording_id==65u);
     e.state=COMP_SEG_UNSYNCED; e.descriptor.sync_state=1u;
     CHECK(comp_segment_catalog_reclaim_begin(&c,&e)==COMP_SEG_BAD_ARGUMENT);
-    CHECK(comp_segment_catalog_mount_begin(&rebooted,&(comp_segment_port_t){read_media,program_media,erase_media,&media,0u},
+    CHECK(comp_segment_catalog_mount_begin(&rebooted,&(comp_segment_port_t){read_media,program_media,erase_media,&media},
         0u,BANK,BASE,DATA,uid,8u)==COMP_SEG_PENDING);
     CHECK(finish(&rebooted,&media)==COMP_SEG_CORRUPT);
     CHECK(comp_segment_catalog_format_blank_begin(&rebooted)==COMP_SEG_BAD_STATE);

@@ -24,7 +24,7 @@ int main(void){
   pipeline.consume.reserved_bytes=(bits&32u)?270336u:0u;
   pipeline.consume.extent_offset=4096;pipeline.consume.descriptor.recording_id=132208;
   pipeline.consume.descriptor.flags=11;pipeline.consume_phase=7;
-  catalog.port.reclaim_block_bytes=(bits&64u)?32768u:0u;
+  catalog.reclaim_block_sectors=(bits&64u)?8u:0u;
   memcpy(&before,&n,sizeof(n));memcpy(&saved,&pipeline,sizeof(pipeline));
   memset(p,0xa5,sizeof(p));maintenance_storage_fields(&n,&pipeline,p);
   assert(!memcmp(&before,&n,sizeof(n))&&!memcmp(&saved,&pipeline,sizeof(pipeline))&&p[6]==bits&&p[7]==2);
