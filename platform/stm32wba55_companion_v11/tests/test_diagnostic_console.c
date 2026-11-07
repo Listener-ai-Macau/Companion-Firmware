@@ -205,13 +205,20 @@ int main(void)
     s.battery_sample_age_ms=UINT32_MAX;
     s.battery_reference_min_mv=1750u;s.battery_reference_max_mv=1810u;
     comp_v11_diag_console_emit(&console,&s,COMP_V11_DIAG_QUERY,capture,&sink);
+#if !defined(COMPANION_WBA_SCREEN_ENABLED) || COMPANION_WBA_SCREEN_ENABLED
     CHECK(lines(sink.text)==12u);
+#else
+    CHECK(lines(sink.text)==11u);
+    CHECK(strstr(sink.text,"DIAG1 DISPLAY")==NULL);
+#endif
     CHECK(strstr(sink.text,"DIAG1 BEGIN seq=1 reason=query\r\n")!=NULL);
     CHECK(strstr(sink.text,"fw=00010128 build=20261004 board=57424155 uid=67452301efcdab8940302010 ui=58")!=NULL);
     CHECK(strstr(sink.text,"reset=28000000 iwdg_reset=1 faults=00000089 clock=1 lse=0 io=0 imu=0 touch=0 audio=0 mic=1 nor=1 panel=0 battery=0")!=NULL);
     CHECK(strstr(sink.text,"jedec=ef4018 size=16777216")!=NULL);
     CHECK(strstr(sink.text,"suspend_ok=1 erase_active=1 erase_sus=1 sus_ms=2 resume_ms=2 bfp_dw=16 dw12=330001ec dw13=757a757a")!=NULL);
+#if !defined(COMPANION_WBA_SCREEN_ENABLED) || COMPANION_WBA_SCREEN_ENABLED
     CHECK(strstr(sink.text,"stage=3 busy=1 transfer_calls=19 busy_timeouts=2")!=NULL);
+#endif
     CHECK(strstr(sink.text,"mic_reject=5 frames=600 deadline=1 speaker_ready=1")!=NULL);
     CHECK(strstr(sink.text,"fg_ms=4294967295 hal_ms=4294967295 rec_ms=4294967295")!=NULL);
     CHECK(strstr(sink.text,"render_ms=4294967295 pdm_ms=4294967295")!=NULL);

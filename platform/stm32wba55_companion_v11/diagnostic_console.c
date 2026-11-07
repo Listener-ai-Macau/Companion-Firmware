@@ -333,11 +333,13 @@ static const uint16_t diag_core[]={
     D_FAULT(9u),D_FIELD(ram_gap),D_FIELD(stack_min_free),D_FIELD(stack_low),
     D_FIELD(stack_guard),
 };
+#if !defined(COMPANION_WBA_SCREEN_ENABLED) || COMPANION_WBA_SCREEN_ENABLED
 static const uint16_t diag_display[]={
     D_FIELD(panel_bound),D_FIELD(panel_status),D_FIELD(panel_error),D_FIELD(presenter_status),
     D_FIELD(assets_ready),D_FIELD(panel_rendered),D_FIELD(panel_failed),D_FIELD(panel_stage),
     D_FIELD(panel_busy),D_FIELD(panel_transfer_calls),D_FIELD(panel_busy_timeouts),
 };
+#endif
 static const uint16_t diag_storage[]={
     D_MASK24(nor_jedec),D_FIELD(nor_size),D_FIELD(storage_layout_ready),D_FIELD(recording_ready),
     D_FIELD(recording_state),D_FIELD(recording_fault),D_FIELD(recording_committed),D_FIELD(nor_suspend_qualified),
@@ -381,7 +383,9 @@ static const uint16_t diag_powercfg[]={
 static const diag_fields_t diag_groups[]={
     {"ID\261fw\263build\263board\263uid\225\005\005\005\005\005\005\005\005\005\005\005 ui\261uptime_ms\221\r\n",diag_id,17u},
     {"CORE\261reset\263iwdg_reset\261faults\263clock\261lse\261io\261imu\261touch\261audio\261mic\261nor\261panel\261battery\261ram_gap\261stack_min\261stack_low\261stack_guard\221\r\n",diag_core,17u},
+#if !defined(COMPANION_WBA_SCREEN_ENABLED) || COMPANION_WBA_SCREEN_ENABLED
     {"DISPLAY\261bound\261driver\261error\261presenter\261assets\261rendered\261failed\261stage\261busy\261transfer_calls\261busy_timeouts\221\r\n",diag_display,11u},
+#endif
     {"STORAGE\261jedec\264size\261layout\261recording_ready\261rec_state\261rec_fault\261committed\261suspend_ok\261erase_active\261erase_sus\261sus_ms\261resume_ms\261bfp_dw\261dw12\263dw13\223\r\n",diag_storage,15u},
     {"AUDIO\261mic_init\261mic_run\261mic_hal\261mic_irq_err\261mic_stale\261mic_overflow\261mic_reject\261frames\261deadline\261speaker_ready\261fg_ms\261hal_ms\261rec_ms\261ble_ms\261runtime_ms\261present_ms\261render_ms\261pdm_ms\221\r\n",diag_audio,18u},
     {"TIMING\261rec_id\261mic_starts\261tick_us=1000 min_samples=20 enc_n\261enc_valid\261enc_p95_upper_ms\261enc_peak_upper_ms\261pdm_n\261pdm_valid\261pdm_p95_upper_ms\261pdm_peak_upper_ms\221\r\n",diag_timing,10u},

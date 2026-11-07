@@ -541,6 +541,7 @@ static void diagnostic_emit_body(comp_v11_diag_console_t *console,uint32_t reset
     s.faults=companion_v11.faults;
     s.ram_gap=memory_stats->static_gap_bytes;s.stack_min_free=memory_stats->stack.minimum_free_bytes;
     s.stack_low=memory_stats->stack.low_latched;s.stack_guard=memory_stats->stack.guard_failed;
+#if COMPANION_WBA_SCREEN_ENABLED
     /* Configured protocol is distinct from rendered/failed BUSY-qualified
      * completions below, and does not imply a hardware RESET endpoint. */
     s.panel_bound=companion_v11.panel.status!=COMP_SSD1681_WBA_NOT_READY;
@@ -552,6 +553,7 @@ static void diagnostic_emit_body(comp_v11_diag_console_t *console,uint32_t reset
     s.panel_stage=companion_v11.panel.stage;s.panel_busy=comp_v11_hal_panel_busy();
     s.panel_transfer_calls=companion_v11.panel.stats.transfer_calls;
     s.panel_busy_timeouts=companion_v11.panel.stats.busy_timeouts;
+#endif
     s.nor_jedec=companion_v11.nor.info.jedec_id;s.nor_size=companion_v11.nor.info.size_bytes;
     s.nor_suspend_qualified=companion_v11.nor.erase_suspend_supported;
     s.nor_erase_active=companion_v11.nor.erase_active;
@@ -735,6 +737,7 @@ static void diagnostic_emit_body(comp_v11_diag_console_t *console,uint32_t reset
             (unsigned)companion_v11.motion.carried,(unsigned)companion_v11.motion.movement_ms);
         (void)diagnostic_write(NULL,line);
     }
+#if COMPANION_WBA_SCREEN_ENABLED
     {
         char line[256];
         const comp_runtime_t *r=&companion_app.runtime;
@@ -788,6 +791,7 @@ static void diagnostic_emit_body(comp_v11_diag_console_t *console,uint32_t reset
             }
         }
     }
+#endif
 #if COMP_V11_PANEL_LOW_SLEW || COMP_V11_PANEL_PASSIVE_TRACE
     {
         char line[256];
