@@ -423,6 +423,10 @@ void comp_wba_recording_radio_poll(comp_wba_recording_radio_t *r,
             bool overlap=(r->config.transfer->packet[3]&0x80u)!=0u;
             r->negotiated=comp_wba_segment_pull_peer(&r->pull,c->uid,c->epoch,true)?(overlap?3u:1u):0u;
         }
+        else if(r->pending_char==COMPANION_GATT_CHAR_RECORDING_LIST&&r->pending_bytes>=24u&&
+                r->config.transfer->packet[0]==2u&&comp_wba_segment_directory_next(&r->io.directory)) {
+            r->pending_bytes=0u;r->phase=RADIO_DIRECTORY;return;
+        }
         r->pending_bytes=0u;r->phase=r->consume_pending?RADIO_CONSUME:RADIO_IDLE;return;
     }
     if(!r->negotiated)return;

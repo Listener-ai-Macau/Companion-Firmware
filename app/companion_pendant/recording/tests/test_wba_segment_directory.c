@@ -86,6 +86,30 @@ int main(int argc,char **argv)
     assert(comp_wba_segment_directory_begin(&p,&storage,&catalog,request,out,sizeof(out))==COMP_SEG_STALE_SNAPSHOT);
     comp_rec_put32(request+4u,0u);comp_rec_put32(request+12u,1u);
     assert(comp_wba_segment_directory_begin(&p,&storage,&catalog,request,out,sizeof(out))==COMP_SEG_BAD_ARGUMENT);
+    /* Opt-in streams retain the existing attribute and one-read slice. */
+    comp_rec_put32(request+12u,0u);comp_rec_put32(request+8u,91u);request[2]=3u;
+    assert(comp_wba_segment_directory_begin(&p,&storage,&catalog,request,out,248u)==COMP_SEG_PENDING);
+    FILE *stream_file=argc>2?fopen(argv[2],"wb"):NULL;if(argc>2)assert(stream_file);
+    for(unsigned ordinal=0u;ordinal<4u;ordinal++) {
+        assert(!comp_wba_segment_directory_next(&p));
+        assert(page(&p)==COMP_SEG_OK&&p.bytes==140u&&out[1]==1u);
+        assert(comp_rec_get32(out+8u)==ordinal&&comp_rec_get32(out+12u)==4u&&comp_rec_get32(out+16u)==91u);
+        assert(comp_rec_get32(out+32u)==ordinal+1u);
+        assert(comp_rec_get32(out+20u)==~comp_rec_crc_step(comp_rec_crc_step(UINT32_MAX,out,20u),out+24u,p.bytes-24u));
+        if(stream_file)assert(fwrite(out,1u,p.bytes,stream_file)==p.bytes);
+        assert(comp_wba_segment_directory_next(&p)==(ordinal<3u));
+    }
+    if(stream_file)assert(fclose(stream_file)==0);
+    request[2]=2u;
+    assert(comp_wba_segment_directory_begin(&p,&storage,&catalog,request,out,248u)==COMP_SEG_PENDING);
+    assert(page(&p)==COMP_SEG_OK&&out[1]==2u&&p.bytes==248u&&comp_wba_segment_directory_next(&p));
+    catalog.generation++;
+    assert(comp_wba_segment_directory_poll(&p)==COMP_SEG_STALE_SNAPSHOT&&!p.bytes&&!comp_wba_segment_directory_next(&p));
+    assert(comp_wba_segment_directory_begin(&p,&storage,&catalog,request,out,136u)==COMP_SEG_PENDING);
+    assert(page(&p)==COMP_SEG_OK&&p.bytes==136u&&out[1]==1u);
+    comp_wba_segment_directory_cancel(&p);assert(!comp_wba_segment_directory_next(&p));
+    request[2]=4u;
+    assert(comp_wba_segment_directory_begin(&p,&storage,&catalog,request,out,sizeof(out))==COMP_SEG_BAD_ARGUMENT);
     comp_rec_put32(request+12u,0u);comp_rec_put32(request+8u,0u);
     assert(comp_wba_segment_directory_begin(&p,&storage,&catalog,request,out,sizeof(out))==COMP_SEG_BAD_ARGUMENT);
     puts("PASS V2 cooperative GATT directory producer software: negotiated136/182/244/248B value budget,1/2 sealed pages;135B refused; strict nonce/snapshot, hidden growing tail, generation change cannot publish mixed page; capability not enabled");

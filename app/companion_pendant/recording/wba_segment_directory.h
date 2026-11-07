@@ -5,6 +5,7 @@
 /* GATT-facing V2 page request: schema2/command20/reserved00, snapshot u32 at4
  * (zero only to start at0), request nonce at8, logical cursor at12, all LE.
  * Request byte2 bit0 opts into a4B LE started_unix_s sidecar per descriptor;
+ * FW66703+ bit1 requests consecutive bounded pages for this one nonce.
  * byte3 stays zero. Legacy replies keep112B rows, calendar rows are116B.
  * The underlying112B descriptors, raw audio and consume proofs do not change.
  * Do not advertise this capability until the full production binding exists. */
@@ -18,7 +19,8 @@ typedef struct {
     uint16_t capacity,bytes;
     uint8_t scan,count,target;
     comp_segment_result_t result;
-    bool active,calendar;
+    bool active;
+    uint8_t options;
 } comp_wba_segment_directory_t;
 
 comp_segment_result_t comp_wba_segment_directory_begin(comp_wba_segment_directory_t *,
@@ -28,5 +30,8 @@ comp_segment_result_t comp_wba_segment_directory_begin(comp_wba_segment_director
  * publishable. A changing generation fails with0 reply bytes; the caller
  * sends a correlated error/restarts the snapshot, never mixes old/new pages. */
 comp_segment_result_t comp_wba_segment_directory_poll(comp_wba_segment_directory_t *);
+/* Advance only AFTER the previous page notification was accepted. No I/O;
+ * the next poll checks the same generation and reads at most one entry. */
+bool comp_wba_segment_directory_next(comp_wba_segment_directory_t *);
 void comp_wba_segment_directory_cancel(comp_wba_segment_directory_t *);
 #endif

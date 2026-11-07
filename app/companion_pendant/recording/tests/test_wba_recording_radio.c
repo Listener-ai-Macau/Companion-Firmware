@@ -14,6 +14,8 @@ static uint8_t saved[4096],last_reply[509],retry[509];
 static uint16_t last_reply_bytes,retry_bytes;
 static companion_gatt_char_id_t last_reply_char,retry_char;
 static uint32_t saved_bytes,receipt_count;
+static unsigned directory_pages;
+static uint64_t directory_starts;
 static unsigned blocked, unsubscribed_consume_publish;
 static uint16_t test_value_capacity=136u;
 static bool radio_publish(void *v,companion_gatt_char_id_t id,const uint8_t *p,uint16_t n)
@@ -29,6 +31,7 @@ static bool radio_publish(void *v,companion_gatt_char_id_t id,const uint8_t *p,u
     }
     if(blocked){blocked--;memcpy(retry,p,n);retry_bytes=n;retry_char=id;return false;}
     if(retry_bytes){assert(id==retry_char&&n==retry_bytes&&!memcmp(retry,p,n));retry_bytes=0u;}
+    if(id==COMPANION_GATT_CHAR_RECORDING_LIST&&n>=24u&&p[0]==2u){directory_pages++;assert(comp_rec_get32(p+8u)<64u);directory_starts|=UINT64_C(1)<<comp_rec_get32(p+8u);}
     if(id==COMPANION_GATT_CHAR_RECORDING_CHUNK_PULL||id==COMPANION_GATT_CHAR_RECORDING_CHUNK_PULL_B) {
         assert(n>=20u&&p[0]==1u);bool final=(p[1]&1u)!=0u;
         bool live=radio.config.transfer->snapshot_live;
@@ -120,6 +123,21 @@ static void calendar_directory_attribute_budget(void)
         assert(last_reply[1]==(calendar?1u:2u)&&last_reply_bytes==(calendar?140u:248u));
         assert(last_reply[2]==(calendar?116u:112u)&&last_reply[3]==0u);
     }
+    test_value_capacity=136u;
+    test_value_capacity=509u;directory_pages=0u;directory_starts=0u;
+    uint8_t stream[16]={2u,0x20u,3u,0u};comp_rec_put32(stream+8u,83u);
+    blocked=2u;send(COMPANION_GATT_CHAR_RECORDING_CONTROL,stream,16u);
+    for(unsigned i=0u;i<1000u&&comp_wba_recording_radio_busy(&radio);i++)radio_tick();
+    assert(!comp_wba_recording_radio_busy(&radio)&&directory_pages==2u&&directory_starts==3u&&!retry_bytes);
+    directory_pages=0u;directory_starts=0u;send(COMPANION_GATT_CHAR_RECORDING_CONTROL,stream,16u);
+    for(unsigned i=0u;i<1000u&&!directory_pages;i++)radio_tick();assert(directory_pages==1u);
+    subscribe(COMPANION_GATT_CHAR_RECORDING_LIST,false);
+    for(unsigned i=0u;i<10u;i++)radio_tick();assert(directory_pages==1u&&!comp_wba_recording_radio_busy(&radio));
+    subscribe(COMPANION_GATT_CHAR_RECORDING_LIST,true);directory_pages=0u;
+    send(COMPANION_GATT_CHAR_RECORDING_CONTROL,stream,16u);for(unsigned i=0u;i<1000u&&!directory_pages;i++)radio_tick();assert(directory_pages==1u);
+    catalog.generation++;
+    for(unsigned i=0u;i<100u&&comp_wba_recording_radio_busy(&radio);i++)radio_tick();
+    assert(directory_pages==1u&&last_reply_bytes==16u&&!memcmp(last_reply,"CRE2",4u)&&comp_rec_get32(last_reply+12u)==COMP_SEG_STALE_SNAPSHOT);
     test_value_capacity=136u;
     puts("PASS_CALENDAR_DIRECTORY_WITHIN_EXISTING_248_BYTE_GATT_ATTRIBUTE");
 }
