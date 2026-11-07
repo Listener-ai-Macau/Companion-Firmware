@@ -168,6 +168,9 @@ static comp_segment_result_t consume_progress(comp_wba_recording_pipeline_t *p)
            !queued_proof(p,&entry.descriptor))return consume_failed(p,COMP_SEG_BAD_ARGUMENT);
         p->consume_scan=(uint8_t)(slot+1u);
         p->consume=entry;p->consume.state=COMP_SEG_ACKED;p->consume.descriptor.sync_state=2u;
+#if COMPANION_WBA_RECLAIM_TIMING
+        p->consume_timing_ms[1]=p->config.now_ms(p->config.context);
+#endif
         /* Begin is pure; this slice already used its one catalog read. */
         r=comp_segment_catalog_ack_at_begin(c,&p->consume,(uint8_t)(p->consume_scan-1u));
         if(r==COMP_SEG_PENDING)p->consume_phase=CONSUME_ACK;
@@ -190,20 +193,36 @@ static comp_segment_result_t consume_progress(comp_wba_recording_pipeline_t *p)
     }
     if(p->consume_phase==CONSUME_ACK) {
         r=comp_wba_segment_storage_catalog_poll(p->config.storage,c);
-        if(r==COMP_SEG_OK)p->consume_phase=CONSUME_RECLAIM_BEGIN;
+        if(r==COMP_SEG_OK) {
+            p->consume_phase=CONSUME_RECLAIM_BEGIN;
+#if COMPANION_WBA_RECLAIM_TIMING
+            p->consume_timing_ms[2]=p->config.now_ms(p->config.context);
+#endif
+        }
         else if(r!=COMP_SEG_PENDING)return consume_failed(p,r);
         return COMP_SEG_PENDING;
     }
     if(p->consume_phase==CONSUME_RECLAIM_BEGIN) {
         if(c->phase)return COMP_SEG_PENDING;
         r=comp_segment_catalog_reclaim_at_begin(c,&p->consume,(uint8_t)(p->consume_scan-1u));
-        if(r==COMP_SEG_PENDING)p->consume_phase=CONSUME_RECLAIM;
+        if(r==COMP_SEG_PENDING) {
+            p->consume_phase=CONSUME_RECLAIM;
+#if COMPANION_WBA_RECLAIM_TIMING
+            p->consume_timing_ms[3]=p->config.now_ms(p->config.context);
+#endif
+        }
         else return consume_failed(p,r);
         return r;
     }
     if(p->consume_phase==CONSUME_RECLAIM) {
         r=comp_wba_segment_storage_catalog_poll(p->config.storage,c);
-        if(r==COMP_SEG_OK){p->consume_phase=CONSUME_DONE;p->consume_result=COMP_SEG_OK;p->consumed_segments++;}
+        if(r==COMP_SEG_OK){
+            p->consume_phase=CONSUME_DONE;p->consume_result=COMP_SEG_OK;p->consumed_segments++;
+#if COMPANION_WBA_RECLAIM_TIMING
+            p->consume_timing_ms[4]=p->config.now_ms(p->config.context);
+            p->config.storage->nor->reclaim_timing.active=false;
+#endif
+        }
         else if(r!=COMP_SEG_PENDING)return consume_failed(p,r);
         return r;
     }
@@ -519,6 +538,13 @@ comp_segment_result_t comp_wba_recording_pipeline_consume_wire_hint(comp_wba_rec
     memset(&p->consume,0,sizeof(p->consume));p->consume.descriptor=proof;
     p->consume_scan=slot<64u?(uint8_t)(slot|128u):0u;
     p->consume_phase=CONSUME_FIND;p->consume_result=COMP_SEG_PENDING;
+#if COMPANION_WBA_RECLAIM_TIMING
+    memset(p->consume_timing_ms,0,sizeof(p->consume_timing_ms));
+    p->consume_timing_ms[0]=p->config.now_ms(p->config.context);
+    memset(&p->config.storage->nor->reclaim_timing,0,sizeof(p->config.storage->nor->reclaim_timing));
+    p->config.storage->nor->reclaim_timing.active=true;
+    if(p->config.storage->nor->erase_active)p->config.storage->nor->reclaim_timing.interrupted++;
+#endif
     return COMP_SEG_PENDING;
 }
 comp_segment_result_t comp_wba_recording_pipeline_consume_wire(comp_wba_recording_pipeline_t *p,const uint8_t wire[84])

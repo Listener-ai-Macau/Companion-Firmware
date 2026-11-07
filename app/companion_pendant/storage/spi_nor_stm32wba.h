@@ -42,6 +42,20 @@ typedef void (*companion_spi_nor_stm32wba_delay_ms_fn_t)(
     void *context,
     uint32_t delay_ms);
 
+#ifndef COMPANION_WBA_RECLAIM_TIMING
+#define COMPANION_WBA_RECLAIM_TIMING 0
+#endif
+#if COMPANION_WBA_RECLAIM_TIMING
+/* Temporary consume-scoped observation. No NOR logging, policy or completion
+ * change. WIP sample brackets use the driver's millisecond clock; elapsed
+ * includes polling latency and is not a silicon minimum. Absent in release. */
+typedef struct {
+    uint32_t issued,completed,bytes,erase_elapsed_ms,busy_lower_ms,max_poll_gap_ms;
+    uint32_t last_poll_ms,last_busy_lower_ms,program_calls,program_ms,interrupted;
+    bool active;
+} companion_spi_nor_reclaim_timing_t;
+#endif
+
 typedef struct {
     companion_spi_nor_stm32wba_target_t target;
     companion_spi_nor_stm32wba_chip_select_fn_t chip_select;
@@ -91,6 +105,9 @@ typedef struct {
     bool erase_suspend_supported;
     bool erase_active;
     bool erase_command_failed;
+#if COMPANION_WBA_RECLAIM_TIMING
+    companion_spi_nor_reclaim_timing_t reclaim_timing;
+#endif
 } companion_spi_nor_stm32wba_t;
 
 typedef struct {

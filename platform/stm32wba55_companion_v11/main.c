@@ -267,6 +267,24 @@ static void diagnostic_record_fault(void)
         (unsigned)memory_stats->stack.guard_failed,(unsigned)memory_stats->stack.low_latched);
     (void)comp_v11_hal_debug_write(line);
     diagnostic_capture_feedback();
+#if COMPANION_WBA_RECLAIM_TIMING
+    if(companion_app.recording.media_ready) {
+        char line[256];
+        const comp_wba_recording_pipeline_t *p=&companion_app.recording.pipeline;
+        const companion_spi_nor_reclaim_timing_t *t=&companion_v11.nor.reclaim_timing;
+        (void)snprintf(line,sizeof(line),"RECLAIM1 id=%lu phase=%u start_ms=%lu find_ms=%lu ack_ms=%lu reclaim_ms=%lu done_ms=%lu\r\n",
+            (unsigned long)p->consume.descriptor.recording_id,(unsigned)p->consume_phase,
+            (unsigned long)p->consume_timing_ms[0],(unsigned long)p->consume_timing_ms[1],
+            (unsigned long)p->consume_timing_ms[2],(unsigned long)p->consume_timing_ms[3],(unsigned long)p->consume_timing_ms[4]);
+        (void)diagnostic_write(NULL,line);
+        (void)snprintf(line,sizeof(line),"RECLAIM2 active=%u issued=%lu completed=%lu bytes=%lu elapsed_upper_ms=%lu busy_lower_ms=%lu max_poll_gap_ms=%lu interrupted=%lu\r\n",
+            (unsigned)t->active,(unsigned long)t->issued,(unsigned long)t->completed,(unsigned long)t->bytes,
+            (unsigned long)t->erase_elapsed_ms,(unsigned long)t->busy_lower_ms,(unsigned long)t->max_poll_gap_ms,(unsigned long)t->interrupted);
+        (void)diagnostic_write(NULL,line);
+        (void)snprintf(line,sizeof(line),"RECLAIM3 program_calls=%lu program_ms=%lu\r\n",(unsigned long)t->program_calls,(unsigned long)t->program_ms);
+        (void)diagnostic_write(NULL,line);
+    }
+#endif
     diagnostic_record_queue();
     comp_v11_cpu_emit();
 }

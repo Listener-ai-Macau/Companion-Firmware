@@ -49,6 +49,9 @@ static comp_segment_result_t gate(comp_wba_segment_storage_t *s,const comp_segme
         n->info.jedec_id==UINT32_C(0xef6018) && n->config.transfer_timeout_ms
         ? companion_spi_nor_stm32wba_erase_suspend_step_bounded(n,8u)
         : companion_spi_nor_stm32wba_erase_suspend_step(n);
+#if COMPANION_WBA_RECLAIM_TIMING
+    if(n->reclaim_timing.active)n->reclaim_timing.interrupted++;
+#endif
     comp_segment_result_t r=status(s,step);
     if(r!=COMP_SEG_OK&&r!=COMP_SEG_PENDING)return r;
     /* Even a successful status qualification consumes this slice. Do not
@@ -65,7 +68,18 @@ static bool program_bool(void *v,uint32_t at,const uint8_t *p,uint32_t bytes)
 {
     comp_wba_segment_storage_t *s=v;
     if(!allowed(s,at,bytes)||!p||bytes>256u||at/256u!=(at+bytes-1u)/256u)return false;
-    return status(s,companion_spi_nor_stm32wba_program(s->nor,at,p,bytes))==COMP_SEG_OK;
+#if COMPANION_WBA_RECLAIM_TIMING
+    const uint32_t before=s->nor->config.now_ms(s->nor->config.context);
+#endif
+    bool ok=status(s,companion_spi_nor_stm32wba_program(s->nor,at,p,bytes))==COMP_SEG_OK;
+#if COMPANION_WBA_RECLAIM_TIMING
+    if(s->nor->reclaim_timing.active) {
+        s->nor->reclaim_timing.program_calls++;
+        s->nor->reclaim_timing.program_ms+=s->nor->config.now_ms(s->nor->config.context)-before;
+        if(!ok)s->nor->reclaim_timing.interrupted++;
+    }
+#endif
+    return ok;
 }
 static bool erase_bool(void *v,uint32_t at,uint32_t remaining,uint32_t *done)
 {

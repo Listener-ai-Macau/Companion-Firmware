@@ -1143,6 +1143,14 @@ companion_spi_nor_stm32wba_status_t companion_spi_nor_stm32wba_erase_step(
             ? COMPANION_SPI_NOR_STM32WBA_PENDING : resumed;
     }
     uint8_t status1 = 0u;
+#if COMPANION_WBA_RECLAIM_TIMING
+    const uint32_t sample_before=nor->config.now_ms(nor->config.context);
+    if(nor->reclaim_timing.active&&nor->erase_active) {
+        uint32_t gap=sample_before-nor->reclaim_timing.last_poll_ms;
+        if(gap>nor->reclaim_timing.max_poll_gap_ms)nor->reclaim_timing.max_poll_gap_ms=gap;
+        nor->reclaim_timing.last_poll_ms=sample_before;
+    }
+#endif
     companion_spi_nor_stm32wba_status_t status = read_status1(nor, &status1);
     if (status != COMPANION_SPI_NOR_STM32WBA_OK) return status;
     if (nor->erase_active) {
@@ -1152,6 +1160,12 @@ companion_spi_nor_stm32wba_status_t companion_spi_nor_stm32wba_erase_step(
                                              : COMPANION_SPI_NOR_STM32WBA_OK;
         }
         if (status1 & NOR_SR1_WIP) {
+#if COMPANION_WBA_RECLAIM_TIMING
+            if(nor->reclaim_timing.active) {
+                uint32_t elapsed=sample_before-nor->erase_started_ms;
+                nor->reclaim_timing.last_busy_lower_ms=elapsed?elapsed-1u:0u;
+            }
+#endif
             return nor->config.now_ms(nor->config.context) - nor->erase_started_ms >=
                        nor->config.sector_erase_timeout_ms
                 ? COMPANION_SPI_NOR_STM32WBA_TIMEOUT : COMPANION_SPI_NOR_STM32WBA_PENDING;
@@ -1166,6 +1180,17 @@ companion_spi_nor_stm32wba_status_t companion_spi_nor_stm32wba_erase_step(
                 return COMPANION_SPI_NOR_STM32WBA_PENDING;
             }
         }
+#if COMPANION_WBA_RECLAIM_TIMING
+        if(nor->reclaim_timing.active) {
+            if(nor->erase_command_failed||(status1&NOR_SR1_WEL))nor->reclaim_timing.interrupted++;
+            else {
+                nor->reclaim_timing.completed++;
+                nor->reclaim_timing.bytes+=bytes;
+                nor->reclaim_timing.erase_elapsed_ms+=nor->config.now_ms(nor->config.context)-nor->erase_started_ms+1u;
+                nor->reclaim_timing.busy_lower_ms+=nor->reclaim_timing.last_busy_lower_ms;
+            }
+        }
+#endif
         nor->erase_active = false;
         /* A failed command may or may not have reached the chip. Retry the
          * same range after readiness; never credit that uncertain erase. */
@@ -1190,6 +1215,14 @@ companion_spi_nor_stm32wba_status_t companion_spi_nor_stm32wba_erase_step(
      * attempted owner even when command completion is uncertain. */
     nor->erase_started_ms = nor->config.now_ms(nor->config.context);
     nor->erase_run_since_ms = nor->erase_started_ms;
+#if COMPANION_WBA_RECLAIM_TIMING
+    if(nor->reclaim_timing.active) {
+        nor->reclaim_timing.issued++;
+        nor->reclaim_timing.last_poll_ms=nor->erase_started_ms;
+        nor->reclaim_timing.last_busy_lower_ms=0u;
+        if(status!=COMPANION_SPI_NOR_STM32WBA_OK)nor->reclaim_timing.interrupted++;
+    }
+#endif
     if (status != COMPANION_SPI_NOR_STM32WBA_OK) {
         nor->erase_command_failed = true;
         return status;

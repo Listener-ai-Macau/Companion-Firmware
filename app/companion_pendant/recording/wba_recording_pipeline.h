@@ -43,6 +43,9 @@ typedef struct {
     bool engine_bound;
     uint8_t pause_timeline; /*same one-byte field; COMP_CONT_TIMELINE_* */
     uint8_t fault_stop_attempts; /* bounded microphone-stop retry in FAILED */
+#if COMPANION_WBA_RECLAIM_TIMING
+    uint32_t consume_timing_ms[5]; /* accepted, exact owner found, ACK durable, reclaim begin, removal durable */
+#endif
 } comp_wba_recording_pipeline_t;
 
 bool comp_wba_recording_pipeline_init(comp_wba_recording_pipeline_t *,const comp_wba_pipeline_config_t *);
