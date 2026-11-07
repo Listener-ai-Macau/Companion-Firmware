@@ -166,7 +166,7 @@ static comp_segment_result_t consume_progress(comp_wba_recording_pipeline_t *p)
            !queued_proof(p,&entry.descriptor))return consume_failed(p,COMP_SEG_BAD_ARGUMENT);
         p->consume=entry;p->consume.state=COMP_SEG_ACKED;p->consume.descriptor.sync_state=2u;
         /* Begin is pure; this slice already used its one catalog read. */
-        r=comp_segment_catalog_ack_begin(c,&p->consume);
+        r=comp_segment_catalog_ack_at_begin(c,&p->consume,(uint8_t)(p->consume_scan-1u));
         if(r==COMP_SEG_PENDING)p->consume_phase=CONSUME_ACK;
         else return consume_failed(p,r);
         return r;
@@ -193,7 +193,7 @@ static comp_segment_result_t consume_progress(comp_wba_recording_pipeline_t *p)
     }
     if(p->consume_phase==CONSUME_RECLAIM_BEGIN) {
         if(c->phase)return COMP_SEG_PENDING;
-        r=comp_segment_catalog_reclaim_begin(c,&p->consume);
+        r=comp_segment_catalog_reclaim_at_begin(c,&p->consume,(uint8_t)(p->consume_scan-1u));
         if(r==COMP_SEG_PENDING)p->consume_phase=CONSUME_RECLAIM;
         else return consume_failed(p,r);
         return r;

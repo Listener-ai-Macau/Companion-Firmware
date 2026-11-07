@@ -122,6 +122,14 @@ comp_segment_result_t comp_segment_catalog_ack_begin(comp_segment_catalog_t *,
  * This API cannot delete UNSYNCED data or a growing WRITING tail. */
 comp_segment_result_t comp_segment_catalog_reclaim_begin(comp_segment_catalog_t *,
     const comp_segment_entry_t *);
+/* Internal consume owner already resolved this logical slot. Re-read and
+ * validate its exact immutable identity/proof/state under the catalog lock;
+ * unrelated extents cannot change during these state-only transactions.
+ * No PUT/delete shortcut, physical layout or receipt semantics change. */
+comp_segment_result_t comp_segment_catalog_ack_at_begin(comp_segment_catalog_t *,
+    const comp_segment_entry_t *,uint8_t slot);
+comp_segment_result_t comp_segment_catalog_reclaim_at_begin(comp_segment_catalog_t *,
+    const comp_segment_entry_t *,uint8_t slot);
 /* Persist a confirmed whole-session intent before erasing any member. The
  * caller verifies the immutable session preview and exclusive owner first. */
 comp_segment_result_t comp_segment_catalog_session_discard_begin(comp_segment_catalog_t *,

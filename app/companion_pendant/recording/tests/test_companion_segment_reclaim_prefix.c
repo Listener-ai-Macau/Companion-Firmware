@@ -1,16 +1,17 @@
 #include "companion_segment_audio.h"
 #include <stdio.h>
 
-enum { BANK=24576, BASE=2*BANK, RESERVED=270336, DATA=RESERVED+4096,
+enum { BANK=24576, BASE=2*BANK, RESERVED=270336, DATA=RESERVED+8192,
        BYTES=BASE+DATA, PAYLOAD=22610, PREFIX_ERASE=24576,
        NORMAL_FLAGS=COMP_REC_V2_SEALED|COMP_REC_V2_LAST|(COMP_REC_END_USER<<COMP_REC_V2_END_SHIFT) };
 static uint8_t media[BYTES],payload[PAYLOAD];
 static unsigned calls,erases;
+static unsigned fail_read_call;
 static uint32_t preview_address,preview_bytes;
 static const uint8_t uid[12]={1,2,3,4,5,6,7,8,9,10,11,12};
 #define CHECK(x) do {if(!(x)){fprintf(stderr,"FAIL %u %s\n",(unsigned)__LINE__,#x);return false;}}while(0)
 static bool read_media(void *v,uint32_t at,uint8_t *p,uint32_t n)
-{(void)v;calls++;if(at>BYTES||n>BYTES-at)return false;memcpy(p,media+at,n);return true;}
+{(void)v;calls++;if(calls==fail_read_call||at>BYTES||n>BYTES-at)return false;memcpy(p,media+at,n);return true;}
 static bool program_media(void *v,uint32_t at,const uint8_t *p,uint32_t n)
 {
     (void)v;calls++;if(!n||at>BYTES||n>BYTES-at||at/256u!=(at+n-1u)/256u)return false;
@@ -112,5 +113,45 @@ static bool interrupted_reclaim(void)
     CHECK(comp_segment_catalog_receipt_read(&rebooted,0,&receipt)==COMP_SEG_OK&&receipt.state==0);
     puts("PASS_INTERRUPTED_PREFIX_RECLAIM erasing_persisted=1 no_early_receipt=1 stale_acked_rejected=1 reboot_full_erase=1 poll_io_max=1");return true;
 }
+static bool known_slot_scope_and_gc(void)
+{
+    comp_segment_catalog_t c;comp_segment_entry_t e,other,dummy,receipt,bad;
+    CHECK(prepare(&c,&e,NORMAL_FLAGS,false));
+    memset(&other,0,sizeof(other));other.state=COMP_SEG_WRITING;other.extent_offset=RESERVED;other.reserved_bytes=4096;
+    other.descriptor=e.descriptor;other.descriptor.recording_id=c.next_id;other.descriptor.session_id=999;
+    other.descriptor.sample_count=0;other.descriptor.encoded_length=0;other.descriptor.flags=0;
+    other.descriptor.total_segments=0;other.descriptor.sync_state=0;other.descriptor.content_crc32=0;memset(other.descriptor.sha256,0,32);
+    CHECK(comp_segment_catalog_put_begin(&c,&other)==COMP_SEG_PENDING&&finish(&c)==COMP_SEG_OK);
+    other.state=COMP_SEG_UNSYNCED;other.descriptor.sample_count=320;other.descriptor.encoded_length=54;
+    other.descriptor.flags=COMP_REC_V2_SEALED;other.descriptor.sync_state=1;other.descriptor.content_crc32=123;memset(other.descriptor.sha256,1,32);
+    CHECK(comp_segment_catalog_put_begin(&c,&other)==COMP_SEG_PENDING&&finish(&c)==COMP_SEG_OK);
+    while(c.next_slot<95u){
+        dummy=other;dummy.state=COMP_SEG_WRITING;dummy.extent_offset=RESERVED+4096;dummy.descriptor.recording_id=c.next_id;
+        dummy.descriptor.session_id=c.next_id+1000u;dummy.descriptor.sample_count=0;dummy.descriptor.encoded_length=0;
+        dummy.descriptor.flags=0;dummy.descriptor.sync_state=0;dummy.descriptor.content_crc32=0;memset(dummy.descriptor.sha256,0,32);
+        CHECK(all_blank(BASE+dummy.extent_offset,4096));
+        CHECK(comp_segment_catalog_put_begin(&c,&dummy)==COMP_SEG_PENDING&&finish(&c)==COMP_SEG_OK);
+        CHECK(comp_segment_catalog_cancel_unwritten_begin(&c,&dummy)==COMP_SEG_PENDING&&finish(&c)==COMP_SEG_OK);
+    }
+    CHECK(c.next_slot==95u);e.state=COMP_SEG_ACKED;e.descriptor.sync_state=2;
+    CHECK(comp_segment_catalog_ack_at_begin(&c,&e,2)==COMP_SEG_NOT_FOUND);
+    CHECK(comp_segment_catalog_ack_at_begin(&c,&e,1)==COMP_SEG_PENDING&&finish(&c)==COMP_SEG_BAD_STATE);
+    CHECK(erases==0u&&mount(&c)==COMP_SEG_OK);
+    bad=e;bad.descriptor.sha256[0]^=1u;
+    CHECK(comp_segment_catalog_ack_at_begin(&c,&bad,0)==COMP_SEG_PENDING&&finish(&c)==COMP_SEG_BAD_STATE);
+    CHECK(erases==0u&&mount(&c)==COMP_SEG_OK);
+    CHECK(comp_segment_catalog_ack_at_begin(&c,&e,0)==COMP_SEG_PENDING);
+    unsigned before=calls;CHECK(poll(&c)==COMP_SEG_PENDING&&calls-before==1u);
+    CHECK(c.scan==64u&&finish(&c)==COMP_SEG_OK&&c.next_slot==96u);
+    CHECK(comp_segment_catalog_reclaim_at_begin(&c,&e,0)==COMP_SEG_PENDING);fail_read_call=calls+1;
+    CHECK(poll(&c)==COMP_SEG_IO_ERROR&&erases==0u);fail_read_call=0;
+    CHECK(mount(&c)==COMP_SEG_OK&&comp_segment_catalog_read(&c,0,&receipt)==COMP_SEG_OK&&receipt.state==COMP_SEG_ACKED);
+    CHECK(comp_segment_catalog_reclaim_at_begin(&c,&e,0)==COMP_SEG_PENDING&&finish(&c)==COMP_SEG_OK);
+    CHECK(erases==(BANK+PREFIX_ERASE)/4096u&&all_blank(BASE,RESERVED));
+    CHECK(comp_segment_catalog_read(&c,1,&receipt)==COMP_SEG_OK&&receipt.descriptor.recording_id==other.descriptor.recording_id);
+    for(unsigned i=0;i<4096;i++)CHECK(media[BASE+RESERVED+i]==0x5a);
+    CHECK(comp_segment_catalog_receipt_read(&c,0,&receipt)==COMP_SEG_OK&&receipt.state==0);
+    puts("PASS_KNOWN_SLOT exact_target_read=1 no_unrelated_scan=1 wrong_slot_sha_refused=1 failed_read_no_erase=1 logical_slot_survives_GC=1 other_owner_unchanged=1");return true;
+}
 int main(void)
-{memset(payload,0x37,sizeof(payload));return normal_and_fallbacks()&&interrupted_reclaim()?0:1;}
+{memset(payload,0x37,sizeof(payload));return normal_and_fallbacks()&&interrupted_reclaim()&&known_slot_scope_and_gc()?0:1;}

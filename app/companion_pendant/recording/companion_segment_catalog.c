@@ -5,7 +5,7 @@ enum {
     MOUNT_FIRST, MOUNT_PAIR, PREFLIGHT, COMPACT_SCAN, GC_INTENT_BODY, GC_INTENT_COMMIT, GC_INTENT_VERIFY,
     GC_ERASE, ROOT_BODY, GC_READ,
     GC_BODY, GC_COMMIT, GC_VERIFY, ROOT_COMMIT, ROOT_VERIFY,
-    ROW_BODY, ROW_COMMIT, ROW_VERIFY, RECLAIM,
+    ROW_BODY, ROW_COMMIT, ROW_VERIFY, RECLAIM, PREFLIGHT_KNOWN,
     OP_NONE=0, OP_PUT=1, OP_ACK=2, OP_RECLAIM=3, OP_FORMAT=4, OP_CANCEL=5, OP_DISCARD=6, OP_SESSION_INTENT=7, OP_COMPACT=8,
     NO_SLOT=255, ROOT_CRC=60, ROW_CRC=140, INTENT=224, INTENT_COMMIT=248, COMMIT=252
 };
@@ -130,6 +130,9 @@ comp_segment_result_t comp_segment_catalog_next_io(const comp_segment_catalog_t 
     case MOUNT_BLANK:*io=(comp_segment_io_t){address(c,c->scan,c->target_slot),256u,COMP_SEG_IO_READ};break;
     case MOUNT_ROWS:*io=(comp_segment_io_t){address(c,c->bank,c->target_slot),256u,COMP_SEG_IO_READ};break;
     case MOUNT_PREVIOUS:*io=(comp_segment_io_t){address(c,c->bank,c->slots[c->index]),256u,COMP_SEG_IO_READ};break;
+    case PREFLIGHT_KNOWN:
+        if(c->scan>=64u||c->slots[c->scan]==NO_SLOT)return COMP_SEG_NOT_FOUND;
+        *io=(comp_segment_io_t){address(c,c->bank,c->slots[c->scan]),256u,COMP_SEG_IO_READ};break;
     case MOUNT_FIRST:case PREFLIGHT:case COMPACT_SCAN:
         index=occupied_from(c,c->scan);
         if(index<64u)*io=(comp_segment_io_t){address(c,c->bank,c->slots[index]),256u,COMP_SEG_IO_READ};
@@ -420,6 +423,19 @@ comp_segment_result_t comp_segment_catalog_ack_begin(comp_segment_catalog_t *c,c
 { return begin(c,e,OP_ACK); }
 comp_segment_result_t comp_segment_catalog_reclaim_begin(comp_segment_catalog_t *c,const comp_segment_entry_t *e)
 { return begin(c,e,OP_RECLAIM); }
+static comp_segment_result_t begin_at(comp_segment_catalog_t *c,const comp_segment_entry_t *e,uint8_t op,uint8_t slot)
+{
+    if(!c||slot>=64u)return COMP_SEG_BAD_ARGUMENT;
+    if(!c->mounted||c->phase!=IDLE)return COMP_SEG_BAD_STATE;
+    if(c->slots[slot]==NO_SLOT)return COMP_SEG_NOT_FOUND;
+    comp_segment_result_t r=begin(c,e,op);
+    if(r==COMP_SEG_PENDING){c->scan=slot;c->phase=PREFLIGHT_KNOWN;}
+    return r;
+}
+comp_segment_result_t comp_segment_catalog_ack_at_begin(comp_segment_catalog_t *c,const comp_segment_entry_t *e,uint8_t slot)
+{return begin_at(c,e,OP_ACK,slot);}
+comp_segment_result_t comp_segment_catalog_reclaim_at_begin(comp_segment_catalog_t *c,const comp_segment_entry_t *e,uint8_t slot)
+{return begin_at(c,e,OP_RECLAIM,slot);}
 comp_segment_result_t comp_segment_catalog_session_discard_begin(comp_segment_catalog_t *c,const comp_segment_entry_t *e,const comp_segment_discard_intent_t *intent,uint32_t expected_generation)
 {
     if(!c || !e || !intent || !intent->slots || !intent->max_id || intent->max_id<e->descriptor.recording_id)return COMP_SEG_BAD_ARGUMENT;
@@ -562,7 +578,7 @@ comp_segment_result_t comp_segment_catalog_poll(comp_segment_catalog_t *c)
         if(!row_decode(c,c->page,&e))return fail(c,COMP_SEG_CORRUPT);
         if(e.state==COMP_SEG_SESSION_DISCARD||e.state==COMP_SEG_DISCARDING)return fail(c,COMP_SEG_BAD_STATE);
         c->scan++;break;
-    case PREFLIGHT:
+    case PREFLIGHT_KNOWN:case PREFLIGHT:
         while (c->scan<64u && c->slots[c->scan]==NO_SLOT) c->scan++;
         if (c->scan<64u) {
             if (!c->port.read(c->port.context,address(c,c->bank,c->slots[c->scan]),c->page,256u)) return fail(c,COMP_SEG_IO_ERROR);
@@ -585,8 +601,9 @@ comp_segment_result_t comp_segment_catalog_poll(comp_segment_catalog_t *c)
                 if ((c->operation==OP_ACK && old.state==COMP_SEG_ACKED) ||
                     (c->operation==OP_RECLAIM && old.state==COMP_SEG_ERASING) ||
                     (c->operation==OP_DISCARD && old.state==COMP_SEG_DISCARDING)) c->cursor=1u;
-            } else if (!separate(&old,c->pending)) return fail(c,COMP_SEG_BAD_STATE);
-            c->scan++; break;
+            } else if (c->phase==PREFLIGHT_KNOWN || !separate(&old,c->pending)) return fail(c,COMP_SEG_BAD_STATE);
+            c->scan=c->phase==PREFLIGHT_KNOWN?64u:(uint8_t)(c->scan+1u);
+            c->phase=PREFLIGHT;break;
         }
         if (c->index==NO_SLOT) {
             if (c->operation!=OP_PUT || c->pending_state!=COMP_SEG_WRITING) return fail(c,COMP_SEG_NOT_FOUND);
