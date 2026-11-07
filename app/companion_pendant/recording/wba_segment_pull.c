@@ -123,7 +123,7 @@ bool comp_wba_segment_pull_init(comp_wba_segment_pull_t *p,const comp_wba_segmen
        cfg->storage->data_base!=cfg->catalog->data_base||cfg->storage->data_bytes!=cfg->catalog->data_bytes||
        cfg->storage->banks[0]!=cfg->catalog->banks[0]||cfg->storage->banks[1]!=cfg->catalog->banks[1]||
        cfg->storage->poisoned)return false;
-    memset(p,0,sizeof(*p));p->config=*cfg;
+    memset(p,0,sizeof(*p));p->config=*cfg;p->slot=64u;
     comp_wba_recording_transfer_config_t transfer={0};transfer.notify=notify;
     transfer.heavy_io_allowed=allowed;transfer.live_read_allowed=allowed;transfer.context=p;
     return comp_wba_recording_transfer_init_backend(cfg->transfer,&transfer,&backend);
@@ -180,7 +180,12 @@ comp_segment_result_t comp_wba_segment_pull_begin(comp_wba_segment_pull_t *p,con
     p->segment_index=comp_rec_get32(request+24u);
     memset(&p->request,0,sizeof(p->request));p->request.schema_version=1u;p->request.flags=request[2];
     p->request.recording_id=comp_rec_get32(request+4u);p->request.byte_offset=comp_rec_get32(request+28u);
-    p->generation=p->config.catalog->generation;p->scan=0u;p->phase=PULL_FIND;p->result=COMP_SEG_PENDING;
+    /* A slot is only a read hint, never a cached descriptor. Re-read it and
+     * check the complete request before using it. Recycled reservations often
+     * keep the same logical slot; unrelated selections fall back to slot0. */
+    p->generation=p->config.catalog->generation;
+    p->scan=p->slot<64u?(uint8_t)(p->slot|128u):0u;
+    p->phase=PULL_FIND;p->result=COMP_SEG_PENDING;
     return COMP_SEG_PENDING;
 }
 static comp_segment_result_t failure(comp_wba_segment_pull_t *p,comp_segment_result_t result)
@@ -196,9 +201,11 @@ comp_segment_result_t comp_wba_segment_pull_select_poll(comp_wba_segment_pull_t 
         if(c->generation!=p->generation){p->scan=0u;p->generation=c->generation;}
         if(p->scan==64u)return failure(p,COMP_SEG_NOT_FOUND);
         comp_segment_entry_t e;
-        comp_segment_result_t result=transfer_entry(p,p->scan,&e);
+        const bool hinted=(p->scan&128u)!=0u;
+        const uint8_t slot=(uint8_t)(p->scan&63u);
+        comp_segment_result_t result=transfer_entry(p,slot,&e);
         if(result==COMP_SEG_PENDING)return result;
-        uint8_t slot=p->scan++;
+        p->scan=hinted?0u:(uint8_t)(slot+1u);
         if(result==COMP_SEG_NOT_FOUND)return COMP_SEG_PENDING;
         if(result!=COMP_SEG_OK)return failure(p,result);
         if(e.descriptor.recording_id!=p->request.recording_id)return COMP_SEG_PENDING;

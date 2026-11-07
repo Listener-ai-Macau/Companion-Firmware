@@ -74,6 +74,9 @@ bool comp_wba_recording_pipeline_consume_idle_read_failed(const comp_wba_recordi
  * Receipt becomes available ONLY after durable physical removal, or an exact
  * replay of its retained proof. No new84B buffer lives in this coordinator. */
 comp_segment_result_t comp_wba_recording_pipeline_consume_wire(comp_wba_recording_pipeline_t *,const uint8_t wire[84]);
+/* Internal lookup hint only. Physical row identity/state/proof are re-read;
+ * an empty or unrelated slot falls back to the complete search. */
+comp_segment_result_t comp_wba_recording_pipeline_consume_wire_hint(comp_wba_recording_pipeline_t *,const uint8_t wire[84],uint8_t slot);
 bool comp_wba_recording_pipeline_receipt(const comp_wba_recording_pipeline_t *,uint8_t wire[84]);
 bool comp_wba_recording_pipeline_storage_busy(const comp_wba_recording_pipeline_t *);
 /* Called only after BLE/OTA/transfer owners are known idle. A failed or

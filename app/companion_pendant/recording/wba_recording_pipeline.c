@@ -156,14 +156,17 @@ static comp_segment_result_t consume_progress(comp_wba_recording_pipeline_t *p)
         if(c->phase)return COMP_SEG_PENDING;
         if(p->consume_scan==64u){p->consume_scan=0u;p->consume_phase=CONSUME_RECEIPT;return COMP_SEG_PENDING;}
         comp_segment_entry_t entry;
-        r=comp_wba_segment_storage_entry(p->config.storage,c,p->consume_scan,&entry);
+        const bool hinted=(p->consume_scan&128u)!=0u;
+        const uint8_t slot=(uint8_t)(p->consume_scan&63u);
+        r=comp_wba_segment_storage_entry(p->config.storage,c,slot,&entry);
         if(r==COMP_SEG_PENDING)return r;
-        p->consume_scan++;
+        p->consume_scan=hinted?0u:(uint8_t)(slot+1u);
         if(r==COMP_SEG_NOT_FOUND)return COMP_SEG_PENDING;
         if(r!=COMP_SEG_OK)return consume_failed(p,r);
         if(entry.descriptor.recording_id!=p->consume.descriptor.recording_id)return COMP_SEG_PENDING;
         if((entry.state!=COMP_SEG_UNSYNCED&&entry.state!=COMP_SEG_ACKED)||
            !queued_proof(p,&entry.descriptor))return consume_failed(p,COMP_SEG_BAD_ARGUMENT);
+        p->consume_scan=(uint8_t)(slot+1u);
         p->consume=entry;p->consume.state=COMP_SEG_ACKED;p->consume.descriptor.sync_state=2u;
         /* Begin is pure; this slice already used its one catalog read. */
         r=comp_segment_catalog_ack_at_begin(c,&p->consume,(uint8_t)(p->consume_scan-1u));
@@ -494,7 +497,7 @@ comp_segment_result_t comp_wba_recording_pipeline_consume(comp_wba_recording_pip
     p->consume.descriptor.sync_state=2u;p->consume_result=COMP_SEG_PENDING;p->consume_scan=0u;p->consume_phase=CONSUME_FIND;
     return COMP_SEG_PENDING;
 }
-comp_segment_result_t comp_wba_recording_pipeline_consume_wire(comp_wba_recording_pipeline_t *p,const uint8_t wire[84])
+comp_segment_result_t comp_wba_recording_pipeline_consume_wire_hint(comp_wba_recording_pipeline_t *p,const uint8_t wire[84],uint8_t slot)
 {
     static const uint8_t prefix[8]={'C','R','A','2',2u,0u,84u,0u};
     if(!p||!wire||memcmp(wire,prefix,8u)||comp_rec_get32(wire+80u)!=comp_wba_recording_crc32(0u,wire,80u))
@@ -514,9 +517,12 @@ comp_segment_result_t comp_wba_recording_pipeline_consume_wire(comp_wba_recordin
     if(p->config.storage->poisoned ||
        (p->config.catalog->phase && p->config.catalog->pending==&p->consume))return COMP_SEG_BAD_STATE;
     memset(&p->consume,0,sizeof(p->consume));p->consume.descriptor=proof;
-    p->consume_scan=0u;p->consume_phase=CONSUME_FIND;p->consume_result=COMP_SEG_PENDING;
+    p->consume_scan=slot<64u?(uint8_t)(slot|128u):0u;
+    p->consume_phase=CONSUME_FIND;p->consume_result=COMP_SEG_PENDING;
     return COMP_SEG_PENDING;
 }
+comp_segment_result_t comp_wba_recording_pipeline_consume_wire(comp_wba_recording_pipeline_t *p,const uint8_t wire[84])
+{return comp_wba_recording_pipeline_consume_wire_hint(p,wire,64u);}
 bool comp_wba_recording_pipeline_receipt(const comp_wba_recording_pipeline_t *p,uint8_t wire[84])
 {
     if(!p||!wire||p->consume_phase!=CONSUME_DONE||p->consume_result!=COMP_SEG_OK||

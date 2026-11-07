@@ -299,7 +299,10 @@ bool comp_wba_recording_radio_write(comp_wba_recording_radio_t *r,companion_gatt
     }
     if(id==COMPANION_GATT_CHAR_DELETE_PRIVACY&&n==84u&&!memcmp(p,"CRA2",4u)) {
         if((r->phase!=RADIO_IDLE&&r->phase!=RADIO_CONSUME)||transfer_busy(r))return false;
-        comp_segment_result_t result=comp_wba_recording_pipeline_consume_wire(r->config.pipeline,p);
+        const bool selected=r->pull.request.recording_id==comp_rec_get32(p+40u)&&
+            r->pull.session==comp_rec_get64(p+28u)&&r->pull.segment_index==comp_rec_get32(p+36u);
+        comp_segment_result_t result=comp_wba_recording_pipeline_consume_wire_hint(
+            r->config.pipeline,p,selected?r->pull.slot:64u);
         if(result==COMP_SEG_PENDING||result==COMP_SEG_OK) {
             r->consume_replay=false;r->consume_pending=true;r->phase=RADIO_CONSUME;return true;
         }

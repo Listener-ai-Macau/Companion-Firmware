@@ -1514,6 +1514,70 @@ static void consume_pull_overlap(bool legacy,unsigned interruption)
     assert(!storage.poisoned&&catalog.mounted);
     puts(legacy?"PASS_LEGACY_CONSUME_STAYS_SERIAL":"PASS_OPTIN_DIFFERENT_SEALED_PULL_OVERLAPS_RECLAIM_EXACT_PHYSICAL_RECEIPT_AND_RECONNECT");
 }
+static comp_segment_entry_t second_lookup_recording(void)
+{
+    ready(56u);assert(comp_wba_recording_pipeline_start(&pipeline,91u));
+    for(unsigned block=0u;block<36u;block++) {
+        int16_t samples[160];pcm(block,samples);assert(comp_cont_recording_pcm(&engine,samples,160u));
+        for(unsigned i=0u;i<160u;i++)poll();
+    }
+    assert(comp_wba_recording_pipeline_stop(&pipeline,91u));
+    for(unsigned i=0u;i<10000u&&pipeline.state!=COMP_PIPE_FINISHED;i++)poll();
+    comp_segment_entry_t e;assert(pipeline.state==COMP_PIPE_FINISHED);
+    assert(comp_wba_segment_storage_entry(&storage,&catalog,1u,&e)==COMP_SEG_OK);
+    assert(e.descriptor.session_id==56u);return e;
+}
+static void lookup_tick(void)
+{
+    const comp_wba_recording_transfer_budget_t one={1u,1u,1u};
+    unsigned reads=f.reads,writes=f.writes;
+    comp_link_poll_with_budget(&link_owner.link,f.now,NULL,NULL,&one);
+    assert(f.reads-reads<=1u&&f.writes==writes);
+}
+static void lookup_hint_scope(void)
+{
+    for(unsigned scenario=0u;scenario<5u;scenario++) {
+        comp_segment_entry_t original=setup_radio(),target=second_lookup_recording();
+        uint8_t untouched[4096];assert(original.reserved_bytes==sizeof(untouched));
+        memcpy(untouched,f.bytes+DATA_BASE+original.extent_offset,sizeof(untouched));
+        test_value_capacity=136u;assert(comp_wba_recording_radio_set_value_capacity(&radio,136u));connect_peer();
+        uint8_t request[32],proof[84];sealed_request(&target,0u,request);consumption_proof(&target,proof);
+        radio.pull.slot=scenario==1u?0u:scenario==2u?63u:1u;
+        send(COMPANION_GATT_CHAR_RECORDING_CHUNK_PULL,request,32u);
+        if(scenario==3u)catalog.generation++; /* stale generation retires hint */
+        unsigned reads=f.reads;
+        for(unsigned i=0u;i<100u&&radio.config.transfer->state==COMP_WBA_RECORDING_TRANSFER_IDLE;i++)lookup_tick();
+        assert(radio.config.transfer->state!=COMP_WBA_RECORDING_TRANSFER_IDLE);
+        assert(f.reads-reads==(scenario==1u?3u:scenario==2u||scenario==3u?2u:1u));
+        for(unsigned i=0u;i<5000u&&comp_wba_recording_radio_busy(&radio);i++)lookup_tick();
+        assert(saved_bytes==target.descriptor.encoded_length&&radio.pull.slot==1u);
+        if(scenario==4u) {proof[48]^=1u;comp_rec_put32(proof+80u,comp_rec_crc(proof,80u));}
+        if(scenario==1u)radio.pull.slot=0u;
+        if(scenario==2u)radio.pull.slot=63u;
+        send(COMPANION_GATT_CHAR_DELETE_PRIVACY,proof,84u);
+        assert(radio.consume_pending&&pipeline.consume_scan==(128u|radio.pull.slot));
+        reads=f.reads;unsigned erases=f.erases,writes=f.writes;
+        poll();
+        while(comp_wba_recording_pipeline_consume_result(&pipeline)==COMP_SEG_PENDING&&!catalog.phase)poll();
+        assert(f.reads-reads==(scenario==1u?3u:scenario==2u?2u:1u));
+        assert(f.erases==erases&&f.writes==writes);
+        if(scenario==4u) {
+            assert(comp_wba_recording_pipeline_consume_result(&pipeline)==COMP_SEG_BAD_ARGUMENT);
+            assert(!memcmp(untouched,f.bytes+DATA_BASE+original.extent_offset,sizeof(untouched)));
+            continue;
+        }
+        assert(pipeline.consume_scan==2u);
+        /* A replay cannot replace the already accepted owner's cursor. */
+        assert(comp_wba_recording_pipeline_consume_wire_hint(&pipeline,proof,0u)==COMP_SEG_PENDING);
+        assert(pipeline.consume_scan==2u);
+        for(unsigned i=0u;i<10000u&&!receipt_count;i++){poll();lookup_tick();}
+        assert(receipt_count==1u&&!memcmp(proof,last_reply,84u));
+        assert(!memcmp(untouched,f.bytes+DATA_BASE+original.extent_offset,sizeof(untouched)));
+        comp_segment_entry_t retained;assert(comp_wba_segment_storage_entry(&storage,&catalog,0u,&retained)==COMP_SEG_OK);
+        assert(retained.descriptor.recording_id==original.descriptor.recording_id);
+    }
+    puts("PASS_LOOKUP_HINT physical_row_rechecked=1 one_read_hit=1 wrong_empty_stale_fallback=1 consume_one_read=1 duplicate_owner_preserved=1 forged_SHA_no_erase=1 old_audio_unchanged=1");
+}
 static void unsupported_overlap_negotiation(void)
 {
     (void)setup_radio();assert(comp_wba_recording_radio_set_value_capacity(&radio,136u));connect_peer();
@@ -1526,6 +1590,7 @@ static void unsupported_overlap_negotiation(void)
 int COMP_RADIO_TEST_MAIN(int argc,char **argv)
 {
     (void)setvbuf(stdout,NULL,_IONBF,0);
+    if(argc==2&&!strcmp(argv[1],"lookup-hint")){lookup_hint_scope();return 0;}
     if(argc==2&&!strcmp(argv[1],"consume-pull-overlap")){consume_pull_overlap(true,0u);consume_pull_overlap(false,0u);consume_pull_overlap(false,1u);consume_pull_overlap(false,2u);consume_pull_overlap(false,3u);unsupported_overlap_negotiation();return 0;}
     if(argc==2&&!strcmp(argv[1],"calendar-directory")){calendar_directory_attribute_budget();return 0;}
     if(argc==2&&!strcmp(argv[1],"cross-page-read-failure")){partial_cross_page_read_failure();return 0;}
