@@ -6,7 +6,7 @@
 #include "companion_crc32.h"
 enum { COMP_MAINT_QUERY=0,COMP_MAINT_PAIR_WINDOW=1,COMP_MAINT_DEFAULTS=2,COMP_MAINT_CLEAR_BONDS=3,
        COMP_MAINT_BLE_DIAGNOSTICS=4,COMP_MAINT_MEMORY=5,COMP_MAINT_AUDIO_TIMING=6,
-       COMP_MAINT_AUDIO_FAULTS=7,COMP_MAINT_AUDIO_SERVICE=8,COMP_MAINT_CPU_DUTY=9 };
+       COMP_MAINT_AUDIO_FAULTS=7,COMP_MAINT_AUDIO_SERVICE=8,COMP_MAINT_CPU_DUTY=9,COMP_MAINT_STORAGE=10 };
 enum { COMP_MAINT_OK=0,COMP_MAINT_PENDING=1,COMP_MAINT_BUSY=2,COMP_MAINT_INVALID=3,COMP_MAINT_FAILED=4 };
 static inline uint32_t comp_maint_get32(const uint8_t *p)
 {return (uint32_t)p[0]|((uint32_t)p[1]<<8u)|((uint32_t)p[2]<<16u)|((uint32_t)p[3]<<24u);}
@@ -15,7 +15,7 @@ static inline void comp_maint_put32(uint8_t *p,uint32_t n)
 /* Existing encrypted4003 characteristic. No new GATT service or database. */
 static inline bool comp_maint_request(const uint8_t *p,uint16_t n,uint8_t *operation,uint32_t *request)
 {
-    if(!p||!operation||!request||n!=16u||memcmp(p,"CRM1",4u)||p[4]>COMP_MAINT_CPU_DUTY||
+    if(!p||!operation||!request||n!=16u||memcmp(p,"CRM1",4u)||p[4]>COMP_MAINT_STORAGE||
        p[5]||p[6]||p[7]||!comp_maint_get32(p+8u)||
        companion_crc32(0u,p,12u)!=comp_maint_get32(p+12u))return false;
     *operation=p[4];*request=comp_maint_get32(p+8u);return true;
@@ -58,6 +58,12 @@ static inline bool comp_maint_request(const uint8_t *p,uint16_t n,uint8_t *opera
  * configuration,4 slow snapshot,5 late sample,6 stuck counter,7 conversion,
  * 8 excess active span,9 debug freeze,10 clock setup. Bound/validity unchanged;
  * a fault is never silently turned into a valid sample. No reset. */
+/* Operation10 reads existing NOR scalars only, schema1. Flags probed,
+ * suspend-qualified,32K-qualified,erase-active,command-failed bits0..4.
+ * u32 at12 JEDEC,16 most recently issued erase address,20 its bytes;
+ * bytes24..27 erase phase,BFPT DWORD count,resume guard ms,suspend wait ms.
+ * Last erase may be catalogue metadata: only an active erase observation
+ * can establish the in-flight command. No NOR I/O, new counter or payload. */
 static inline void comp_maint_timing16(uint8_t p[32],unsigned at,unsigned bit,
     bool valid,uint32_t value)
 {

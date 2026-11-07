@@ -83,14 +83,21 @@ static void sealing_commit(void)
     puts("PASS_FAULT_SETTLE_SEAL previously accepted exact metadata seal completes, audio SHA/extent retained, fault not promoted to normal finish, recovery unblocked");
 }
 
-static void future_erase_fault(bool suspended)
+static void future_erase_fault(bool suspended,bool half)
 {
-    product_fresh();product_mount();comp_wba_recording_product_lease_result(&product_rec,true);
-    product_rec.pipeline.config.extent_bytes=8192u;
+    product_fresh();
+    if(half) {
+        f.sfdp[80]=15u;f.sfdp[81]=0x52u;
+        assert(companion_spi_nor_stm32wba_probe_erase_suspend(&nor)==COMPANION_SPI_NOR_STM32WBA_OK);
+        assert(nor.info.erase_32k_supported);
+    }
+    product_mount();comp_wba_recording_product_lease_result(&product_rec,true);
+    const uint32_t extent=half?32768u:8192u;
+    product_rec.pipeline.config.extent_bytes=extent;
     product_ready_capture(901u,121u);f.automatic_erase=false;
     /* A blank free extent legitimately needs no erase. Model the dirty,
      * reusable next extent so this case reaches a real in-flight erase. */
-    memset(f.bytes+DATA_BASE+8192u,0u,8192u);
+    memset(f.bytes+DATA_BASE+extent,0u,extent);
     for(unsigned i=0u;i<3000u&&!nor.erase_active;i++)product_tick();
     assert(nor.erase_active&&!product_rec.catalog.phase&&product_rec.pipeline.reserve.entry==&product_rec.pipeline.future);
     if(suspended) {
@@ -100,6 +107,7 @@ static void future_erase_fault(bool suspended)
         assert(companion_spi_nor_stm32wba_erase_is_suspended(&nor));
     }
     uint32_t at=nor.erase_address,bytes=nor.erase_bytes,erases=f.erases,starts=mic_starts;
+    assert(bytes==(half?32768u:4096u));
     uint32_t cursor=product_rec.pipeline.reserve.cursor,reads=f.reads,writes=f.writes,resumes=f.resumes;
     comp_segment_entry_t original=product_rec.capture.engine.active;
     uint8_t before[4096];memcpy(before,f.bytes+DATA_BASE+original.extent_offset,sizeof(before));
@@ -119,15 +127,21 @@ static void future_erase_fault(bool suspended)
     for(unsigned i=0u;i<500u&&nor.erase_active;i++)product_tick();
     assert(!nor.erase_active&&nor.erase_address==at&&nor.erase_bytes==bytes);
     assert_no_live();assert(mic_starts==starts&&f.erases==erases);
-    assert(product_rec.pipeline.reserve.cursor==cursor+bytes&&product_rec.pipeline.reserve.cursor<product_rec.pipeline.reserve.bytes);
+    if(half) {
+        comp_segment_io_t next_io;
+        assert(product_rec.pipeline.reserve.cursor==0u&&
+            comp_segment_reserve_next_io(&product_rec.pipeline.reserve,&next_io)==COMP_SEG_OK&&
+            next_io.kind==COMP_SEG_IO_READ&&next_io.address==at);
+    } else assert(product_rec.pipeline.reserve.cursor==cursor+bytes&&
+        product_rec.pipeline.reserve.cursor<product_rec.pipeline.reserve.bytes);
     reads=f.reads;writes=f.writes;
     for(unsigned i=0u;i<30u;i++)product_tick();
     assert(f.reads==reads&&f.writes==writes&&f.erases==erases); /* no next chunk/provenance/READY */
     assert(!memcmp(before,f.bytes+DATA_BASE+original.extent_offset,sizeof(before)));
     assert(product_rec.pipeline.future.state==COMP_SEG_WRITING&&!product_rec.pipeline.future_writer.prepared);
     wait_recovery();assert(mic_starts==starts);
-    printf("PASS_FAULT_OWNED_ERASE suspended=%u only pre-existing exact command retired; unknown/live/workspace/poison refused; no new erase/provenance/capture; original retained; explicit recovery usable\n",suspended);
+    printf("PASS_FAULT_OWNED_ERASE suspended=%u half32=%u only pre-existing exact command retired; unknown/live/workspace/poison refused; no new erase/provenance/capture; original retained; explicit recovery usable\n",suspended,half);
 }
 
 int main(void)
-{setvbuf(stdout,NULL,_IONBF,0);producer_commit();consumer_commit();sealing_commit();future_erase_fault(false);future_erase_fault(true);puts("SOFTWARE_ONLY no claim for actual593 fault/root/64MHz CPU");return 0;}
+{setvbuf(stdout,NULL,_IONBF,0);producer_commit();consumer_commit();sealing_commit();future_erase_fault(false,false);future_erase_fault(true,false);future_erase_fault(false,true);future_erase_fault(true,true);puts("SOFTWARE_ONLY no claim for actual593 fault/root/64MHz CPU");return 0;}

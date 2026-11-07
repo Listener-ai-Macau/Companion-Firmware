@@ -1002,9 +1002,21 @@ static bool maintenance_idle(void)
         !comp_wba_recording_product_recovering(&product->recording)&&
         comp_v11_ble_recording_recovery_idle();
 }
+static void maintenance_storage_fields(const companion_spi_nor_stm32wba_t *n,uint8_t response[32])
+{
+    response[6]=(uint8_t)((unsigned)n->probed|(unsigned)n->erase_suspend_supported<<1u|
+        (unsigned)n->info.erase_32k_supported<<2u|(unsigned)n->erase_active<<3u|
+        (unsigned)n->erase_command_failed<<4u);
+    comp_maint_put32(response+12u,n->info.jedec_id);
+    comp_maint_put32(response+16u,n->erase_address);
+    comp_maint_put32(response+20u,n->erase_bytes);
+    response[24]=n->erase_phase;response[25]=n->info.sfdp_bfp_dwords;
+    response[26]=n->resume_guard_ms;response[27]=n->suspend_wait_ms;
+}
 static void maintenance_runtime_fields(uint8_t operation,uint8_t response[32])
 {
     response[6]=0u;response[7]=1u;
+    if(operation==COMP_MAINT_STORAGE){maintenance_storage_fields(&product->board->nor,response);return;}
     if(operation==COMP_MAINT_CPU_DUTY){
         comp_cpu_duty_snapshot_t s=comp_cpu_duty_snapshot();
         response[7]=3u; /* same bound, first invalid reason and actual WFI count */

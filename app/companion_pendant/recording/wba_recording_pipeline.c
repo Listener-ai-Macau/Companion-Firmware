@@ -442,7 +442,7 @@ static comp_wba_pipeline_state_t pipeline_poll_body(comp_wba_recording_pipeline_
                p->reserve.catalog==c&&p->reserve.entry==&p->future&&
                comp_segment_reserve_next_io(&p->reserve,&io)==COMP_SEG_OK&&io.kind==COMP_SEG_IO_ERASE&&
                io.address==n->erase_address&&
-               ((io.address%65536u==0u&&io.bytes>=65536u)?65536u:4096u)==n->erase_bytes;
+               companion_spi_nor_stm32wba_erase_chunk(n,io.address,io.bytes)==n->erase_bytes;
             if(owned)
                 (void)comp_wba_segment_storage_reserve_poll(p->config.storage,&p->reserve);
             else if(consumer_active(p))
