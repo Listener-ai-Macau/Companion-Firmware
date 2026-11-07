@@ -13,7 +13,7 @@ static comp_segment_result_t load(const char *path,comp_segment_catalog_t *c)
 {
     FILE *f=NULL;if(fopen_s(&f,path,"rb")!=0||!f)return COMP_SEG_IO_ERROR;
     size_t n=fread(media,1u,sizeof(media),f);fclose(f);if(n!=sizeof(media))return COMP_SEG_IO_ERROR;
-    comp_segment_port_t p={read_media,program_media,erase_media,NULL};
+    comp_segment_port_t p={read_media,program_media,erase_media,NULL,0u};
     comp_segment_result_t r=comp_segment_catalog_mount_begin(c,&p,0u,BANK,BASE,DATA,uid,7u);
     for(unsigned i=0;i<20000u&&r==COMP_SEG_PENDING;i++)r=comp_segment_catalog_mount_poll(c);
     return r;

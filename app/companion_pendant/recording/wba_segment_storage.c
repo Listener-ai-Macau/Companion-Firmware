@@ -29,7 +29,7 @@ static comp_segment_result_t gate(comp_wba_segment_storage_t *s,const comp_segme
          * that worker; this new request cannot consume its completion. */
         if(!n->erase_active)return COMP_SEG_OK;
         if(n->erase_address==io->address) {
-            uint32_t bytes=(io->address%65536u==0u&&io->bytes>=65536u)?65536u:4096u;
+            uint32_t bytes=companion_spi_nor_stm32wba_erase_chunk(n,io->address,io->bytes);
             if(bytes!=n->erase_bytes)return COMP_SEG_BAD_STATE;
             /* A reader needs a second slice to finish suspension. Do not
              * immediately resume its erase between those two slices. One
@@ -73,7 +73,7 @@ static bool erase_bool(void *v,uint32_t at,uint32_t remaining,uint32_t *done)
     if(!done)return false;
     *done=0u;
     if(!allowed(s,at,remaining)||at%4096u||remaining%4096u)return false;
-    uint32_t bytes=(at%65536u==0u&&remaining>=65536u)?65536u:4096u;
+    uint32_t bytes=companion_spi_nor_stm32wba_erase_chunk(s->nor,at,remaining);
     comp_segment_result_t r=status(s,companion_spi_nor_stm32wba_erase_step(s->nor,at,bytes));
     if(r==COMP_SEG_OK)*done=bytes;
     return r==COMP_SEG_OK||r==COMP_SEG_PENDING;
@@ -161,7 +161,8 @@ bool comp_wba_segment_storage_init(comp_wba_segment_storage_t *s,companion_spi_n
     return true;
 }
 comp_segment_port_t comp_wba_segment_storage_catalog_port(comp_wba_segment_storage_t *s)
-{return (comp_segment_port_t){read_bool,program_bool,erase_bool,s};}
+{return (comp_segment_port_t){read_bool,program_bool,erase_bool,s,
+    s&&s->nor&&s->nor->info.erase_32k_supported?32768u:0u};}
 comp_segment_audio_port_t comp_wba_segment_storage_audio_port(comp_wba_segment_storage_t *s)
 {return (comp_segment_audio_port_t){read_audio,program_audio,s};}
 comp_segment_audio_port_t comp_wba_segment_storage_writer_audio_port(comp_wba_segment_storage_t *s)
@@ -288,7 +289,7 @@ comp_segment_result_t comp_wba_segment_storage_reserve_cancel_poll(comp_wba_segm
         /* A live allocator may retire only its exact outstanding chunk.
          * Never cancel a catalog owner while NOR still owns an erase. */
         if(io.kind!=COMP_SEG_IO_ERASE||io.address!=s->nor->erase_address||
-           ((io.address%65536u==0u&&io.bytes>=65536u)?65536u:4096u)!=s->nor->erase_bytes)
+           companion_spi_nor_stm32wba_erase_chunk(s->nor,io.address,io.bytes)!=s->nor->erase_bytes)
             return COMP_SEG_PENDING;
         result=comp_wba_segment_storage_reserve_poll(s,r);
         return result==COMP_SEG_OK?COMP_SEG_PENDING:result;

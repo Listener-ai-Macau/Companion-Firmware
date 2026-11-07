@@ -61,6 +61,9 @@ typedef struct {
      * advance a cursor. This is the same cooperative erase contract as V1. */
     bool (*erase_step)(void *,uint32_t,uint32_t,uint32_t *);
     void *context;
+    /* Optional qualified block size for a normal STOP's proven blank suffix.
+     * Zero retains the sector prefix; this never enlarges the owned extent. */
+    uint32_t reclaim_block_bytes;
 } comp_segment_port_t;
 
 typedef struct {

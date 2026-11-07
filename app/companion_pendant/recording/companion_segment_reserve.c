@@ -148,8 +148,19 @@ comp_segment_result_t comp_segment_reserve_poll_scoped(comp_segment_reserve_t *r
         }
         /* SEARCH reuses cursor as the preceding occupied end. ERASE and VERIFY
          * reset it before their first I/O; no additional SRAM state is needed. */
-        if(r->align_to_gap)
+        if(r->align_to_gap) {
             r->candidate=r->cursor+((r->candidate-r->cursor)/r->bytes)*r->bytes;
+            /* Choose an earlier whole slot in this SAME proven free gap.
+             * Slot boundaries preserve its exact whole-extent capacity. Small
+             * or fragmented gaps keep the original placement and 4K fallback.
+             * Eight sector-aligned strides exhaust all possible 32K residues. */
+            if(r->bytes>=32768u) {
+                uint32_t aligned=r->candidate;
+                for(unsigned i=0u;i<8u && (c->data_base+aligned)%32768u &&
+                    aligned-r->cursor>=r->bytes;i++)aligned-=r->bytes;
+                if((c->data_base+aligned)%32768u==0u)r->candidate=aligned;
+            }
+        }
         r->entry->extent_offset=r->candidate;r->entry->reserved_bytes=r->bytes;
         r->entry->descriptor.recording_id=c->next_id;
         comp_segment_result_t result=comp_segment_catalog_put_begin(c,r->entry);

@@ -69,6 +69,7 @@ typedef struct {
     uint32_t sector_size;
     uint32_t sfdp_suspend_parameters, sfdp_suspend_instructions;
     uint8_t sfdp_bfp_dwords;
+    bool erase_32k_supported;
 } companion_spi_nor_stm32wba_info_t;
 
 typedef struct {
@@ -153,10 +154,15 @@ companion_spi_nor_stm32wba_status_t companion_spi_nor_stm32wba_erase_64k(
     uint32_t address);
 
 /* Start once, then perform one status poll per call. Repeat the exact address
- * and size (4 KiB or 64 KiB); PENDING never means physically erased. Other
+ * and size (4 KiB, qualified 32 KiB, or 64 KiB); PENDING never means erased. Other
  * NOR reads/programs/probes/erases defer while this owner is active. */
 companion_spi_nor_stm32wba_status_t companion_spi_nor_stm32wba_erase_step(
     companion_spi_nor_stm32wba_t *, uint32_t address, uint32_t bytes);
+
+/* Largest supported aligned chunk wholly contained in an admitted range.
+ * The caller still checks partition/recording ownership before erase_step. */
+uint32_t companion_spi_nor_stm32wba_erase_chunk(
+    const companion_spi_nor_stm32wba_t *, uint32_t address, uint32_t remaining_bytes);
 
 /* Only poll/retire this exact existing erase owner. Never start, resume or
  * suspend an erase. A client whose write admission was revoked can finish

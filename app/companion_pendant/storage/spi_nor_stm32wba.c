@@ -16,6 +16,7 @@
 #define NOR_CMD_READ_DATA 0x03u
 #define NOR_CMD_PAGE_PROGRAM 0x02u
 #define NOR_CMD_SECTOR_ERASE_4K 0x20u
+#define NOR_CMD_BLOCK_ERASE_32K 0x52u
 #define NOR_CMD_BLOCK_ERASE_64K 0xD8u
 
 #define NOR_SR1_WIP 0x01u
@@ -453,6 +454,7 @@ companion_spi_nor_stm32wba_status_t companion_spi_nor_stm32wba_probe(
     if (nor->erase_active) return COMPANION_SPI_NOR_STM32WBA_PENDING;
     nor->probed = false;
     nor->erase_suspend_supported = false;
+    nor->info.erase_32k_supported = false;
     nor->last_probe_id_transfer_completed = false;
     nor->last_probe_jedec_id = 0u;
     companion_spi_nor_stm32wba_status_t status =
@@ -538,6 +540,7 @@ companion_spi_nor_stm32wba_status_t companion_spi_nor_stm32wba_probe_erase_suspe
     nor->suspend_wait_ms = 0u; nor->resume_guard_ms = 0u;
     nor->info.sfdp_suspend_parameters = 0u; nor->info.sfdp_suspend_instructions = 0u;
     nor->info.sfdp_bfp_dwords = 0u;
+    nor->info.erase_32k_supported = false;
     if (nor->info.jedec_id != NOR_WINBOND_128_18V_ID)
         return COMPANION_SPI_NOR_STM32WBA_UNSUPPORTED;
     uint8_t sr1 = 0u, sr2 = 0u;
@@ -577,10 +580,11 @@ companion_spi_nor_stm32wba_status_t companion_spi_nor_stm32wba_probe_erase_suspe
     const uint32_t density = little32(bfp + 4u), dw11 = little32(bfp + 40u);
     const uint32_t dw12 = little32(bfp + 44u), dw13 = little32(bfp + 48u);
     nor->info.sfdp_suspend_parameters = dw12; nor->info.sfdp_suspend_instructions = dw13;
-    bool sector = false, block = false;
+    bool sector = false, block = false, half_block = false;
     for (size_t i = 28u; i < 36u; i += 2u) {
         if (bfp[i] == 12u && bfp[i + 1u] == NOR_CMD_SECTOR_ERASE_4K) sector = true;
         if (bfp[i] == 16u && bfp[i + 1u] == NOR_CMD_BLOCK_ERASE_64K) block = true;
+        if (bfp[i] == 15u && bfp[i + 1u] == NOR_CMD_BLOCK_ERASE_32K) half_block = true;
     }
     /* JESD216 DWORD12 bit31=0 means supported (it is NOT a positive flag).
      * Restriction nibble E permits other-sector reads/programs, forbids new
@@ -616,6 +620,7 @@ companion_spi_nor_stm32wba_status_t companion_spi_nor_stm32wba_probe_erase_suspe
         if ((sr2 & NOR_SR2_SUS) != 0u) return COMPANION_SPI_NOR_STM32WBA_ERROR;
     }
     nor->erase_suspend_supported = true;
+    nor->info.erase_32k_supported = half_block;
     return COMPANION_SPI_NOR_STM32WBA_OK;
 }
 
@@ -1108,13 +1113,22 @@ companion_spi_nor_stm32wba_status_t companion_spi_nor_stm32wba_erase_finish_poll
     return failed?COMPANION_SPI_NOR_STM32WBA_ERROR:COMPANION_SPI_NOR_STM32WBA_OK;
 }
 
+uint32_t companion_spi_nor_stm32wba_erase_chunk(
+    const companion_spi_nor_stm32wba_t *nor, uint32_t address, uint32_t remaining)
+{
+    if(address%NOR_BLOCK_SIZE==0u && remaining>=NOR_BLOCK_SIZE)return NOR_BLOCK_SIZE;
+    if(nor && nor->info.erase_32k_supported && address%32768u==0u && remaining>=32768u)return 32768u;
+    return NOR_SECTOR_SIZE;
+}
+
 companion_spi_nor_stm32wba_status_t companion_spi_nor_stm32wba_erase_step(
     companion_spi_nor_stm32wba_t *nor, uint32_t address, uint32_t bytes)
 {
     if (!companion_spi_nor_stm32wba_ready(nor))
         return configured(nor) ? COMPANION_SPI_NOR_STM32WBA_NOT_PROBED
                                : COMPANION_SPI_NOR_STM32WBA_BAD_PARAM;
-    if ((bytes != NOR_SECTOR_SIZE && bytes != NOR_BLOCK_SIZE) || address % bytes)
+    if ((bytes != NOR_SECTOR_SIZE && bytes != NOR_BLOCK_SIZE &&
+         !(bytes==32768u && nor->info.erase_32k_supported)) || address % bytes)
         return COMPANION_SPI_NOR_STM32WBA_BAD_PARAM;
     if (!range_valid(nor->info.size_bytes, address, bytes))
         return COMPANION_SPI_NOR_STM32WBA_OUT_OF_RANGE;
@@ -1168,8 +1182,8 @@ companion_spi_nor_stm32wba_status_t companion_spi_nor_stm32wba_erase_step(
     nor->erase_phase = NOR_ERASE_RUNNING;
     nor->erase_command_failed = false;
     nor->erase_active = true;
-    status = write_addressed(nor, bytes == NOR_BLOCK_SIZE ? NOR_CMD_BLOCK_ERASE_64K
-                                                         : NOR_CMD_SECTOR_ERASE_4K,
+    status = write_addressed(nor, bytes == NOR_BLOCK_SIZE ? NOR_CMD_BLOCK_ERASE_64K :
+                             bytes == 32768u ? NOR_CMD_BLOCK_ERASE_32K : NOR_CMD_SECTOR_ERASE_4K,
                              address, NULL, 0u);
     /* The erase begins on the command's CS release. IRQ or SPI delay must
      * not spend its timeout or suspend guard before that point. Keep the
@@ -1212,8 +1226,7 @@ companion_spi_nor_stm32wba_status_t companion_spi_nor_stm32wba_partition_erase_s
     if (!range_valid(partition->size_bytes, offset, remaining_bytes))
         return COMPANION_SPI_NOR_STM32WBA_OUT_OF_RANGE;
     uint32_t address = partition->base_address + offset;
-    uint32_t bytes = address % NOR_BLOCK_SIZE == 0u && remaining_bytes >= NOR_BLOCK_SIZE
-        ? NOR_BLOCK_SIZE : NOR_SECTOR_SIZE;
+    uint32_t bytes = companion_spi_nor_stm32wba_erase_chunk(partition->nor,address,remaining_bytes);
     companion_spi_nor_stm32wba_status_t status =
         companion_spi_nor_stm32wba_erase_step(partition->nor, address, bytes);
     if (status == COMPANION_SPI_NOR_STM32WBA_OK) *erased_bytes = bytes;

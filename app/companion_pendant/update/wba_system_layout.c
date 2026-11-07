@@ -89,7 +89,7 @@ bool comp_wba_system_layout_init(comp_wba_system_layout_t *l,
     comp_rec_identity_t identity;
     comp_rec_identity_port_t ip={identity_read,denied_identity_program,denied_identity_erase,l};
     if(!comp_rec_identity_mount(&identity,&ip,uid))return false;
-    comp_segment_port_t sp={segment_read,denied_program,denied_erase_step,l};
+    comp_segment_port_t sp={segment_read,denied_program,denied_erase_step,l,0u};
     uint64_t epoch=identity.loaded?identity.record.format_epoch:1u;
     comp_segment_result_t sr=comp_segment_catalog_mount_begin(&l->segments,&sp,old+SEG_A,old+SEG_B,
         old+SYSTEM_BYTES,COMP_WBA_NOR_TOTAL_BYTES-old-SYSTEM_BYTES,uid,epoch);

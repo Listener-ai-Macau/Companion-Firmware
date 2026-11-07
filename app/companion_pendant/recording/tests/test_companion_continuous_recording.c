@@ -177,7 +177,7 @@ static comp_segment_result_t background(void *v)
 static bool initialize_mode(fixture_t *f,bool no_next,uint8_t timeline)
 {
     memset(f,0,sizeof(*f));memset(f->bytes,255,BYTES);
-    comp_segment_port_t port={read_media,program_media,erase_media,f};
+    comp_segment_port_t port={read_media,program_media,erase_media,f,0u};
     CHECK(comp_segment_catalog_mount_begin(&f->catalog,&port,0u,BANK,BASE,DATA,uid,7u)==COMP_SEG_PENDING);
     CHECK(finish_catalog(f)==COMP_SEG_UNFORMATTED);
     CHECK(comp_segment_catalog_format_blank_begin(&f->catalog)==COMP_SEG_PENDING && finish_catalog(f)==COMP_SEG_OK);
@@ -249,7 +249,7 @@ static bool capture(void)
         comp_segment_result_t result=comp_segment_catalog_read(&f->catalog,i,&found);
         CHECK(result==COMP_SEG_NOT_FOUND || (result==COMP_SEG_OK && found.descriptor.recording_id!=unused_id));
     }
-    comp_segment_port_t mount_port={read_media,program_media,erase_media,f};
+    comp_segment_port_t mount_port={read_media,program_media,erase_media,f,0u};
     CHECK(comp_segment_catalog_mount_begin(&f->catalog,&mount_port,0u,BANK,BASE,DATA,uid,7u)==COMP_SEG_PENDING);
     CHECK(finish_catalog(f)==COMP_SEG_OK && f->catalog.visible_mask==0u);
     uint32_t length=0u;
@@ -343,7 +343,7 @@ static bool cancel_gc(void)
         CHECK(f->recorder.state==COMP_CONT_CANCELED);
     }
     CHECK(f->catalog.bank_serial>=2u && f->catalog.next_id==51u);
-    comp_segment_port_t mount_port={read_media,program_media,erase_media,f};
+    comp_segment_port_t mount_port={read_media,program_media,erase_media,f,0u};
     CHECK(comp_segment_catalog_mount_begin(&f->catalog,&mount_port,0u,BANK,BASE,DATA,uid,7u)==COMP_SEG_PENDING);
     CHECK(finish_catalog(f)==COMP_SEG_OK && f->catalog.visible_mask==0u);
     for (uint8_t i=0u;i<COMP_SEGMENT_CAPACITY;i++) CHECK(f->catalog.slots[i]==255u);

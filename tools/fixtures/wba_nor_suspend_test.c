@@ -58,9 +58,10 @@ static bool transfer(void *c,const uint8_t *tx,uint8_t *rx,size_t n,uint32_t tim
         f.command=tx[0];
         if(n==4 || n==5)f.address=((uint32_t)tx[1]<<16)|((uint32_t)tx[2]<<8)|tx[3];
         if(f.command==6) { assert(!(f.sr1&1)); f.sr1|=2; }
-        if(f.command==0x20 || f.command==0xD8) {
+        if(f.command==0x20 || f.command==0x52 || f.command==0xD8) {
             assert(!(f.sr1&1) && !(f.sr2&128) && (f.sr1&2));
-            f.erases++; f.erase_address=f.address; f.erase_bytes=f.command==0x20?4096u:65536u;
+            f.erases++; f.erase_address=f.address;
+            f.erase_bytes=f.command==0x20?4096u:f.command==0x52?32768u:65536u;
             assert(f.erase_address+f.erase_bytes<=sizeof(f.bytes));
             f.sr1=1; f.erased=false; f.erase_polls=0;
         }

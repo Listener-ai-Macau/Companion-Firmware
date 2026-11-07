@@ -37,7 +37,7 @@ int main(int argc,char **argv)
     uint64_t epoch=strtoull(argv[4],NULL,16),session=strtoull(argv[7],NULL,16);
     uint32_t id=(uint32_t)strtoul(argv[6],NULL,10);uint8_t uid[12];REQUIRE(strlen(argv[5])==24u);
     for(unsigned i=0u;i<12u;i++){char hex[3]={argv[5][i*2u],argv[5][i*2u+1u],0};uid[i]=(uint8_t)strtoul(hex,NULL,16);}
-    memset(media,255,sizeof(media));comp_segment_catalog_t c;comp_segment_port_t cp={rd,wr,erase,NULL};
+    memset(media,255,sizeof(media));comp_segment_catalog_t c;comp_segment_port_t cp={rd,wr,erase,NULL,0u};
     REQUIRE(finish(&c,comp_segment_catalog_mount_begin(&c,&cp,COMP_WBA_NOR_SEGMENT_CATALOG_A,
         COMP_WBA_NOR_SEGMENT_CATALOG_B,COMP_WBA_NOR_RECORDING_BASE,COMP_WBA_NOR_RECORDING_DATA_BYTES,uid,epoch))==COMP_SEG_UNFORMATTED);
     comp_segment_result_t format=comp_segment_catalog_format_blank_begin(&c);
