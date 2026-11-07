@@ -491,6 +491,7 @@ def main() -> int:
                 'upstream_archive_sha256':pinned['upstream_archive_sha256'],
                 'specialization':pinned.get('specialization')}
             result['codec_optimization'].update(application_16khz='RESTRICTED_CELT',
+                opus_setup='-O3 (fixed CELT Opus entry and product PCM accumulator)',
                 unused_silk_hybrid_encoding_excluded=True)
             result['screen_face_storage']={'mode':'immutable_resource_references',
                 'identity_bytes_each':112,'blink_glyph_bytes_each':256,
@@ -706,6 +707,9 @@ def main() -> int:
             if source.name == 'companion_opus16_rt.c':
                 codec_flags += ['-DCOMPANION_OPUS16_WBA_LOWDELAY=1','-DCOMPANION_OPUS16_STDIO_ERRORS=0']
             if source.is_relative_to(opus/'celt'):
+                codec_flags += ['-O3']
+            if args.wba_opus_celt16 and (source == opus/'src/opus_encoder.c' or
+                                        source.name == 'companion_opus16_rt.c'):
                 codec_flags += ['-O3']
             if source.name in ('wba_pdm_capture.c','wba_frame_store.c','companion_renderer.c','companion_resources.c',
                                'emote_asset_pack.c','ui_asset_generation.c','screen_framebuffer.c',
