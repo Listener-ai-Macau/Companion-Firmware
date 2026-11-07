@@ -12,6 +12,11 @@ _estack = ORIGIN(RAM2) + LENGTH(RAM2);
 _sstack = _estack - 0x5400;
 SECTIONS {
   .isr_vector : { . = ALIGN(4); KEEP(*(.isr_vector)) } > FLASH
+  /* Consume only the existing FFT hot function before .text's wildcard.
+   * ce_reset.S already copies this complete data range before entering C.
+   * Arithmetic/tables/stack/clock are unchanged; charge code to static RAM. */
+  _sidata = LOADADDR(.data);
+  .data : { . = ALIGN(8); _sdata = .; *(.data*) *(.RamFunc*) *(.text.opus_fft_impl*) . = ALIGN(8); _edata = .; } > RAM1 AT> FLASH
   .text : { *(.text*) *(.rodata*) KEEP(*(.init)) KEEP(*(.fini)) . = ALIGN(4); } > FLASH
   .ARM.extab : { *(.ARM.extab*) } > FLASH
   .ARM.exidx : { __exidx_start = .; *(.ARM.exidx*) __exidx_end = .; } > FLASH
@@ -20,8 +25,6 @@ SECTIONS {
   .fini_array (READONLY) : { PROVIDE_HIDDEN(__fini_array_start = .); KEEP(*(SORT(.fini_array.*))) KEEP(*(.fini_array*)) PROVIDE_HIDDEN(__fini_array_end = .); } > FLASH
   _sidata_sram2 = LOADADDR(.data_sram2);
   .data_sram2 : { . = ALIGN(8); _sdata_sram2 = .; *(.sram2.data*) . = ALIGN(8); _edata_sram2 = .; } > RAM2 AT> FLASH
-  _sidata = LOADADDR(.data);
-  .data : { . = ALIGN(8); _sdata = .; *(.data*) *(.RamFunc*) . = ALIGN(8); _edata = .; } > RAM1 AT> FLASH
   .bss_sram1 (NOLOAD) : { . = ALIGN(8); _sbss_sram1 = .; *(.sram1.bss*) . = ALIGN(8); _ebss_sram1 = .; } > RAM1
   .bss (NOLOAD) : { . = ALIGN(8); _sbss = .; *(.bss*) *(COMMON) . = ALIGN(8); _ebss = .; _end = .; end = .; } > RAM2
   .heap_stack _sstack (NOLOAD) : { . += 0x5400; } > RAM2
