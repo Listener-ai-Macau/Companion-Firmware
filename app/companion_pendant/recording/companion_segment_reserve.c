@@ -18,7 +18,7 @@ comp_segment_result_t comp_segment_reserve_next_io(const comp_segment_reserve_t 
         return result==COMP_SEG_NOT_FOUND?COMP_SEG_OK:result;
     }
     *io=(comp_segment_io_t){c->data_base+r->candidate+r->cursor,
-        r->phase==ERASE?r->bytes-r->cursor:COMP_SEGMENT_PAGE_BYTES,
+        r->phase==ERASE?COMP_SEGMENT_SECTOR_BYTES:COMP_SEGMENT_PAGE_BYTES,
         r->phase==ERASE?COMP_SEG_IO_ERASE:COMP_SEG_IO_READ};
     return (r->phase==ERASE||r->phase==VERIFY||r->phase==CHECK_BLANK)?COMP_SEG_OK:COMP_SEG_BAD_STATE;
 }
@@ -177,9 +177,9 @@ comp_segment_result_t comp_segment_reserve_poll_scoped(comp_segment_reserve_t *r
         r->phase=COMMIT;return COMP_SEG_PENDING;
     }
     if (r->phase==CHECK_BLANK) {
-        /* Durable WRITING already protects the complete range. Prove every
-         * byte blank before skipping erase; a dirty byte takes the original
-         * full erase and verification path. Read failure is never success. */
+        /* Durable WRITING protects the complete range. Prove every byte of
+         * each sector blank, or erase and verify that sector before advancing.
+         * One dirty page must not erase the other already-blank sectors. */
         if(read) {
             comp_segment_result_t result=read(context,c->data_base+r->candidate+r->cursor,c->page,COMP_SEGMENT_PAGE_BYTES);
             if(result==COMP_SEG_PENDING)return result;
@@ -187,25 +187,25 @@ comp_segment_result_t comp_segment_reserve_poll_scoped(comp_segment_reserve_t *r
         } else if (!c->port.read(c->port.context,c->data_base+r->candidate+r->cursor,
                                  c->page,COMP_SEGMENT_PAGE_BYTES)) return failed(r,COMP_SEG_IO_ERROR);
         if (comp_rec_not_uniform(c->page,COMP_SEGMENT_PAGE_BYTES,255u)) {
-            r->phase=ERASE;r->cursor=0u;return COMP_SEG_PENDING;
+            r->cursor-=r->cursor%COMP_SEGMENT_SECTOR_BYTES;
+            r->phase=ERASE;return COMP_SEG_PENDING;
         }
         r->cursor+=COMP_SEGMENT_PAGE_BYTES;
         if (r->cursor==r->bytes) {r->phase=READY;return COMP_SEG_OK;}
         return COMP_SEG_PENDING;
     }
     if (r->phase==ERASE) {
-        uint32_t erased=0u,remaining=r->bytes-r->cursor;
+        uint32_t erased=0u;
         if (!c->port.erase_step(c->port.context,c->data_base+r->candidate+r->cursor,
-                                remaining,&erased)) return failed(r,COMP_SEG_IO_ERROR);
-        if (erased%4096u || erased>remaining) return failed(r,COMP_SEG_CORRUPT);
-        r->cursor+=erased;
-        if (r->cursor==r->bytes) {r->phase=VERIFY;r->cursor=0u;}
+                                COMP_SEGMENT_SECTOR_BYTES,&erased)) return failed(r,COMP_SEG_IO_ERROR);
+        if (erased!=0u&&erased!=COMP_SEGMENT_SECTOR_BYTES) return failed(r,COMP_SEG_CORRUPT);
+        if (erased!=0u) r->phase=VERIFY;
         return COMP_SEG_PENDING;
     }
     if (r->phase==VERIFY) {
-        /* Reuse idle catalog scratch; no additional 256-byte RAM buffer.
-         * Full-range verification also catches protected/ignored erase commands
-         * that completed without modifying NOR; WIP=0 alone is not blank data. */
+        /* Verify the complete erased sector using the existing catalog page.
+         * WIP=0 alone is not blank data. Other sectors still receive their own
+         * full blank proof before this complete extent can become READY. */
         if(read) {
             comp_segment_result_t result=read(context,c->data_base+r->candidate+r->cursor,c->page,COMP_SEGMENT_PAGE_BYTES);
             if(result==COMP_SEG_PENDING)return result;
@@ -216,6 +216,7 @@ comp_segment_result_t comp_segment_reserve_poll_scoped(comp_segment_reserve_t *r
             return failed(r,COMP_SEG_CORRUPT);
         r->cursor+=COMP_SEGMENT_PAGE_BYTES;
         if (r->cursor==r->bytes) {r->phase=READY;return COMP_SEG_OK;}
+        if (r->cursor%COMP_SEGMENT_SECTOR_BYTES==0u) r->phase=CHECK_BLANK;
         return COMP_SEG_PENDING;
     }
     return failed(r,COMP_SEG_BAD_STATE);

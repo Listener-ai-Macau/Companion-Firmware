@@ -17,7 +17,7 @@ names=['companion_segment_catalog','companion_segment_reserve','companion_segmen
        'wba_recording_recovery','wba_segment_discard_preview','wba_segment_discard_worker',
        'wba_segment_discard_control','wba_segment_discard_wire']
 sources=[*[REC/(n+'.c')for n in names],APP/'storage/spi_nor_stm32wba.c']
-cases=['wba_reclaim_blocks','companion_segment_reclaim_prefix','companion_segment_rotated','companion_segment_catalog','wba_segment_storage']
+cases=['wba_reclaim_blocks','companion_segment_reclaim_prefix','companion_segment_rotated','companion_segment_catalog','wba_segment_storage','companion_segment_reserve_blank']
 if len(sys.argv)>2:
     requested=sys.argv[2:];assert all(c in cases for c in requested);cases=requested
 (out/'.cache/segmented-discard-20261029/candidate').mkdir(parents=True)
