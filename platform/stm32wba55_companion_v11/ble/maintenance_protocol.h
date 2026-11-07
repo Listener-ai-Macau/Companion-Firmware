@@ -58,12 +58,14 @@ static inline bool comp_maint_request(const uint8_t *p,uint16_t n,uint8_t *opera
  * configuration,4 slow snapshot,5 late sample,6 stuck counter,7 conversion,
  * 8 excess active span,9 debug freeze,10 clock setup. Bound/validity unchanged;
  * a fault is never silently turned into a valid sample. No reset. */
-/* Operation10 reads existing NOR scalars only, schema1. Flags probed,
- * suspend-qualified,32K-qualified,erase-active,command-failed bits0..4.
- * u32 at12 JEDEC,16 most recently issued erase address,20 its bytes;
- * bytes24..27 erase phase,BFPT DWORD count,resume guard ms,suspend wait ms.
- * Last erase may be catalogue metadata: only an active erase observation
- * can establish the in-flight command. No NOR I/O, new counter or payload. */
+/* Operation10 reads existing NOR/consume scalars only, schema2. Flags0..4:
+ * probed,suspend-qualified,32K-qualified,erase-active,command-failed; bit5
+ * consume target known, bit6 catalog port32K-qualified. u32 at12 consume
+ * physical start (zero if unknown),16 most recent erase address,20 owned
+ * reserve bytes (zero if unknown); byte24 last erase size/4096 (0/1/8/16),
+ * byte25 consume phase,26 erase phase,27 known consume descriptor flags. No NOR I/O or new
+ * state. Last erase attribution still requires exact target containment;
+ * inactive cached facts alone do not measure elapsed time or prove ownership. */
 static inline void comp_maint_timing16(uint8_t p[32],unsigned at,unsigned bit,
     bool valid,uint32_t value)
 {

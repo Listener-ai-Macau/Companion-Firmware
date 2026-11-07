@@ -1002,21 +1002,26 @@ static bool maintenance_idle(void)
         !comp_wba_recording_product_recovering(&product->recording)&&
         comp_v11_ble_recording_recovery_idle();
 }
-static void maintenance_storage_fields(const companion_spi_nor_stm32wba_t *n,uint8_t response[32])
+static void maintenance_storage_fields(const companion_spi_nor_stm32wba_t *n,
+    const comp_wba_recording_pipeline_t *p,uint8_t response[32])
 {
+    const comp_segment_entry_t *e=&p->consume;
+    const bool known=e->reserved_bytes&&e->descriptor.recording_id;
     response[6]=(uint8_t)((unsigned)n->probed|(unsigned)n->erase_suspend_supported<<1u|
         (unsigned)n->info.erase_32k_supported<<2u|(unsigned)n->erase_active<<3u|
-        (unsigned)n->erase_command_failed<<4u);
-    comp_maint_put32(response+12u,n->info.jedec_id);
+        (unsigned)n->erase_command_failed<<4u|(unsigned)known<<5u|
+        (unsigned)(p->config.catalog->port.reclaim_block_bytes==32768u)<<6u);
+    response[7]=2u;
+    comp_maint_put32(response+12u,known?p->config.catalog->data_base+e->extent_offset:0u);
     comp_maint_put32(response+16u,n->erase_address);
-    comp_maint_put32(response+20u,n->erase_bytes);
-    response[24]=n->erase_phase;response[25]=n->info.sfdp_bfp_dwords;
-    response[26]=n->resume_guard_ms;response[27]=n->suspend_wait_ms;
+    comp_maint_put32(response+20u,known?e->reserved_bytes:0u);
+    response[24]=(uint8_t)(n->erase_bytes/4096u);response[25]=p->consume_phase;
+    response[26]=n->erase_phase;response[27]=known?e->descriptor.flags:0u;
 }
 static void maintenance_runtime_fields(uint8_t operation,uint8_t response[32])
 {
     response[6]=0u;response[7]=1u;
-    if(operation==COMP_MAINT_STORAGE){maintenance_storage_fields(&product->board->nor,response);return;}
+    if(operation==COMP_MAINT_STORAGE){maintenance_storage_fields(&product->board->nor,&product->recording.pipeline,response);return;}
     if(operation==COMP_MAINT_CPU_DUTY){
         comp_cpu_duty_snapshot_t s=comp_cpu_duty_snapshot();
         response[7]=3u; /* same bound, first invalid reason and actual WFI count */
