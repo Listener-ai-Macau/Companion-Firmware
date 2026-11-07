@@ -791,7 +791,6 @@ static void diagnostic_emit_body(comp_v11_diag_console_t *console,uint32_t reset
             }
         }
     }
-#endif
 #if COMP_V11_PANEL_LOW_SLEW || COMP_V11_PANEL_PASSIVE_TRACE
     {
         char line[256];
@@ -837,6 +836,7 @@ static void diagnostic_emit_body(comp_v11_diag_console_t *console,uint32_t reset
         (void)diagnostic_write(NULL,line);
     }
     (void)comp_v11_hal_touch_diagnostic(&companion_v11);
+#endif
 #ifdef COMPANION_WBA_BLE_LINKED
     comp_v11_ble_transport_diagnostic();
 #endif
