@@ -18,7 +18,7 @@ comp_segment_result_t comp_segment_reserve_next_io(const comp_segment_reserve_t 
         return result==COMP_SEG_NOT_FOUND?COMP_SEG_OK:result;
     }
     *io=(comp_segment_io_t){c->data_base+r->candidate+r->cursor,
-        r->phase==ERASE?COMP_SEGMENT_SECTOR_BYTES:COMP_SEGMENT_PAGE_BYTES,
+        r->phase==ERASE?r->erase_end-r->cursor:COMP_SEGMENT_PAGE_BYTES,
         r->phase==ERASE?COMP_SEG_IO_ERASE:COMP_SEG_IO_READ};
     return (r->phase==ERASE||r->phase==VERIFY||r->phase==CHECK_BLANK)?COMP_SEG_OK:COMP_SEG_BAD_STATE;
 }
@@ -47,7 +47,7 @@ comp_segment_result_t comp_segment_reserve_cancel_poll(comp_segment_reserve_t *r
         if(result==COMP_SEG_PENDING)return result;
         if(result!=COMP_SEG_OK)return failed(r,result);
         if(r->phase==CANCEL_COMMIT){r->phase=CANCELED;return COMP_SEG_OK;}
-        r->phase=CHECK_BLANK;r->cursor=0u;return COMP_SEG_PENDING;
+        r->phase=CHECK_BLANK;r->cursor=0u;r->erase_end=0u;return COMP_SEG_PENDING;
     }
     if(r->phase==SEARCH&&!r->entry->descriptor.recording_id){r->phase=CANCELED;return COMP_SEG_OK;}
     if(c->phase)return COMP_SEG_PENDING;
@@ -115,7 +115,7 @@ comp_segment_result_t comp_segment_reserve_poll_scoped(comp_segment_reserve_t *r
         comp_segment_result_t result=comp_segment_catalog_poll(c);
         if (result==COMP_SEG_PENDING) return result;
         if (result!=COMP_SEG_OK) return failed(r,result);
-        r->phase=CHECK_BLANK;r->cursor=0u;return COMP_SEG_PENDING;
+        r->phase=CHECK_BLANK;r->cursor=0u;r->erase_end=0u;return COMP_SEG_PENDING;
     }
     if (c->phase!=0u) return COMP_SEG_PENDING;
     if (r->phase==SEARCH) {
@@ -177,9 +177,10 @@ comp_segment_result_t comp_segment_reserve_poll_scoped(comp_segment_reserve_t *r
         r->phase=COMMIT;return COMP_SEG_PENDING;
     }
     if (r->phase==CHECK_BLANK) {
-        /* Durable WRITING protects the complete range. Prove every byte of
-         * each sector blank, or erase and verify that sector before advancing.
-         * One dirty page must not erase the other already-blank sectors. */
+        /* Prove whole blank sectors and collect contiguous dirty sectors.
+         * A run keeps the port's aligned32/64KiB erase capability, while a
+         * proved-blank sector ends the run and is never needlessly erased.
+         * Durable WRITING protects the entire extent throughout the scan. */
         if(read) {
             comp_segment_result_t result=read(context,c->data_base+r->candidate+r->cursor,c->page,COMP_SEGMENT_PAGE_BYTES);
             if(result==COMP_SEG_PENDING)return result;
@@ -187,25 +188,34 @@ comp_segment_result_t comp_segment_reserve_poll_scoped(comp_segment_reserve_t *r
         } else if (!c->port.read(c->port.context,c->data_base+r->candidate+r->cursor,
                                  c->page,COMP_SEGMENT_PAGE_BYTES)) return failed(r,COMP_SEG_IO_ERROR);
         if (comp_rec_not_uniform(c->page,COMP_SEGMENT_PAGE_BYTES,255u)) {
-            r->cursor-=r->cursor%COMP_SEGMENT_SECTOR_BYTES;
-            r->phase=ERASE;return COMP_SEG_PENDING;
+            const uint32_t sector=r->cursor-r->cursor%COMP_SEGMENT_SECTOR_BYTES;
+            if(r->erase_end==0u)r->run_start=sector;
+            r->cursor=sector+COMP_SEGMENT_SECTOR_BYTES;r->erase_end=r->cursor;
+            if(r->cursor==r->bytes) {
+                r->resume_cursor=r->cursor;r->cursor=r->run_start;r->phase=ERASE;
+            }
+            return COMP_SEG_PENDING;
         }
         r->cursor+=COMP_SEGMENT_PAGE_BYTES;
+        if(r->cursor%COMP_SEGMENT_SECTOR_BYTES==0u&&r->erase_end!=0u) {
+            r->resume_cursor=r->cursor;r->cursor=r->run_start;r->phase=ERASE;
+            return COMP_SEG_PENDING;
+        }
         if (r->cursor==r->bytes) {r->phase=READY;return COMP_SEG_OK;}
         return COMP_SEG_PENDING;
     }
     if (r->phase==ERASE) {
-        uint32_t erased=0u;
+        uint32_t erased=0u,remaining=r->erase_end-r->cursor;
         if (!c->port.erase_step(c->port.context,c->data_base+r->candidate+r->cursor,
-                                COMP_SEGMENT_SECTOR_BYTES,&erased)) return failed(r,COMP_SEG_IO_ERROR);
-        if (erased!=0u&&erased!=COMP_SEGMENT_SECTOR_BYTES) return failed(r,COMP_SEG_CORRUPT);
-        if (erased!=0u) r->phase=VERIFY;
+                                remaining,&erased)) return failed(r,COMP_SEG_IO_ERROR);
+        if (erased%COMP_SEGMENT_SECTOR_BYTES||erased>remaining) return failed(r,COMP_SEG_CORRUPT);
+        if (erased!=0u) {r->verify_end=r->cursor+erased;r->phase=VERIFY;}
         return COMP_SEG_PENDING;
     }
     if (r->phase==VERIFY) {
-        /* Verify the complete erased sector using the existing catalog page.
-         * WIP=0 alone is not blank data. Other sectors still receive their own
-         * full blank proof before this complete extent can become READY. */
+        /* Verify every byte of the actual physical chunk, even when the port
+         * chose a smaller aligned command than the full dirty run. A pending
+         * or ignored command never proves blank data or releases ownership. */
         if(read) {
             comp_segment_result_t result=read(context,c->data_base+r->candidate+r->cursor,c->page,COMP_SEGMENT_PAGE_BYTES);
             if(result==COMP_SEG_PENDING)return result;
@@ -215,8 +225,14 @@ comp_segment_result_t comp_segment_reserve_poll_scoped(comp_segment_reserve_t *r
         if (comp_rec_not_uniform(c->page,COMP_SEGMENT_PAGE_BYTES,255u))
             return failed(r,COMP_SEG_CORRUPT);
         r->cursor+=COMP_SEGMENT_PAGE_BYTES;
-        if (r->cursor==r->bytes) {r->phase=READY;return COMP_SEG_OK;}
-        if (r->cursor%COMP_SEGMENT_SECTOR_BYTES==0u) r->phase=CHECK_BLANK;
+        if(r->cursor==r->verify_end) {
+            if(r->cursor<r->erase_end)r->phase=ERASE;
+            else {
+                r->cursor=r->resume_cursor;r->erase_end=0u;
+                if(r->cursor==r->bytes){r->phase=READY;return COMP_SEG_OK;}
+                r->phase=CHECK_BLANK;
+            }
+        }
         return COMP_SEG_PENDING;
     }
     return failed(r,COMP_SEG_BAD_STATE);

@@ -1,5 +1,6 @@
 #include "companion_segment_catalog.h"
 #include <stdlib.h>
+#define COMP_SEG_TEST_DATA_SECTORS 24
 #define main original_allocator_fixture_main
 #include "test_companion_segment_reserve.c"
 #undef main
@@ -55,6 +56,35 @@ static int dirty_tail_only_erases_its_sector(void)
     return 0;
 }
 static unsigned erased_mask;
+static uint32_t bulk_start,bulk_size;
+static bool bulk_erase(void *v,uint32_t at,uint32_t n,uint32_t *done)
+{
+    (void)v;callbacks++;*done=0;
+    uint32_t chunk=at%65536u==0u&&n>=65536u?65536u:at%32768u==0u&&n>=32768u?32768u:4096u;
+    assert(at>=bulk_start&&at+chunk<=bulk_start+bulk_size);
+    if(!erase_pending){erase_pending=true;return true;}
+    erase_pending=false;erases++;*done=chunk;memset(media+at,255,chunk);return true;
+}
+static int dense_runs_retain_bulk_erases(void)
+{
+    const uint32_t sizes[]={32768u,65536u};
+    for(unsigned i=0;i<2;++i) {
+        comp_segment_catalog_t c;observed_setup(&c);c.port.erase_step=bulk_erase;
+        bulk_start=BASE+16384u;bulk_size=sizes[i];
+        memset(media+bulk_start,0,bulk_size);media[bulk_start-1]=0x5A;media[bulk_start+bulk_size]=0xA5;
+        comp_segment_entry_t e=fresh(&c,130+i);comp_segment_reserve_t r={0};
+        assert(comp_segment_reserve_begin(&r,&c,&e,bulk_size,16384)==COMP_SEG_PENDING);
+        comp_segment_result_t result=observed_finish(&r);
+        if(result!=COMP_SEG_OK||erases!=1) {
+            fprintf(stderr,"DENSE_DIRTY bytes=%lu expected1bulk, got result=%d erases=%u\n",(unsigned long)bulk_size,(int)result,erases);
+            return 1;
+        }
+        for(uint32_t n=0;n<bulk_size;++n)assert(media[bulk_start+n]==255);
+        assert(media[bulk_start-1]==0x5A&&media[bulk_start+bulk_size]==0xA5);
+    }
+    puts("DENSE: contiguous dirty32/64KiB retains one physical bulk command, complete readback and untouched neighbors");
+    return 0;
+}
 static bool mixed_erase(void *v,uint32_t at,uint32_t n,uint32_t *done)
 {
     assert(at>=BASE&&at<BASE+12288&&n==4096);
@@ -75,8 +105,8 @@ static void mixed_sectors_and_partial_restart(void)
 
     observed_setup(&c);media[BASE]=0;media[BASE+12287]=0;e=fresh(&c,113);memset(&r,0,sizeof r);
     assert(comp_segment_reserve_begin(&r,&c,&e,12288,0)==COMP_SEG_PENDING);
-    for(unsigned i=0;i<2000&&(erases!=1||data_reads<2);++i)assert(comp_segment_reserve_poll(&r)==COMP_SEG_PENDING);
-    assert(erases==1&&data_reads==2&&!comp_segment_reserve_ready(&r));
+    for(unsigned i=0;i<2000&&(erases!=1||r.cursor!=256u);++i)assert(comp_segment_reserve_poll(&r)==COMP_SEG_PENDING);
+    assert(erases==1&&data_reads==18&&!comp_segment_reserve_ready(&r));
     mount(&rebooted);assert(finish_catalog(&rebooted)==COMP_SEG_OK);
     comp_segment_entry_t persisted;assert(comp_segment_catalog_read(&rebooted,0,&persisted)==COMP_SEG_OK);
     assert(persisted.state==COMP_SEG_WRITING&&persisted.extent_offset==0&&persisted.reserved_bytes==12288);
@@ -119,6 +149,6 @@ int main(void)
 #if defined(_MSC_VER)
     _set_error_mode(_OUT_TO_STDERR);
 #endif
-    assert(original_allocator_fixture_main()==0);blank_extent_needs_no_erase();if(dirty_tail_only_erases_its_sector())return 1;mixed_sectors_and_partial_restart();read_failure_retains_reservation();interrupted_blank_scan_still_owns_whole_range();
+    assert(original_allocator_fixture_main()==0);blank_extent_needs_no_erase();if(dirty_tail_only_erases_its_sector()||dense_runs_retain_bulk_erases())return 1;mixed_sectors_and_partial_restart();read_failure_retains_reservation();interrupted_blank_scan_still_owns_whole_range();
     puts("BLANK_PRECHECK_SAME_FULL_PROOF_ONE_IO_NO_EXTRA_OWNER_RAM_HOST_ONLY");return 0;
 }

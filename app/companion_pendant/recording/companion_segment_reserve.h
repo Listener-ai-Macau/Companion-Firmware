@@ -8,7 +8,13 @@
 typedef struct {
     comp_segment_catalog_t *catalog;
     comp_segment_entry_t *entry;
-    uint32_t bytes, hint, candidate, cursor, generation, gap_end;
+    uint32_t bytes;
+    /* SEARCH fields are dead after the durable reservation commits. Reuse
+     * their storage for the bounded dirty-run/verification cursors. */
+    union {uint32_t hint,run_start,verify_end;};
+    uint32_t candidate,cursor;
+    union {uint32_t generation,resume_cursor;};
+    union {uint32_t gap_end,erase_end;};
     uint8_t scan, phase, read_retries;
     bool wrapped, align_to_gap;
 } comp_segment_reserve_t;

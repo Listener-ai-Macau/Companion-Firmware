@@ -2,7 +2,10 @@
 #include <assert.h>
 #include <stdio.h>
 #include <string.h>
-enum { BANK=24576, BASE=2*BANK, DATA=16*4096, BYTES=BASE+DATA };
+#ifndef COMP_SEG_TEST_DATA_SECTORS
+#define COMP_SEG_TEST_DATA_SECTORS 16
+#endif
+enum { BANK=24576, BASE=2*BANK, DATA=COMP_SEG_TEST_DATA_SECTORS*4096, BYTES=BASE+DATA };
 static uint8_t media[BYTES];
 static unsigned callbacks, erases, programs;
 static bool erase_pending, ignore_erase, fail_erase;
