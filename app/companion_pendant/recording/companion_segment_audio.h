@@ -11,8 +11,8 @@
  * commit word. A whole erased extent is first bound to its durable reservation
  * by a committed provenance page, so recovery cannot adopt old audio from an
  * interrupted preerase. A program/readback failure remains uncertain. */
-#define COMP_SEG_AUDIO_DATA_BYTES 248u
-#define COMP_SEG_AUDIO_PREFIX_BYTES 256u
+#define COMP_SEG_AUDIO_DATA_BYTES COMP_SEGMENT_PAGE_DATA_BYTES
+#define COMP_SEG_AUDIO_PREFIX_BYTES COMP_SEGMENT_PAGE_BYTES
 #define COMP_SEG_AUDIO_FRAME_BYTES 42u /* Existing16kbps CBR/20ms COP1 packet. */
 
 typedef struct {

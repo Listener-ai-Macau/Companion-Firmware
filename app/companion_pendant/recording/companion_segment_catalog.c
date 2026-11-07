@@ -9,6 +9,27 @@ enum {
     OP_NONE=0, OP_PUT=1, OP_ACK=2, OP_RECLAIM=3, OP_FORMAT=4, OP_CANCEL=5, OP_DISCARD=6, OP_SESSION_INTENT=7, OP_COMPACT=8,
     NO_SLOT=255, ROOT_CRC=60, ROW_CRC=140, INTENT=224, INTENT_COMMIT=248, COMMIT=252
 };
+static uint32_t reclaim_bytes(const comp_segment_catalog_t *c)
+{
+    const comp_segment_entry_t *e=c->pending;
+    /* A normal user STOP publishes SEALED|LAST|END_USER only after its last
+     * accepted page committed. Its reservation proved the entire extent blank;
+     * the suffix was never programmed. Erase the provenance plus data prefix,
+     * rounded to physical sectors, before the same durable removal/receipt.
+     * Incomplete/abnormal/intermediate/discard and rebooted ERASING entries
+     * retain a full erase. No cursor or reservation-size change is persisted. */
+    if(c->operation==OP_RECLAIM && e->state==COMP_SEG_ACKED &&
+       e->descriptor.codec==3u &&
+       e->descriptor.flags==(COMP_REC_V2_SEALED|COMP_REC_V2_LAST|
+                            (COMP_REC_END_USER<<COMP_REC_V2_END_SHIFT))) {
+        uint64_t pages=((uint64_t)e->descriptor.encoded_length+
+                        COMP_SEGMENT_PAGE_DATA_BYTES-1u)/COMP_SEGMENT_PAGE_DATA_BYTES;
+        uint64_t bytes=(pages+1u)*COMP_SEGMENT_PAGE_BYTES;
+        bytes=(bytes+COMP_SEGMENT_SECTOR_BYTES-1u)/COMP_SEGMENT_SECTOR_BYTES*COMP_SEGMENT_SECTOR_BYTES;
+        if(bytes<e->reserved_bytes)return (uint32_t)bytes;
+    }
+    return e->reserved_bytes;
+}
 bool comp_segment_catalog_rebase_entry(const comp_segment_entry_t *e,uint32_t old_base,
     uint32_t new_base,uint32_t tail,comp_segment_entry_t *out)
 {
@@ -143,8 +164,9 @@ comp_segment_result_t comp_segment_catalog_next_io(const comp_segment_catalog_t 
         break;
     case RECLAIM:
         if(!c->pending)return COMP_SEG_BAD_STATE;
+        if(c->cursor>=reclaim_bytes(c))return COMP_SEG_BAD_STATE;
         *io=(comp_segment_io_t){c->data_base+c->pending->extent_offset+c->cursor,
-                              c->pending->reserved_bytes-c->cursor,COMP_SEG_IO_ERASE};break;
+                              reclaim_bytes(c)-c->cursor,COMP_SEG_IO_ERASE};break;
     default:return COMP_SEG_BAD_STATE;
     }
     return COMP_SEG_OK;
@@ -552,6 +574,7 @@ comp_segment_result_t comp_segment_catalog_poll(comp_segment_catalog_t *c)
                 } else if (!same_sealed(&old,c->pending) ||
                            (c->operation==OP_ACK && old.state!=COMP_SEG_UNSYNCED && old.state!=COMP_SEG_ACKED) ||
                            (c->operation==OP_RECLAIM && old.state!=COMP_SEG_ACKED && old.state!=COMP_SEG_ERASING) ||
+                           (c->operation==OP_RECLAIM && old.state!=c->pending->state) ||
                            (c->operation==OP_CANCEL && old.state!=COMP_SEG_WRITING) ||
                            (c->operation==OP_DISCARD && old.state!=COMP_SEG_UNSYNCED && old.state!=COMP_SEG_DISCARDING && old.state!=COMP_SEG_SESSION_DISCARD) ||
                            (c->operation==OP_SESSION_INTENT && old.state!=COMP_SEG_UNSYNCED))
@@ -691,11 +714,12 @@ comp_segment_result_t comp_segment_catalog_poll(comp_segment_catalog_t *c)
         c->pending=NULL; c->operation=OP_NONE; c->phase=IDLE;
         return COMP_SEG_OK;
     case RECLAIM:
+        if(c->cursor>=reclaim_bytes(c))return fail(c,COMP_SEG_BAD_STATE);
         if (!c->port.erase_step(c->port.context,c->data_base+c->pending->extent_offset+c->cursor,
-                              c->pending->reserved_bytes-c->cursor,&erased)) return fail(c,COMP_SEG_IO_ERROR);
-        if (erased%4096u!=0u || erased>c->pending->reserved_bytes-c->cursor) return fail(c,COMP_SEG_IO_ERROR);
+                              reclaim_bytes(c)-c->cursor,&erased)) return fail(c,COMP_SEG_IO_ERROR);
+        if (erased%4096u!=0u || erased>reclaim_bytes(c)-c->cursor) return fail(c,COMP_SEG_IO_ERROR);
         c->cursor+=erased;
-        if (c->cursor==c->pending->reserved_bytes) { c->pending_state=c->operation==OP_DISCARD?COMP_SEG_DISCARDED:0u; append_or_gc(c); }
+        if (c->cursor==reclaim_bytes(c)) { c->pending_state=c->operation==OP_DISCARD?COMP_SEG_DISCARDED:0u; append_or_gc(c); }
         break;
     default: return fail(c,COMP_SEG_BAD_STATE);
     }

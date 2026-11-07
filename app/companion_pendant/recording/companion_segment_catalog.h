@@ -8,6 +8,7 @@
  * No payload extent, resource root, identity allocator or OTA root moves. */
 #define COMP_SEGMENT_CAPACITY 64u
 #define COMP_SEGMENT_PAGE_BYTES 256u
+#define COMP_SEGMENT_PAGE_DATA_BYTES (COMP_SEGMENT_PAGE_BYTES-8u)
 #define COMP_SEGMENT_BANK_BYTES 24576u
 #define COMP_SEGMENT_BANK_PAGES 96u
 #define COMP_SEGMENT_SECTOR_BYTES 4096u
