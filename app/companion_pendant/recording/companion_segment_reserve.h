@@ -8,7 +8,7 @@
 typedef struct {
     comp_segment_catalog_t *catalog;
     comp_segment_entry_t *entry;
-    uint32_t bytes, hint, candidate, cursor, generation;
+    uint32_t bytes, hint, candidate, cursor, generation, gap_end;
     uint8_t scan, phase, read_retries;
     bool wrapped, align_to_gap;
 } comp_segment_reserve_t;

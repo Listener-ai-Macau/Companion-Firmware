@@ -72,7 +72,7 @@ comp_segment_result_t comp_segment_reserve_begin(comp_segment_reserve_t *r,
      * this live worker to forget an in-flight erase or uncertain commit. */
     if (r->phase!=FREE) return COMP_SEG_BAD_STATE;
     memset(r,0,sizeof(*r)); r->catalog=c;r->entry=e;r->bytes=bytes;r->hint=hint;
-    r->candidate=hint;r->generation=c->generation;r->phase=SEARCH;
+    r->candidate=hint;r->generation=c->generation;r->gap_end=c->data_bytes;r->phase=SEARCH;
     return COMP_SEG_PENDING;
 }
 
@@ -100,7 +100,7 @@ static bool move_candidate(comp_segment_reserve_t *r,uint32_t next)
         r->wrapped=true;next=0u;
     }
     if (r->wrapped && next>=r->hint) return false;
-    r->candidate=next;r->scan=0u;r->cursor=0u;return true;
+    r->candidate=next;r->scan=0u;r->cursor=0u;r->gap_end=c->data_bytes;return true;
 }
 
 comp_segment_result_t comp_segment_reserve_poll_scoped(comp_segment_reserve_t *r,
@@ -123,6 +123,7 @@ comp_segment_result_t comp_segment_reserve_poll_scoped(comp_segment_reserve_t *r
          * against the changed generation before choosing a physical range. */
         if (r->generation!=c->generation) {
             r->generation=c->generation;r->candidate=r->hint;r->wrapped=false;r->scan=0u;r->cursor=0u;
+            r->gap_end=c->data_bytes;
         }
         if (r->candidate>c->data_bytes || r->bytes>c->data_bytes-r->candidate) {
             if (!move_candidate(r,c->data_bytes)) return failed(r,COMP_SEG_FULL);
@@ -139,6 +140,8 @@ comp_segment_result_t comp_segment_reserve_poll_scoped(comp_segment_reserve_t *r
             uint32_t existing_end=existing.extent_offset+existing.reserved_bytes;
             if (r->align_to_gap && existing_end<=r->candidate && existing_end>r->cursor)
                 r->cursor=existing_end;
+            if(existing.extent_offset>=r->candidate+r->bytes && existing.extent_offset<r->gap_end)
+                r->gap_end=existing.extent_offset;
             if (r->candidate<existing_end &&
                 existing.extent_offset<r->candidate+r->bytes) {
                 if (!move_candidate(r,existing.extent_offset+existing.reserved_bytes))
@@ -150,15 +153,21 @@ comp_segment_result_t comp_segment_reserve_poll_scoped(comp_segment_reserve_t *r
          * reset it before their first I/O; no additional SRAM state is needed. */
         if(r->align_to_gap) {
             r->candidate=r->cursor+((r->candidate-r->cursor)/r->bytes)*r->bytes;
-            /* Choose an earlier whole slot in this SAME proven free gap.
-             * Slot boundaries preserve its exact whole-extent capacity. Small
-             * or fragmented gaps keep the original placement and 4K fallback.
-             * Eight sector-aligned strides exhaust all possible 32K residues. */
-            if(r->bytes>=32768u) {
-                uint32_t aligned=r->candidate;
-                for(unsigned i=0u;i<8u && (c->data_base+aligned)%32768u &&
-                    aligned-r->cursor>=r->bytes;i++)aligned-=r->bytes;
-                if((c->data_base+aligned)%32768u==0u)r->candidate=aligned;
+            /* Only use spare bytes of this fully checked free gap. Padding
+             * no greater than its remainder preserves every other whole slot,
+             * even when the preceding legacy owner ends one sector off-grid.
+             * Eight strides exhaust the 32K residues of sector-aligned slots. */
+            if(c->port.reclaim_block_bytes==32768u && r->bytes>=32768u) {
+                const uint32_t slots=(r->gap_end-r->cursor)/r->bytes;
+                const uint32_t slack=(r->gap_end-r->cursor)%r->bytes;
+                const uint32_t chosen=(r->candidate-r->cursor)/r->bytes;
+                for(uint32_t i=0u;i<8u;i++) {
+                    const uint32_t slot=chosen>=i?chosen-i:i;
+                    if(slot>=slots)continue;
+                    const uint32_t at=r->cursor+slot*r->bytes;
+                    const uint32_t padding=(0u-c->data_base-at)&32767u;
+                    if(padding<=slack){r->candidate=at+padding;break;}
+                }
             }
         }
         r->entry->extent_offset=r->candidate;r->entry->reserved_bytes=r->bytes;

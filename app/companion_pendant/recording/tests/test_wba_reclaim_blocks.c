@@ -6,7 +6,7 @@
 #include "../../../../tools/fixtures/wba_nor_suspend_test.c"
 #undef main
 
-enum { BASE=65536, RESERVED=270336, DATA=8*RESERVED,
+enum { BASE=65536, RESERVED=270336, DATA=8*RESERVED+16384,
        PAYLOAD=22610, NORMAL=COMP_REC_V2_SEALED|COMP_REC_V2_LAST|
                     (COMP_REC_END_USER<<COMP_REC_V2_END_SHIFT) };
 static const uint8_t uid[12]={1,2,3,4,5,6,7,8,9,10,11,12};
@@ -55,7 +55,7 @@ static void capabilities_and_owner(void)
     f.sfdp[81]=0xff;assert(companion_spi_nor_stm32wba_probe(&n,NULL)==OK&&!n.info.erase_32k_supported);
     puts("PASS32 capabilities=SFDP opcode=52 exact_owner=1 suspension=1 neighbors_unchanged=1 reprobe_clears=1");
 }
-static void placement_capacity(void)
+static void placement_capacity(uint32_t old_start,bool next_owner)
 {
     unsigned aligned_count=0;
     for(unsigned t=0;t<24u;t++) {
@@ -64,22 +64,31 @@ static void placement_capacity(void)
         comp_segment_catalog_t c;mount(&s,&c);assert(finish(&s,&c)==COMP_SEG_UNFORMATTED);
         assert(comp_segment_catalog_format_blank_begin(&c)==COMP_SEG_PENDING&&finish(&s,&c)==COMP_SEG_OK);
         /* A non-block-aligned existing neighbour remains untouched. */
-        comp_segment_entry_t old=entry(&c,1);old.extent_offset=4096;old.reserved_bytes=4096;
+        comp_segment_entry_t old=entry(&c,1);old.extent_offset=old_start;old.reserved_bytes=4096;
         assert(comp_segment_catalog_put_begin(&c,&old)==COMP_SEG_PENDING&&finish(&s,&c)==COMP_SEG_OK);
-        memset(f.bytes+BASE+4096,0xa5,4096);c.next_id=100u+t;
+        memset(f.bytes+BASE+old_start,0xa5,4096);
+        const uint32_t gap_end=next_owner?DATA-8192u:DATA;
+        if(next_owner) {
+            comp_segment_entry_t next=entry(&c,3);next.extent_offset=gap_end;next.reserved_bytes=4096;
+            assert(comp_segment_catalog_put_begin(&c,&next)==COMP_SEG_PENDING&&finish(&s,&c)==COMP_SEG_OK);
+            memset(f.bytes+BASE+gap_end,0x6b,4096);
+        }
+        c.next_id=100u+t;
         comp_segment_entry_t e=entry(&c,2);e.descriptor.recording_id=0;
         comp_segment_reserve_t r={0};assert(comp_segment_reserve_begin_rotated(&r,&c,&e,RESERVED)==COMP_SEG_PENDING);
         comp_segment_result_t result=COMP_SEG_PENDING;
         for(unsigned i=0;i<20000u&&result==COMP_SEG_PENDING;i++)result=comp_wba_segment_storage_reserve_poll(&s,&r);
-        assert(result==COMP_SEG_OK&&e.reserved_bytes==RESERVED&&e.extent_offset>=8192);
-        const uint32_t before=(DATA-8192u)/RESERVED;
-        const uint32_t after=(e.extent_offset-8192u)/RESERVED+(DATA-e.extent_offset-RESERVED)/RESERVED;
+        const uint32_t gap_start=old_start+4096u;
+        assert(result==COMP_SEG_OK&&e.reserved_bytes==RESERVED&&e.extent_offset>=gap_start&&e.extent_offset+RESERVED<=gap_end);
+        const uint32_t before=(gap_end-gap_start)/RESERVED;
+        const uint32_t after=(e.extent_offset-gap_start)/RESERVED+(gap_end-e.extent_offset-RESERVED)/RESERVED;
         assert(before==after+1u);
         if((BASE+e.extent_offset)%32768u==0u)aligned_count++;
-        assert(f.bytes[BASE+4096]==0xa5&&f.bytes[BASE+8191]==0xa5);
+        assert(f.bytes[BASE+old_start]==0xa5&&f.bytes[BASE+old_start+4095u]==0xa5);
+        if(next_owner)assert(f.bytes[BASE+gap_end]==0x6b&&f.bytes[BASE+gap_end+4095u]==0x6b);
     }
-    assert(aligned_count>12u);
-    printf("PASS32 placement layouts=24 aligned=%u unchanged_reserved_bytes=1 exact_whole_capacity=1 old_neighbor=1\n",aligned_count);
+    printf("PASS32 placement old_start=%u next_owner=%u layouts=24 aligned=%u unchanged_reserved_bytes=1 exact_whole_capacity=1 old_neighbors=1\n",(unsigned)old_start,(unsigned)next_owner,aligned_count);
+    assert(aligned_count==24u);
 }
 static void reclaim_and_power_cut(bool cut)
 {
@@ -136,4 +145,4 @@ static void reclaim_and_power_cut(bool cut)
     printf("PASS32 cut=%u exact_receipt=1 all_owned_blank=1 neighbor=1 remount_receipt=1 erases=%u\n",(unsigned)cut,(unsigned)f.erases);
 }
 int main(void)
-{capabilities_and_owner();placement_capacity();reclaim_and_power_cut(false);reclaim_and_power_cut(true);return 0;}
+{setvbuf(stdout,NULL,_IONBF,0);capabilities_and_owner();placement_capacity(4096,false);placement_capacity(0,false);placement_capacity(4096,true);placement_capacity(0,true);reclaim_and_power_cut(false);reclaim_and_power_cut(true);return 0;}

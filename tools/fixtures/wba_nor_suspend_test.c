@@ -38,6 +38,9 @@ static void reset(void)
     f.sfdp[12]=48; f.sfdp[13]=0; f.sfdp[14]=0; f.sfdp[15]=255;
     le32(f.sfdp+52,0x07FFFFFFu);
     f.sfdp[76]=12; f.sfdp[77]=0x20; f.sfdp[78]=16; f.sfdp[79]=0xD8;
+#ifdef COMP_NOR_FIXTURE_ERASE32
+    f.sfdp[80]=15;f.sfdp[81]=0x52;
+#endif
     le32(f.sfdp+88,0x80u);
     le32(f.sfdp+92,0x330001ECu); /* 20us latency, 64us resume guard, nibble E */
     le32(f.sfdp+96,0x757A757Au);
