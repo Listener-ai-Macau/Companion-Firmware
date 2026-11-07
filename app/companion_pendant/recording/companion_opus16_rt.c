@@ -5,10 +5,6 @@
 #include <string.h>
 
 #include "opus.h"
-#if defined(__arm__) && defined(COMPANION_WBA_BLE_LINKED)
-#include <stdbool.h>
-void comp_v11_ble_sealed_capture_blackout(bool enter);
-#endif
 /* Private CTL values from opus_private.h (avoid pulling whole private header). */
 #ifndef MODE_SILK_ONLY
 #define MODE_SILK_ONLY 1000
@@ -345,21 +341,12 @@ static size_t encode_one_frame(
     return 0u;
   }
   companion_codec_profile_begin();
-#if defined(__arm__) && defined(COMPANION_WBA_BLE_LINKED)
-  /* The sealed backlog after reconnect uses the stopped-file pump on a side
-   * stack while this call runs. Live snapshot and idle capture do not arm it.
-   * Codec, gain, and frame size stay as they are. */
-  comp_v11_ble_sealed_capture_blackout(true);
-#endif
   n = opus_encode(
       (OpusEncoder *)rt->encoder,
       rt->pcm_acc,
       (int)rt->frame_samples,
       out_buf + 2u,
       (opus_int32)COMPANION_OPUS16_MAX_PACKET);
-#if defined(__arm__) && defined(COMPANION_WBA_BLE_LINKED)
-  comp_v11_ble_sealed_capture_blackout(false);
-#endif
   companion_codec_profile_end();
   if (n <= 0) {
     rt->last_encode_error=(int16_t)(n>=INT16_MIN&&n<0?n:OPUS_INTERNAL_ERROR);
