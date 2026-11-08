@@ -3,6 +3,7 @@
 #include "companion_segment_catalog.h"
 #include "companion_continuous_recording.h"
 #include "wba_segment_storage.h"
+#include "companion_range_reclaim.h"
 
 /* One cooperative producer/directory/consumer owner. Capture buffers live in
  * the supplied engine, not in this coordinator. BLE handles do not appear in
@@ -25,7 +26,7 @@ typedef enum {COMP_PIPE_IDLE=0,COMP_PIPE_PREPARING,COMP_PIPE_READY,COMP_PIPE_REC
 
 typedef struct {
     comp_wba_pipeline_config_t config;
-    comp_segment_reserve_t reserve;
+    union {comp_segment_reserve_t reserve;comp_range_reclaim_t range_worker;};
     comp_segment_entry_t future,consume;
     comp_segment_audio_t future_writer;
     const comp_segment_entry_t *sealing;
@@ -43,6 +44,7 @@ typedef struct {
     bool engine_bound;
     uint8_t pause_timeline; /*same one-byte field; COMP_CONT_TIMELINE_* */
     uint8_t fault_stop_attempts; /* bounded microphone-stop retry in FAILED */
+    uint8_t range_operation; /*0 status,1 durable range reclaim; idle producer union*/
 #if COMPANION_WBA_RECLAIM_TIMING
     uint32_t consume_timing_ms[5]; /* accepted, exact owner found, ACK durable, reclaim begin, removal durable */
 #endif
@@ -80,6 +82,9 @@ comp_segment_result_t comp_wba_recording_pipeline_consume_wire(comp_wba_recordin
 /* Internal lookup hint only. Physical row identity/state/proof are re-read;
  * an empty or unrelated slot falls back to the complete search. */
 comp_segment_result_t comp_wba_recording_pipeline_consume_wire_hint(comp_wba_recording_pipeline_t *,const uint8_t wire[84],uint8_t slot);
+comp_segment_result_t comp_wba_recording_pipeline_range_wire(comp_wba_recording_pipeline_t *,const uint8_t wire[96],uint8_t slot);
+bool comp_wba_recording_pipeline_range_reply(const comp_wba_recording_pipeline_t *,uint8_t wire[60]);
+void comp_wba_recording_pipeline_range_reply_retired(comp_wba_recording_pipeline_t *);
 bool comp_wba_recording_pipeline_receipt(const comp_wba_recording_pipeline_t *,uint8_t wire[84]);
 bool comp_wba_recording_pipeline_storage_busy(const comp_wba_recording_pipeline_t *);
 /* Called only after BLE/OTA/transfer owners are known idle. A failed or

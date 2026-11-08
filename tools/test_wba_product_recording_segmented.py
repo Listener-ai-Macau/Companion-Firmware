@@ -178,7 +178,7 @@ def main() -> int:
             qualificationEvidence='HOST_ONLY_RESERVE_FIXTURE_NOT_BOARD_APPROVAL')
         assert validate(candidate)
     names = ['wba_recording_product','wba_recording_recovery','wba_recording_pipeline','wba_segment_storage',
-        'companion_continuous_recording','companion_segment_audio','companion_segment_catalog',
+        'companion_continuous_recording','companion_segment_audio','companion_range_receipt','companion_range_reclaim','companion_segment_catalog',
         'companion_segment_reserve','companion_recording_identity','companion_opus16_rt','wba_silence_stop','wba_segment_discard_preview','wba_segment_discard_worker','wba_segment_discard_control','wba_segment_discard_wire']
     sources=[PLATFORM/'tests/test_product_recording_segmented.c',PLATFORM/'product_app.c',
         *[APP/'recording'/(n+'.c') for n in names],

@@ -28,7 +28,7 @@ static bool transfer_busy(const comp_wba_recording_radio_t *r)
 {return r->config.transfer->state==COMP_WBA_RECORDING_TRANSFER_ACTIVE||
     r->config.transfer->state==COMP_WBA_RECORDING_TRANSFER_BACKPRESSURED;}
 bool comp_wba_recording_radio_busy(const comp_wba_recording_radio_t *r)
-{return r&&(r->discard_running||r->consume_pending||r->phase!=RADIO_IDLE||transfer_busy(r));}
+{return r&&(r->discard_running||r->consume_pending||r->range_pending||r->phase!=RADIO_IDLE||transfer_busy(r));}
 bool comp_wba_recording_radio_interval_hint(comp_wba_recording_radio_t *r,uint32_t now,bool allowed)
 {
     if(!r)return false;
@@ -38,7 +38,7 @@ bool comp_wba_recording_radio_interval_hint(comp_wba_recording_radio_t *r,uint32
         r->interval_token=r->interval_deadline=0u;return false;
     }
     if(!r->interval_token)return false;
-    if(!r->interval_deadline || (transfer_busy(r)&&!r->config.transfer->snapshot_live)) {
+    if(!r->interval_deadline || (transfer_busy(r)&&!r->config.transfer->snapshot_live)||r->range_pending) {
         r->interval_deadline=now+2000u;
         if(!r->interval_deadline)r->interval_deadline=1u;
     }
@@ -83,6 +83,7 @@ void comp_wba_recording_radio_consume_subscription(comp_wba_recording_radio_t *r
 {
     if(!r)return;
     r->consume_subscribed=r->authenticated&&enabled;
+    if(!r->consume_subscribed){r->range_pending=false;comp_wba_recording_pipeline_range_reply_retired(r->config.pipeline);}
     if(!r->consume_subscribed)retire_consume_reply(r);
 }
 void comp_wba_recording_radio_connection(comp_wba_recording_radio_t *r,bool authenticated)
@@ -97,6 +98,8 @@ void comp_wba_recording_radio_connection(comp_wba_recording_radio_t *r,bool auth
     if(!r->authenticated&&authenticated){r->discard_peer++;if(!r->discard_peer)r->discard_peer=1u;}
     if(r->authenticated&&!authenticated)retire_consume_reply(r);
     r->consume_subscribed=false;
+    comp_wba_recording_pipeline_range_reply_retired(r->config.pipeline);
+    r->range_pending=false;r->range_token=r->range_id=0u;
     r->authenticated=authenticated;r->negotiated=false;r->selected_value_capacity=244u;
     r->interval_token=r->interval_deadline=0u;
     r->capacity_token=0u;
@@ -112,7 +115,7 @@ bool comp_wba_recording_radio_claims(companion_gatt_char_id_t id,const uint8_t *
     return p&&((id==COMPANION_GATT_CHAR_RECORDING_CONTROL&&n>=2u&&p[0]==2u&&
         (p[1]==0x20u||p[1]==0x22u||p[1]==0x23u||p[1]==0x25u||p[1]==0x26u)) ||
         (id==COMPANION_GATT_CHAR_RECORDING_CHUNK_PULL&&n&&p[0]==2u) ||
-        (id==COMPANION_GATT_CHAR_DELETE_PRIVACY&&n>=4u&&(!memcmp(p,"CRA2",4u)||!memcmp(p,"CDS3",4u))));
+        (id==COMPANION_GATT_CHAR_DELETE_PRIVACY&&n>=4u&&(!memcmp(p,"CRA2",4u)||!memcmp(p,"CDS3",4u)||!memcmp(p,"CRG3",4u))));
 }
 void comp_wba_recording_radio_unsubscribe(comp_wba_recording_radio_t *r,companion_gatt_char_id_t id)
 {
@@ -148,6 +151,15 @@ static void error(comp_wba_recording_radio_t *r,companion_gatt_char_id_t id,
 }
 static void reply(comp_wba_recording_radio_t *r,companion_gatt_char_id_t id,uint16_t n)
 {r->pending_char=id;r->pending_bytes=n;r->phase=RADIO_REPLY;}
+static void range_error(comp_wba_recording_radio_t *r,const uint8_t request[96],comp_segment_result_t result)
+{
+    const comp_segment_catalog_t *c=r->config.pipeline->config.catalog;uint8_t out[60]={0};
+    memcpy(out,"CRR3",4u);comp_rec_put16(out+4u,3u);comp_rec_put16(out+6u,60u);
+    memcpy(out+8u,c->uid,12u);comp_rec_put64(out+20u,c->epoch);
+    comp_rec_put32(out+28u,comp_rec_get32(request+40u));comp_rec_put32(out+32u,comp_rec_get32(request+44u));
+    comp_rec_put32(out+44u,(uint32_t)result);comp_rec_put32(out+52u,comp_rec_get32(request+52u));
+    comp_rec_put32(out+56u,comp_rec_crc(out,56u));(void)publish(r,COMPANION_GATT_CHAR_DELETE_PRIVACY,out,60u);
+}
 static bool resume_sealed_pull(comp_wba_recording_radio_t *r,const uint8_t p[32])
 {
     const comp_wba_recording_transfer_t *t=r->config.transfer;
@@ -246,7 +258,7 @@ bool comp_wba_recording_radio_write(comp_wba_recording_radio_t *r,companion_gatt
         /* Product-private FW66697+ option in the otherwise bounded ATT-value
          * word. Echoed only on the qualified suspended-read NOR path; legacy
          * clients/status capabilities and the physical receipt stay intact. */
-        uint16_t selected=(uint16_t)(((uint16_t)p[2]|((uint16_t)p[3]<<8u))&0x7fffu);
+        uint16_t selected=(uint16_t)(((uint16_t)p[2]|((uint16_t)p[3]<<8u))&0x3fffu);
         if(!selected)selected=r->config.value_capacity<244u?r->config.value_capacity:244u; /* legacy MTU fallback */
         if(selected<136u||selected>r->config.value_capacity||
            selected>COMP_WBA_RECORDING_TRANSFER_VALUE_BYTES||!comp_rec_get32(p+4u)||memcmp(p+8u,c->uid,12u)||
@@ -262,10 +274,29 @@ bool comp_wba_recording_radio_write(comp_wba_recording_radio_t *r,companion_gatt
         if((p[3]&0x80u)&&!comp_wba_segment_storage_reclaim_read_supported(r->config.pipeline->config.storage)) {
             target[3]&=0x7fu;comp_rec_put32(target+28u,comp_wba_recording_crc32(0u,target,28u));
         }
+        if((p[3]&0x40u)&&(!(p[3]&0x80u)||!comp_wba_segment_storage_reclaim_read_supported(r->config.pipeline->config.storage))){
+            target[3]&=0xbfu;comp_rec_put32(target+28u,comp_wba_recording_crc32(0u,target,28u));
+        }
         r->pending_bytes=32u;
         r->pending_char=id;r->phase=RADIO_NEGOTIATE;return true;
     }
     if(!r->negotiated)return false;
+    if(id==COMPANION_GATT_CHAR_DELETE_PRIVACY&&n==96u&&!memcmp(p,"CRG3",4u)){
+        if(!(r->negotiated&4u))return false;
+        if(r->consume_pending||r->range_pending||r->discard_running||
+           (r->phase!=RADIO_IDLE&&r->phase!=RADIO_PULL)||
+           (r->phase==RADIO_PULL&&(r->pull.live||r->pull.request.recording_id!=comp_rec_get32(p+40u)))){
+            range_error(r,p,COMP_SEG_BAD_STATE);return true;
+        }
+        bool selected=r->io.selected.descriptor.recording_id==comp_rec_get32(p+40u)&&
+            r->io.selected.descriptor.session_id==comp_rec_get64(p+28u)&&
+            r->io.selected.descriptor.segment_index==comp_rec_get32(p+36u);
+        comp_segment_result_t result=comp_wba_recording_pipeline_range_wire(r->config.pipeline,p,selected?r->pull.slot:64u);
+        if(result!=COMP_SEG_PENDING&&result!=COMP_SEG_OK){range_error(r,p,result);return true;}
+        r->consume_replay=false;r->range_token=comp_rec_get32(p+44u);r->range_id=comp_rec_get32(p+40u);
+        r->range_pending=true;return true;
+    }
+    if(r->range_pending&&id!=COMPANION_GATT_CHAR_RECORDING_CHUNK_PULL)return false;
     if(id==COMPANION_GATT_CHAR_DELETE_PRIVACY&&n>=4u&&!memcmp(p,"CDS3",4u))return discard_write(r,p,n);
     if(r->discard_running)return false;
     if(id==COMPANION_GATT_CHAR_RECORDING_CONTROL&&n==32u&&p[0]==2u&&p[1]==0x25u) {
@@ -419,12 +450,24 @@ void comp_wba_recording_radio_poll(comp_wba_recording_radio_t *r,
         r->consume_pending=false;r->phase=RADIO_IDLE;
     }
     if(!r->authenticated)return;
+    if(r->range_pending&&r->consume_subscribed&&
+       comp_wba_recording_pipeline_consume_result(r->config.pipeline)!=COMP_SEG_PENDING){
+        uint8_t receipt[60];
+        if(!comp_wba_recording_pipeline_range_reply(r->config.pipeline,receipt)||
+           comp_rec_get32(receipt+28u)!=r->range_id||comp_rec_get32(receipt+32u)!=r->range_token){r->range_pending=false;return;}
+        if(publish(r,COMPANION_GATT_CHAR_DELETE_PRIVACY,receipt,60u)){
+            r->range_pending=false;comp_wba_recording_pipeline_range_reply_retired(r->config.pipeline);
+        }
+        return;
+    }
     if(r->phase==RADIO_NEGOTIATE||r->phase==RADIO_REPLY) {
         if(!publish(r,r->pending_char,r->config.transfer->packet,r->pending_bytes))return;
         if(r->phase==RADIO_NEGOTIATE) {
             comp_segment_catalog_t *c=r->config.pipeline->config.catalog;
             bool overlap=(r->config.transfer->packet[3]&0x80u)!=0u;
-            r->negotiated=comp_wba_segment_pull_peer(&r->pull,c->uid,c->epoch,true)?(overlap?3u:1u):0u;
+            bool ranges=(r->config.transfer->packet[3]&0x40u)!=0u;
+            r->negotiated=comp_wba_segment_pull_peer(&r->pull,c->uid,c->epoch,true)?
+                (uint8_t)(1u|(overlap?2u:0u)|(overlap&&ranges?4u:0u)):0u;
         }
         else if(r->pending_char==COMPANION_GATT_CHAR_RECORDING_LIST&&r->pending_bytes>=24u&&
                 r->config.transfer->packet[0]==2u&&comp_wba_segment_directory_next(&r->io.directory)) {

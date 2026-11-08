@@ -38,8 +38,10 @@ typedef struct {
     companion_gatt_char_id_t pending_char;
     uint8_t phase;
     bool authenticated;
-    uint8_t negotiated; /* bit0=peer valid, bit1=explicit consume/pull overlap */
+    uint8_t negotiated; /*bit0 peer,bit1 whole consume overlap,bit2 explicit range protocol*/
     bool consume_pending,consume_replay,consume_subscribed;
+    uint32_t range_token,range_id;
+    bool range_pending; /*independent60B receipt lane; never uses audio packet*/
 } comp_wba_recording_radio_t;
 
 bool comp_wba_recording_radio_init(comp_wba_recording_radio_t *,const comp_wba_recording_radio_config_t *);

@@ -1,12 +1,16 @@
 #include "companion_segment_catalog.h"
+#include "companion_range_reclaim.h"
 
 enum {
     IDLE=0, MOUNT_ROOT, MOUNT_BLANK, MOUNT_ROWS, MOUNT_PREVIOUS,
-    MOUNT_FIRST, MOUNT_PAIR, PREFLIGHT, COMPACT_SCAN, GC_INTENT_BODY, GC_INTENT_COMMIT, GC_INTENT_VERIFY,
+    MOUNT_FIRST, MOUNT_PAIR, MOUNT_RANGE, MOUNT_RANGE_ENTRY,
+    PREFLIGHT, COMPACT_SCAN, GC_INTENT_BODY, GC_INTENT_COMMIT, GC_INTENT_VERIFY,
     GC_ERASE, ROOT_BODY, GC_READ,
     GC_BODY, GC_COMMIT, GC_VERIFY, ROOT_COMMIT, ROOT_VERIFY,
     ROW_BODY, ROW_COMMIT, ROW_VERIFY, RECLAIM, PREFLIGHT_KNOWN,
-    OP_NONE=0, OP_PUT=1, OP_ACK=2, OP_RECLAIM=3, OP_FORMAT=4, OP_CANCEL=5, OP_DISCARD=6, OP_SESSION_INTENT=7, OP_COMPACT=8,
+    GC_RANGE_HEADER,GC_RANGE_BODY,GC_RANGE_VERIFY,
+    RANGE_PREFLIGHT,RANGE_HEADER_BODY,RANGE_HEADER_COMMIT,RANGE_HEADER_VERIFY,RANGE_RUN,
+    OP_NONE=0, OP_PUT=1, OP_ACK=2, OP_RECLAIM=3, OP_FORMAT=4, OP_CANCEL=5, OP_DISCARD=6, OP_SESSION_INTENT=7, OP_COMPACT=8,OP_RANGE=9,
     NO_SLOT=255, ROOT_CRC=60, ROW_CRC=140, INTENT=224, INTENT_COMMIT=248, COMMIT=252
 };
 static uint32_t reclaim_bytes(const comp_segment_catalog_t *c)
@@ -26,7 +30,7 @@ static uint32_t reclaim_bytes(const comp_segment_catalog_t *c)
                         COMP_SEGMENT_PAGE_DATA_BYTES-1u)/COMP_SEGMENT_PAGE_DATA_BYTES;
         uint64_t bytes=(pages+1u)*COMP_SEGMENT_PAGE_BYTES;
         bytes=(bytes+COMP_SEGMENT_SECTOR_BYTES-1u)/COMP_SEGMENT_SECTOR_BYTES*COMP_SEGMENT_SECTOR_BYTES;
-        if(c->reclaim_block_sectors==8u && bytes>=16384u &&
+        if(!c->range_nonce[c->index]&&c->reclaim_block_sectors==8u && bytes>=16384u &&
            (c->data_base+e->extent_offset)%32768u==0u) {
             uint64_t block_end=(bytes+32767u)&~UINT64_C(32767);
             if(block_end<=e->reserved_bytes)bytes=block_end;
@@ -56,6 +60,7 @@ static bool uniform(const uint8_t *p,size_t n,uint8_t value)
 static comp_segment_result_t fail(comp_segment_catalog_t *c,comp_segment_result_t r)
 {
     c->phase=IDLE; c->operation=OP_NONE; c->pending=NULL;
+    c->range_worker=NULL;
     /* A failed write/readback is uncertain, never permission to retry against
      * a stale RAM index. A fresh mount reconstructs durable ownership. */
     if (r==COMP_SEG_IO_ERROR || r==COMP_SEG_CORRUPT) c->mounted=false;
@@ -100,6 +105,7 @@ comp_segment_result_t comp_segment_catalog_entry_io(const comp_segment_catalog_t
 bool comp_segment_catalog_transfer_readable(const comp_segment_catalog_t *c)
 {
     return c&&c->mounted&&(c->phase==IDLE||
+        c->phase==RANGE_RUN||
         (c->phase==RECLAIM&&c->operation==OP_RECLAIM&&c->pending&&
          c->pending_state==COMP_SEG_ERASING));
 }
@@ -135,6 +141,17 @@ comp_segment_result_t comp_segment_catalog_next_io(const comp_segment_catalog_t 
     case MOUNT_BLANK:*io=(comp_segment_io_t){address(c,c->scan,c->target_slot),256u,COMP_SEG_IO_READ};break;
     case MOUNT_ROWS:*io=(comp_segment_io_t){address(c,c->bank,c->target_slot),256u,COMP_SEG_IO_READ};break;
     case MOUNT_PREVIOUS:*io=(comp_segment_io_t){address(c,c->bank,c->slots[c->index]),256u,COMP_SEG_IO_READ};break;
+    case MOUNT_RANGE:break;
+    case MOUNT_RANGE_ENTRY:
+        *io=(comp_segment_io_t){address(c,c->bank,c->slots[c->index]),256u,COMP_SEG_IO_READ};break;
+    case RANGE_PREFLIGHT:*io=(comp_segment_io_t){address(c,c->bank,c->slots[c->index]),256u,COMP_SEG_IO_READ};break;
+    case RANGE_HEADER_BODY:*io=(comp_segment_io_t){address(c,c->bank,c->target_slot),28u,COMP_SEG_IO_PROGRAM};break;
+    case RANGE_HEADER_COMMIT:*io=(comp_segment_io_t){address(c,c->bank,c->target_slot)+28u,4u,COMP_SEG_IO_PROGRAM};break;
+    case RANGE_HEADER_VERIFY:*io=(comp_segment_io_t){address(c,c->bank,c->target_slot),256u,COMP_SEG_IO_READ};break;
+    case RANGE_RUN:return comp_range_reclaim_next_io(c->range_worker,io);
+    case GC_RANGE_HEADER:break;
+    case GC_RANGE_BODY:*io=(comp_segment_io_t){address(c,(uint8_t)(c->bank^1u),c->copy_slot),252u,COMP_SEG_IO_PROGRAM};break;
+    case GC_RANGE_VERIFY:*io=(comp_segment_io_t){address(c,(uint8_t)(c->bank^1u),c->copy_slot),256u,COMP_SEG_IO_READ};break;
     case PREFLIGHT_KNOWN:
         if(c->scan>=64u||c->slots[c->scan]==NO_SLOT)return COMP_SEG_NOT_FOUND;
         *io=(comp_segment_io_t){address(c,c->bank,c->slots[c->scan]),256u,COMP_SEG_IO_READ};break;
@@ -357,11 +374,47 @@ static void apply_row(comp_segment_catalog_t *c,uint8_t index,uint8_t slot,uint8
     c->slots[index]=(state==0u || state==COMP_SEG_CANCELED || state==COMP_SEG_DISCARDED)?NO_SLOT:slot;
     if (state==COMP_SEG_UNSYNCED || state==COMP_SEG_ACKED) c->visible_mask|=bit;
     else c->visible_mask&=~bit;
+    c->range_page=NO_SLOT;
+    if(state==COMP_SEG_WRITING||state==0u||state==COMP_SEG_CANCELED||state==COMP_SEG_DISCARDED){
+        c->range_id[index]=c->range_binding[index]=c->range_nonce[index]=0u;
+        c->range_first[index]=c->range_end[index]=0u;
+    }
     if(state==0u) {
         c->receipts[c->receipt_next]=slot;
         c->receipt_next=(uint8_t)((c->receipt_next+1u)%COMP_SEGMENT_RECEIPT_CAPACITY);
     }
 }
+static void range_overlay(const comp_segment_catalog_t *c,uint8_t index,comp_segment_entry_t *e)
+{
+    e->range_nonce=c->range_nonce[index];e->range_first=c->range_first[index];
+    e->range_end=c->range_pending_slot==index?c->range_first[index]:c->range_end[index];
+}
+static unsigned range_count(const comp_segment_catalog_t *c)
+{
+    unsigned n=0u;for(unsigned i=0u;i<64u;i++)if(c->slots[i]!=NO_SLOT&&c->range_nonce[i])n++;
+    return n;
+}
+/* Pure snapshot generation. Every entry came from an identity-validated CRR3
+ * record. It never reads audio or consumes more than this metadata page. */
+static bool range_snapshot_page(const comp_segment_catalog_t *c,uint8_t *cursor,
+    uint32_t serial,uint32_t page_index,uint8_t out[256])
+{
+    memset(out,255,256u);
+    comp_range_journal_snapshot_header_prepare(out,c->uid,c->epoch,serial,page_index);
+    memset(out+28u,0,4u);unsigned count=0u;
+    while(*cursor<64u&&count<COMP_RANGE_JOURNAL_RECORDS){
+        uint8_t slot=(*cursor)++;
+        if(c->slots[slot]==NO_SLOT||!c->range_nonce[slot])continue;
+        comp_range_plan_t p={c->range_id[slot],c->range_nonce[slot],c->range_binding[slot],
+            c->range_first[slot],c->range_end[slot],slot};
+        uint8_t *record=out+32u+count*32u;
+        if(!comp_range_journal_record_prepare(record,out,(uint8_t)count,&p))return false;
+        memset(record+24u,0,8u);count++;
+    }
+    return count!=0u;
+}
+bool comp_segment_catalog_range_pending(const comp_segment_catalog_t *c)
+{return c&&(c->range_worker||c->range_pending_slot!=NO_SLOT);}
 
 static bool transition(const comp_segment_entry_t *old,const comp_segment_entry_t *next)
 {
@@ -389,6 +442,8 @@ comp_segment_result_t comp_segment_catalog_mount_begin(comp_segment_catalog_t *c
     c->data_base=base; c->data_bytes=bytes; c->epoch=epoch; memcpy(c->uid,uid,12u);
     memset(c->slots,NO_SLOT,sizeof(c->slots)); c->phase=MOUNT_ROOT;
     memset(c->receipts,NO_SLOT,sizeof(c->receipts));
+    c->range_page=c->range_pending_slot=c->range_pending_page=c->range_pending_record=NO_SLOT;
+    c->range_snapshot_open=true;
     return COMP_SEG_PENDING;
 }
 
@@ -404,7 +459,7 @@ comp_segment_result_t comp_segment_catalog_format_blank_begin(comp_segment_catal
 static comp_segment_result_t begin(comp_segment_catalog_t *c,const comp_segment_entry_t *e,uint8_t op)
 {
     if (c==NULL || e==NULL) return COMP_SEG_BAD_ARGUMENT;
-    if (!c->mounted || c->phase!=IDLE) return COMP_SEG_BAD_STATE;
+    if (!c->mounted || c->phase!=IDLE || comp_segment_catalog_range_pending(c)) return COMP_SEG_BAD_STATE;
     if (!entry_valid(c,e,e->state) ||
         (op==OP_PUT && e->state!=COMP_SEG_WRITING && e->state!=COMP_SEG_UNSYNCED) ||
         (op==OP_ACK && e->state!=COMP_SEG_ACKED) ||
@@ -461,7 +516,7 @@ comp_segment_result_t comp_segment_catalog_cancel_unwritten_begin(comp_segment_c
 comp_segment_result_t comp_segment_catalog_compact_legacy_begin(comp_segment_catalog_t *c)
 {
     if(!c)return COMP_SEG_BAD_ARGUMENT;
-    if(!c->mounted||c->phase)return COMP_SEG_BAD_STATE;
+    if(!c->mounted||c->phase||comp_segment_catalog_range_pending(c))return COMP_SEG_BAD_STATE;
     if(!c->legacy_dirty)return COMP_SEG_OK;
     if(c->bank_serial==UINT32_MAX)return COMP_SEG_FULL;
     c->operation=OP_COMPACT;c->scan=0u;c->cursor=0u;c->gc_has_v3=false;c->phase=COMPACT_SCAN;
@@ -471,6 +526,49 @@ static void append_or_gc(comp_segment_catalog_t *c)
 {
     if (c->next_slot>=COMP_SEGMENT_BANK_PAGES) { c->cursor=0u;c->gc_has_v3=false; c->phase=GC_INTENT_BODY; }
     else { c->target_slot=c->next_slot; c->phase=ROW_BODY; }
+}
+comp_segment_result_t comp_segment_catalog_range_begin(comp_segment_catalog_t *c,
+    struct comp_range_reclaim_s *w,const comp_segment_entry_t *e,uint8_t slot,
+    uint16_t first,uint16_t end,uint32_t nonce,const uint8_t sha[32])
+{
+    comp_range_plan_t plan;uint32_t begin,limit;
+    if(!c||!w||!e||!sha||slot>=64u||!comp_range_plan(e,slot,first,end,nonce,&plan,&begin,&limit))
+        return COMP_SEG_BAD_ARGUMENT;
+    if(!c->mounted)return COMP_SEG_BAD_STATE;
+    if(c->range_worker){
+        const comp_range_plan_t *p=&c->range_worker->plan;
+        return p->recording_id==plan.recording_id&&p->slot==slot&&p->first_sector==first&&p->end_sector==end&&
+            p->request_nonce==nonce&&p->descriptor_binding==plan.descriptor_binding?COMP_SEG_PENDING:COMP_SEG_BAD_STATE;
+    }
+    if(c->phase!=IDLE||c->slots[slot]==NO_SLOT)return COMP_SEG_BAD_STATE;
+    if(c->range_pending_slot!=NO_SLOT){
+        if(c->range_pending_slot!=slot||c->range_id[slot]!=plan.recording_id||
+           c->range_nonce[slot]!=nonce||c->range_first[slot]!=first||c->range_end[slot]!=end||
+           c->range_binding[slot]!=plan.descriptor_binding)return COMP_SEG_BAD_STATE;
+    }else if(c->range_nonce[slot]&&c->range_nonce[slot]==nonce){
+        return c->range_id[slot]==plan.recording_id&&c->range_first[slot]==first&&
+            c->range_end[slot]==end&&c->range_binding[slot]==plan.descriptor_binding?COMP_SEG_OK:COMP_SEG_BAD_ARGUMENT;
+    }else if(first!=c->range_end[slot])return COMP_SEG_BAD_ARGUMENT;
+    uint8_t durable_sha[32];memcpy(durable_sha,sha,32u);
+    memset(w,0,sizeof(*w));w->entry=e;w->plan=plan;memcpy(w->expected_sha,durable_sha,32u);
+    c->range_worker=w;c->pending=e;c->pending_intent=NULL;c->operation=OP_RANGE;
+    c->index=slot;c->pending_state=COMP_SEG_UNSYNCED;c->phase=RANGE_PREFLIGHT;
+    return COMP_SEG_PENDING;
+}
+static comp_segment_result_t range_launch(comp_segment_catalog_t *c,uint8_t page,uint8_t record)
+{
+    comp_range_reclaim_t *w=c->range_worker;comp_range_plan_t plan=w->plan;
+    uint8_t sha[32];memcpy(sha,w->expected_sha,32u);memset(w,0,sizeof(*w));
+    comp_segment_result_t r=comp_range_reclaim_begin(w,&c->port,c->pending,c->data_base,
+        address(c,c->bank,page),c->bank_serial,page,record,&plan,sha,c->page);
+    if(r!=COMP_SEG_PENDING)return fail(c,r);
+    c->phase=RANGE_RUN;return r;
+}
+static void mount_next_page(comp_segment_catalog_t *c)
+{
+    c->target_slot++;
+    if(c->target_slot==COMP_SEGMENT_BANK_PAGES){c->scan=0u;c->phase=MOUNT_FIRST;}
+    else c->phase=MOUNT_ROWS;
 }
 
 comp_segment_result_t comp_segment_catalog_mount_poll(comp_segment_catalog_t *c)
@@ -518,7 +616,18 @@ comp_segment_result_t comp_segment_catalog_mount_poll(comp_segment_catalog_t *c)
     case MOUNT_ROWS:
         if (!c->port.read(c->port.context,address(c,c->bank,c->target_slot),c->page,256u)) return fail(c,COMP_SEG_IO_ERROR);
         if (!uniform(c->page,256u,255u)) c->next_slot=(uint8_t)(c->target_slot+1u);
+        if(!memcmp(c->page,"CRR3",4u)){
+            if(c->target_slot<=c->snapshot_count||!uniform(c->page+224u,32u,255u))return fail(c,COMP_SEG_CORRUPT);
+            comp_range_journal_state_t state=comp_range_journal_header_decode(c->page,c->uid,c->epoch,c->bank_serial,c->target_slot);
+            if(state==COMP_RANGE_TORN){c->range_page=NO_SLOT;mount_next_page(c);break;}
+            if(state!=COMP_RANGE_DONE||c->range_pending_slot!=NO_SLOT)return fail(c,COMP_SEG_CORRUPT);
+            bool snapshot=comp_range_journal_is_snapshot(c->page);
+            if(snapshot&&!c->range_snapshot_open)return fail(c,COMP_SEG_CORRUPT);
+            if(!snapshot)c->range_snapshot_open=false;
+            c->range_page=snapshot?NO_SLOT:c->target_slot;c->range_record=0u;c->scan=0u;c->phase=MOUNT_RANGE;break;
+        }
         if (c->target_slot<=c->snapshot_count || uniform(c->page+COMMIT,4u,0u)) {
+            if(c->range_pending_slot!=NO_SLOT)return fail(c,COMP_SEG_CORRUPT);
             if (!row_decode(c,c->page,&e)) return fail(c,COMP_SEG_CORRUPT);
             if(c->page[4]==3u)c->legacy_dirty=true;
             c->index=c->page[6];
@@ -534,6 +643,7 @@ comp_segment_result_t comp_segment_catalog_mount_poll(comp_segment_catalog_t *c)
                     c->receipt_next=(uint8_t)((c->receipt_next+1u)%COMP_SEGMENT_RECEIPT_CAPACITY);
                 } else apply_row(c,c->index,c->target_slot,e.state);
             } else {
+                c->range_snapshot_open=false;
                 if (c->generation==UINT32_MAX || generation!=c->generation+1u) return fail(c,COMP_SEG_CORRUPT);
                 if (c->slots[c->index]!=NO_SLOT) { c->phase=MOUNT_PREVIOUS; break; }
                 if (e.state!=COMP_SEG_WRITING || e.descriptor.recording_id!=c->next_id) return fail(c,COMP_SEG_CORRUPT);
@@ -543,6 +653,34 @@ comp_segment_result_t comp_segment_catalog_mount_poll(comp_segment_catalog_t *c)
         c->target_slot++;
         if (c->target_slot==COMP_SEGMENT_BANK_PAGES) { c->scan=0u; c->phase=MOUNT_FIRST; }
         break;
+    case MOUNT_RANGE:{
+        if(c->scan==COMP_RANGE_JOURNAL_RECORDS){mount_next_page(c);break;}
+        comp_range_plan_t plan;
+        comp_range_journal_state_t state=comp_range_journal_record_decode(c->page+32u+(uint32_t)c->scan*32u,c->page,c->scan,&plan);
+        if(state==COMP_RANGE_EMPTY){c->scan++;break;}
+        c->range_record=(uint8_t)(c->scan+1u);
+        if(state==COMP_RANGE_TORN){
+            if(comp_range_journal_is_snapshot(c->page))return fail(c,COMP_SEG_CORRUPT);
+            c->scan++;break;
+        }
+        if((state!=COMP_RANGE_PENDING&&state!=COMP_RANGE_DONE)||c->slots[plan.slot]==NO_SLOT||c->range_pending_slot!=NO_SLOT)
+            return fail(c,COMP_SEG_CORRUPT);
+        c->index=plan.slot;c->phase=MOUNT_RANGE_ENTRY;break;}
+    case MOUNT_RANGE_ENTRY:{
+        comp_range_plan_t plan;
+        comp_range_journal_state_t state=comp_range_journal_record_decode(c->page+32u+(uint32_t)c->scan*32u,c->page,c->scan,&plan);
+        if(!c->port.read(c->port.context,address(c,c->bank,c->slots[c->index]),scratch,256u))return fail(c,COMP_SEG_IO_ERROR);
+        if(!row_decode(c,scratch,&e)||scratch[6]!=plan.slot||
+           (e.state!=COMP_SEG_UNSYNCED&&e.state!=COMP_SEG_ACKED&&e.state!=COMP_SEG_ERASING))return fail(c,COMP_SEG_CORRUPT);
+        bool snapshot=comp_range_journal_is_snapshot(c->page);
+        e.state=COMP_SEG_UNSYNCED;e.descriptor.sync_state=1u;
+        if(!comp_range_plan_matches(&plan,&e,c->index)||
+           (snapshot?(state!=COMP_RANGE_DONE||c->range_nonce[c->index]!=0u):plan.first_sector!=c->range_end[c->index]))
+            return fail(c,COMP_SEG_CORRUPT);
+        c->range_id[c->index]=plan.recording_id;c->range_binding[c->index]=plan.descriptor_binding;
+        c->range_nonce[c->index]=plan.request_nonce;c->range_first[c->index]=plan.first_sector;c->range_end[c->index]=plan.end_sector;
+        if(state==COMP_RANGE_PENDING){c->range_pending_slot=c->index;c->range_pending_page=c->target_slot;c->range_pending_record=c->scan;}
+        c->scan++;c->phase=MOUNT_RANGE;break;}
     case MOUNT_PREVIOUS:
         if (!c->port.read(c->port.context,address(c,c->bank,c->slots[c->index]),scratch,256u)) return fail(c,COMP_SEG_IO_ERROR);
         if (!row_decode(c,scratch,&old) || !row_decode(c,c->page,&e) || !transition(&old,&e)) return fail(c,COMP_SEG_CORRUPT);
@@ -574,8 +712,41 @@ comp_segment_result_t comp_segment_catalog_poll(comp_segment_catalog_t *c)
     static const uint8_t committed[4]={0u,0u,0u,0u};
     uint32_t erased=0u;
     if (c==NULL) return COMP_SEG_BAD_ARGUMENT;
-    if(c->phase<=MOUNT_PAIR)return comp_segment_catalog_mount_poll(c);
+    if(c->phase<=MOUNT_RANGE_ENTRY)return comp_segment_catalog_mount_poll(c);
     switch (c->phase) {
+    case RANGE_PREFLIGHT:
+        if(!c->port.read(c->port.context,address(c,c->bank,c->slots[c->index]),c->page,256u))return fail(c,COMP_SEG_IO_ERROR);
+        if(!row_decode(c,c->page,&old)||old.state!=COMP_SEG_UNSYNCED||c->page[6]!=c->index||
+           !same_sealed(&old,c->pending))return fail(c,COMP_SEG_BAD_ARGUMENT);
+        if(c->range_pending_slot!=NO_SLOT)return range_launch(c,c->range_pending_page,c->range_pending_record);
+        if(c->range_page!=NO_SLOT&&c->next_slot==(uint8_t)(c->range_page+1u)&&c->range_record<COMP_RANGE_JOURNAL_RECORDS)
+            return range_launch(c,c->range_page,c->range_record);
+        if(c->next_slot>=COMP_SEGMENT_BANK_PAGES){c->cursor=0u;c->gc_has_v3=false;c->phase=GC_INTENT_BODY;}
+        else{c->target_slot=c->next_slot;c->phase=RANGE_HEADER_BODY;}
+        break;
+    case RANGE_HEADER_BODY:
+        comp_range_journal_header_prepare(c->page,c->uid,c->epoch,c->bank_serial,c->target_slot);
+        if(!c->port.program(c->port.context,address(c,c->bank,c->target_slot),c->page,28u))return fail(c,COMP_SEG_IO_ERROR);
+        c->phase=RANGE_HEADER_COMMIT;break;
+    case RANGE_HEADER_COMMIT:
+        if(!c->port.program(c->port.context,address(c,c->bank,c->target_slot)+28u,committed,4u))return fail(c,COMP_SEG_IO_ERROR);
+        c->phase=RANGE_HEADER_VERIFY;break;
+    case RANGE_HEADER_VERIFY:
+        if(!c->port.read(c->port.context,address(c,c->bank,c->target_slot),c->page,256u))return fail(c,COMP_SEG_IO_ERROR);
+        if(comp_range_journal_header_decode(c->page,c->uid,c->epoch,c->bank_serial,c->target_slot)!=COMP_RANGE_DONE||
+           !uniform(c->page+32u,224u,255u))return fail(c,COMP_SEG_CORRUPT);
+        c->range_page=c->target_slot;c->range_record=0u;c->next_slot=(uint8_t)(c->target_slot+1u);
+        return range_launch(c,c->range_page,0u);
+    case RANGE_RUN:{
+        comp_segment_result_t r=comp_range_reclaim_poll(c->range_worker);
+        if(r==COMP_SEG_PENDING)return r;
+        if(r!=COMP_SEG_OK)return fail(c,r);
+        const comp_range_plan_t *plan=&c->range_worker->plan;uint8_t slot=plan->slot;
+        c->range_id[slot]=plan->recording_id;c->range_binding[slot]=plan->descriptor_binding;
+        c->range_nonce[slot]=plan->request_nonce;c->range_first[slot]=plan->first_sector;c->range_end[slot]=plan->end_sector;
+        if(c->range_pending_slot==NO_SLOT)c->range_record++;
+        c->range_pending_slot=c->range_pending_page=c->range_pending_record=NO_SLOT;
+        c->pending=NULL;c->range_worker=NULL;c->operation=OP_NONE;c->phase=IDLE;return COMP_SEG_OK;}
     case COMPACT_SCAN:
         while(c->scan<64u && c->slots[c->scan]==NO_SLOT)c->scan++;
         if(c->scan==64u){c->cursor=0u;c->phase=GC_INTENT_BODY;break;}
@@ -619,7 +790,9 @@ comp_segment_result_t comp_segment_catalog_poll(comp_segment_catalog_t *c)
         if (c->cursor==1u) {
             c->cursor=0u;
             if (c->operation==OP_ACK) { c->pending=NULL; c->operation=OP_NONE; c->phase=IDLE; return COMP_SEG_OK; }
-            c->phase=RECLAIM;
+            c->cursor=c->operation==OP_RECLAIM?(uint32_t)c->range_end[c->index]*4096u:0u;
+            if(c->cursor>reclaim_bytes(c))return fail(c,COMP_SEG_CORRUPT);
+            if(c->cursor==reclaim_bytes(c)){c->pending_state=0u;append_or_gc(c);}else c->phase=RECLAIM;
         } else append_or_gc(c);
         break;
     case GC_INTENT_BODY:
@@ -659,7 +832,7 @@ comp_segment_result_t comp_segment_catalog_poll(comp_segment_catalog_t *c)
         break;
     case GC_READ:
         c->scan=gc_from(c,c->scan);
-        if (c->scan==64u+COMP_SEGMENT_RECEIPT_CAPACITY) { c->phase=ROOT_COMMIT; break; }
+        if (c->scan==64u+COMP_SEGMENT_RECEIPT_CAPACITY) {c->scan=0u;c->phase=range_count(c)?GC_RANGE_HEADER:ROOT_COMMIT;break;}
         if (!c->port.read(c->port.context,address(c,c->bank,gc_slot(c,c->scan)),c->page,256u)) return fail(c,COMP_SEG_IO_ERROR);
         if (!row_decode(c,c->page,&e) || (c->scan<64u?(e.state==0u||c->page[6]!=c->scan):e.state!=0u))
             return fail(c,COMP_SEG_CORRUPT);
@@ -683,6 +856,18 @@ comp_segment_result_t comp_segment_catalog_poll(comp_segment_catalog_t *c)
             return fail(c,COMP_SEG_CORRUPT);
         c->copy_slot++; c->scan++; c->phase=GC_READ;
         break;
+    case GC_RANGE_HEADER:
+        if(!range_snapshot_page(c,&c->scan,c->bank_serial+1u,c->copy_slot,c->page))return fail(c,COMP_SEG_CORRUPT);
+        c->expected_crc=comp_rec_crc(c->page,252u);c->phase=GC_RANGE_BODY;break;
+    case GC_RANGE_BODY:
+        if(!c->port.program(c->port.context,address(c,(uint8_t)(c->bank^1u),c->copy_slot),c->page,252u))return fail(c,COMP_SEG_IO_ERROR);
+        c->phase=GC_RANGE_VERIFY;break;
+    case GC_RANGE_VERIFY:
+        if(!c->port.read(c->port.context,address(c,(uint8_t)(c->bank^1u),c->copy_slot),c->page,256u))return fail(c,COMP_SEG_IO_ERROR);
+        if(comp_rec_crc(c->page,252u)!=c->expected_crc||!uniform(c->page+252u,4u,255u))return fail(c,COMP_SEG_CORRUPT);
+        c->copy_slot++;
+        while(c->scan<64u&&(c->slots[c->scan]==NO_SLOT||!c->range_nonce[c->scan]))c->scan++;
+        c->phase=c->scan<64u?GC_RANGE_HEADER:ROOT_COMMIT;break;
     case ROOT_COMMIT:
         if (!c->port.program(c->port.context,address(c,c->operation==OP_FORMAT?0u:(uint8_t)(c->bank^1u),0u)+COMMIT,committed,4u))
             return fail(c,COMP_SEG_IO_ERROR);
@@ -708,10 +893,11 @@ comp_segment_result_t comp_segment_catalog_poll(comp_segment_catalog_t *c)
                 if(prior_receipts[(c->receipt_next+i)%COMP_SEGMENT_RECEIPT_CAPACITY]!=NO_SLOT)c->receipts[count++]=c->next_slot++;
             c->receipt_next=(uint8_t)(count%COMP_SEGMENT_RECEIPT_CAPACITY);
         }
+        c->next_slot=c->copy_slot;c->range_page=NO_SLOT;c->range_record=0u;
         if(c->operation==OP_COMPACT) {
             c->pending=NULL;c->operation=OP_NONE;c->phase=IDLE;return COMP_SEG_OK;
         }
-        c->target_slot=c->next_slot; c->phase=ROW_BODY;
+        c->target_slot=c->next_slot;c->phase=c->operation==OP_RANGE?RANGE_HEADER_BODY:ROW_BODY;
         break;
     case ROW_BODY:
         row_encode(c);
@@ -732,7 +918,11 @@ comp_segment_result_t comp_segment_catalog_poll(comp_segment_catalog_t *c)
         if (c->slots[c->index]==NO_SLOT) c->next_id++;
         apply_row(c,c->index,c->target_slot,c->pending_state);
         if ((c->operation==OP_RECLAIM && c->pending_state==COMP_SEG_ERASING) ||
-            (c->operation==OP_DISCARD && c->pending_state==COMP_SEG_DISCARDING)) { c->cursor=0u; c->phase=RECLAIM; break; }
+            (c->operation==OP_DISCARD && c->pending_state==COMP_SEG_DISCARDING)) {
+            c->cursor=c->operation==OP_RECLAIM?(uint32_t)c->range_end[c->index]*4096u:0u;
+            if(c->cursor>reclaim_bytes(c))return fail(c,COMP_SEG_CORRUPT);
+            if(c->cursor==reclaim_bytes(c)){c->pending_state=0u;append_or_gc(c);}else c->phase=RECLAIM;
+            break; }
         c->pending=NULL; c->operation=OP_NONE; c->phase=IDLE;
         return COMP_SEG_OK;
     case RECLAIM:
@@ -759,7 +949,7 @@ comp_segment_result_t comp_segment_catalog_read_intent(comp_segment_catalog_t *c
     if (!row_decode(c,page,&e) || page[6]!=index) return fail(c,COMP_SEG_CORRUPT);
     if(intent) {intent->slots=0u;intent->max_id=0u;
         if(e.state==COMP_SEG_SESSION_DISCARD){intent->slots=comp_rec_get64(page+148u);intent->max_id=comp_rec_get32(page+156u);}}
-    *out=e; return COMP_SEG_OK;
+    range_overlay(c,index,&e);*out=e; return COMP_SEG_OK;
 }
 comp_segment_result_t comp_segment_catalog_read(comp_segment_catalog_t *c,uint8_t index,comp_segment_entry_t *out)
 {return comp_segment_catalog_read_intent(c,index,out,NULL);}
@@ -775,7 +965,7 @@ comp_segment_result_t comp_segment_catalog_read_scoped(comp_segment_catalog_t *c
     if(r==COMP_SEG_PENDING)return r;
     if(r!=COMP_SEG_OK)return fail(c,COMP_SEG_IO_ERROR);
     if(!row_decode(c,page,&e)||page[6]!=index)return fail(c,COMP_SEG_CORRUPT);
-    *out=e;return COMP_SEG_OK;
+    range_overlay(c,index,&e);*out=e;return COMP_SEG_OK;
 }
 
 comp_segment_result_t comp_segment_catalog_receipt_read(comp_segment_catalog_t *c,uint8_t index,comp_segment_entry_t *out)
@@ -794,9 +984,16 @@ bool comp_segment_catalog_rebase_page(const comp_segment_catalog_t *c,uint32_t a
 {
     if(!c || !out || page>=2u*COMP_SEGMENT_BANK_PAGES ||
        !geometry(a,b,base,bytes) || tail<base || tail>base+bytes || tail%4096u ||
-       (!c->mounted && !c->blank_verified) || c->phase!=IDLE)return false;
+       (!c->mounted && !c->blank_verified) || c->phase!=IDLE||comp_segment_catalog_range_pending(c))return false;
     memset(out,255,256u);
-    if(!c->mounted || page>=COMP_SEGMENT_BANK_PAGES || page>live_count(c))return true;
+    if(!c->mounted || page>=COMP_SEGMENT_BANK_PAGES)return true;
+    if(page>live_count(c)){
+        uint32_t skip=(page-live_count(c)-1u)*COMP_RANGE_JOURNAL_RECORDS;
+        if(skip>=range_count(c))return true;
+        uint8_t cursor=0u;
+        while(cursor<64u&&skip){if(c->slots[cursor]!=NO_SLOT&&c->range_nonce[cursor])skip--;cursor++;}
+        return range_snapshot_page(c,&cursor,c->bank_serial+1u,page,out);
+    }
     if(c->bank_serial==UINT32_MAX || c->generation==UINT32_MAX)return false;
     if(page==0u) {
         memcpy(out,"CSC2",4u);out[4]=1u;out[5]=0u;out[6]=64u;out[7]=0u;

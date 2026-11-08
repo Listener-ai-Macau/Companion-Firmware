@@ -41,6 +41,10 @@ typedef struct {
      * Reads/erases still use data_base+extent_offset, NEVER this historical hint.
      * This keeps original audio/provenance bytes and SHA unchanged across OTA. */
     uint32_t provenance_extent_plus1;
+    /* Transient CRR3 frontier; zero nonce means no partial physical reclamation.
+     * Physical ownership remains the FULL extent until final consumption. */
+    uint32_t range_nonce;
+    uint16_t range_first,range_end;
 } comp_segment_entry_t;
 /* Only the exclusive confirmed-discard transaction owns this sidecar. */
 typedef struct {uint64_t slots;uint32_t max_id;} comp_segment_discard_intent_t;
@@ -85,7 +89,25 @@ typedef struct {
     /* Optional platform policy, in existing tail padding. 0 keeps4K sectors;
      * 8 means SFDP-qualified32K normal-prefix coalescing, never more ownership. */
     uint8_t reclaim_block_sectors;
+    /* Compact range receipts occupy pages in these SAME metadata banks.
+     * GC folds it into compact CRR3 snapshot pages, leaving CSG2 rows and their
+     * generation sequence readable by the resident Boot; no payload partition. */
+    uint32_t range_nonce[COMP_SEGMENT_CAPACITY];
+    uint32_t range_id[COMP_SEGMENT_CAPACITY],range_binding[COMP_SEGMENT_CAPACITY];
+    uint16_t range_first[COMP_SEGMENT_CAPACITY],range_end[COMP_SEGMENT_CAPACITY];
+    struct comp_range_reclaim_s *range_worker;
+    uint8_t range_page,range_record,range_pending_slot,range_pending_page,range_pending_record;
+    bool range_snapshot_open;
 } comp_segment_catalog_t;
+
+/* Exact sealed range, original identity and durable local range SHA. One
+ * exclusive mutation owner; physical reads of untouched transfer tail may
+ * continue through the normal NOR arbitration port. Pending replay survives
+ * power loss and never authorizes another ID or frees the whole extent. */
+comp_segment_result_t comp_segment_catalog_range_begin(comp_segment_catalog_t *,
+    struct comp_range_reclaim_s *,const comp_segment_entry_t *,uint8_t slot,
+    uint16_t first_sector,uint16_t end_sector,uint32_t nonce,const uint8_t sha[32]);
+bool comp_segment_catalog_range_pending(const comp_segment_catalog_t *);
 
 /* Mount and every mutation are cooperative. Each poll issues at most one
  * read/program/erase callback. No metadata erase or full directory scan occurs

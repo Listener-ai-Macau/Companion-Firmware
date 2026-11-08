@@ -33,7 +33,7 @@ def build(sample, out, epoch='1f59b27acf4936e1',
     out.mkdir(parents=True, exist_ok=False)
     rec = ROOT / 'app/companion_pendant/recording'
     sources = [ROOT / 'tools/fixtures/recording_upload_fixture.c',
-               rec / 'companion_segment_audio.c', rec / 'companion_segment_catalog.c']
+               rec / 'companion_segment_audio.c', rec / 'companion_segment_catalog.c', rec / 'companion_range_receipt.c', rec / 'companion_range_reclaim.c']
     includes = [rec, ROOT / 'app/companion_pendant/update']
     exe = out / 'fixture.exe'
     args = ['cl.exe', '/nologo', '/TC', '/std:c11', '/O2', '/W4', '/WX', '/MD',

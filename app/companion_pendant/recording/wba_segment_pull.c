@@ -1,5 +1,6 @@
 #include "wba_segment_pull.h"
 #include "wba_recording_service.h"
+#include "companion_range_reclaim.h"
 enum {PULL_IDLE=0,PULL_FIND,PULL_READY,PULL_DONE,PULL_FAILED};
 static bool owned_prefix(const comp_segment_entry_t *a,const comp_segment_entry_t *b)
 {
@@ -67,6 +68,13 @@ static comp_wba_transfer_read_result_t read_logical(void *v,uint32_t id,uint32_t
     const comp_segment_entry_t *e=p->config.selected;
     if(id!=e->descriptor.recording_id||!bytes||bytes>COMP_WBA_RECORDING_TRANSFER_COMPACT_PAYLOAD_BYTES||offset>e->descriptor.encoded_length||
        bytes>e->descriptor.encoded_length-offset)return COMP_WBA_TRANSFER_READ_ERROR;
+    if(p->slot<64u){
+        uint16_t frontier=c->range_id[p->slot]==id?c->range_end[p->slot]:0u;
+        if(c->range_worker&&c->range_worker->plan.recording_id==id&&
+           c->range_worker->plan.end_sector>frontier)frontier=c->range_worker->plan.end_sector;
+        uint32_t gone=frontier?((uint32_t)frontier*16u-1u)*248u:0u;
+        if(offset<gone)return COMP_WBA_TRANSFER_READ_ERROR;
+    }
     if(!comp_segment_catalog_transfer_readable(c)||!p->config.page_available(p->config.context))return COMP_WBA_TRANSFER_READ_WAIT;
     if(c->generation!=p->generation) {
         comp_segment_entry_t actual;

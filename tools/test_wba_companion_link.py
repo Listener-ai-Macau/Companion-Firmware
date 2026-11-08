@@ -40,7 +40,7 @@ SOURCES = [
     *(RECORDING / (name + '.c') for name in (
         'wba_recording_radio','wba_segment_pull','wba_segment_directory',
         'wba_recording_pipeline','wba_segment_storage','companion_continuous_recording',
-        'companion_segment_audio','companion_segment_catalog','companion_segment_reserve',
+        'companion_segment_audio','companion_range_receipt','companion_range_reclaim','companion_segment_catalog','companion_segment_reserve',
         'companion_opus16_rt')),
 ]
 TEST = RUNTIME / "tests" / "test_companion_link.c"

@@ -13,11 +13,11 @@ APP=ROOT/'app/companion_pendant'
 REC=APP/'recording'
 out=Path(sys.argv[1]).resolve();out.mkdir(parents=True,exist_ok=False)
 source=out/'source'
-names=['companion_segment_catalog','companion_segment_reserve','companion_segment_audio','wba_segment_storage',
+names=['companion_range_receipt','companion_range_reclaim','companion_segment_catalog','companion_segment_reserve','companion_segment_audio','wba_segment_storage',
        'wba_recording_recovery','wba_segment_discard_preview','wba_segment_discard_worker',
        'wba_segment_discard_control','wba_segment_discard_wire']
 sources=[*[REC/(n+'.c')for n in names],APP/'storage/spi_nor_stm32wba.c']
-cases=['wba_reclaim_blocks','companion_segment_reclaim_prefix','companion_segment_rotated','companion_segment_catalog','wba_segment_storage','companion_segment_reserve_blank']
+cases=['wba_reclaim_blocks','companion_segment_reclaim_prefix','companion_segment_rotated','companion_range_receipt','companion_range_reclaim','companion_segment_catalog','wba_segment_storage','companion_segment_reserve_blank']
 if len(sys.argv)>2:
     requested=sys.argv[2:];assert all(c in cases for c in requested);cases=requested
 (out/'.cache/segmented-discard-20261029/candidate').mkdir(parents=True)
@@ -34,7 +34,7 @@ def run(name,args):
 for case in cases:
     case_sources=sources
     if case=='companion_segment_catalog':
-        keep={'companion_segment_catalog','wba_recording_recovery','wba_segment_discard_preview',
+        keep={'companion_range_receipt','companion_range_reclaim','companion_segment_audio','companion_segment_catalog','wba_recording_recovery','wba_segment_discard_preview',
               'wba_segment_discard_worker','wba_segment_discard_control','wba_segment_discard_wire'}
         case_sources=[p for p in sources if p.stem in keep]
     args=['cl.exe','/nologo','/W4','/WX','/std:c11','/TC','/O2','/MD',*['/I'+str(p)for p in includes],

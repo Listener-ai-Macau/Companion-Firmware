@@ -3,7 +3,8 @@
 #include "wba_recording_crc.h"
 
 enum {FUTURE_NONE=0,FUTURE_RESERVE,FUTURE_PROVENANCE,FUTURE_READY,FUTURE_TAKEN,FUTURE_FULL,FUTURE_CANCEL};
-enum {CONSUME_NONE=0,CONSUME_FIND,CONSUME_RECEIPT,CONSUME_ACK,CONSUME_RECLAIM_BEGIN,CONSUME_RECLAIM,CONSUME_DONE,CONSUME_FAILED,CONSUME_IDLE_READ_FAILED};
+enum {CONSUME_NONE=0,CONSUME_FIND,CONSUME_RECEIPT,CONSUME_ACK,CONSUME_RECLAIM_BEGIN,CONSUME_RECLAIM,CONSUME_DONE,CONSUME_FAILED,CONSUME_IDLE_READ_FAILED,
+      CONSUME_RANGE_FIND,CONSUME_RANGE,CONSUME_RANGE_DONE};
 
 static bool same_proof(const comp_rec_v2_descriptor_t *a,const comp_rec_v2_descriptor_t *b)
 {
@@ -34,8 +35,10 @@ static comp_segment_result_t failed(comp_wba_recording_pipeline_t *p,comp_segmen
         comp_cont_recording_fault(p->config.recording,r);
     return r;
 }
-static bool consumer_active(const comp_wba_recording_pipeline_t *p)
+static bool whole_consumer_active(const comp_wba_recording_pipeline_t *p)
 {return p->consume_phase>=CONSUME_FIND&&p->consume_phase<=CONSUME_RECLAIM;}
+static bool consumer_active(const comp_wba_recording_pipeline_t *p)
+{return whole_consumer_active(p)||p->consume_phase==CONSUME_RANGE_FIND||p->consume_phase==CONSUME_RANGE;}
 bool comp_wba_recording_pipeline_release_empty_full(comp_wba_recording_pipeline_t *p)
 {
     /* Expected capacity rejection before the first extent/PCM/encoder owner.
@@ -55,7 +58,7 @@ bool comp_wba_recording_pipeline_release_empty_full(comp_wba_recording_pipeline_
 static bool page_available(const comp_wba_recording_pipeline_t *p,bool transfer)
 {
     return p&&!p->discard_exclusive&&p->config.catalog&&
-        (!p->config.catalog->phase||(transfer&&p->consume_phase==CONSUME_RECLAIM&&
+        (!p->config.catalog->phase||(transfer&&(p->consume_phase==CONSUME_RECLAIM||p->consume_phase==CONSUME_RANGE)&&
          p->config.catalog->pending==&p->consume&&comp_segment_catalog_transfer_readable(p->config.catalog)))&&!p->sealing&&
         p->future_phase!=FUTURE_PROVENANCE&&p->future_phase!=FUTURE_CANCEL&&
         !(p->core_cancel_started&&p->config.recording->state==COMP_CONT_CANCELING)&&
@@ -145,13 +148,47 @@ static comp_segment_result_t consume_failed(comp_wba_recording_pipeline_t *p,com
     const bool retained=p->config.catalog->phase && p->config.catalog->pending==&p->consume;
     const bool idle_read=r==COMP_SEG_IO_ERROR&&!retained&&!p->config.catalog->phase&&
         (p->state==COMP_PIPE_IDLE||p->state==COMP_PIPE_FINISHED)&&
-        (p->consume_phase==CONSUME_FIND||p->consume_phase==CONSUME_RECEIPT);
+        (p->consume_phase==CONSUME_FIND||p->consume_phase==CONSUME_RECEIPT||p->consume_phase==CONSUME_RANGE_FIND);
     p->consume_result=r;p->consume_phase=idle_read?CONSUME_IDLE_READ_FAILED:CONSUME_FAILED;
     return (retained||r==COMP_SEG_IO_ERROR||r==COMP_SEG_CORRUPT)?r:COMP_SEG_OK;
 }
 static comp_segment_result_t consume_progress(comp_wba_recording_pipeline_t *p)
 {
     comp_segment_catalog_t *c=p->config.catalog;comp_segment_result_t r;
+    if(p->consume_phase==CONSUME_RANGE_FIND){
+        if(c->phase)return COMP_SEG_PENDING;
+        if(p->consume_scan==64u)return consume_failed(p,COMP_SEG_NOT_FOUND);
+        bool hinted=(p->consume_scan&128u)!=0u;uint8_t slot=(uint8_t)(p->consume_scan&63u);
+        comp_segment_entry_t e;r=comp_wba_segment_storage_entry(p->config.storage,c,slot,&e);
+        if(r==COMP_SEG_PENDING)return r;
+        p->consume_scan=hinted?0u:(uint8_t)(slot+1u);
+        if(r==COMP_SEG_NOT_FOUND)return COMP_SEG_PENDING;
+        if(r!=COMP_SEG_OK)return consume_failed(p,r);
+        if(e.descriptor.recording_id!=p->consume.descriptor.recording_id)return COMP_SEG_PENDING;
+        const comp_rec_v2_descriptor_t *wanted=&p->consume.descriptor;
+        if(e.state!=COMP_SEG_UNSYNCED||e.descriptor.session_id!=wanted->session_id||
+           e.descriptor.segment_index!=wanted->segment_index||e.descriptor.format_epoch!=wanted->format_epoch||
+           memcmp(e.descriptor.device_uid,wanted->device_uid,12u))return consume_failed(p,COMP_SEG_BAD_ARGUMENT);
+        comp_range_plan_t expected;uint32_t begin,end;
+        const comp_range_plan_t requested=p->range_worker.plan;
+        if(!comp_range_plan(&e,slot,p->range_operation?requested.first_sector:0u,
+            p->range_operation?requested.end_sector:1u,requested.request_nonce,&expected,&begin,&end)||
+           expected.descriptor_binding!=requested.descriptor_binding)return consume_failed(p,COMP_SEG_BAD_ARGUMENT);
+        p->consume=e;p->consume_scan=(uint8_t)(slot+1u);
+        if(!p->range_operation){p->consume_phase=CONSUME_RANGE_DONE;p->consume_result=COMP_SEG_OK;return COMP_SEG_OK;}
+        r=comp_segment_catalog_range_begin(c,&p->range_worker,&p->consume,slot,requested.first_sector,
+            requested.end_sector,requested.request_nonce,p->range_worker.expected_sha);
+        if(r==COMP_SEG_PENDING)p->consume_phase=CONSUME_RANGE;
+        else if(r==COMP_SEG_OK){p->consume_phase=CONSUME_RANGE_DONE;p->consume_result=COMP_SEG_OK;}
+        else return consume_failed(p,r);
+        return r;
+    }
+    if(p->consume_phase==CONSUME_RANGE){
+        r=comp_wba_segment_storage_catalog_poll(p->config.storage,c);
+        if(r==COMP_SEG_OK){p->consume_phase=CONSUME_RANGE_DONE;p->consume_result=COMP_SEG_OK;}
+        else if(r!=COMP_SEG_PENDING)return consume_failed(p,r);
+        return r;
+    }
     if(p->consume_phase==CONSUME_FIND) {
         if(c->phase)return COMP_SEG_PENDING;
         if(p->consume_scan==64u){p->consume_scan=0u;p->consume_phase=CONSUME_RECEIPT;return COMP_SEG_PENDING;}
@@ -469,6 +506,21 @@ static comp_wba_pipeline_state_t pipeline_poll_body(comp_wba_recording_pipeline_
         }
         return p->state;
     }
+    /* A committed range intent was already authorized before power loss.
+     * Settle it during idle boot recovery without waiting for a phone; do not
+     * reopen/re-hash source sectors that may already have been erased. */
+    if((p->state==COMP_PIPE_IDLE||p->state==COMP_PIPE_FINISHED)&&p->consume_phase==CONSUME_NONE&&
+       !p->config.catalog->phase&&p->config.catalog->range_pending_slot!=255u){
+        comp_segment_catalog_t *c=p->config.catalog;uint8_t slot=c->range_pending_slot;
+        comp_segment_result_t r=comp_wba_segment_storage_entry(p->config.storage,c,slot,&p->consume);
+        if(r==COMP_SEG_PENDING)return p->state;
+        if(r!=COMP_SEG_OK){(void)failed(p,r);return p->state;}
+        uint8_t proof[32]={0};r=comp_segment_catalog_range_begin(c,&p->range_worker,&p->consume,slot,
+            c->range_first[slot],c->range_end[slot],c->range_nonce[slot],proof);
+        if(r!=COMP_SEG_PENDING){(void)failed(p,r);return p->state;}
+        p->consume_scan=(uint8_t)(slot+1u);p->range_operation=1u;
+        p->consume_phase=CONSUME_RANGE;p->consume_result=COMP_SEG_PENDING;return p->state;
+    }
     comp_segment_result_t result=COMP_SEG_OK;
     if(p->state==COMP_PIPE_PREPARING) {
         result=future_progress(p);
@@ -506,7 +558,7 @@ comp_segment_result_t comp_wba_recording_pipeline_consume(comp_wba_recording_pip
     if(p->state==COMP_PIPE_FAILED||p->discard_exclusive)return COMP_SEG_BAD_STATE;
     if(p->workspace_bytes||p->workspace_requested)return COMP_SEG_BAD_STATE;
     if(proof->format_epoch!=p->config.catalog->epoch||memcmp(proof->device_uid,p->config.catalog->uid,12u))return COMP_SEG_BAD_ARGUMENT;
-    if(p->consume_phase!=CONSUME_NONE&&same_proof(&p->consume.descriptor,proof))return p->consume_result;
+    if((whole_consumer_active(p)||p->consume_phase==CONSUME_DONE)&&same_proof(&p->consume.descriptor,proof))return p->consume_result;
     if(consumer_active(p))return COMP_SEG_BAD_STATE;
     /* A failed storage gate can leave the catalog pointing into consume.
      * Preserve that in-flight owner until explicit storage recovery. */
@@ -530,7 +582,7 @@ comp_segment_result_t comp_wba_recording_pipeline_consume_wire_hint(comp_wba_rec
        proof.encoded_length<54u||proof.encoded_length>COMP_REC_MAX_ENCODED_BYTES||
        !comp_rec_not_uniform(proof.sha256,32u,0u))return COMP_SEG_BAD_ARGUMENT;
     if(p->state==COMP_PIPE_FAILED||p->discard_exclusive||p->workspace_bytes||p->workspace_requested)return COMP_SEG_BAD_STATE;
-    if((consumer_active(p)||p->consume_phase==CONSUME_DONE)&&wire_proof(&p->consume.descriptor,&proof))return p->consume_result;
+    if((whole_consumer_active(p)||p->consume_phase==CONSUME_DONE)&&wire_proof(&p->consume.descriptor,&proof))return p->consume_result;
     if(consumer_active(p))return COMP_SEG_BAD_STATE;
     /* Do not replace an owner retained by an unfinished catalog operation. */
     if(p->config.storage->poisoned ||
@@ -549,6 +601,52 @@ comp_segment_result_t comp_wba_recording_pipeline_consume_wire_hint(comp_wba_rec
 }
 comp_segment_result_t comp_wba_recording_pipeline_consume_wire(comp_wba_recording_pipeline_t *p,const uint8_t wire[84])
 {return comp_wba_recording_pipeline_consume_wire_hint(p,wire,64u);}
+comp_segment_result_t comp_wba_recording_pipeline_range_wire(comp_wba_recording_pipeline_t *p,const uint8_t wire[96],uint8_t slot)
+{
+    static const uint8_t prefix[8]={'C','R','G','3',3u,0u,96u,0u};
+    if(!p||!wire||memcmp(wire,prefix,8u)||comp_rec_get32(wire+92u)!=comp_wba_recording_crc32(0u,wire,92u)||
+       wire[88u]>1u||wire[89u]||wire[90u]||wire[91u]||!comp_rec_get32(wire+44u))return COMP_SEG_BAD_ARGUMENT;
+    comp_segment_catalog_t *c=p->config.catalog;
+    if(memcmp(wire+8u,c->uid,12u)||comp_rec_get64(wire+20u)!=c->epoch||
+       !comp_rec_get64(wire+28u)||!comp_rec_get32(wire+40u)||
+       comp_rec_get32(wire+36u)>=COMP_REC_V2_INDEX_EXCLUSIVE_MAX)return COMP_SEG_BAD_ARGUMENT;
+    uint16_t first=(uint16_t)((uint16_t)wire[48u]|((uint16_t)wire[49u]<<8u));
+    uint16_t end=(uint16_t)((uint16_t)wire[50u]|((uint16_t)wire[51u]<<8u));
+    if(wire[88u]?(end<=first||!comp_rec_not_uniform(wire+56u,32u,0u)):
+       (first||end||comp_rec_not_uniform(wire+56u,32u,0u)))return COMP_SEG_BAD_ARGUMENT;
+    if((p->state!=COMP_PIPE_IDLE&&p->state!=COMP_PIPE_FINISHED)||p->discard_exclusive||
+       p->workspace_bytes||p->workspace_requested||p->sealing||p->config.storage->poisoned||
+       consumer_active(p)||c->phase||p->future_phase!=FUTURE_NONE||p->config.recording->microphone_active)
+        return COMP_SEG_BAD_STATE;
+    memset(&p->consume,0,sizeof(p->consume));memcpy(p->consume.descriptor.device_uid,c->uid,12u);
+    p->consume.descriptor.format_epoch=c->epoch;p->consume.descriptor.session_id=comp_rec_get64(wire+28u);
+    p->consume.descriptor.segment_index=comp_rec_get32(wire+36u);p->consume.descriptor.recording_id=comp_rec_get32(wire+40u);
+    memset(&p->range_worker,0,sizeof(p->range_worker));
+    p->range_worker.plan=(comp_range_plan_t){p->consume.descriptor.recording_id,comp_rec_get32(wire+44u),
+        comp_rec_get32(wire+52u),first,end,slot};
+    memcpy(p->range_worker.expected_sha,wire+56u,32u);
+    p->consume_scan=slot<64u?(uint8_t)(slot|128u):0u;p->range_operation=wire[88u];
+    p->consume_phase=CONSUME_RANGE_FIND;p->consume_result=COMP_SEG_PENDING;return COMP_SEG_PENDING;
+}
+bool comp_wba_recording_pipeline_range_reply(const comp_wba_recording_pipeline_t *p,uint8_t wire[60])
+{
+    if(!p||!wire||p->consume_result==COMP_SEG_PENDING)return false;
+    const comp_segment_catalog_t *c=p->config.catalog;const comp_range_plan_t *wanted=&p->range_worker.plan;
+    if(!wanted->request_nonce||!wanted->recording_id)return false;
+    uint8_t slot=p->consume_scan?(uint8_t)(p->consume_scan-1u):255u;
+    uint32_t nonce=0u;uint16_t first=0u,end=0u;bool pending=false;
+    if(slot<64u&&c->range_id[slot]==wanted->recording_id){
+        nonce=c->range_nonce[slot];first=c->range_first[slot];end=c->range_end[slot];pending=c->range_pending_slot==slot;
+    }
+    memset(wire,0,60u);memcpy(wire,"CRR3",4u);comp_rec_put16(wire+4u,3u);comp_rec_put16(wire+6u,60u);
+    memcpy(wire+8u,c->uid,12u);comp_rec_put64(wire+20u,c->epoch);comp_rec_put32(wire+28u,wanted->recording_id);
+    comp_rec_put32(wire+32u,wanted->request_nonce);comp_rec_put32(wire+36u,nonce);
+    comp_rec_put16(wire+40u,first);comp_rec_put16(wire+42u,end);comp_rec_put32(wire+44u,(uint32_t)p->consume_result);
+    wire[48u]=pending?1u:0u;comp_rec_put32(wire+52u,wanted->descriptor_binding);
+    comp_rec_put32(wire+56u,comp_wba_recording_crc32(0u,wire,56u));return true;
+}
+void comp_wba_recording_pipeline_range_reply_retired(comp_wba_recording_pipeline_t *p)
+{if(p&&p->consume_phase==CONSUME_RANGE_DONE)p->consume_phase=CONSUME_NONE;}
 bool comp_wba_recording_pipeline_receipt(const comp_wba_recording_pipeline_t *p,uint8_t wire[84])
 {
     if(!p||!wire||p->consume_phase!=CONSUME_DONE||p->consume_result!=COMP_SEG_OK||

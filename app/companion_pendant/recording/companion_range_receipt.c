@@ -3,7 +3,9 @@
 
 _Static_assert(COMP_SEGMENT_PAGE_BYTES==256u && COMP_SEGMENT_SECTOR_BYTES==4096u,
                "CRR3 is bound to256B pages/4096B sectors");
-_Static_assert(32u+COMP_RANGE_JOURNAL_RECORDS*32u==256u,"one compact journal page");
+/* Keep the legacy CSG2 page commit at252 erased. Resident Boot skips these
+ * extension pages, while still validating every original row/generation. */
+_Static_assert(32u+COMP_RANGE_JOURNAL_RECORDS*32u==224u,"legacy commit remains FF");
 
 static bool all(const uint8_t *p,uint32_t bytes,uint8_t value)
 {return !comp_rec_not_uniform(p,bytes,value);}
@@ -56,6 +58,15 @@ void comp_range_journal_header_prepare(uint8_t p[32],const uint8_t uid[12],
     uint32_t seed=comp_wba_recording_crc32(0u,uid,12u);
     comp_rec_put32(p+24u,comp_wba_recording_crc32(seed,p,24u));
 }
+void comp_range_journal_snapshot_header_prepare(uint8_t p[32],const uint8_t uid[12],
+    uint64_t epoch,uint32_t serial,uint32_t index)
+{
+    comp_range_journal_header_prepare(p,uid,epoch,serial,index);comp_rec_put16(p+4u,2u);
+    uint32_t seed=comp_wba_recording_crc32(0u,uid,12u);
+    comp_rec_put32(p+24u,comp_wba_recording_crc32(seed,p,24u));
+}
+bool comp_range_journal_is_snapshot(const uint8_t p[32])
+{return p&&get16(p+4u)==2u;}
 comp_range_journal_state_t comp_range_journal_header_decode(const uint8_t p[32],
     const uint8_t uid[12],uint64_t epoch,uint32_t serial,uint32_t index)
 {
@@ -63,7 +74,7 @@ comp_range_journal_state_t comp_range_journal_header_decode(const uint8_t p[32],
     if(all(p,32u,255u))return COMP_RANGE_EMPTY;
     if(!all(p+28u,4u,0u))return COMP_RANGE_TORN;
     uint32_t seed=comp_wba_recording_crc32(0u,uid,12u);
-    if(!epoch||memcmp(p,"CRR3",4u)||get16(p+4u)!=1u||get16(p+6u)!=32u||
+    if(!epoch||memcmp(p,"CRR3",4u)||(get16(p+4u)!=1u&&get16(p+4u)!=2u)||get16(p+6u)!=32u||
        comp_rec_get64(p+8u)!=epoch||comp_rec_get32(p+16u)!=serial||
        comp_rec_get32(p+20u)!=index||
        comp_rec_get32(p+24u)!=comp_wba_recording_crc32(seed,p,24u))return COMP_RANGE_INVALID;

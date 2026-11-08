@@ -10,7 +10,7 @@
  * changes the original SHA/length, or proves the whole recording complete.
  * Not yet advertised by the product: catalogue GC/rebase and host persistence
  * must be integrated before enabling destructive partial reclamation. */
-typedef struct {
+typedef struct comp_range_reclaim_s {
     comp_segment_port_t port;
     const comp_segment_entry_t *entry;
     comp_range_plan_t plan;

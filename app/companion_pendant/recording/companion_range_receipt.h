@@ -5,13 +5,13 @@
 
 /* A compact journal page shares the existing CSG2 metadata banks. It does
  * not reserve payload sectors or create additional catalog entries. A32B
- * committed page header binds all seven32B records to this UID/epoch/bank/
+ * committed page header binds all six32B records to this UID/epoch/bank/
  * page. Intent and physical completion have separate verified commit words.
  * This format module issues no erase and is not a host-consume permission.
  * The production worker must validate durable local range SHA proof first. */
 #define COMP_RANGE_JOURNAL_HEADER_BYTES 32u
 #define COMP_RANGE_JOURNAL_RECORD_BYTES 32u
-#define COMP_RANGE_JOURNAL_RECORDS 7u
+#define COMP_RANGE_JOURNAL_RECORDS 6u
 #define COMP_RANGE_JOURNAL_DONE_OFFSET 24u
 #define COMP_RANGE_JOURNAL_COMMIT_OFFSET 28u
 
@@ -37,6 +37,9 @@ bool comp_range_plan_matches(const comp_range_plan_t *,const comp_segment_entry_
 
 void comp_range_journal_header_prepare(uint8_t header[32],const uint8_t uid[12],
     uint64_t epoch,uint32_t bank_serial,uint32_t page_index);
+void comp_range_journal_snapshot_header_prepare(uint8_t header[32],const uint8_t uid[12],
+    uint64_t epoch,uint32_t bank_serial,uint32_t page_index);
+bool comp_range_journal_is_snapshot(const uint8_t header[32]);
 comp_range_journal_state_t comp_range_journal_header_decode(const uint8_t header[32],
     const uint8_t uid[12],uint64_t epoch,uint32_t bank_serial,uint32_t page_index);
 

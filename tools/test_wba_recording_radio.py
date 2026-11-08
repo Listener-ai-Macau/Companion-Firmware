@@ -14,7 +14,7 @@ REC = APP / 'recording'
 NAMES = ['wba_recording_radio', 'wba_segment_pull', 'wba_segment_directory',
          'wba_recording_transfer', 'companion_recording_journal', 'wba_recording_recovery',
          'wba_recording_pipeline', 'wba_segment_storage', 'companion_continuous_recording',
-         'companion_segment_audio', 'companion_segment_catalog', 'companion_segment_reserve',
+         'companion_segment_audio', 'companion_range_receipt','companion_range_reclaim','companion_segment_catalog', 'companion_segment_reserve',
          'companion_opus16_rt', 'wba_segment_discard_preview', 'wba_segment_discard_worker', 'wba_segment_discard_control', 'wba_segment_discard_wire']
 
 
