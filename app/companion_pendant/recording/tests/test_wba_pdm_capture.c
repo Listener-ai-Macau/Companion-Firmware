@@ -551,11 +551,12 @@ static void test_random_reference_equivalence(void)
 
 static void test_normal_mode_integer_scaling_boundaries(void)
 {
-    const int32_t targets[] = {INT32_MIN, INT32_MIN + 1, -884737,
+    const int32_t targets[] = {INT32_MIN, INT32_MIN + 1,
+        -16777217,-16777216,-16777215,16777214,16777215,16777216,-884737,
         -884736, -884735, -27, -1, 0, 1, 27, 884735, 884736, 884737,
         INT32_MAX - 1, INT32_MAX};
     const uint32_t gains[] = {1u, COMP_WBA_PDM_GAIN_Q15_ONE - 17u,
-        COMP_WBA_PDM_GAIN_Q15_ONE, COMP_WBA_PDM_GAIN_Q15_ONE + 123u,
+        COMP_WBA_PDM_GAIN_Q15_ONE, COMP_WBA_PDM_GAIN_Q15_ONE + 123u,128u*COMP_WBA_PDM_GAIN_Q15_ONE,
         COMP_WBA_PDM_GAIN_Q15_MAX - 17u, COMP_WBA_PDM_GAIN_Q15_MAX};
     const uint8_t raw[24] = {0}; /* 96 chronological zero bits per channel. */
     uint32_t random = UINT32_C(0x923ADB71);

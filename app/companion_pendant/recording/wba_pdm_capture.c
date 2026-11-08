@@ -233,6 +233,14 @@ static int32_t finish_sample(const comp_wba_pdm_config_t *config,
     difference3 = difference2 - channel->comb3;
     channel->comb3 = difference2;
 
+    /* Normal96x capture uses gain128*Q15_ONE. Since96^3=32768*27,
+     * its exact quotient is (signed CIC*128)/27. Prove the signed product
+     * fits32 bits before multiplying; retain the general path for arbitrary
+     * wrapping history or any other gain. No changed rounding or clipping. */
+    if(config->decimation==96u&&config->gain_q15==128u*COMP_WBA_PDM_GAIN_Q15_ONE&&
+       difference3+UINT32_C(0x01000000)<UINT32_C(0x02000000))
+        return dc_block(channel,((int32_t)difference3*128)/27);
+
     normalized = modulo_u32_to_i64(difference3) * config->gain_q15;
     /* Preserve truncation toward zero, including arbitrary comb history.
      * floor(m / (32768 * 27)) == floor((m >> 15) / 27). Valid 96x streams
