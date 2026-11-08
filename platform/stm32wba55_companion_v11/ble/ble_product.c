@@ -31,6 +31,8 @@
 #include "ble_radio_activity_profile.h"
 #include "ble_route_observation.h" /* existing clock/atomic helpers; no route instance */
 #include "ble_residence_profile.h"
+#include "../capture_radio_window.h"
+#include "ll_intf.h"
 #if COMPANION_WBA_ACL_READINESS_PROFILE
 #include "ble_acl_readiness_profile.h"
 #include "mem_intf.h" /* shared BLE RAM requires alignment-safe accesses */
@@ -493,6 +495,17 @@ void comp_v11_ble_console_idle_progress(void)
 /* CONSOLE_IDLE_RNG_PROGRESS_END */
 bool comp_v11_ble_linked(void) { return linked; }
 bool comp_v11_ble_secured(void) { return secured; }
+bool comp_v11_ble_capture_encode_window(bool pending)
+{
+    static comp_capture_radio_window_t wait;
+    uint32_t next_us=0u;
+    bool valid=pending && linked &&
+        ll_intf_le_get_remaining_time_for_next_event(&next_us)==0u;
+    bool busy=(route_observation.flags&RES_RADIO_ON)!=0u ||
+        NVIC_GetPendingIRQ(RADIO_INTR_NUM)!=0u ||
+        NVIC_GetPendingIRQ(RADIO_SW_LOW_INTR_NUM)!=0u;
+    return comp_capture_radio_window_open(&wait,HAL_GetTick(),pending,valid,busy,next_us);
+}
 uint32_t comp_v11_ble_fatal_error(void) { return fatal_error; }
 void RTC_IRQHandler(void) {
     comp_v11_cpu_irq_enter(false); HAL_RTC_AlarmIRQHandler(&hrtc); HAL_RTCEx_SSRUIRQHandler(&hrtc); 

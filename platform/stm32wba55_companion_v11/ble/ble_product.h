@@ -94,6 +94,8 @@ void comp_v11_ble_pet_caption_changed(void);
 bool comp_v11_ble_reconnect(bool pairing);
 bool comp_v11_ble_linked(void);
 bool comp_v11_ble_secured(void);
+/* Only a ready full Opus frame may wait; housekeeping/PCM staging never waits. */
+bool comp_v11_ble_capture_encode_window(bool pending);
 void comp_v11_ble_tx_pool_available(void);
 void comp_v11_ble_controller_progress_hint(void);
 void comp_v11_ble_host_cycle_completed(void);
