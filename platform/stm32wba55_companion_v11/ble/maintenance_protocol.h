@@ -6,16 +6,24 @@
 #include "companion_crc32.h"
 enum { COMP_MAINT_QUERY=0,COMP_MAINT_PAIR_WINDOW=1,COMP_MAINT_DEFAULTS=2,COMP_MAINT_CLEAR_BONDS=3,
        COMP_MAINT_BLE_DIAGNOSTICS=4,COMP_MAINT_MEMORY=5,COMP_MAINT_AUDIO_TIMING=6,
-       COMP_MAINT_AUDIO_FAULTS=7,COMP_MAINT_AUDIO_SERVICE=8,COMP_MAINT_CPU_DUTY=9,COMP_MAINT_STORAGE=10 };
+       COMP_MAINT_AUDIO_FAULTS=7,COMP_MAINT_AUDIO_SERVICE=8,COMP_MAINT_CPU_DUTY=9,COMP_MAINT_STORAGE=10,
+       COMP_MAINT_BLANK_PROOF=11 };
 enum { COMP_MAINT_OK=0,COMP_MAINT_PENDING=1,COMP_MAINT_BUSY=2,COMP_MAINT_INVALID=3,COMP_MAINT_FAILED=4 };
 static inline uint32_t comp_maint_get32(const uint8_t *p)
 {return (uint32_t)p[0]|((uint32_t)p[1]<<8u)|((uint32_t)p[2]<<16u)|((uint32_t)p[3]<<24u);}
 static inline void comp_maint_put32(uint8_t *p,uint32_t n)
 {for(unsigned i=0u;i<4u;i++)p[i]=(uint8_t)(n>>(8u*i));}
+/* Op11 is idle-only cached blank-proof observation, scalar schema1.
+ * byte6 bits0..7: product-ready,space-current,Opus-workspace-free,media-ready,
+ * WBA55 target,qualified JEDEC,BLE-storage-busy,runtime-capture-active.
+ * u32 at12: proof flags bits0..7 and warm phase bits8..15;16 physical base,
+ * 20 full proof range bytes,24 contiguous FF bytes actually read. No read,
+ * erase, prepare, counter clear, or arbitrary-address operation is started.
+ * Idle admission is rechecked at reply, just like the existing stack query. */
 /* Existing encrypted4003 characteristic. No new GATT service or database. */
 static inline bool comp_maint_request(const uint8_t *p,uint16_t n,uint8_t *operation,uint32_t *request)
 {
-    if(!p||!operation||!request||n!=16u||memcmp(p,"CRM1",4u)||p[4]>COMP_MAINT_STORAGE||
+    if(!p||!operation||!request||n!=16u||memcmp(p,"CRM1",4u)||p[4]>COMP_MAINT_BLANK_PROOF||
        p[5]||p[6]||p[7]||!comp_maint_get32(p+8u)||
        companion_crc32(0u,p,12u)!=comp_maint_get32(p+12u))return false;
     *operation=p[4];*request=comp_maint_get32(p+8u);return true;

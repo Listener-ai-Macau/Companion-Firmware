@@ -222,15 +222,9 @@ static void diagnostic_capture_feedback(void)
     updating=comp_v11_update_product_busy();
 #endif
     const comp_capture_feedback_t feedback=comp_v11_product_capture_feedback(&companion_app,updating);
-    char line[192];
-    const comp_wba_recording_product_t *p=&companion_app.recording;
-    const companion_nor_blank_cache_t *blank=&companion_v11.nor.blank_cache;
-    (void)snprintf(line,sizeof(line),"CAPTURE1 state=%u flags=%u full_reason=%u mark_request=%lu blank=%lu/%u/%lu/%lu/%lu ready=%u space=%u ws=%u\r\n",
-        feedback.state,feedback.flags,feedback.full_reason,(unsigned long)feedback.bookmark_request,
-        (unsigned long)blank->flags,p->blank_warm.phase,(unsigned long)blank->base,
-        (unsigned long)blank->bytes,(unsigned long)blank->read_bytes,(unsigned)p->ready,
-        (unsigned)comp_wba_recording_product_space_current(p),
-        (unsigned)companion_opus16_rt_workspace_available());
+    char line[96];
+    (void)snprintf(line,sizeof(line),"CAPTURE1 state=%u flags=%u full_reason=%u mark_request=%lu\r\n",
+        feedback.state,feedback.flags,feedback.full_reason,(unsigned long)feedback.bookmark_request);
     (void)diagnostic_write(NULL,line);
 #endif
 }
