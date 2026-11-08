@@ -551,7 +551,12 @@ static void connection_opened(uint16_t handle,uint8_t type,const uint8_t *addres
     dle_ready_after=HAL_GetTick()+2000u;
     comp_v11_ble_mtu_open(&att,HAL_GetTick());
     memset(&transport,0,sizeof(transport));
-    if(!radio_enabled || (!pairing_open() &&
+    /* A window that expired while disconnected cannot own a later bonded
+     * handshake. Retain an active deadline for this connection, so an
+     * unsecured peer admitted by that window still expires normally. */
+    bool pairing=pairing_open();
+    if(!pairing)pairing_until=0u;
+    if(!radio_enabled || (!pairing &&
        aci_gap_check_bonded_device(type&1u,address,&identity_type,identity_address)!=BLE_STATUS_SUCCESS)) {
         (void)hci_disconnect(handle,0x13u);return;
     }
