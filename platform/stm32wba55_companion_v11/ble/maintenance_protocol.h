@@ -13,11 +13,13 @@ static inline uint32_t comp_maint_get32(const uint8_t *p)
 {return (uint32_t)p[0]|((uint32_t)p[1]<<8u)|((uint32_t)p[2]<<16u)|((uint32_t)p[3]<<24u);}
 static inline void comp_maint_put32(uint8_t *p,uint32_t n)
 {for(unsigned i=0u;i<4u;i++)p[i]=(uint8_t)(n>>(8u*i));}
-/* Op11 is idle-only cached blank-proof observation, scalar schema1.
+/* Op11 is idle-only cached blank-proof observation, schema2 for sector proofs.
  * byte6 bits0..7: product-ready,space-current,Opus-workspace-free,media-ready,
  * WBA55 target,qualified JEDEC,BLE-storage-busy,runtime-capture-active.
- * u32 at12: proof flags bits0..7 and warm phase bits8..15;16 physical base,
- * 20 full proof range bytes,24 contiguous FF bytes actually read. No read,
+ * u32 at12: scan flags bits0..7,warm phase8..15,complete FF sector count16..23;
+ * 16 physical base,20 full proof range bytes,24 scan cursor bytes including
+ * skipped dirty sectors. Only full4096B FF reads grant a bit. Schema1 had
+ * whole-range evidence and24 meant successful contiguous FF bytes. No read,
  * erase, prepare, counter clear, or arbitrary-address operation is started.
  * Idle admission is rechecked at reply, just like the existing stack query. */
 /* Existing encrypted4003 characteristic. No new GATT service or database. */

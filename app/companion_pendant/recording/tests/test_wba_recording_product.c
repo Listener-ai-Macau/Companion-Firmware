@@ -546,13 +546,13 @@ static void readonly_blank_warming(void)
     uint32_t capacity=product_rec.space.largest_gap;
     for(unsigned i=0u;i<1000u && nor.blank_cache.flags!=COMP_NOR_BLANK_KNOWN;++i)
         comp_wba_recording_product_warm_blank(&product_rec,true);
-    assert(!nor.blank_cache.flags && product_rec.blank_warm.phase==2u);
+    assert(!companion_nor_blank_known(&nor.blank_cache,DATA_BASE,4096u) && product_rec.blank_warm.phase==2u);
     assert(f.writes==writes && f.erases==erases && !mic && !mic_starts &&
         product_rec.catalog.generation==generation && product_rec.space.largest_gap==capacity);
     comp_wba_recording_product_warm_blank(&product_rec,false);
     assert(companion_spi_nor_stm32wba_erase_4k(&nor,DATA_BASE)==COMPANION_SPI_NOR_STM32WBA_OK);
     erases=f.erases;writes=f.writes;
-    for(unsigned i=0u;i<1000u && nor.blank_cache.flags!=COMP_NOR_BLANK_KNOWN;++i)
+    for(unsigned i=0u;i<1000u && !companion_nor_blank_known(&nor.blank_cache,DATA_BASE,4096u);++i)
         comp_wba_recording_product_warm_blank(&product_rec,true);
     assert(companion_nor_blank_known(&nor.blank_cache,DATA_BASE,4096u));
     assert(f.writes==writes && f.erases==erases);
@@ -561,7 +561,7 @@ static void readonly_blank_warming(void)
     assert(comp_wba_recording_product_ready(&product_rec,710u));
     assert(product_rec.pipeline.future.extent_offset==0u);
     assert(f.erases==erases && !mic && !mic_starts);
-    assert(nor.blank_cache.flags==0u); /* CSP2 program revoked the old proof. */
+    assert(!companion_nor_blank_known(&nor.blank_cache,DATA_BASE,4096u)); /* CSP2 program revoked this sector. */
     assert(product_rec.capture.engine.encoder_owned);
     assert(comp_wba_recording_product_control(&product_rec,false,710u));
     for(unsigned i=0u;i<20000u && product_rec.pipeline.state!=COMP_PIPE_FINISHED;++i)product_tick();
@@ -577,7 +577,7 @@ static void readonly_blank_warming(void)
     uint8_t zero=0u;
     for(uint32_t offset=0u;offset<65536u;offset+=4096u)
         assert(companion_spi_nor_stm32wba_program(&nor,DATA_BASE+offset,&zero,1u)==COMPANION_SPI_NOR_STM32WBA_OK);
-    assert(!nor.blank_cache.flags);erases=f.erases;
+    assert(!companion_nor_blank_known(&nor.blank_cache,DATA_BASE,4096u));erases=f.erases;
     assert(comp_wba_recording_product_prepare(&product_rec,711u,1u,0u,711u));
     for(unsigned i=0u;i<20000u && !comp_wba_recording_product_ready(&product_rec,711u);++i)product_tick();
     printf("WARM_FALLBACK_DIAGNOSTIC state=%u phase=%u failure=%u ready=%u erasedBefore=%u erasedAfter=%u mic=%u poisoned=%u\n",(unsigned)product_rec.pipeline.state,(unsigned)product_rec.pipeline.reserve.phase,(unsigned)product_rec.pipeline.failure,(unsigned)comp_wba_recording_product_ready(&product_rec,711u),erases,f.erases,(unsigned)mic,(unsigned)product_rec.storage.poisoned);
@@ -627,6 +627,35 @@ static void readonly_blank_warming(void)
     assert(retained.state==COMP_SEG_WRITING && retained.extent_offset==protected_offset &&
         retained.descriptor.recording_id==owner.descriptor.recording_id &&
         retained.descriptor.session_id==owner.descriptor.session_id);
+
+    unsigned prepare_reads[2],erase_counts[2];uint32_t offsets[2];
+    for(unsigned cached=0u;cached<2u;++cached) {
+        product_fresh();product_rec.pipeline.config.extent_bytes=16384u;
+        product_mount();comp_wba_recording_product_lease_result(&product_rec,true);
+        product_refresh_space();nor.info.jedec_id=UINT32_C(0xef6018);
+        f.bytes[DATA_BASE]=0u; /* dirty first sector, real blank remaining sectors */
+        unsigned before_erases=f.erases,before_writes=f.writes;
+        if(cached) {
+            for(unsigned i=0u;i<1000u && nor.blank_cache.flags!=COMP_NOR_BLANK_KNOWN;++i)
+                comp_wba_recording_product_warm_blank(&product_rec,true);
+            assert(!companion_nor_blank_known(&nor.blank_cache,DATA_BASE,4096u));
+            assert(companion_nor_blank_known(&nor.blank_cache,DATA_BASE+4096u,12288u));
+            assert(f.erases==before_erases && f.writes==before_writes && !mic);
+        }
+        unsigned before_reads=f.reads;uint32_t token=720u+cached;
+        assert(comp_wba_recording_product_prepare(&product_rec,token,1u,0u,token));
+        for(unsigned i=0u;i<20000u && !comp_wba_recording_product_ready(&product_rec,token);++i)product_tick();
+        assert(comp_wba_recording_product_ready(&product_rec,token) && !mic);
+        offsets[cached]=product_rec.pipeline.future.extent_offset;
+        prepare_reads[cached]=f.reads-before_reads;erase_counts[cached]=f.erases-before_erases;
+        assert(comp_wba_recording_product_control(&product_rec,false,token));
+        for(unsigned i=0u;i<20000u && product_rec.pipeline.state!=COMP_PIPE_FINISHED;++i)product_tick();
+        assert(!product_rec.capture.engine.encoder_owned);
+    }
+    assert(offsets[0]==offsets[1] && erase_counts[0]==erase_counts[1] && erase_counts[1]>0u);
+    assert(prepare_reads[0]>=prepare_reads[1]+48u);
+    printf("PASS_PARTIAL_SECTOR_PROOF_PRODUCT prepare_reads_uncached=%u cached=%u identical_real_erases=%u placement_unchanged=1 no_idle_erase=1\n",
+        prepare_reads[0],prepare_reads[1],erase_counts[1]);
     puts("PASS_READONLY_IDLE_WARM real_driver=1 no_erase_or_owner_change=1 same_capacity=1 cached_first_owner=1 program_revokes=1 fallback_physically_erases=1 control_cancels=1");
     puts("PASS_READONLY_IDLE_WARM_OWNERSHIP stale_capacity_cancels=1 physical_FF_proof_never_grants_foreign_owner=1");
 }

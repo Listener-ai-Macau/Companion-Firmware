@@ -209,6 +209,11 @@ static comp_segment_result_t reserve_bounded_read(void *v,uint32_t at,uint8_t *p
     reserve_read_context_t *context=v;
     comp_wba_segment_storage_t *s=context->storage;bool released=false;
     if(!allowed(s,at,bytes)||!p||bytes>256u)return COMP_SEG_BAD_ARGUMENT;
+    /* Only the reservation reader reuses exact complete-sector physical FF
+     * proofs. Catalog/ownership search and dirty-sector erases stay unchanged. */
+    if(companion_nor_blank_known(&s->nor->blank_cache,at,bytes)) {
+        memset(p,255,bytes);context->reserve->read_retries=0u;return COMP_SEG_OK;
+    }
     companion_spi_nor_stm32wba_status_t result=companion_spi_nor_stm32wba_read_transient(s->nor,at,p,bytes,&released);
     if(result==COMPANION_SPI_NOR_STM32WBA_OK)context->reserve->read_retries=0u;
     /* Only a fast payload failure with a definitively released transaction is

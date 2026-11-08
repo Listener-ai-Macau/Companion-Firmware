@@ -1016,6 +1016,7 @@ static void maintenance_runtime_fields(uint8_t operation,uint8_t response[32])
     if(operation==COMP_MAINT_BLANK_PROOF) {
         const comp_wba_recording_product_t *p=&product->recording;
         const companion_spi_nor_stm32wba_t *n=&product->board->nor;
+        response[7]=2u; /* Full-sector bitmap, cursor includes skipped dirty sectors. */
         response[6]=(uint8_t)((unsigned)p->ready|
             (unsigned)comp_wba_recording_product_space_current(p)<<1u|
             (unsigned)companion_opus16_rt_workspace_available()<<2u|
@@ -1024,7 +1025,8 @@ static void maintenance_runtime_fields(uint8_t operation,uint8_t response[32])
             (unsigned)(n->info.jedec_id==UINT32_C(0xef6018))<<5u|
             (unsigned)comp_v11_ble_storage_busy()<<6u|
             (unsigned)product->runtime.capture_active<<7u);
-        comp_maint_put32(response+12u,n->blank_cache.flags|((uint32_t)p->blank_warm.phase<<8u));
+        comp_maint_put32(response+12u,n->blank_cache.flags|((uint32_t)p->blank_warm.phase<<8u)|
+            (companion_nor_blank_count(&n->blank_cache)<<16u));
         comp_maint_put32(response+16u,n->blank_cache.base);
         comp_maint_put32(response+20u,n->blank_cache.bytes);
         comp_maint_put32(response+24u,n->blank_cache.read_bytes);return;

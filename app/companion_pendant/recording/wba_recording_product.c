@@ -383,7 +383,7 @@ void comp_wba_recording_product_warm_blank(comp_wba_recording_product_t *p,bool 
         }
     }
     uint32_t start=p->storage.data_base+candidate;
-    if(cache->flags==COMP_NOR_BLANK_KNOWN && cache->base==start && cache->bytes==bytes) {
+    if(companion_nor_blank_known(cache,start,bytes)) {
         p->blank_warm.phase=2u;return;
     }
     if(p->blank_warm.phase==2u && p->blank_warm.generation==p->catalog.generation)return;
