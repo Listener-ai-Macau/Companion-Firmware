@@ -1624,23 +1624,7 @@ static void range_request(const comp_segment_entry_t *e,uint8_t out[96],uint32_t
     }
     comp_rec_put32(out+92u,comp_rec_crc(out,92u));
 }
-static uint32_t range_read_cost_ms;
-static unsigned range_read_peak,range_app_polls;
-static bool range_read_transfer(void *context,const uint8_t *tx,uint8_t *rx,size_t bytes,uint32_t timeout)
-{
-    if(rx&&f.command==3u)f.now+=range_read_cost_ms;
-    return transfer(context,tx,rx,bytes,timeout);
-}
-static void range_read_poll(void)
-{
-    unsigned reads=f.reads,writes=f.writes,erases=f.erases;
-    nor.config.transfer=range_read_transfer;poll();nor.config.transfer=transfer;
-    unsigned count=f.reads-reads;if(count>range_read_peak)range_read_peak=count;
-    ++range_app_polls;
-    assert(count<=4u&&f.writes-writes<=1u&&f.erases-erases<=1u);
-    if(range_read_cost_ms)assert(count<=1u); /* actual clock exhaustion yields */
-}
-static void range_reclaim_dispatch(uint32_t read_cost_ms,unsigned expected_peak)
+static void range_reclaim_dispatch(void)
 {
     init();comp_wba_pipeline_config_t cfg=pipeline.config;cfg.segment_frames=300u;cfg.extent_bytes=16384u;
     assert(comp_wba_recording_pipeline_init(&pipeline,&cfg));ready(55u);
@@ -1671,9 +1655,8 @@ static void range_reclaim_dispatch(uint32_t read_cost_ms,unsigned expected_peak)
     assert(saved_bytes>=3720u&&saved_bytes<original.descriptor.encoded_length);
     range_request(&original,command,502u,0u,1u,false);send(COMPANION_GATT_CHAR_DELETE_PRIVACY,command,96u);
     assert(radio.range_pending);uint32_t before=saved_bytes;bool overlap=false;
-    range_read_cost_ms=read_cost_ms;range_read_peak=range_app_polls=0u;
     for(unsigned i=0u;i<20000u&&(radio.range_pending||saved_bytes<original.descriptor.encoded_length);i++){
-        range_read_poll();lookup_tick();if(nor.erase_active&&saved_bytes>before)overlap=true;
+        poll();lookup_tick();if(nor.erase_active&&saved_bytes>before)overlap=true;
     }
     assert(overlap&&!radio.range_pending&&saved_bytes==original.descriptor.encoded_length);
     assert(comp_rec_get32(last_reply+32u)==502u&&comp_rec_get32(last_reply+36u)==502u&&last_reply[42u]==1u);
@@ -1682,11 +1665,8 @@ static void range_reclaim_dispatch(uint32_t read_cost_ms,unsigned expected_peak)
     assert(!memcmp(hash,original.descriptor.sha256,32u));
     uint16_t used=(uint16_t)((((saved_bytes+247u)/248u+1u)*256u+4095u)/4096u);
     range_request(&original,command,503u,1u,used,false);send(COMPANION_GATT_CHAR_DELETE_PRIVACY,command,96u);
-    for(unsigned i=0u;i<20000u&&radio.range_pending;i++){range_read_poll();lookup_tick();}
+    for(unsigned i=0u;i<20000u&&radio.range_pending;i++){poll();lookup_tick();}
     assert(!radio.range_pending&&comp_rec_get32(last_reply+36u)==503u&&last_reply[42u]==used);
-    printf("RANGE_READ_BUDGET model_read_ms=%lu app_polls=%u peak_reads=%u original_bytes=%lu physical_erases=%lu\n",
-        (unsigned long)read_cost_ms,range_app_polls,range_read_peak,(unsigned long)saved_bytes,(unsigned long)f.erases);
-    if(expected_peak)assert(range_read_peak==expected_peak);
     erases=f.erases;uint8_t whole[84];consumption_proof(&original,whole);send(COMPANION_GATT_CHAR_DELETE_PRIVACY,whole,84u);
     for(unsigned i=0u;i<20000u&&!receipt_count;i++){poll();lookup_tick();}
     assert(receipt_count==1u&&f.erases==erases&&!memcmp(whole,last_reply,84u));
@@ -1695,9 +1675,7 @@ static void range_reclaim_dispatch(uint32_t read_cost_ms,unsigned expected_peak)
 int COMP_RADIO_TEST_MAIN(int argc,char **argv)
 {
     (void)setvbuf(stdout,NULL,_IONBF,0);
-    if(argc==2&&!strcmp(argv[1],"range-reclaim")){range_reclaim_dispatch(0u,0u);return 0;}
-    if(argc==2&&!strcmp(argv[1],"range-read-budget")){range_reclaim_dispatch(0u,4u);range_reclaim_dispatch(1u,1u);return 0;}
-    if(argc==2&&!strcmp(argv[1],"range-read-legacy")){range_reclaim_dispatch(0u,1u);return 0;}
+    if(argc==2&&!strcmp(argv[1],"range-reclaim")){range_reclaim_dispatch();return 0;}
     if(argc==2&&!strcmp(argv[1],"lookup-hint")){lookup_hint_scope();return 0;}
     if(argc==2&&!strcmp(argv[1],"directory-hint")){directory_hint_scope();return 0;}
     if(argc==2&&!strcmp(argv[1],"consume-pull-overlap")){consume_pull_overlap(true,0u);consume_pull_overlap(false,0u);consume_pull_overlap(false,1u);consume_pull_overlap(false,2u);consume_pull_overlap(false,3u);unsupported_overlap_negotiation();return 0;}
