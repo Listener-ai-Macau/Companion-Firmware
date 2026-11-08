@@ -26,7 +26,8 @@ typedef struct {
     uint8_t slot;
 } comp_range_plan_t;
 
-/* Sector0 retains CSP2 provenance until final whole-original confirmation.
+/* A sealed entry's immutable catalogue identity reconstructs the CSP2 page
+ * binding; after a committed range intent, sector0 can be reclaimed too.
  * Returned encoded offsets cover exactly the data in the requested whole
  * physical sectors; bytes outside actual audio never enter speed metrics. */
 bool comp_range_plan(const comp_segment_entry_t *,uint8_t slot,

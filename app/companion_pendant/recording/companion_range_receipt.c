@@ -19,7 +19,7 @@ static uint32_t descriptor_binding(const comp_segment_entry_t *entry)
 static bool plan_fields(const comp_range_plan_t *p)
 {
     return p && p->slot<COMP_SEGMENT_CAPACITY && p->recording_id &&
-        p->request_nonce && p->first_sector && p->end_sector>p->first_sector;
+        p->request_nonce && p->end_sector>p->first_sector;
 }
 bool comp_range_plan(const comp_segment_entry_t *entry,uint8_t slot,
     uint16_t first,uint16_t end,uint32_t nonce,comp_range_plan_t *plan,
@@ -28,9 +28,9 @@ bool comp_range_plan(const comp_segment_entry_t *entry,uint8_t slot,
     if(!entry||!plan||!encoded_begin||!encoded_end||slot>=COMP_SEGMENT_CAPACITY||
        entry->state!=COMP_SEG_UNSYNCED||!comp_rec_v2_valid(&entry->descriptor)||
        !entry->descriptor.recording_id||!entry->descriptor.encoded_length||
-       !nonce||!first||end<=first||entry->reserved_bytes%4096u||
+       !nonce||end<=first||entry->reserved_bytes%4096u||
        (uint32_t)end>entry->reserved_bytes/4096u)return false;
-    uint64_t begin=((uint64_t)first*16u-1u)*COMP_SEGMENT_PAGE_DATA_BYTES;
+    uint64_t begin=first?((uint64_t)first*16u-1u)*COMP_SEGMENT_PAGE_DATA_BYTES:0u;
     uint64_t limit=((uint64_t)end*16u-1u)*COMP_SEGMENT_PAGE_DATA_BYTES;
     uint64_t pages=((uint64_t)entry->descriptor.encoded_length+
         COMP_SEGMENT_PAGE_DATA_BYTES-1u)/COMP_SEGMENT_PAGE_DATA_BYTES;

@@ -29,7 +29,7 @@ static bool erase(void *v,uint32_t at,uint32_t n,uint32_t *done)
 {
     (void)v;calls++;
     if(preview.kind!=COMP_SEG_IO_ERASE||preview.address!=at||preview.bytes!=n||
-       at%4096u||n<4096u||at<BASE+4096u||at>BASE+RESERVED-4096u)return false;
+       at%4096u||n<4096u||at<BASE||at>BASE+RESERVED-4096u)return false;
     if(zero_pending){zero_pending--;*done=0u;return true;}
     if(!ignore_erase)memset(media+at,255,4096u);
     erases++;*done=4096u;return true;
@@ -125,6 +125,24 @@ static bool refusal_and_failures(void)
     puts("PASS_RANGE_REFUSALS wrong_SHA_and_page_CRC_no_erase=1 foreign_journal_no_erase=1 ignored_physical_command_no_DONE=1 lost_final_read_reconciled=1");
     return true;
 }
+static bool first_sector_overlap(void)
+{
+    CHECK(setup());uint32_t first,last;
+    CHECK(comp_range_plan(&entry,0u,0u,1u,1235u,&plan,&first,&last));
+    CHECK(first==0u&&last==3720u);
+    companion_sha256_t sha;companion_sha256_init(&sha);companion_sha256_update(&sha,payload,last);
+    companion_sha256_final(&sha,proof);comp_range_reclaim_t w={0};
+    CHECK(begin(&w,proof)==COMP_SEG_PENDING&&finish(&w)==COMP_SEG_OK&&erases==1u);
+    CHECK(!comp_rec_not_uniform(media+BASE,4096u,255u));
+    CHECK(!memcmp(media+BASE+4096u,snapshot+BASE+4096u,RESERVED));
+    // Tail pages remain independently readable from sealed catalogue identity
+    // after the original CSP2 provenance sector has physically gone.
+    const comp_segment_audio_port_t port={audio_rd,NULL,NULL};uint8_t length=0u;
+    CHECK(comp_segment_audio_read_page(&port,&entry,BASE,15u,scratch,&length)==COMP_SEG_OK);
+    CHECK(length==248u&&!memcmp(scratch,payload+3720u,248u));
+    puts("PASS_RANGE_FIRST_SECTOR physical_provenance_sector_reclaimed=1 exact_first3720_audio_SHA=1 untouched_tail_still_CSP2_CRC_readable=1 no_artificial_first_sector_delay=1");
+    return true;
+}
 static bool power_loss(void)
 {
     CHECK(setup());comp_range_reclaim_t w={0};CHECK(begin(&w,proof)==COMP_SEG_PENDING&&finish(&w)==COMP_SEG_OK);
@@ -149,5 +167,5 @@ static bool power_loss(void)
 int main(void)
 {
     for(unsigned i=0;i<PAYLOAD;i++)payload[i]=(uint8_t)(i*37u+13u);
-    return ordinary_and_replay()&&refusal_and_failures()&&power_loss()?0:1;
+    return ordinary_and_replay()&&refusal_and_failures()&&power_loss()&&first_sector_overlap()?0:1;
 }
