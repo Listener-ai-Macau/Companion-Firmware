@@ -133,6 +133,7 @@ def main() -> int:
     parser.add_argument('--cpu-duty-observer', action='store_true',
                         help='Compact opt-in RTC wall/sleep-gated TIM2 one-second CPU busy upper bound; original WFI retained, no DWT/stage/cache/IRQ tracing')
     parser.add_argument('--reclaim-timing-profile', action='store_true', help='DEV only: bounded consume-scoped NOR busy/poll/program timing; default absent, no persistent logging')
+    parser.add_argument('--verbose-ble-diagnostics', action='store_true', help='DEV only: long UART BLE transport/hash/residence transcripts; default compact link/failure/state output and product metrics remain')
     parser.add_argument('--codec-phase-profile', action='store_true', help='Bounded recording Opus wall-phase observation; no output while capturing')
     parser.add_argument('--wba-opus-celt16', action='store_true',
                         help='Candidate WBA16k/16kbps/20ms officialOpus1.6.1 restricted CELT with9KiB OTA-shared arena; requires pinned optional third_party/opus-wba-1.6.1 and real audio qualification before release')
@@ -510,6 +511,7 @@ def main() -> int:
                  f'-DCOMPANION_WBA_CPU_RESIDENCE_PROFILE={int(args.cpu_residence_profile)}',
                  f'-DCOMPANION_WBA_CPU_DUTY_OBSERVER={int(args.cpu_duty_observer)}',
                  f'-DCOMPANION_WBA_RECLAIM_TIMING={int(args.reclaim_timing_profile)}',
+                 f'-DCOMPANION_WBA_VERBOSE_BLE_DIAGNOSTICS={int(args.verbose_ble_diagnostics)}',
                  '-DCOMPANION_FINE_DURATION_CLOCK=1',
                  f'-DCOMPANION_WBA_CPU_DETAILED_PROFILE={int(args.cpu_detailed_profile)}',
                  f'-DCOMPANION_WBA_BATTERY_RAW_DIAGNOSTIC={int(args.battery_raw_diagnostic)}',
@@ -602,6 +604,7 @@ def main() -> int:
         result['diag_flash_logging_enabled']=args.diag_flash_log
         result['cpu_duty_observer_enabled']=args.cpu_duty_observer
         result['reclaim_timing_profile_enabled']=args.reclaim_timing_profile
+        result['verbose_ble_diagnostics_enabled']=args.verbose_ble_diagnostics
         if args.cpu_duty_observer:
             sources.append(PLATFORM/'cpu_duty_target.c')
         if args.diag_flash_log:

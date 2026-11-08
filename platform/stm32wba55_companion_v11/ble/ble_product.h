@@ -3,6 +3,12 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include "product_app.h"
+/* Long transfer investigation transcripts are an engineering build option.
+ * Normal builds retain compact link/failure/state diagnostics and the actual
+ * product/phone metrics; disabled detail is explicitly labelled unavailable. */
+#ifndef COMPANION_WBA_VERBOSE_BLE_DIAGNOSTICS
+#define COMPANION_WBA_VERBOSE_BLE_DIAGNOSTICS 0
+#endif
 #if COMPANION_WBA_ACL_READINESS_PROFILE
 void comp_v11_ble_acl_admission_begin(uint16_t h,const uint8_t *data,uint16_t bytes,uint8_t flags);
 void comp_v11_ble_acl_admission_end(bool success);

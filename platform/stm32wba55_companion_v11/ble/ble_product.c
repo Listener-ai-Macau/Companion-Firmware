@@ -772,6 +772,7 @@ void comp_v11_ble_recording_notification_complete(void)
 uint32_t comp_v11_ble_tx_timed_retries(void) {return notify_timed_retries;}
 void comp_v11_ble_download_timing_diagnostic(void)
 {
+#if COMPANION_WBA_VERBOSE_BLE_DIAGNOSTICS
     uint32_t observation_mask=__get_PRIMASK();__disable_irq();
     comp_v11_download_read_timing_t read=download_read_timing;
     const comp_v11_residence_profile_t v=route_observation;
@@ -896,6 +897,11 @@ void comp_v11_ble_download_timing_diagnostic(void)
             (unsigned long)acl_readiness.offsets[i],acl_readiness.flags[i],acl_readiness.parts[i],acl_readiness.errors);
         if(n>0 && (unsigned)n<sizeof(line))(void)comp_v11_hal_debug_write(line);
     }
+#endif
+#else
+    char line[160];
+    int n;
+    (void)comp_v11_hal_debug_write("XFER details=disabled verbose_ble_diagnostics=0\r\n");
 #endif
     const comp_wba_recording_transfer_t *t=&product_link.transfer;
     n=snprintf(line,sizeof(line),

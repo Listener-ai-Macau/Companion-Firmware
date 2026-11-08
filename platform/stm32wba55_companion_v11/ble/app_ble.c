@@ -978,6 +978,7 @@ void comp_v11_ble_bulk_profile(comp_v11_ble_bulk_direction_t direction,bool inte
 /* Export only existing BLE transport metadata after the payload owner is idle.
  * No extra resident ring, per-packet UART, HCI command, address/key or audio.
  * Cursor1 excludes boot event1; overwritten history remains explicitly partial. */
+#if COMPANION_WBA_VERBOSE_BLE_DIAGNOSTICS
 static void transport_history_diagnostic(char *line,size_t bytes)
 {
     if(comp_v11_ble_blocking_diagnostic_busy())return;
@@ -1009,10 +1010,13 @@ static void transport_history_diagnostic(char *line,size_t bytes)
     }
     (void)comp_v11_hal_debug_write("BLETRACE2 END partial=1\r\n");
 }
+#endif
 void comp_v11_ble_transport_diagnostic(void)
 {
     char line[192];
+#if COMPANION_WBA_VERBOSE_BLE_DIAGNOSTICS
     transport_history_diagnostic(line,sizeof(line));
+#endif
     int n=snprintf(line,sizeof(line),
         "LINK1 ci_units=%u latency=%u tx_phy=%u rx_phy=%u tx_octets=%u connected=%u bp=%lu pool=%lu timer=%lu rx_profile=%u rx_status=%u att_mtu=%u mtu_state=%u mtu_status=%u\r\n",
         transport.interval,transport.latency,transport.tx_phy,transport.rx_phy,
@@ -1034,6 +1038,7 @@ void comp_v11_ble_transport_diagnostic(void)
         (unsigned)(dle_attempts&0x7Fu),(unsigned)((dle_attempts&0x80u)!=0u),
         (unsigned)dle_status,(unsigned)bulk_ci_status);
     if(n>0 && (unsigned)n<sizeof(line))(void)comp_v11_hal_debug_write(line);
+#if COMPANION_WBA_VERBOSE_BLE_DIAGNOSTICS
     n=snprintf(line,sizeof(line),
         "LINK3 aligned_octets=%u alignment_attempted=%u alignment_status=%u restore_attempted=%u restore_status=%u ci_attempts=%u dle_waiting=%u\r\n",
         (unsigned)dle_aligned_octets,(unsigned)dle_alignment_attempted,(unsigned)dle_alignment_status,
@@ -1076,6 +1081,7 @@ void comp_v11_ble_transport_diagnostic(void)
         host_restore_status,bonds_boot,nvm_pending,nvm_busy,
         (unsigned long)nvm_good,(unsigned long)nvm_failed,bulk_ci_status);
     if(n>0 && (unsigned)n<sizeof(line))(void)comp_v11_hal_debug_write(line);
+#endif
     n=snprintf(line,sizeof(line),
         "GAP1 disconnects=%lu secured_disconnects=%lu last_ms=%lu reason=%02x secured_reason=%02x was_secured=%u enc_status=%02x enc_enabled=%u\r\n",
         (unsigned long)link_history.disconnects,(unsigned long)link_history.secured_disconnects,
