@@ -27,6 +27,7 @@ def run(command, out, name):
 
 
 def main():
+    reclaim_profile = 'reclaim-profile' in sys.argv[2:]
     out = ROOT / '.cache/recording-core-20261011' / sys.argv[1]
     out.mkdir(exist_ok=False)
     frozen = out / 'source'
@@ -53,6 +54,7 @@ def main():
     lib = ROOT / '.cache/opus-host-fixed/opus.lib'
     args = ['cl.exe', '/nologo', '/W4', '/WX', '/std:c11', '/TC', '/O2', '/MD',
             '/DCOMPANION_OPUS16_WBA_LOWDELAY=1', '/DCOMPANION_OPUS16_ENCODER_BYTES=65536',
+             *(['/DCOMPANION_WBA_RECLAIM_TIMING=1'] if reclaim_profile else []),
             *['/I' + str(p) for p in includes], '/I' + str(ROOT / 'third_party/opus/include'),
             *[str(frozen / p.relative_to(ROOT)) for p in sources],
             '/Fe:' + str(out / 'radio.exe'), '/link', str(lib)]
@@ -71,6 +73,7 @@ def main():
             path = frozen / 'app/companion_pendant' / relative
             command = [cc, '-std=c11', '-mcpu=cortex-m33', '-mthumb', '-Os', '-Wall', '-Wextra',
                        '-Werror', '-Wconversion', '-Wshadow', '-pedantic', '-fstack-usage',
+                        *(['-DCOMPANION_WBA_RECLAIM_TIMING=1'] if reclaim_profile else []),
                        *['-I' + str(p) for p in includes], '-c', str(path), '-o', str(out / (path.stem + '.o'))]
             commands.append(command); run(command, out, path.stem + '-m33.txt')
         report = dict(result='PASS_RADIO_RUNTIME_SOFTWARE_ONLY', softwareOutput=result,

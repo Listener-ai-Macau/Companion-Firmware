@@ -726,6 +726,16 @@ static void diagnostic_emit_body(comp_v11_diag_console_t *console,uint32_t reset
         (void)diagnostic_write(NULL,line);
         (void)snprintf(line,sizeof(line),"RECLAIM3 program_calls=%lu program_ms=%lu\r\n",(unsigned long)t->program_calls,(unsigned long)t->program_ms);
         (void)diagnostic_write(NULL,line);
+        (void)snprintf(line,sizeof(line),"RECLAIM4 owner=%lu scope_start_ms=%lu ranges=%lu ended=%lu lookup_ms=%lu hash_ms=%lu journal_ms=%lu erase_phase_ms=%lu blank_ms=%lu handoff_ms=%lu\r\n",
+            (unsigned long)t->owner_id,(unsigned long)t->scope_start_ms,
+            (unsigned long)t->range_calls,(unsigned long)t->range_completed,
+            (unsigned long)t->range_ms[0],(unsigned long)t->range_ms[1],
+            (unsigned long)t->range_ms[2],(unsigned long)t->range_ms[3],
+            (unsigned long)t->range_ms[4],(unsigned long)t->range_handoff_ms);
+        (void)diagnostic_write(NULL,line);
+        (void)snprintf(line,sizeof(line),"RECLAIM5 catalog_read_calls=%lu catalog_read_ms=%lu last_range_done_ms=%lu\r\n",
+            (unsigned long)t->read_calls,(unsigned long)t->read_ms,(unsigned long)t->last_range_done_ms);
+        (void)diagnostic_write(NULL,line);
     }
 #endif
     diagnostic_record_queue();

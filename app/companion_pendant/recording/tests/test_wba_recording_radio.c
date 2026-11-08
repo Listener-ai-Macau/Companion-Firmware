@@ -1,6 +1,22 @@
 #include "../wba_recording_radio.h"
 #define COMP_BOOT_TEST_MAIN radio_recovery_fixture_main
+#if COMPANION_WBA_RECLAIM_TIMING
+#define poll profiled_fixture_poll
+#endif
 #include "test_wba_recording_recovery.c"
+#if COMPANION_WBA_RECLAIM_TIMING
+#undef poll
+static uint32_t externally_observed_range_ms;
+static void poll(void)
+{
+    /* Current private pipeline phases9/10 are RANGE_FIND/RANGE. This external
+     * fixture clock charges the actual whole call (2ms tick plus any modeled
+     * I/O), independent of the observer's bucket accounting. */
+    bool range=pipeline.range_operation&&(pipeline.consume_phase==9u||pipeline.consume_phase==10u);
+    uint32_t before=f.now;profiled_fixture_poll();
+    if(range)externally_observed_range_ms+=f.now-before;
+}
+#endif
 /* Exercise the real companion_link dispatcher, retaining its existing
  * runtime command model. Its V1 cases are affected by this shared edit. */
 #define COMP_LINK_TEST_MAIN radio_legacy_link_fixture_main
@@ -1650,6 +1666,9 @@ static void range_reclaim_dispatch(unsigned queued)
     for(unsigned i=0u;i<1000u&&radio.range_pending;i++){poll();lookup_tick();}
     assert(!radio.range_pending&&last_reply_bytes==60u&&!memcmp(last_reply,"CRR3",4u));
     assert(comp_rec_get32(last_reply+32u)==501u&&comp_rec_get32(last_reply+36u)==0u&&f.writes==writes&&f.erases==erases);
+#if COMPANION_WBA_RECLAIM_TIMING
+    assert(!nor.reclaim_timing.active&&!nor.reclaim_timing.range_calls); /* status query is outside scope */
+#endif
     uint8_t pull[32];sealed_request(&original,0u,pull);send(COMPANION_GATT_CHAR_RECORDING_CHUNK_PULL,pull,32u);
     for(unsigned i=0u;i<2000u&&saved_bytes<3720u;i++){poll();lookup_tick();}
     assert(saved_bytes>=3720u&&saved_bytes<original.descriptor.encoded_length);
@@ -1714,6 +1733,9 @@ static void range_reclaim_dispatch(unsigned queued)
     companion_sha256_t sha;uint8_t hash[32];companion_sha256_init(&sha);companion_sha256_update(&sha,saved,saved_bytes);companion_sha256_final(&sha,hash);
     assert(!memcmp(hash,original.descriptor.sha256,32u));
     uint16_t used=(uint16_t)((((saved_bytes+247u)/248u+1u)*256u+4095u)/4096u);
+#if COMPANION_WBA_RECLAIM_TIMING
+    f.now+=17u; /* known inter-request gap, excluded from active phase residence */
+#endif
     range_request(&original,command,503u,1u,used,false);send(COMPANION_GATT_CHAR_DELETE_PRIVACY,command,96u);
     for(unsigned i=0u;i<20000u&&radio.range_pending;i++){poll();lookup_tick();}
     assert(!radio.range_pending&&comp_rec_get32(last_reply+36u)==503u&&last_reply[42u]==used);
@@ -1725,6 +1747,21 @@ static void range_reclaim_dispatch(unsigned queued)
 int COMP_RADIO_TEST_MAIN(int argc,char **argv)
 {
     (void)setvbuf(stdout,NULL,_IONBF,0);
+#if COMPANION_WBA_RECLAIM_TIMING
+    if(argc==2&&!strcmp(argv[1],"reclaim-profile")){
+        externally_observed_range_ms=0u;range_reclaim_dispatch(0u);
+        const companion_spi_nor_reclaim_timing_t *t=&nor.reclaim_timing;
+        uint32_t sum=0u;for(unsigned i=0u;i<5u;i++)sum+=t->range_ms[i];
+        assert(t->owner_id==pipeline.consume.descriptor.recording_id&&!t->active);
+        assert(t->range_calls==2u&&t->range_completed==2u&&t->completed>=2u);
+        assert(t->read_calls>0u&&t->program_calls>0u&&t->range_ms[0]>0u&&t->range_ms[1]>0u&&t->range_ms[2]>0u&&t->range_ms[3]>0u&&t->range_ms[4]>0u);
+        assert(sum==externally_observed_range_ms&&sum>0u);
+        assert(t->range_handoff_ms>=17u);
+        printf("PASS_RECLAIM_PROFILE calibrated_phase_ms=%lu external_clock_ms=%lu ranges=%lu physical_erases=%lu final_CRA2_preserved_prefix=1 scope_closed=1 software_only=1\n",
+            (unsigned long)sum,(unsigned long)externally_observed_range_ms,(unsigned long)t->range_calls,(unsigned long)t->completed);
+        return 0;
+    }
+#endif
     if(argc==2&&!strcmp(argv[1],"range-reclaim")){range_reclaim_dispatch(0u);return 0;}
     if(argc==2&&!strcmp(argv[1],"queued-range")){range_reclaim_dispatch(1u);range_reclaim_dispatch(2u);range_reclaim_dispatch(3u);range_reclaim_dispatch(4u);range_reclaim_dispatch(5u);return 0;}
     if(argc==2&&!strcmp(argv[1],"lookup-hint")){lookup_hint_scope();return 0;}

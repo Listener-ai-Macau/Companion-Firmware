@@ -52,6 +52,11 @@ typedef void (*companion_spi_nor_stm32wba_delay_ms_fn_t)(
 typedef struct {
     uint32_t issued,completed,bytes,erase_elapsed_ms,busy_lower_ms,max_poll_gap_ms;
     uint32_t last_poll_ms,last_busy_lower_ms,program_calls,program_ms,interrupted;
+    /* Range phase residence includes foreground scheduling gaps, not pure
+     * silicon/CPU cost. Inter-request handoff is reported separately. */
+    uint32_t owner_id,scope_start_ms,range_stamp_ms,last_range_done_ms;
+    uint32_t range_calls,range_completed,range_handoff_ms,range_ms[5];
+    uint32_t read_calls,read_ms;
     bool active;
 } companion_spi_nor_reclaim_timing_t;
 #endif

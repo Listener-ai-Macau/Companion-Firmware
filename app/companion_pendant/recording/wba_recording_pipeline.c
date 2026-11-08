@@ -39,6 +39,29 @@ static bool whole_consumer_active(const comp_wba_recording_pipeline_t *p)
 {return p->consume_phase>=CONSUME_FIND&&p->consume_phase<=CONSUME_RECLAIM;}
 static bool consumer_active(const comp_wba_recording_pipeline_t *p)
 {return whole_consumer_active(p)||p->consume_phase==CONSUME_RANGE_FIND||p->consume_phase==CONSUME_RANGE;}
+#if COMPANION_WBA_RECLAIM_TIMING
+static void reclaim_timing_owner(comp_wba_recording_pipeline_t *p,uint32_t id)
+{
+    companion_spi_nor_reclaim_timing_t *t=&p->config.storage->nor->reclaim_timing;
+    if(!t->active||t->owner_id!=id) {
+        memset(t,0,sizeof(*t));t->owner_id=id;t->active=true;
+        t->scope_start_ms=p->config.now_ms(p->config.context);
+        if(p->config.storage->nor->erase_active)t->interrupted++;
+    }
+}
+static unsigned reclaim_range_bucket(const comp_wba_recording_pipeline_t *p)
+{
+    if(!p||!p->range_operation)return 5u;
+    if(p->consume_phase==CONSUME_RANGE_FIND)return 0u;
+    if(p->consume_phase!=CONSUME_RANGE)return 5u;
+    /* Observe the current worker schema: 0/1 catalog/journal lookup,2 SHA,
+     * 3..6 and9..10 journal writes/readback,7 WIP,8 blank verification.
+     * Pure observer only; no phase or admission changes. */
+    unsigned phase=p->range_worker.phase;
+    return phase==2u?1u:phase==7u?3u:phase==8u?4u:
+        ((phase>=3u&&phase<=6u)||(phase>=9u&&phase<=10u))?2u:0u;
+}
+#endif
 bool comp_wba_recording_pipeline_release_empty_full(comp_wba_recording_pipeline_t *p)
 {
     /* Expected capacity rejection before the first extent/PCM/encoder owner.
@@ -593,9 +616,9 @@ comp_segment_result_t comp_wba_recording_pipeline_consume_wire_hint(comp_wba_rec
 #if COMPANION_WBA_RECLAIM_TIMING
     memset(p->consume_timing_ms,0,sizeof(p->consume_timing_ms));
     p->consume_timing_ms[0]=p->config.now_ms(p->config.context);
-    memset(&p->config.storage->nor->reclaim_timing,0,sizeof(p->config.storage->nor->reclaim_timing));
-    p->config.storage->nor->reclaim_timing.active=true;
-    if(p->config.storage->nor->erase_active)p->config.storage->nor->reclaim_timing.interrupted++;
+    /* Final CRA2 continues the same range owner; do not discard its measured
+     * prefix erases/programs immediately before querying the finished scope. */
+    reclaim_timing_owner(p,proof.recording_id);
 #endif
     return COMP_SEG_PENDING;
 }
@@ -626,7 +649,17 @@ comp_segment_result_t comp_wba_recording_pipeline_range_wire(comp_wba_recording_
         comp_rec_get32(wire+52u),first,end,slot};
     memcpy(p->range_worker.expected_sha,wire+56u,32u);
     p->consume_scan=slot<64u?(uint8_t)(slot|128u):0u;p->range_operation=wire[88u];
-    p->consume_phase=CONSUME_RANGE_FIND;p->consume_result=COMP_SEG_PENDING;return COMP_SEG_PENDING;
+    p->consume_phase=CONSUME_RANGE_FIND;p->consume_result=COMP_SEG_PENDING;
+#if COMPANION_WBA_RECLAIM_TIMING
+    if(p->range_operation) {
+        reclaim_timing_owner(p,p->consume.descriptor.recording_id);
+        companion_spi_nor_reclaim_timing_t *t=&p->config.storage->nor->reclaim_timing;
+        uint32_t at=p->config.now_ms(p->config.context);
+        if(t->range_completed)t->range_handoff_ms+=at-t->last_range_done_ms;
+        t->range_calls++;t->range_stamp_ms=at;
+    }
+#endif
+    return COMP_SEG_PENDING;
 }
 bool comp_wba_recording_pipeline_range_reply(const comp_wba_recording_pipeline_t *p,uint8_t wire[60])
 {
@@ -724,7 +757,25 @@ comp_segment_result_t comp_wba_recording_pipeline_workspace_at_snapshot(comp_wba
 comp_wba_pipeline_state_t comp_wba_recording_pipeline_poll(comp_wba_recording_pipeline_t *p)
 {
     comp_cpu_stage_span_t cpu=comp_cpu_detail_begin();
+#if COMPANION_WBA_RECLAIM_TIMING
+    unsigned bucket=reclaim_range_bucket(p);uint32_t before=0u;
+    companion_spi_nor_reclaim_timing_t *t=NULL;
+    if(bucket<5u)t=&p->config.storage->nor->reclaim_timing;
+    if(t&&t->active) {
+        before=p->config.now_ms(p->config.context);
+        t->range_ms[bucket]+=before-t->range_stamp_ms;
+    }
+#endif
     comp_wba_pipeline_state_t r=pipeline_poll_body(p);
+#if COMPANION_WBA_RECLAIM_TIMING
+    if(t&&t->active) {
+        uint32_t after=p->config.now_ms(p->config.context);
+        t->range_ms[bucket]+=after-before;t->range_stamp_ms=after;
+        if(reclaim_range_bucket(p)==5u) {
+            t->range_completed++;t->last_range_done_ms=after;
+        }
+    }
+#endif
     comp_cpu_detail_end(COMP_CPU_STAGE_PIPELINE,cpu,true);
     return r;
 }

@@ -62,7 +62,17 @@ static bool read_bool(void *v,uint32_t at,uint8_t *p,uint32_t bytes)
 {
     comp_wba_segment_storage_t *s=v;
     if(!allowed(s,at,bytes)||!p||bytes>256u)return false;
+#if COMPANION_WBA_RECLAIM_TIMING
+    const uint32_t before=s->nor->config.now_ms(s->nor->config.context);
+    bool ok=status(s,companion_spi_nor_stm32wba_read(s->nor,at,p,bytes))==COMP_SEG_OK;
+    if(s->nor->reclaim_timing.active) {
+        s->nor->reclaim_timing.read_calls++;
+        s->nor->reclaim_timing.read_ms+=s->nor->config.now_ms(s->nor->config.context)-before;
+    }
+    return ok;
+#else
     return status(s,companion_spi_nor_stm32wba_read(s->nor,at,p,bytes))==COMP_SEG_OK;
+#endif
 }
 static bool program_bool(void *v,uint32_t at,const uint8_t *p,uint32_t bytes)
 {
