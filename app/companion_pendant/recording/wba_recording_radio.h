@@ -38,10 +38,14 @@ typedef struct {
     companion_gatt_char_id_t pending_char;
     uint8_t phase;
     bool authenticated;
-    uint8_t negotiated; /*bit0 peer,bit1 whole consume overlap,bit2 explicit range protocol*/
+    uint8_t negotiated; /*bit0 peer,bit1 whole overlap,bit2 ranges,bit3 queued handoff*/
     bool consume_pending,consume_replay,consume_subscribed;
     uint32_t range_token,range_id;
     bool range_pending; /*independent60B receipt lane; never uses audio packet*/
+    /* Two next durable range proofs plus one terminal CRA2. Volatile requests
+     * are revalidated by the existing pipeline before any journal/erase I/O.
+     * Disconnect/CCCD loss drops this queue, never the active durable owner. */
+    uint8_t range_queue[3][96],range_queue_bytes[3],range_queue_count;
 } comp_wba_recording_radio_t;
 
 bool comp_wba_recording_radio_init(comp_wba_recording_radio_t *,const comp_wba_recording_radio_config_t *);

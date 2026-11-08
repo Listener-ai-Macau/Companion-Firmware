@@ -1624,7 +1624,7 @@ static void range_request(const comp_segment_entry_t *e,uint8_t out[96],uint32_t
     }
     comp_rec_put32(out+92u,comp_rec_crc(out,92u));
 }
-static void range_reclaim_dispatch(void)
+static void range_reclaim_dispatch(unsigned queued)
 {
     init();comp_wba_pipeline_config_t cfg=pipeline.config;cfg.segment_frames=300u;cfg.extent_bytes=16384u;
     assert(comp_wba_recording_pipeline_init(&pipeline,&cfg));ready(55u);
@@ -1642,9 +1642,9 @@ static void range_reclaim_dispatch(void)
     comp_link_config_t link={&link_owner.runtime,NULL,NULL,&link_owner.features,radio_publish,NULL};
     assert(comp_link_init_segmented(&link_owner.link,&link,&radio,&pipeline,20u));test_value_capacity=509u;
     assert(comp_wba_recording_radio_set_value_capacity(&radio,509u));connect_peer();
-    uint8_t negotiation_wire[32];negotiation(negotiation_wire);comp_rec_put16(negotiation_wire+2u,0xc1fdu);
+    uint8_t negotiation_wire[32];negotiation(negotiation_wire);comp_rec_put16(negotiation_wire+2u,(uint16_t)(queued?0xe1fdu:0xc1fdu));
     comp_rec_put32(negotiation_wire+28u,comp_rec_crc(negotiation_wire,28u));
-    send(COMPANION_GATT_CHAR_RECORDING_CONTROL,negotiation_wire,32u);radio_tick();assert(radio.negotiated==7u);
+    send(COMPANION_GATT_CHAR_RECORDING_CONTROL,negotiation_wire,32u);radio_tick();assert(radio.negotiated==(queued?15u:7u));
     uint8_t command[96];range_request(&original,command,501u,0u,0u,true);
     unsigned writes=f.writes,erases=f.erases;send(COMPANION_GATT_CHAR_DELETE_PRIVACY,command,96u);
     for(unsigned i=0u;i<1000u&&radio.range_pending;i++){poll();lookup_tick();}
@@ -1653,8 +1653,51 @@ static void range_reclaim_dispatch(void)
     uint8_t pull[32];sealed_request(&original,0u,pull);send(COMPANION_GATT_CHAR_RECORDING_CHUNK_PULL,pull,32u);
     for(unsigned i=0u;i<2000u&&saved_bytes<3720u;i++){poll();lookup_tick();}
     assert(saved_bytes>=3720u&&saved_bytes<original.descriptor.encoded_length);
+    /* Queue admission/reply ordering uses the complete real downloaded source.
+     * The unqueued scenario below independently covers transfer/erase overlap;
+     * neither test claims hardware timing or handset durability. */
+    if(queued)for(unsigned i=0u;i<10000u&&saved_bytes<original.descriptor.encoded_length;i++)lookup_tick();
     range_request(&original,command,502u,0u,1u,false);send(COMPANION_GATT_CHAR_DELETE_PRIVACY,command,96u);
     assert(radio.range_pending);uint32_t before=saved_bytes;bool overlap=false;
+    if(queued) {
+        /* Freeze only consumer scheduling while the genuine receiver drains
+         * the already selected original. No fabricated payload or receipt. */
+        for(unsigned i=0u;i<1000u&&pipeline.consume.descriptor.encoded_length==0u;i++)poll();
+        for(unsigned i=0u;i<10000u&&saved_bytes<original.descriptor.encoded_length;i++)lookup_tick();
+        assert(saved_bytes==original.descriptor.encoded_length&&radio.range_pending&&receipt_count==0u);
+        uint16_t used=(uint16_t)((((saved_bytes+247u)/248u+1u)*256u+4095u)/4096u);
+        range_request(&original,command,503u,1u,used,false);
+        uint8_t invalid[96];memcpy(invalid,command,96u);invalid[28]^=1u;comp_rec_put32(invalid+92u,comp_rec_crc(invalid,92u));
+        erases=f.erases;send(COMPANION_GATT_CHAR_DELETE_PRIVACY,invalid,96u);
+        assert(!radio.range_queue_count&&radio.range_pending&&f.erases==erases);
+        send(COMPANION_GATT_CHAR_DELETE_PRIVACY,command,96u);assert(radio.range_queue_count==1u);
+        send(COMPANION_GATT_CHAR_DELETE_PRIVACY,command,96u);assert(radio.range_queue_count==1u); /* no duplicate owner */
+        uint8_t whole[84];consumption_proof(&original,whole);send(COMPANION_GATT_CHAR_DELETE_PRIVACY,whole,84u);
+        assert(radio.range_queue_count==2u&&receipt_count==0u&&f.erases==erases);
+        if(queued>=2u) {
+            if(queued==2u)comp_link_connection(&link_owner.link,false,false,f.now);
+            else subscribe(COMPANION_GATT_CHAR_DELETE_PRIVACY,false);
+            assert(radio.range_queue_count==0u);
+            for(unsigned i=0u;i<20000u&&comp_wba_recording_pipeline_consume_result(&pipeline)==COMP_SEG_PENDING;i++)poll();
+            assert(comp_wba_recording_pipeline_consume_result(&pipeline)==COMP_SEG_OK&&catalog.range_end[0]==1u&&receipt_count==0u);
+            comp_segment_entry_t retained;assert(comp_segment_catalog_read(&catalog,0u,&retained)==COMP_SEG_OK);
+            if(queued==2u)connect_peer();else subscribe(COMPANION_GATT_CHAR_DELETE_PRIVACY,true);
+            for(unsigned i=0u;i<100u&&radio.range_pending;i++)lookup_tick();
+            send(COMPANION_GATT_CHAR_DELETE_PRIVACY,whole,84u);
+        }else{
+            for(unsigned i=0u;i<20000u&&comp_wba_recording_pipeline_consume_result(&pipeline)==COMP_SEG_PENDING;i++)poll();
+            assert(comp_wba_recording_pipeline_consume_result(&pipeline)==COMP_SEG_OK);
+            blocked=1u;lookup_tick();assert(radio.range_queue_count==2u&&receipt_count==0u);
+            lookup_tick();assert(radio.range_queue_count==1u&&radio.range_pending);
+        }
+        for(unsigned i=0u;i<30000u&&!receipt_count;i++){poll();lookup_tick();}
+        assert(receipt_count==1u&&!radio.range_queue_count&&!memcmp(whole,last_reply,84u));
+        assert(comp_rec_crc(saved,saved_bytes)==original.descriptor.content_crc32);
+        companion_sha256_t digest;uint8_t full[32];companion_sha256_init(&digest);companion_sha256_update(&digest,saved,saved_bytes);companion_sha256_final(&digest,full);
+        assert(!memcmp(full,original.descriptor.sha256,32u));
+        printf("PASS_QUEUED_RANGE real_original=1 queue_before_physical_reply=1 terminal_after_reclaim=1 exact_source_and_original=1 malformed_or_duplicate_not_queued=1 receipt_backpressure_preserves_queue=1 drop_mode=%u\n",queued);
+        return;
+    }
     for(unsigned i=0u;i<20000u&&(radio.range_pending||saved_bytes<original.descriptor.encoded_length);i++){
         poll();lookup_tick();if(nor.erase_active&&saved_bytes>before)overlap=true;
     }
@@ -1675,7 +1718,8 @@ static void range_reclaim_dispatch(void)
 int COMP_RADIO_TEST_MAIN(int argc,char **argv)
 {
     (void)setvbuf(stdout,NULL,_IONBF,0);
-    if(argc==2&&!strcmp(argv[1],"range-reclaim")){range_reclaim_dispatch();return 0;}
+    if(argc==2&&!strcmp(argv[1],"range-reclaim")){range_reclaim_dispatch(0u);return 0;}
+    if(argc==2&&!strcmp(argv[1],"queued-range")){range_reclaim_dispatch(1u);range_reclaim_dispatch(2u);range_reclaim_dispatch(3u);return 0;}
     if(argc==2&&!strcmp(argv[1],"lookup-hint")){lookup_hint_scope();return 0;}
     if(argc==2&&!strcmp(argv[1],"directory-hint")){directory_hint_scope();return 0;}
     if(argc==2&&!strcmp(argv[1],"consume-pull-overlap")){consume_pull_overlap(true,0u);consume_pull_overlap(false,0u);consume_pull_overlap(false,1u);consume_pull_overlap(false,2u);consume_pull_overlap(false,3u);unsupported_overlap_negotiation();return 0;}
