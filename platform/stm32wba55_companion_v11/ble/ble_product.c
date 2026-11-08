@@ -495,16 +495,26 @@ void comp_v11_ble_console_idle_progress(void)
 /* CONSOLE_IDLE_RNG_PROGRESS_END */
 bool comp_v11_ble_linked(void) { return linked; }
 bool comp_v11_ble_secured(void) { return secured; }
+static bool capture_radio_remaining(uint32_t *next_us,bool *busy)
+{
+    bool valid=linked && ll_intf_le_get_remaining_time_for_next_event(next_us)==0u;
+    *busy=(route_observation.flags&RES_RADIO_ON)!=0u ||
+        NVIC_GetPendingIRQ(RADIO_INTR_NUM)!=0u ||
+        NVIC_GetPendingIRQ(RADIO_SW_LOW_INTR_NUM)!=0u;
+    return valid;
+}
 bool comp_v11_ble_capture_encode_window(bool pending)
 {
     static comp_capture_radio_window_t wait;
-    uint32_t next_us=0u;
-    bool valid=pending && linked &&
-        ll_intf_le_get_remaining_time_for_next_event(&next_us)==0u;
-    bool busy=(route_observation.flags&RES_RADIO_ON)!=0u ||
-        NVIC_GetPendingIRQ(RADIO_INTR_NUM)!=0u ||
-        NVIC_GetPendingIRQ(RADIO_SW_LOW_INTR_NUM)!=0u;
+    uint32_t next_us=0u;bool busy=false;
+    bool valid=pending && capture_radio_remaining(&next_us,&busy);
     return comp_capture_radio_window_open(&wait,HAL_GetTick(),pending,valid,busy,next_us);
+}
+bool comp_v11_ble_capture_convert_window(uint32_t remaining,uint32_t half_bytes)
+{
+    uint32_t next_us=0u;bool busy=false;
+    bool valid=capture_radio_remaining(&next_us,&busy);
+    return comp_capture_radio_convert_open(valid,busy,next_us,remaining,half_bytes);
 }
 uint32_t comp_v11_ble_fatal_error(void) { return fatal_error; }
 void RTC_IRQHandler(void) {
