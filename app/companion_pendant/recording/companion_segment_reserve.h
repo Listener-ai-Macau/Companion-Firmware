@@ -28,12 +28,6 @@ comp_segment_result_t comp_segment_reserve_begin(comp_segment_reserve_t *,
     comp_segment_catalog_t *,comp_segment_entry_t *template_entry,
     uint32_t bytes,uint32_t hint);
 
-/* Pure placement inside one checked free gap. Use only its remainder as
- * alignment padding, preserving floor(gap_bytes/extent_bytes) whole owners.
- * hint rotates the chosen whole slot; no first-free wear concentration. */
-bool comp_segment_reserve_aligned_hint(uint32_t data_base,uint32_t gap_offset,
-    uint32_t gap_bytes,uint32_t extent_bytes,uint32_t hint,uint32_t *out);
-
 /* At most one backend I/O per poll: incremental gap search -> durable WRITING
  * reservation -> cooperative physical erase -> full blank readback -> READY.
  * Healthy pending never advances the erase cursor or authorizes PCM writes.

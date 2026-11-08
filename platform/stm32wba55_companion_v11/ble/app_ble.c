@@ -1031,17 +1031,12 @@ void comp_v11_ble_transport_diagnostic(void)
      * these limits are policy values, not proof of transmitted packet size.
      * Use another line rather than growing the existing stack buffer or
      * truncating LINK1. No UART or new ACI work runs in an HCI callback. */
-#if COMPANION_WBA_VERBOSE_BLE_DIAGNOSTICS
     n=snprintf(line,sizeof(line),
         "LINK2 tx_time_us=%u compact_limit_bytes=%u value_limit_bytes=%u single_ll_audio_estimate=%u dle_attempts=%u dle_accepted=%u dle_status=%u ci_request_status=%u\r\n",
         transport.tx_time,comp_v11_ble_recording_capacity(),comp_v11_ble_value_capacity(),
         comp_v11_ble_single_ll_compact_capacity(transport.tx_octets,transport.tx_time,transport.tx_phy),
         (unsigned)(dle_attempts&0x7Fu),(unsigned)((dle_attempts&0x80u)!=0u),
         (unsigned)dle_status,(unsigned)bulk_ci_status);
-#else
-    n=snprintf(line,sizeof(line),"LINK2 tx_time_us=%u rx_octets=%u rx_time_us=%u\r\n",
-        transport.tx_time,transport.rx_octets,transport.rx_time);
-#endif
     if(n>0 && (unsigned)n<sizeof(line))(void)comp_v11_hal_debug_write(line);
 #if COMPANION_WBA_VERBOSE_BLE_DIAGNOSTICS
     n=snprintf(line,sizeof(line),
