@@ -66,6 +66,7 @@ static comp_wba_transfer_read_result_t read_preflight(comp_wba_segment_pull_t *p
 {
     comp_segment_catalog_t *c=p->config.catalog;
     const comp_segment_entry_t *e=p->config.selected;
+    if(!c->mounted||p->config.storage->poisoned)return COMP_WBA_TRANSFER_READ_ERROR;
     /* A negotiated radio value spans multiple physical248B pages. Cache fills
      * remain page-sized, but validating the caller's compact packet must keep
      * the original489B logical limit or current Android receives no first packet. */
@@ -78,6 +79,12 @@ static comp_wba_transfer_read_result_t read_preflight(comp_wba_segment_pull_t *p
         uint32_t gone=frontier?((uint32_t)frontier*16u-1u)*248u:0u;
         if(offset<gone)return COMP_WBA_TRANSFER_READ_ERROR;
     }
+    /* Already verified immutable bytes need no NOR scratch or transaction.
+     * Keep the identity/frontier checks above, and recheck changed catalog
+     * generations through the ordinary storage path before draining RAM. */
+    if(p->cache&&c->generation==p->generation&&offset>=p->cache_offset&&
+       offset-p->cache_offset<=p->cache_bytes&&bytes<=p->cache_bytes-(offset-p->cache_offset))
+        return COMP_WBA_TRANSFER_READ_OK;
     if(!comp_segment_catalog_transfer_readable(c)||!p->config.page_available(p->config.context))return COMP_WBA_TRANSFER_READ_WAIT;
     if(c->generation!=p->generation) {
         comp_segment_entry_t actual;

@@ -16,7 +16,10 @@ bool comp_wba_recording_radio_read_allowed(void *v)
 {
     const comp_wba_recording_radio_t *r=v;
     if(!r||!r->authenticated||!r->negotiated||
-       (r->consume_pending&&(!(r->negotiated&2u)||r->phase!=RADIO_PULL))||!page_available((void *)r))return false;
+       (r->consume_pending&&(!(r->negotiated&2u)||r->phase!=RADIO_PULL)))return false;
+    /* The sealed RAM cache can drain while the mutation owner holds NOR.
+     * Actual page reads retain their separate storage admission in pull. */
+    if(!page_available((void *)r)&&!((r->negotiated&2u)&&r->range_pending&&r->pull.cache&&r->pull.cache_bytes))return false;
     const comp_cont_recording_t *e=r->config.pipeline->config.recording;
     /* A closed older segment may send during capture, but PCM/program/drain
      * work always owns the next foreground slice. No microphone stop here. */

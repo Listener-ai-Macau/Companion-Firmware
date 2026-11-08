@@ -1,4 +1,5 @@
 #include "../wba_segment_pull.h"
+#include "../wba_recording_radio.h"
 #define COMP_BOOT_TEST_MAIN recovery_fixture_main
 #include "test_wba_recording_recovery.c"
 static comp_wba_segment_pull_t pull;
@@ -637,6 +638,47 @@ static void prefetch_preemption_and_resume(void)
     comp_wba_segment_pull_cancel(&pull);assert(cache_claims==cache_returns);
     puts("PASS prefetch ownership: START takes idle encoder workspace without canceling sealed stream; active real capture falls back, reconnect/ring wrap exact, disconnect releases once; software only");
 }
+static void prefetch_during_range_metadata(void)
+{
+    cache_fixture();cache_begin(0u);
+    while(host_offset<4096u)assert(cache_poll()==COMP_SEG_PENDING);
+    assert(pull.cache&&pull.cache_bytes>4096u);
+    comp_range_reclaim_t worker;companion_sha256_t sha;uint8_t proof[32];
+    companion_sha256_init(&sha);companion_sha256_update(&sha,cache_expected,15u*248u);
+    companion_sha256_final(&sha,proof);
+    assert(comp_segment_catalog_range_begin(&catalog,&worker,&cache_clip,pull.slot,0u,1u,71u,proof)==COMP_SEG_PENDING);
+    assert(!comp_segment_catalog_transfer_readable(&catalog));
+    /* The production outer pump must permit RAM progress. Actual NOR access
+     * remains subject to the pull's separate page/catalog admission. */
+    comp_wba_recording_radio_t radio={0};
+    radio.authenticated=true;radio.negotiated=3u;radio.config.pipeline=&pipeline;radio.pull=pull;
+    assert(!comp_wba_recording_radio_read_allowed(&radio));
+    radio.range_pending=true;
+    assert(comp_wba_recording_radio_read_allowed(&radio));
+    unsigned reads=f.reads,writes=f.writes,erases=f.erases;
+    uint32_t before=host_offset;
+    for(unsigned i=0u;i<8u;i++)assert(cache_poll()==COMP_SEG_PENDING);
+    assert(host_offset>=before+4u*224u&&f.reads==reads&&f.writes==writes&&f.erases==erases);
+    assert(!memcmp(host_bytes,cache_expected,host_offset));
+    /* A changed directory generation still waits for a real recheck. */
+    catalog.generation++;before=host_offset;
+    for(unsigned i=0u;i<4u;i++)assert(cache_poll()==COMP_SEG_PENDING&&host_offset==before);
+    assert(f.reads==reads);catalog.generation--;
+    /* An exhausted cache cannot read through the busy catalog, nor can a
+     * disconnected peer drain any retained bytes. */
+    for(unsigned i=0u;i<100u;i++)assert(cache_poll()==COMP_SEG_PENDING);
+    before=host_offset;
+    for(unsigned i=0u;i<4u;i++)assert(cache_poll()==COMP_SEG_PENDING&&host_offset==before);
+    assert(f.reads==reads&&f.writes==writes&&f.erases==erases);
+    assert(!comp_wba_segment_pull_peer(&pull,NULL,0u,false));
+    assert(!pull.cache&&cache_claims==cache_returns);
+    comp_segment_result_t done=COMP_SEG_PENDING;
+    for(unsigned i=0u;i<2000u&&done==COMP_SEG_PENDING;i++) {
+        f.now++;done=comp_wba_segment_storage_catalog_poll(&storage,&catalog);
+    }
+    assert(done==COMP_SEG_OK&&catalog.range_end[pull.slot]==1u);
+    puts("PASS cached RAM drains during real range metadata ownership, zero NOR IO; starvation yields and disconnect releases; software only");
+}
 static void prefetch_faults(void)
 {
     cache_fixture();cache_begin(0u);
@@ -654,8 +696,10 @@ static void prefetch_faults(void)
 int main(int argc,char **argv)
 {
     if(argc==2&&!strcmp(argv[1],"--prefetch")){
+        prefetch_during_range_metadata();
         prefetch_during_prefix_erase();prefetch_preemption_and_resume();prefetch_faults();
         cache_value_capacity=509u;
+        prefetch_during_range_metadata();
         prefetch_during_prefix_erase();prefetch_preemption_and_resume();prefetch_faults();
         puts("PASS negotiated509B values: full489B compact payload crosses physical248B pages, erase overlap/preemption/retry/corruption remain exact; software only");
         return 0;
