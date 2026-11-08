@@ -2,6 +2,7 @@
 
 #include <limits.h>
 #include <string.h>
+#include "wba_pdm_quad_tables.h"
 
 #define COMP_WBA_PDM_DC_ALPHA_Q15 32375
 
@@ -175,6 +176,25 @@ COMP_PDM_BYTE_INLINE void integrate_byte_run(
      * other microphone occupies the alternate byte in the copied DMA span. */
     size_t i = 0u;
     if (!lsb_first && !invert) {
+        /* Four chronological bytes advance32 clocks in one register update.
+         * Propagated contributions are summed modulo2^32, exactly as four
+         * byte steps. Packed sign extraction compiles to M33 bitfield ops.
+         * No extra state, quality change or read of the other microphone. */
+        for (; i + 3u < pairs; i += 4u) {
+            uint32_t a=byte_sums_forward24[raw[2u*i]];
+            uint32_t b=byte_sums_forward16[raw[2u*(i+1u)]];
+            uint32_t c=byte_sums_forward8[raw[2u*(i+2u)]];
+            uint32_t d=byte_sums[raw[2u*(i+3u)]];
+            three=add_signed(add_signed(add_signed(add_signed(three+32u*two+528u*one,
+                (int32_t)(a<<5u)>>19u),(int32_t)(b<<5u)>>19u),
+                (int16_t)(c>>16u)),(int8_t)(d>>16u));
+            two=add_signed(add_signed(add_signed(add_signed(two+32u*one,
+                (int32_t)(a<<18u)>>23u),(int32_t)(b<<18u)>>23u),
+                (int8_t)(c>>8u)),(int8_t)(d>>8u));
+            one=add_signed(add_signed(add_signed(add_signed(one,
+                (int32_t)(a<<27u)>>27u),(int32_t)(b<<27u)>>27u),
+                (int8_t)c),(int8_t)d);
+        }
         for (; i + 1u < pairs; i += 2u) {
             uint32_t first_sums = byte_sums_forward8[raw[2u * i]];
             uint32_t last_sums = byte_sums[raw[2u * (i + 1u)]];
