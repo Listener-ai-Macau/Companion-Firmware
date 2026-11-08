@@ -82,7 +82,10 @@ static comp_wba_transfer_read_result_t read_preflight(comp_wba_segment_pull_t *p
     /* Already verified immutable bytes need no NOR scratch or transaction.
      * Keep the identity/frontier checks above, and recheck changed catalog
      * generations through the ordinary storage path before draining RAM. */
-    if(p->cache&&c->generation==p->generation&&offset>=p->cache_offset&&
+    /* A positive request fitting cache_bytes also proves the lease exists;
+     * init/release both zero cache_bytes. The prior length bound prevents sum
+     * overflow here. Empty RAM still takes the ordinary storage path. */
+    if(c->generation==p->generation&&offset>=p->cache_offset&&
        offset-p->cache_offset+bytes<=p->cache_bytes)
         return COMP_WBA_TRANSFER_READ_OK;
     if(!comp_segment_catalog_transfer_readable(c)||!p->config.page_available(p->config.context))return COMP_WBA_TRANSFER_READ_WAIT;
