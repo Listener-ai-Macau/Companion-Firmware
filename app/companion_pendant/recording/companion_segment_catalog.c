@@ -41,7 +41,13 @@ static uint32_t reclaim_bytes(const comp_segment_catalog_t *c)
             /* A short unaligned prefix can end at the next boundary without
              * containing ANY full32K erase. Rounding that case only adds blank
              *4K sectors. Count a block after the actual retained frontier. */
-            if(block_end>=first_block+32768u&&block_end<=e->reserved_bytes)bytes=block_end;
+            /* Below one block, count the tail AFTER an unaligned head.
+             * Actual365 had five4K head erases and only one4K of data left:
+             * padding that last sector to32K saved no command at all. Keep
+             * the existing half-block threshold for the replaceable tail,
+             * while retaining established full-block/prefix behavior. */
+            if(block_end>=first_block+32768u&&block_end<=e->reserved_bytes&&
+               (bytes>=32768u||bytes>=first_block+16384u))bytes=block_end;
         }
         if(bytes<e->reserved_bytes)return (uint32_t)bytes;
     }

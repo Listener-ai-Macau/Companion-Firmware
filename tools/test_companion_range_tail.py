@@ -5,10 +5,10 @@ from verify_wba_spi_nor_adapter import find_vsdevcmd
 root=Path(__file__).resolve().parents[1];rec=root/'app/companion_pendant/recording'
 out=Path(sys.argv[1]).resolve();out.mkdir(parents=True,exist_ok=False)
 sources=[rec/(n+'.c')for n in ['companion_range_receipt','companion_range_reclaim','companion_segment_audio','companion_segment_catalog']]
-files=[*sources,rec/'tests/test_companion_segment_reclaim_prefix.c',rec/'tests/test_companion_range_tail.c',rec/'tests/test_companion_unaligned_tail.c',rec/'tests/test_companion_short_unaligned_tail.c',Path(__file__)]
+files=[*sources,rec/'tests/test_companion_segment_reclaim_prefix.c',rec/'tests/test_companion_range_tail.c',rec/'tests/test_companion_unaligned_tail.c',rec/'tests/test_companion_short_unaligned_tail.c',rec/'tests/test_companion_short_block_tail.c',Path(__file__)]
 report={'physicalSpeedQualified':False,'deviceAccessed':False,'sourceSha256':{str(p.relative_to(root)):hashlib.sha256(p.read_bytes()).hexdigest()for p in files}}
 try:
-    for name,test in [('legacy-prefix','test_companion_segment_reclaim_prefix.c'),('range-tail','test_companion_range_tail.c'),('unaligned-tail','test_companion_unaligned_tail.c'),('short-unaligned-tail','test_companion_short_unaligned_tail.c')]:
+    for name,test in [('legacy-prefix','test_companion_segment_reclaim_prefix.c'),('range-tail','test_companion_range_tail.c'),('unaligned-tail','test_companion_unaligned_tail.c'),('short-unaligned-tail','test_companion_short_unaligned_tail.c'),('short-block-tail','test_companion_short_block_tail.c')]:
         args=['cl.exe','/nologo','/W4','/WX','/std:c11','/TC','/O2','/MD','/I'+str(rec),str(rec/'tests'/test),*map(str,sources),'/Fe:'+str(out/(name+'.exe'))]
         cmd=out/(name+'.cmd');cmd.write_text('@echo off\ncall "'+str(find_vsdevcmd())+'" -arch=amd64 -host_arch=amd64 >nul\nif errorlevel 1 exit /b %errorlevel%\n'+subprocess.list2cmdline(args)+'\n',encoding='ascii')
         for stage,command in [('compile',['cmd.exe','/d','/c',str(cmd)]),('run',[str(out/(name+'.exe'))])]:

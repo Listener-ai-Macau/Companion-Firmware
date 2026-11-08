@@ -1,4 +1,6 @@
+#ifndef COMP_PREFIX_TEST_BASE
 #define COMP_PREFIX_TEST_BASE (65536+4096)
+#endif
 #define COMP_PREFIX_TEST_PAYLOAD 22362
 #define main legacy_prefix_fixture_main
 #include "test_companion_segment_reclaim_prefix.c"
@@ -28,7 +30,7 @@ static bool no_empty_alignment_sector(void)
 {
     comp_segment_catalog_t c;comp_segment_entry_t e,receipt;
     CHECK(setup(&c,&e)&&finish(&c)==COMP_SEG_OK);
-    printf("SHORT_UNALIGNED actual22362B skew4096 small=%u block=%u reserved=%u\n",small_commands,block_commands,RESERVED);
+    printf("SHORT_UNALIGNED actual22362B skew=%u small=%u block=%u reserved=%u\n",BASE%32768u,small_commands,block_commands,RESERVED);
     CHECK(small_commands==6u&&block_commands==0u&&erases==6u);
     CHECK(all_blank(BASE,RESERVED)&&neighbors());
     CHECK(comp_segment_catalog_receipt_read(&c,0,&receipt)==COMP_SEG_OK&&receipt.reserved_bytes==RESERVED);
