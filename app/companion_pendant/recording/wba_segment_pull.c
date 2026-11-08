@@ -66,7 +66,10 @@ static comp_wba_transfer_read_result_t read_preflight(comp_wba_segment_pull_t *p
 {
     comp_segment_catalog_t *c=p->config.catalog;
     const comp_segment_entry_t *e=p->config.selected;
-    if(id!=e->descriptor.recording_id||!bytes||bytes>COMP_SEGMENT_PAGE_DATA_BYTES||offset>e->descriptor.encoded_length||
+    /* A negotiated radio value spans multiple physical248B pages. Cache fills
+     * remain page-sized, but validating the caller's compact packet must keep
+     * the original489B logical limit or current Android receives no first packet. */
+    if(id!=e->descriptor.recording_id||!bytes||bytes>COMP_WBA_RECORDING_TRANSFER_COMPACT_PAYLOAD_BYTES||offset>e->descriptor.encoded_length||
        bytes>e->descriptor.encoded_length-offset)return COMP_WBA_TRANSFER_READ_ERROR;
     if(p->slot<64u){
         uint16_t frontier=c->range_id[p->slot]==id?c->range_end[p->slot]:0u;

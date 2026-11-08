@@ -7,7 +7,7 @@ static comp_segment_entry_t selected;
 static bool foreground,scratch;
 static unsigned foreground_calls,foreground_block_call;
 static unsigned reject_count;
-static uint8_t host_bytes[32768],retry_packet[248];
+static uint8_t host_bytes[32768],retry_packet[509];
 static uint16_t retry_length;
 static uint32_t host_offset;
 static bool foreground_available(void *v)
@@ -15,10 +15,11 @@ static bool foreground_available(void *v)
 static bool page_available(void *v){(void)v;return scratch&&engine.writer.phase==0u;}
 static bool host_notify(void *v,const uint8_t *value,uint16_t n)
 {
-    (void)v;assert(n>=20u&&n<=248u&&value[0]==1u);
+    const uint16_t capacity=transfer_window.value_capacity?transfer_window.value_capacity:248u;
+    (void)v;assert(n>=20u&&n<=capacity&&value[0]==1u);
     uint32_t bytes=(uint32_t)value[2]|((uint32_t)value[3]<<8u);
     bool final=(value[1]&1u)!=0u;uint32_t header=final?56u:20u;
-    assert(n==header+bytes&&value[1]==(final?1u:8u)&&bytes<=(final?192u:224u));
+    assert(n==header+bytes&&value[1]==(final?1u:8u)&&bytes<=capacity-header);
     uint8_t fields[16];comp_rec_put32(fields,selected.descriptor.recording_id);
     comp_rec_put32(fields+4u,comp_rec_get32(value+8u));comp_rec_put32(fields+8u,comp_rec_get32(value+12u));
     comp_rec_put32(fields+12u,selected.descriptor.encoded_length);
@@ -537,6 +538,7 @@ static void cache_return(void *context,void *memory)
 static const comp_wba_segment_pull_cache_ports_t cache_ports={cache_claim,cache_return,NULL};
 static uint8_t cache_expected[32768];
 static comp_segment_entry_t cache_clip;
+static uint16_t cache_value_capacity;
 static void cache_fixture(void)
 {
     init();comp_wba_pipeline_config_t cfg=pipeline.config;
@@ -551,7 +553,8 @@ static void cache_fixture(void)
     assert(cache_clip.descriptor.encoded_length==22272u&&!mic&&companion_opus16_rt_workspace_available());
     for(uint32_t at=0u;at<cache_clip.descriptor.encoded_length;at++)
         cache_expected[at]=f.bytes[DATA_BASE+cache_clip.extent_offset+256u+(at/248u)*256u+at%248u];
-    init_pull();cache_claims=cache_returns=0u;cache_capture_owned=false;
+    init_pull();transfer_window.value_capacity=cache_value_capacity;
+    cache_claims=cache_returns=0u;cache_capture_owned=false;
     comp_wba_segment_pull_cache_bind(&pull,&cache_ports);
     assert(comp_wba_segment_pull_peer(&pull,device_uid,7u,true));
 }
@@ -650,7 +653,13 @@ static void prefetch_faults(void)
 }
 int main(int argc,char **argv)
 {
-    if(argc==2&&!strcmp(argv[1],"--prefetch")){prefetch_during_prefix_erase();prefetch_preemption_and_resume();prefetch_faults();return 0;}
+    if(argc==2&&!strcmp(argv[1],"--prefetch")){
+        prefetch_during_prefix_erase();prefetch_preemption_and_resume();prefetch_faults();
+        cache_value_capacity=509u;
+        prefetch_during_prefix_erase();prefetch_preemption_and_resume();prefetch_faults();
+        puts("PASS negotiated509B values: full489B compact payload crosses physical248B pages, erase overlap/preemption/retry/corruption remain exact; software only");
+        return 0;
+    }
     if(argc==2&&!strcmp(argv[1],"--erase-start-guard")){erase_timeout_starts_after_command();return 0;}
     if(argc==2&&!strcmp(argv[1],"--failed-erase-owner")){failed_erase_does_not_stall_gate();return 0;}
     if(argc==2&&!strcmp(argv[1],"--erase-gate-budget")){erase_gate_status_wait_is_bounded();return 0;}
