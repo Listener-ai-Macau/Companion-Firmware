@@ -167,22 +167,15 @@ static bool queue_range_handoff(comp_wba_recording_radio_t *r,const uint8_t *wir
     const uint8_t count=r->range_queue_count;
     if(!(r->negotiated&8u)||!r->consume_subscribed||!active->end_sector||
        count>=3u||(count&&r->range_queue_bytes[count-1u]==84u)||
-       memcmp(wire+8u,d->device_uid,12u)||comp_rec_get64(wire+20u)!=d->format_epoch||
        comp_rec_get64(wire+28u)!=d->session_id||comp_rec_get32(wire+36u)!=d->segment_index||
-       comp_rec_get32(wire+40u)!=d->recording_id||
-       comp_rec_get32(wire+bytes-4u)!=comp_rec_crc(wire,bytes-4u))return false;
+       comp_rec_get32(wire+40u)!=d->recording_id)return false;
+    /* Admission retains bytes in RAM, not an erase authorization. The existing
+     * pipeline rechecks the entire CRC/UID/epoch/bounds/SHA before journal I/O
+     * when popped. Keep only owner, credit and correlation checks here. */
     if(bytes==96u) {
-        const uint8_t *last=count?r->range_queue[count-1u]:NULL;
-        const uint16_t first=(uint16_t)((uint16_t)wire[48]|((uint16_t)wire[49]<<8u));
-        const uint16_t end=(uint16_t)((uint16_t)wire[50]|((uint16_t)wire[51]<<8u));
-        const uint16_t previous=last?(uint16_t)((uint16_t)last[50]|((uint16_t)last[51]<<8u)):active->end_sector;
-        if(count>=2u||wire[4]!=3u||wire[5]||wire[6]!=96u||wire[7]||wire[88]!=1u||
-           wire[89]||wire[90]||wire[91]||first!=previous||end<=first||
-           !comp_rec_get32(wire+44u)||comp_rec_get32(wire+44u)==r->range_token||
-           comp_rec_get32(wire+52u)!=active->descriptor_binding)return false;
+        if(count>=2u||!comp_rec_get32(wire+44u)||comp_rec_get32(wire+44u)==r->range_token)return false;
         for(uint8_t i=0u;i<count;i++)if(comp_rec_get32(wire+44u)==comp_rec_get32(r->range_queue[i]+44u))return false;
-    }else if(wire[4]!=2u||wire[5]||wire[6]!=84u||wire[7]||
-             comp_rec_get32(wire+44u)!=d->encoded_length||memcmp(wire+48u,d->sha256,32u))return false;
+    }
     memcpy(r->range_queue[count],wire,bytes);r->range_queue_bytes[count]=(uint8_t)bytes;
     r->range_queue_count=(uint8_t)(count+1u);return true;
 }

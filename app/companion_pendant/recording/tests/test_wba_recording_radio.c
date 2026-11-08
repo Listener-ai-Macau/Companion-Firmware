@@ -1670,11 +1670,17 @@ static void range_reclaim_dispatch(unsigned queued)
         uint8_t invalid[96];memcpy(invalid,command,96u);invalid[28]^=1u;comp_rec_put32(invalid+92u,comp_rec_crc(invalid,92u));
         erases=f.erases;send(COMPANION_GATT_CHAR_DELETE_PRIVACY,invalid,96u);
         assert(!radio.range_queue_count&&radio.range_pending&&f.erases==erases);
+        if(queued==4u)command[92]^=1u; /* defer full validation, never physical authorization */
         send(COMPANION_GATT_CHAR_DELETE_PRIVACY,command,96u);assert(radio.range_queue_count==1u);
         send(COMPANION_GATT_CHAR_DELETE_PRIVACY,command,96u);assert(radio.range_queue_count==1u); /* no duplicate owner */
         uint8_t whole[84];consumption_proof(&original,whole);send(COMPANION_GATT_CHAR_DELETE_PRIVACY,whole,84u);
         assert(radio.range_queue_count==2u&&receipt_count==0u&&f.erases==erases);
-        if(queued>=2u) {
+        if(queued==4u){
+            for(unsigned i=0u;i<20000u&&comp_wba_recording_radio_busy(&radio);i++){poll();lookup_tick();}
+            assert(!radio.range_queue_count&&!radio.range_pending&&receipt_count==0u&&catalog.range_end[0]==1u);
+            assert(last_reply_bytes==60u&&comp_rec_get32(last_reply+44u)==COMP_SEG_BAD_ARGUMENT);
+            send(COMPANION_GATT_CHAR_DELETE_PRIVACY,whole,84u);
+        }else if(queued>=2u) {
             if(queued==2u)comp_link_connection(&link_owner.link,false,false,f.now);
             else subscribe(COMPANION_GATT_CHAR_DELETE_PRIVACY,false);
             assert(radio.range_queue_count==0u);
@@ -1719,7 +1725,7 @@ int COMP_RADIO_TEST_MAIN(int argc,char **argv)
 {
     (void)setvbuf(stdout,NULL,_IONBF,0);
     if(argc==2&&!strcmp(argv[1],"range-reclaim")){range_reclaim_dispatch(0u);return 0;}
-    if(argc==2&&!strcmp(argv[1],"queued-range")){range_reclaim_dispatch(1u);range_reclaim_dispatch(2u);range_reclaim_dispatch(3u);return 0;}
+    if(argc==2&&!strcmp(argv[1],"queued-range")){range_reclaim_dispatch(1u);range_reclaim_dispatch(2u);range_reclaim_dispatch(3u);range_reclaim_dispatch(4u);return 0;}
     if(argc==2&&!strcmp(argv[1],"lookup-hint")){lookup_hint_scope();return 0;}
     if(argc==2&&!strcmp(argv[1],"directory-hint")){directory_hint_scope();return 0;}
     if(argc==2&&!strcmp(argv[1],"consume-pull-overlap")){consume_pull_overlap(true,0u);consume_pull_overlap(false,0u);consume_pull_overlap(false,1u);consume_pull_overlap(false,2u);consume_pull_overlap(false,3u);unsupported_overlap_negotiation();return 0;}
