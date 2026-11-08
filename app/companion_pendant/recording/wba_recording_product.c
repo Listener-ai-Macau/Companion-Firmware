@@ -339,81 +339,7 @@ bool comp_wba_recording_product_foreground_pending(const comp_wba_recording_prod
     /* Metadata/search/blank reads can progress now. A physical erase still
      * needs time, so keep its normal WFI policy instead of busy-spinning. */
     return p&&p->media_ready&&!p->storage.poisoned&&p->storage.nor&&
-        !p->storage.nor->erase_active&&(inactive_storage_slice(p)||
-        p->storage.nor->blank_cache.flags==COMP_NOR_BLANK_READING);
-}
-#if defined(__GNUC__)
-__attribute__((noinline)) /* Keep the idle-only256B scratch out of capture's stack frame. */
-#endif
-void comp_wba_recording_product_warm_blank(comp_wba_recording_product_t *p,bool allowed)
-{
-    if(!p || !p->storage.nor)return;
-    companion_spi_nor_stm32wba_t *n=p->storage.nor;
-    companion_nor_blank_cache_t *cache=&n->blank_cache;
-    const uint32_t bytes=p->pipeline.config.extent_bytes;
-    bool idle=p->pipeline.state==COMP_PIPE_IDLE || p->pipeline.state==COMP_PIPE_FINISHED;
-    if(!allowed || !idle || !p->ready || !p->media_ready || p->storage.poisoned ||
-       p->catalog.phase || !companion_spi_nor_stm32wba_ready(n) || n->erase_active || p->pipeline.workspace_bytes ||
-       p->pipeline.workspace_requested || p->pipeline.discard_exclusive ||
-       !comp_wba_recording_product_space_current(p) || p->space.allocation_uncertain ||
-       !bytes || p->space.largest_gap<bytes ||
-       n->config.target!=COMPANION_SPI_NOR_STM32WBA_TARGET_WBA55 ||
-       n->info.jedec_id!=UINT32_C(0xef6018)) {
-        if(cache->flags==COMP_NOR_BLANK_READING)cache->flags=0u;
-        p->blank_warm.phase=0u;return;
-    }
-    const uint32_t slots=p->space.largest_gap/bytes;
-    uint32_t hint=comp_segment_reserve_rotated_hint(&p->catalog);
-    if(p->pipeline.state==COMP_PIPE_FINISHED && p->pipeline.engine_bound) {
-        uint32_t end=p->capture.engine.active.extent_offset+p->capture.engine.active.reserved_bytes;
-        if(end<=p->catalog.data_bytes)hint=end==p->catalog.data_bytes?0u:end;
-    }
-    uint32_t chosen=hint/bytes%slots;
-    uint32_t candidate=p->space.largest_gap_offset+chosen*bytes;
-    /* Predict the existing allocator's capacity-preserving32K preference.
-     * This never changes its hint or ownership/search: a different actual
-     * candidate simply takes the unchanged full-blank verification path. */
-    if(p->catalog.reclaim_block_sectors==8u && bytes>=32768u) {
-        for(uint32_t i=0u;i<8u;++i) {
-            uint32_t slot=chosen>=i?chosen-i:i;
-            if(slot>=slots)continue;
-            uint32_t at=p->space.largest_gap_offset+slot*bytes;
-            uint32_t padding=(0u-p->storage.data_base-at)&32767u;
-            if(padding<=p->space.largest_gap%bytes){candidate=at+padding;break;}
-        }
-    }
-    uint32_t start=p->storage.data_base+candidate;
-    if(companion_nor_blank_known(cache,start,bytes)) {
-        p->blank_warm.phase=2u;return;
-    }
-    if(p->blank_warm.phase==2u && p->blank_warm.generation==p->catalog.generation)return;
-    if(!p->blank_warm.phase || p->blank_warm.generation!=p->catalog.generation) {
-        cache->flags=0u;p->blank_warm.phase=1u;
-        p->blank_warm.generation=p->catalog.generation;
-    }
-    const uint32_t began=n->config.now_ms(n->config.context);
-    uint8_t page[COMP_SEGMENT_PAGE_BYTES];
-    for(unsigned step=0u;step<16u;++step) {
-        if(cache->flags!=COMP_NOR_BLANK_READING) {
-            if(!companion_nor_blank_begin(cache,n->info.size_bytes,start,bytes)) {
-                p->blank_warm.phase=2u;return;
-            }
-        }
-        bool released=false;
-        companion_spi_nor_stm32wba_status_t result=companion_spi_nor_stm32wba_read_transient(
-            n,cache->base+cache->read_bytes,page,sizeof(page),&released);
-        if(result!=COMPANION_SPI_NOR_STM32WBA_OK) {
-            cache->flags=0u;p->blank_warm.phase=2u;
-            if(result!=COMPANION_SPI_NOR_STM32WBA_PENDING &&
-               (!released || n->config.now_ms(n->config.context)-began>=3u)) {
-                p->storage.poisoned=true;p->storage.idle_lookup_read_failed=true;
-            }
-            return;
-        }
-        if(cache->flags==COMP_NOR_BLANK_KNOWN){p->blank_warm.phase=2u;return;}
-        if(cache->flags!=COMP_NOR_BLANK_READING){p->blank_warm.phase=2u;return;}
-        if(n->config.now_ms(n->config.context)-began>=1u)return;
-    }
+        !p->storage.nor->erase_active&&inactive_storage_slice(p);
 }
 void comp_wba_recording_product_poll(comp_wba_recording_product_t *p)
 {
@@ -564,9 +490,6 @@ bool comp_wba_recording_product_prepare_timeline(comp_wba_recording_product_t *p
     if(r!=COMP_SEG_PENDING){p->last_fault=r==COMP_SEG_FULL?COMP_WBA_RECORDING_FAULT_STORAGE_FULL:COMP_WBA_RECORDING_FAULT_STORAGE_IO;return false;}
     if(gap)(void)comp_segment_reserve_set_search_hint(&p->pipeline.reserve,
         offset+(p->pipeline.reserve.hint/p->pipeline.config.extent_bytes%slots)*p->pipeline.config.extent_bytes);
-    if(p->storage.nor && p->storage.nor->blank_cache.flags==COMP_NOR_BLANK_READING)
-        p->storage.nor->blank_cache.flags=0u;
-    p->blank_warm.phase=0u;
     p->reported_state=255u;report(p);return true;
 }
 bool comp_wba_recording_product_ready(const comp_wba_recording_product_t *p,uint32_t token)

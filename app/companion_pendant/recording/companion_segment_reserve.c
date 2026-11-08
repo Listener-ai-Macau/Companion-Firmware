@@ -76,22 +76,17 @@ comp_segment_result_t comp_segment_reserve_begin(comp_segment_reserve_t *r,
     return COMP_SEG_PENDING;
 }
 
-uint32_t comp_segment_reserve_rotated_hint(const comp_segment_catalog_t *c)
+comp_segment_result_t comp_segment_reserve_begin_rotated(comp_segment_reserve_t *r,
+    comp_segment_catalog_t *c,comp_segment_entry_t *e,uint32_t bytes)
 {
     if(!c || !c->data_bytes || c->data_bytes%COMP_SEGMENT_SECTOR_BYTES)
-        return UINT32_MAX;
+        return COMP_SEG_BAD_ARGUMENT;
     /* Monotonic persistent IDs distribute even short sessions and persist
      * across reset; mixing avoids a fixed stride when each session reserves
      * multiple segments. This is not a physical wear counter. */
     uint32_t x=c->next_id;
     x^=x>>16; x*=0x7feb352du; x^=x>>15; x*=0x846ca68bu; x^=x>>16;
-    return (x%(c->data_bytes/COMP_SEGMENT_SECTOR_BYTES))*COMP_SEGMENT_SECTOR_BYTES;
-}
-comp_segment_result_t comp_segment_reserve_begin_rotated(comp_segment_reserve_t *r,
-    comp_segment_catalog_t *c,comp_segment_entry_t *e,uint32_t bytes)
-{
-    uint32_t hint=comp_segment_reserve_rotated_hint(c);
-    if(hint==UINT32_MAX)return COMP_SEG_BAD_ARGUMENT;
+    uint32_t hint=(x%(c->data_bytes/COMP_SEGMENT_SECTOR_BYTES))*COMP_SEGMENT_SECTOR_BYTES;
     comp_segment_result_t result=comp_segment_reserve_begin(r,c,e,bytes,hint);
     if(result==COMP_SEG_PENDING)r->align_to_gap=true;
     return result;
@@ -248,16 +243,6 @@ comp_segment_result_t comp_segment_reserve_poll(comp_segment_reserve_t *r)
 
 bool comp_segment_reserve_ready(const comp_segment_reserve_t *r)
 { return r && r->phase==READY && r->catalog && r->catalog->mounted; }
-
-bool comp_segment_reserve_accept_blank_proof(comp_segment_reserve_t *r)
-{
-    if(!r || !r->catalog || !r->catalog->mounted || r->catalog->phase ||
-       !r->entry || r->phase!=CHECK_BLANK || r->cursor || r->erase_end ||
-       r->entry->state!=COMP_SEG_WRITING || !r->entry->descriptor.recording_id ||
-       r->entry->extent_offset!=r->candidate || r->entry->reserved_bytes!=r->bytes)
-        return false;
-    r->cursor=r->bytes;r->phase=READY;return true;
-}
 
 bool comp_segment_reserve_take(comp_segment_reserve_t *r,comp_segment_entry_t **out)
 {

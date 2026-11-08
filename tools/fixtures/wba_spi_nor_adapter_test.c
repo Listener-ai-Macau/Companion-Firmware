@@ -542,51 +542,6 @@ static bool test_short_busy_progress(void)
     puts("PASS_SHORT_WIP_PROGRESS_HOST_ONLY cs_idle=1 no_delay_added=1 physical_ready_required=1 timeout_preserved=1 optional_owner=1");
     return true;
 }
-static bool fill_physical_blank_cache(companion_spi_nor_stm32wba_t *nor)
-{
-    uint8_t page[256];bool released=false;
-    for(unsigned i=0u;i<48u && nor->blank_cache.flags==COMP_NOR_BLANK_READING;++i)
-        if(companion_spi_nor_stm32wba_read_transient(nor,nor->blank_cache.base+nor->blank_cache.read_bytes,
-            page,sizeof(page),&released)!=COMPANION_SPI_NOR_STM32WBA_OK)return false;
-    return nor->blank_cache.flags==COMP_NOR_BLANK_KNOWN;
-}
-static bool test_physical_blank_cache(void)
-{
-    companion_spi_nor_stm32wba_t nor;uint8_t page[256],zero=0;
-    fake_reset(0xEFu,0x40u,0x14u);
-    if(!check(init_and_probe(&nor),"sector-cache probe"))return false;
-    if(!check(companion_spi_nor_stm32wba_program(&nor,4096u,&zero,1u)==COMPANION_SPI_NOR_STM32WBA_OK,"dirty first sector") ||
-       !check(companion_nor_blank_begin(&nor.blank_cache,FAKE_NOR_SIZE,4096u,12288u),"begin three-sector proof") ||
-       !check(fill_physical_blank_cache(&nor),"actual full FF reads after dirty sector") ||
-       !check(!companion_nor_blank_known(&nor.blank_cache,4096u,1u),"dirty sector never known") ||
-       !check(companion_nor_blank_known(&nor.blank_cache,8192u,8192u),"later FF sectors proven") ||
-       !check(!companion_nor_blank_known(&nor.blank_cache,4096u,12288u),"hole is not whole proof"))return false;
-    if(!check(companion_spi_nor_stm32wba_program(&nor,16384u,&zero,1u)==COMPANION_SPI_NOR_STM32WBA_OK,"disjoint program") ||
-       !check(companion_nor_blank_known(&nor.blank_cache,8192u,8192u),"disjoint retains proofs") ||
-       !check(companion_spi_nor_stm32wba_program(&nor,8192u,&zero,1u)==COMPANION_SPI_NOR_STM32WBA_OK,"overlap program") ||
-       !check(!companion_nor_blank_known(&nor.blank_cache,8192u,1u),"one-byte write revokes whole sector") ||
-       !check(companion_nor_blank_known(&nor.blank_cache,12288u,4096u),"other full sector retained"))return false;
-    fake_reset(0xEFu,0x40u,0x14u);if(!init_and_probe(&nor))return false;
-    if(!companion_nor_blank_begin(&nor.blank_cache,FAKE_NOR_SIZE,4096u,4096u) ||
-       companion_spi_nor_stm32wba_read(&nor,4096u,page,256u)!=COMPANION_SPI_NOR_STM32WBA_OK ||
-       companion_spi_nor_stm32wba_program(&nor,4096u,&zero,1u)!=COMPANION_SPI_NOR_STM32WBA_OK ||
-       companion_spi_nor_stm32wba_read(&nor,4352u,page,256u)!=COMPANION_SPI_NOR_STM32WBA_OK ||
-       !check(!companion_nor_blank_known(&nor.blank_cache,4096u,256u),"interrupted scan cannot prove sector"))return false;
-    for(unsigned failure=0;failure<2u;++failure) {
-        fake_reset(0xEFu,0x40u,0x14u);if(!init_and_probe(&nor))return false;
-        if(!companion_nor_blank_begin(&nor.blank_cache,FAKE_NOR_SIZE,4096u,8192u) ||
-           !fill_physical_blank_cache(&nor) || !companion_nor_blank_known(&nor.blank_cache,4096u,8192u))return false;
-        s_fake.fail_erase_command=failure!=0u;
-        companion_spi_nor_stm32wba_status_t result=companion_spi_nor_stm32wba_erase_step(&nor,4096u,4096u);
-        if(!check(result==COMPANION_SPI_NOR_STM32WBA_PENDING || result==COMPANION_SPI_NOR_STM32WBA_ERROR,"physical erase attempted") ||
-           !check(!companion_nor_blank_known(&nor.blank_cache,4096u,1u),"uncertain erase revokes target proof") ||
-           !check(companion_nor_blank_known(&nor.blank_cache,8192u,4096u),"erase retains disjoint complete proof"))return false;
-        while(nor.erase_active)(void)companion_spi_nor_stm32wba_erase_step(&nor,4096u,4096u);
-    }
-    puts("PASS_SECTOR_BLANK_CACHE_ACTUAL_DRIVER dirty_hole=1 complete_sector_readback=1 local_program_invalidation=1 interleaved_mutation=1 uncertain_erase_invalidation=1");
-    return true;
-}
-
 int main(int argc, char **argv)
 {
     if (argc == 2 && strcmp(argv[1], "--force-fail") == 0) {
@@ -595,7 +550,6 @@ int main(int argc, char **argv)
     }
     if(argc==2 && strcmp(argv[1],"--short-busy-progress")==0)return test_short_busy_progress()?0:1;
     if(argc==2 && strcmp(argv[1],"--cooperative-erase")==0)return test_cooperative_erase()?0:1;
-    if(argc==2 && strcmp(argv[1],"--blank-cache")==0)return test_physical_blank_cache()?0:1;
     if (!test_probe() ||
         !test_program_read_erase_and_timeout() ||
         !test_cooperative_erase() ||

@@ -183,13 +183,6 @@ static companion_spi_nor_stm32wba_status_t write_addressed(
     const uint8_t *source,
     size_t length)
 {
-    /* Invalidate before even an uncertain command can change physical bytes.
-     * All addressed program and synchronous/asynchronous erase paths share it. */
-    size_t changed=length;
-    if(command==NOR_CMD_SECTOR_ERASE_4K)changed=NOR_SECTOR_SIZE;
-    else if(command==NOR_CMD_BLOCK_ERASE_32K)changed=32768u;
-    else if(command==NOR_CMD_BLOCK_ERASE_64K)changed=NOR_BLOCK_SIZE;
-    companion_nor_blank_invalidate(&nor->blank_cache,address,changed);
     uint8_t header[4];
     encode_address(header, command, address);
     companion_spi_nor_stm32wba_status_t status = begin_transaction(nor);
@@ -460,7 +453,6 @@ companion_spi_nor_stm32wba_status_t companion_spi_nor_stm32wba_probe(
     }
     if (nor->erase_active) return COMPANION_SPI_NOR_STM32WBA_PENDING;
     nor->probed = false;
-    nor->blank_cache.flags=0u;
     nor->erase_suspend_supported = false;
     nor->info.erase_32k_supported = false;
     nor->last_probe_id_transfer_completed = false;
@@ -695,9 +687,7 @@ companion_spi_nor_stm32wba_status_t companion_spi_nor_stm32wba_read(
     if (destination == NULL) {
         return COMPANION_SPI_NOR_STM32WBA_BAD_PARAM;
     }
-    companion_spi_nor_stm32wba_status_t result=read_addressed(nor,NOR_CMD_READ_DATA,address,destination,length);
-    companion_nor_blank_observe(&nor->blank_cache,address,destination,length,result==COMPANION_SPI_NOR_STM32WBA_OK);
-    return result;
+    return read_addressed(nor, NOR_CMD_READ_DATA, address, destination, length);
 }
 
 /* Status probes for a suspended-erase radio read share its tick budget.
@@ -779,7 +769,6 @@ companion_spi_nor_stm32wba_status_t companion_spi_nor_stm32wba_read_transient(
     bool released=nor->config.chip_select(nor->config.context,false);
     if(!released)return COMPANION_SPI_NOR_STM32WBA_ERROR;
     if(read_header_complete&&result!=COMPANION_SPI_NOR_STM32WBA_OK)*released_read_failure=true;
-    companion_nor_blank_observe(&nor->blank_cache,address,destination,length,result==COMPANION_SPI_NOR_STM32WBA_OK);
     return result;
 }
 

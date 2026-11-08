@@ -209,11 +209,6 @@ static comp_segment_result_t reserve_bounded_read(void *v,uint32_t at,uint8_t *p
     reserve_read_context_t *context=v;
     comp_wba_segment_storage_t *s=context->storage;bool released=false;
     if(!allowed(s,at,bytes)||!p||bytes>256u)return COMP_SEG_BAD_ARGUMENT;
-    /* Only the reservation reader reuses exact complete-sector physical FF
-     * proofs. Catalog/ownership search and dirty-sector erases stay unchanged. */
-    if(companion_nor_blank_known(&s->nor->blank_cache,at,bytes)) {
-        memset(p,255,bytes);context->reserve->read_retries=0u;return COMP_SEG_OK;
-    }
     companion_spi_nor_stm32wba_status_t result=companion_spi_nor_stm32wba_read_transient(s->nor,at,p,bytes,&released);
     if(result==COMPANION_SPI_NOR_STM32WBA_OK)context->reserve->read_retries=0u;
     /* Only a fast payload failure with a definitively released transaction is
@@ -230,9 +225,6 @@ comp_segment_result_t comp_wba_segment_storage_reserve_poll(comp_wba_segment_sto
 {
     if(!reserve||!matches(s,reserve->catalog))return COMP_SEG_BAD_ARGUMENT;
     if(!s->nor)return COMP_SEG_BAD_STATE;
-    if(reserve->candidate<=UINT32_MAX-s->data_base &&
-       companion_nor_blank_known(&s->nor->blank_cache,s->data_base+reserve->candidate,reserve->bytes) &&
-       comp_segment_reserve_accept_blank_proof(reserve))return COMP_SEG_OK;
     comp_segment_io_t io;comp_segment_result_t r=comp_segment_reserve_next_io(reserve,&io);
     if(r!=COMP_SEG_OK)return r;
     const bool qualified=s->nor->config.target==COMPANION_SPI_NOR_STM32WBA_TARGET_WBA55 &&

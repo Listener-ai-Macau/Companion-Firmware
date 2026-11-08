@@ -1013,24 +1013,6 @@ static void maintenance_runtime_fields(uint8_t operation,uint8_t response[32])
 {
     response[6]=0u;response[7]=1u;
     if(operation==COMP_MAINT_STORAGE){maintenance_storage_fields(&product->board->nor,&product->recording.pipeline,response);return;}
-    if(operation==COMP_MAINT_BLANK_PROOF) {
-        const comp_wba_recording_product_t *p=&product->recording;
-        const companion_spi_nor_stm32wba_t *n=&product->board->nor;
-        response[7]=2u; /* Full-sector bitmap, cursor includes skipped dirty sectors. */
-        response[6]=(uint8_t)((unsigned)p->ready|
-            (unsigned)comp_wba_recording_product_space_current(p)<<1u|
-            (unsigned)companion_opus16_rt_workspace_available()<<2u|
-            (unsigned)p->media_ready<<3u|
-            (unsigned)(n->config.target==COMPANION_SPI_NOR_STM32WBA_TARGET_WBA55)<<4u|
-            (unsigned)(n->info.jedec_id==UINT32_C(0xef6018))<<5u|
-            (unsigned)comp_v11_ble_storage_busy()<<6u|
-            (unsigned)product->runtime.capture_active<<7u);
-        comp_maint_put32(response+12u,n->blank_cache.flags|((uint32_t)p->blank_warm.phase<<8u)|
-            (companion_nor_blank_count(&n->blank_cache)<<16u));
-        comp_maint_put32(response+16u,n->blank_cache.base);
-        comp_maint_put32(response+20u,n->blank_cache.bytes);
-        comp_maint_put32(response+24u,n->blank_cache.read_bytes);return;
-    }
     if(operation==COMP_MAINT_CPU_DUTY){
         comp_cpu_duty_snapshot_t s=comp_cpu_duty_snapshot();
         response[7]=3u; /* same bound, first invalid reason and actual WFI count */
@@ -1092,8 +1074,7 @@ static bool maintenance_reply(uint8_t operation,uint8_t result,uint32_t request)
 {
     /* A later accepted START may have changed ownership after this read
      * request was queued. Recheck at the actual scan, including retries. */
-    if((operation==COMP_MAINT_MEMORY||operation==COMP_MAINT_BLANK_PROOF)&&
-       result==COMP_MAINT_OK&&!maintenance_idle())result=COMP_MAINT_BUSY;
+    if(operation==COMP_MAINT_MEMORY&&result==COMP_MAINT_OK&&!maintenance_idle())result=COMP_MAINT_BUSY;
     uint8_t response[32],bonds=255u,flags=0u;
     if(operation<COMP_MAINT_BLE_DIAGNOSTICS) {
         if(product->preferences.persisted)flags|=1u;
@@ -1129,7 +1110,7 @@ static void maintenance_request(const companion_gatt_event_t *e)
     if(operation>=COMP_MAINT_MEMORY) {
         /* Only a stack scan needs a stopped/idle owner; cached audio scalars
          * remain readable without pausing capture or erasing/resetting state. */
-        if((operation!=COMP_MAINT_MEMORY&&operation!=COMP_MAINT_BLANK_PROOF)||maintenance_idle())maintenance.result=COMP_MAINT_OK;
+        if(operation!=COMP_MAINT_MEMORY||maintenance_idle())maintenance.result=COMP_MAINT_OK;
         return;
     }
     if(!maintenance_idle())return;

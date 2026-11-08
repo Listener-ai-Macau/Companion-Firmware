@@ -34,12 +34,7 @@ typedef struct {
     comp_wba_recording_report_fn_t report;
     uint8_t boot_phase,last_fault,reported_state;
     bool media_ready,ready,reported_active,retained_tail;
-    struct {uint32_t generation;uint8_t phase;} blank_warm;
 } comp_wba_recording_product_t;
-
-/* Optional read-only idle preparation. No owner/allocation/erase/format change.
- * Callers revoke permission before user control, update or other storage work. */
-void comp_wba_recording_product_warm_blank(comp_wba_recording_product_t *,bool allowed);
 
 /* The caller first mounts CSI1 and obtains its durable random epoch. Blank
  * V2 banks may be formatted only after the entire old V1 catalog is blank.

@@ -535,130 +535,6 @@ static void terminal_cause_status(const char *path)
     comp_link_test_record_hook=NULL;
     puts("TERMINAL_CAUSE: production CMS3 and LAST descriptor retain core low-battery cause; no synthetic STOP ACK; zero-PCM cancellation is idle/power-unknown with no original. Real Opus SOFTWARE ONLY/runtime shim/no board proof");
 }
-static void readonly_blank_warming(void)
-{
-    product_fresh();product_mount();comp_wba_recording_product_lease_result(&product_rec,true);
-    product_refresh_space();nor.info.jedec_id=UINT32_C(0xef6018);
-    /* A dirty original candidate is refused without choosing a different slot,
-     * an erase or directory claim: preserve the allocation/wear rotation. */
-    f.bytes[DATA_BASE]=0u;unsigned writes=f.writes,erases=f.erases;
-    uint32_t generation=product_rec.catalog.generation;
-    uint32_t capacity=product_rec.space.largest_gap;
-    for(unsigned i=0u;i<1000u && nor.blank_cache.flags!=COMP_NOR_BLANK_KNOWN;++i)
-        comp_wba_recording_product_warm_blank(&product_rec,true);
-    assert(!companion_nor_blank_known(&nor.blank_cache,DATA_BASE,4096u) && product_rec.blank_warm.phase==2u);
-    assert(f.writes==writes && f.erases==erases && !mic && !mic_starts &&
-        product_rec.catalog.generation==generation && product_rec.space.largest_gap==capacity);
-    comp_wba_recording_product_warm_blank(&product_rec,false);
-    assert(companion_spi_nor_stm32wba_erase_4k(&nor,DATA_BASE)==COMPANION_SPI_NOR_STM32WBA_OK);
-    erases=f.erases;writes=f.writes;
-    for(unsigned i=0u;i<1000u && !companion_nor_blank_known(&nor.blank_cache,DATA_BASE,4096u);++i)
-        comp_wba_recording_product_warm_blank(&product_rec,true);
-    assert(companion_nor_blank_known(&nor.blank_cache,DATA_BASE,4096u));
-    assert(f.writes==writes && f.erases==erases);
-    assert(comp_wba_recording_product_prepare(&product_rec,710u,1u,0u,710u));
-    for(unsigned i=0u;i<20000u && !comp_wba_recording_product_ready(&product_rec,710u);++i)product_tick();
-    assert(comp_wba_recording_product_ready(&product_rec,710u));
-    assert(product_rec.pipeline.future.extent_offset==0u);
-    assert(f.erases==erases && !mic && !mic_starts);
-    assert(!companion_nor_blank_known(&nor.blank_cache,DATA_BASE,4096u)); /* CSP2 program revoked this sector. */
-    assert(product_rec.capture.engine.encoder_owned);
-    assert(comp_wba_recording_product_control(&product_rec,false,710u));
-    for(unsigned i=0u;i<20000u && product_rec.pipeline.state!=COMP_PIPE_FINISHED;++i)product_tick();
-    assert(product_rec.pipeline.state==COMP_PIPE_FINISHED && !product_rec.capture.engine.encoder_owned);
-
-    product_fresh();product_mount();comp_wba_recording_product_lease_result(&product_rec,true);
-    product_refresh_space();nor.info.jedec_id=UINT32_C(0xef6018);
-    for(unsigned i=0u;i<1000u && nor.blank_cache.flags!=COMP_NOR_BLANK_KNOWN;++i)
-        comp_wba_recording_product_warm_blank(&product_rec,true);
-    assert(nor.blank_cache.flags==COMP_NOR_BLANK_KNOWN);
-    /* A later free-space user changes every candidate. The real driver must
-     * revoke its overlapping proof and the normal allocator must really erase. */
-    uint8_t zero=0u;
-    for(uint32_t offset=0u;offset<65536u;offset+=4096u)
-        assert(companion_spi_nor_stm32wba_program(&nor,DATA_BASE+offset,&zero,1u)==COMPANION_SPI_NOR_STM32WBA_OK);
-    assert(!companion_nor_blank_known(&nor.blank_cache,DATA_BASE,4096u));erases=f.erases;
-    assert(comp_wba_recording_product_prepare(&product_rec,711u,1u,0u,711u));
-    for(unsigned i=0u;i<20000u && !comp_wba_recording_product_ready(&product_rec,711u);++i)product_tick();
-    printf("WARM_FALLBACK_DIAGNOSTIC state=%u phase=%u failure=%u ready=%u erasedBefore=%u erasedAfter=%u mic=%u poisoned=%u\n",(unsigned)product_rec.pipeline.state,(unsigned)product_rec.pipeline.reserve.phase,(unsigned)product_rec.pipeline.failure,(unsigned)comp_wba_recording_product_ready(&product_rec,711u),erases,f.erases,(unsigned)mic,(unsigned)product_rec.storage.poisoned);
-    assert(comp_wba_recording_product_ready(&product_rec,711u) && f.erases>erases && !mic);
-    assert(comp_wba_recording_product_control(&product_rec,false,711u));
-    for(unsigned i=0u;i<20000u && product_rec.pipeline.state!=COMP_PIPE_FINISHED;++i)product_tick();
-    assert(product_rec.pipeline.state==COMP_PIPE_FINISHED && !product_rec.capture.engine.encoder_owned);
-
-    product_fresh();product_mount();comp_wba_recording_product_lease_result(&product_rec,true);
-    product_refresh_space();nor.info.jedec_id=UINT32_C(0xef6018);
-    assert(companion_nor_blank_begin(&nor.blank_cache,nor.info.size_bytes,DATA_BASE,4096u));
-    comp_wba_recording_product_warm_blank(&product_rec,false);
-    assert(!nor.blank_cache.flags && !mic && !mic_starts);
-    assert(companion_nor_blank_begin(&nor.blank_cache,nor.info.size_bytes,DATA_BASE,4096u));
-    bool valid_before=product_rec.space.valid;
-    product_rec.space.valid=false;writes=f.writes;unsigned reads=f.reads;
-    comp_wba_recording_product_warm_blank(&product_rec,true);
-    assert(!nor.blank_cache.flags && f.writes==writes && f.reads==reads);
-    product_rec.space.valid=valid_before; /* End the explicit transient-loss injection. */
-    product_refresh_space();
-    for(unsigned i=0u;i<1000u && nor.blank_cache.flags!=COMP_NOR_BLANK_KNOWN;++i)
-        comp_wba_recording_product_warm_blank(&product_rec,true);
-    assert(nor.blank_cache.flags==COMP_NOR_BLANK_KNOWN);
-    uint32_t protected_offset=nor.blank_cache.base-DATA_BASE;
-    comp_segment_entry_t owner={0};owner.state=COMP_SEG_WRITING;
-    owner.extent_offset=protected_offset;owner.reserved_bytes=4096u;
-    owner.descriptor.recording_id=product_rec.catalog.next_id;
-    owner.descriptor.format_epoch=7u;owner.descriptor.session_id=8000u;
-    owner.descriptor.codec=3u;owner.descriptor.source_mode=1u;
-    memcpy(owner.descriptor.device_uid,device_uid,12u);
-    comp_segment_result_t result=comp_segment_catalog_put_begin(&product_rec.catalog,&owner);
-    for(unsigned i=0u;i<10000u && result==COMP_SEG_PENDING;++i)
-        result=comp_wba_segment_storage_catalog_poll(&product_rec.storage,&product_rec.catalog);
-    assert(result==COMP_SEG_OK);
-    assert(companion_nor_blank_known(&nor.blank_cache,DATA_BASE+protected_offset,4096u));
-    product_refresh_space();
-    bool admitted=comp_wba_recording_product_prepare(&product_rec,712u,1u,0u,712u);
-    if(admitted) {
-        for(unsigned i=0u;i<20000u && !comp_wba_recording_product_ready(&product_rec,712u);++i)product_tick();
-        assert(comp_wba_recording_product_ready(&product_rec,712u));
-        assert(product_rec.pipeline.future.extent_offset!=protected_offset);
-        assert(comp_wba_recording_product_control(&product_rec,false,712u));
-        for(unsigned i=0u;i<20000u && product_rec.pipeline.state!=COMP_PIPE_FINISHED;++i)product_tick();
-        assert(!product_rec.capture.engine.encoder_owned);
-    }
-    comp_segment_entry_t retained=product_entry(0u);
-    assert(retained.state==COMP_SEG_WRITING && retained.extent_offset==protected_offset &&
-        retained.descriptor.recording_id==owner.descriptor.recording_id &&
-        retained.descriptor.session_id==owner.descriptor.session_id);
-
-    unsigned prepare_reads[2],erase_counts[2];uint32_t offsets[2];
-    for(unsigned cached=0u;cached<2u;++cached) {
-        product_fresh();product_rec.pipeline.config.extent_bytes=16384u;
-        product_mount();comp_wba_recording_product_lease_result(&product_rec,true);
-        product_refresh_space();nor.info.jedec_id=UINT32_C(0xef6018);
-        f.bytes[DATA_BASE]=0u; /* dirty first sector, real blank remaining sectors */
-        unsigned before_erases=f.erases,before_writes=f.writes;
-        if(cached) {
-            for(unsigned i=0u;i<1000u && nor.blank_cache.flags!=COMP_NOR_BLANK_KNOWN;++i)
-                comp_wba_recording_product_warm_blank(&product_rec,true);
-            assert(!companion_nor_blank_known(&nor.blank_cache,DATA_BASE,4096u));
-            assert(companion_nor_blank_known(&nor.blank_cache,DATA_BASE+4096u,12288u));
-            assert(f.erases==before_erases && f.writes==before_writes && !mic);
-        }
-        unsigned before_reads=f.reads;uint32_t token=720u+cached;
-        assert(comp_wba_recording_product_prepare(&product_rec,token,1u,0u,token));
-        for(unsigned i=0u;i<20000u && !comp_wba_recording_product_ready(&product_rec,token);++i)product_tick();
-        assert(comp_wba_recording_product_ready(&product_rec,token) && !mic);
-        offsets[cached]=product_rec.pipeline.future.extent_offset;
-        prepare_reads[cached]=f.reads-before_reads;erase_counts[cached]=f.erases-before_erases;
-        assert(comp_wba_recording_product_control(&product_rec,false,token));
-        for(unsigned i=0u;i<20000u && product_rec.pipeline.state!=COMP_PIPE_FINISHED;++i)product_tick();
-        assert(!product_rec.capture.engine.encoder_owned);
-    }
-    assert(offsets[0]==offsets[1] && erase_counts[0]==erase_counts[1] && erase_counts[1]>0u);
-    assert(prepare_reads[0]>=prepare_reads[1]+48u);
-    printf("PASS_PARTIAL_SECTOR_PROOF_PRODUCT prepare_reads_uncached=%u cached=%u identical_real_erases=%u placement_unchanged=1 no_idle_erase=1\n",
-        prepare_reads[0],prepare_reads[1],erase_counts[1]);
-    puts("PASS_READONLY_IDLE_WARM real_driver=1 no_erase_or_owner_change=1 same_capacity=1 cached_first_owner=1 program_revokes=1 fallback_physically_erases=1 control_cancels=1");
-    puts("PASS_READONLY_IDLE_WARM_OWNERSHIP stale_capacity_cancels=1 physical_FF_proof_never_grants_foreign_owner=1");
-}
 #ifndef COMP_PRODUCT_TEST_MAIN
 #define COMP_PRODUCT_TEST_MAIN main
 #endif
@@ -673,7 +549,7 @@ int COMP_PRODUCT_TEST_MAIN(int argc,char **arguments)
     if(argc==3&&!strcmp(arguments[1],"local-control")){local_controls(arguments[2]);return 0;}
     if(argc==3&&!strcmp(arguments[1],"pause-control")){pause_controls(arguments[2]);return 0;}
     if(argc==2&&!strcmp(arguments[1],"logical-control")){logical_control_across_segments();return 0;}
-    boot_and_ota_gate();readonly_blank_warming();refuse_old_owner();actual_pcm_and_logical_count();cancel_and_capture_fault();
+    boot_and_ota_gate();refuse_old_owner();actual_pcm_and_logical_count();cancel_and_capture_fault();
     /* Union and negotiation changes affect the shared radio/V1 dispatcher. */
     char *argv[]={"radio",NULL};assert(product_radio_fixture_main(1,argv)==0);
     printf("product_capture_owner=%zu; hardware/Type continuous follower/OTA speed/10ms qualification NOT_MEASURED\n",sizeof(product_rec));
