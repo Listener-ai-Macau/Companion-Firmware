@@ -331,7 +331,9 @@ bool comp_wba_recording_product_recover_begin(comp_wba_recording_product_t *p)
 }
 static bool inactive_storage_slice(const comp_wba_recording_product_t *p)
 {
-    return (p->pipeline.state==COMP_PIPE_PREPARING||p->pipeline.state==COMP_PIPE_CLEANUP)&&
+    return (p->pipeline.state==COMP_PIPE_PREPARING||p->pipeline.state==COMP_PIPE_CLEANUP||
+        ((p->pipeline.state==COMP_PIPE_IDLE||p->pipeline.state==COMP_PIPE_FINISHED)&&
+         comp_wba_recording_pipeline_consume_result(&p->pipeline)==COMP_SEG_PENDING))&&
         !p->capture.engine.microphone_active&&!p->capture.engine.encoder_owned;
 }
 bool comp_wba_recording_product_foreground_pending(const comp_wba_recording_product_t *p)

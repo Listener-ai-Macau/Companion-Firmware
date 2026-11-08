@@ -18,7 +18,9 @@ static void product_report(void *v,uint32_t token,denzic_audio_recording_state_v
 static void product_tick(void)
 {
     unsigned reads=f.reads,writes=f.writes;f.now+=2u;
-    unsigned maximum=(product_rec.pipeline.state==COMP_PIPE_PREPARING||product_rec.pipeline.state==COMP_PIPE_CLEANUP)&&
+    unsigned maximum=(product_rec.pipeline.state==COMP_PIPE_PREPARING||product_rec.pipeline.state==COMP_PIPE_CLEANUP||
+        ((product_rec.pipeline.state==COMP_PIPE_IDLE||product_rec.pipeline.state==COMP_PIPE_FINISHED)&&
+         comp_wba_recording_pipeline_consume_result(&product_rec.pipeline)==COMP_SEG_PENDING))&&
         !product_rec.capture.engine.microphone_active&&!product_rec.capture.engine.encoder_owned?16u:1u;
     comp_wba_recording_product_poll(&product_rec);
     assert(f.reads-reads<=maximum&&f.writes-writes<=maximum);
@@ -117,7 +119,14 @@ static void actual_pcm_and_logical_count(void)
     /* Test the same product owner, including receiver-confirmed reclaim and
      * the cached logical count after its first physical segment disappears. */
     assert(comp_wba_recording_pipeline_consume(&product_rec.pipeline,&first.descriptor)==COMP_SEG_PENDING);
-    for(unsigned i=0u;i<20000u&&comp_wba_recording_pipeline_consume_result(&product_rec.pipeline)==COMP_SEG_PENDING;i++)product_tick();
+    assert(comp_wba_recording_product_foreground_pending(&product_rec));
+    unsigned burst_reads=0u;
+    for(unsigned i=0u;i<20000u&&comp_wba_recording_pipeline_consume_result(&product_rec.pipeline)==COMP_SEG_PENDING;i++){
+        unsigned before=f.reads;product_tick();
+        if(f.reads-before>1u)burst_reads++;
+        if(nor.erase_active)assert(!comp_wba_recording_product_foreground_pending(&product_rec));
+    }
+    assert(burst_reads>0u);
     assert(comp_wba_recording_pipeline_consume_result(&product_rec.pipeline)==COMP_SEG_OK);
     product_refresh_space();assert(product_rec.space.used==1u&&product_rec.space.logical==1u);
     unsigned writes=f.writes;uint32_t physical;
