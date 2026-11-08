@@ -456,7 +456,7 @@ comp_v11_microphone_poll_result_t comp_v11_microphone_hal_poll(comp_v11_micropho
     return r;
 }
 
-bool comp_v11_microphone_hal_encode_window(comp_v11_microphone_hal_t *microphone)
+static bool microphone_work_window(comp_v11_microphone_hal_t *microphone,uint32_t guard_ms)
 {
     if (microphone == NULL || !microphone->initialized) return false;
     uint32_t primask = __get_PRIMASK();
@@ -465,13 +465,17 @@ bool comp_v11_microphone_hal_encode_window(comp_v11_microphone_hal_t *microphone
     if (microphone->running) {
         uint32_t remaining = __HAL_DMA_GET_COUNTER(&microphone->dma);
         allowed = !microphone->error_pending &&
-            comp_v11_capture_encode_window_open(remaining,
+            comp_v11_capture_guarded_window_open(remaining,
                 COMP_V11_MIC_RAW_HALF_BYTES, microphone->writing_half,
-                microphone->event_head != microphone->event_tail);
+                microphone->event_head != microphone->event_tail,guard_ms);
     }
     __set_PRIMASK(primask);
     return allowed;
 }
+bool comp_v11_microphone_hal_encode_window(comp_v11_microphone_hal_t *microphone)
+{return microphone_work_window(microphone,COMP_V11_CAPTURE_ENCODE_GUARD_MS);}
+bool comp_v11_microphone_hal_io_window(comp_v11_microphone_hal_t *microphone)
+{return microphone_work_window(microphone,COMP_V11_CAPTURE_IO_GUARD_MS);}
 
 void comp_v11_microphone_hal_fault_baseline(const comp_v11_microphone_hal_t *microphone,
                                              comp_v11_microphone_fault_baseline_t *out)

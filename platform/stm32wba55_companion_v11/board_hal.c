@@ -1460,7 +1460,7 @@ void comp_v11_hal_poll(comp_v11_hal_t *b)
 #endif
        ) &&
        comp_wba_power_poll_action(b->playback_active||b->power_sampling_inhibited,true,
-          comp_v11_microphone_hal_encode_window(&b->microphone),
+          comp_v11_microphone_hal_io_window(&b->microphone),
           HAL_GetTick()-poll_started)==COMP_WBA_POWER_SERVICE) {
         battery_service_one_step(b);battery_serviced_early=true;
     }
@@ -1556,7 +1556,7 @@ void comp_v11_hal_poll(comp_v11_hal_t *b)
     b->services.motion_flags = tick - b->motion_event_ms < 250u ? b->motion_event_flags : 0;
     const comp_wba_power_poll_action_t power_action=comp_wba_power_poll_action(
         b->playback_active||b->power_sampling_inhibited,b->microphone.running,
-        !b->microphone.running||comp_v11_microphone_hal_encode_window(&b->microphone),
+        !b->microphone.running||comp_v11_microphone_hal_io_window(&b->microphone),
         b->microphone.running?HAL_GetTick()-poll_started:0u);
     if(power_action==COMP_WBA_POWER_CANCEL) {
         comp_wba_power_monitor_poll(&b->power_monitor,false,HAL_GetTick());

@@ -204,7 +204,9 @@ static bool recording_work_poll(comp_v11_product_app_t *app,uint32_t elapsed_ms,
         r->codec.frame_samples==320u && r->codec.pcm_fill==160u &&
         !r->writer.phase && !r->roll_packet_bytes && !r->bookmark_phase &&
         r->stage_length<=COMP_CONT_STAGE_BYTES-(COMPANION_OPUS16_MAX_PACKET+2u);
-    if(!comp_v11_ble_capture_encode_window(frame_ready))return false;
+    /* Radio courtesy must not accumulate audio:30ms queued PCM takes the
+     * next real DMA-safe encode slot without waiting for another quiet gap. */
+    if(!comp_v11_ble_capture_encode_window(frame_ready && r->ring_count<3u))return false;
 #endif
     uint32_t before=app->recording.capture.engine.stats.encoded_packets;
     if(staging)(void)comp_wba_recording_product_stage_pcm_half(&app->recording);

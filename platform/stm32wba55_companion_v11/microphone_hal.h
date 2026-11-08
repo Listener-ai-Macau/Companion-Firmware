@@ -133,6 +133,7 @@ comp_v11_microphone_poll_result_t comp_v11_microphone_hal_poll(
 /* Read-only DMA phase admission. Pending capture/error or an imminent
  * half boundary takes priority over one non-preemptible encoder call. */
 bool comp_v11_microphone_hal_encode_window(comp_v11_microphone_hal_t *microphone);
+bool comp_v11_microphone_hal_io_window(comp_v11_microphone_hal_t *microphone);
 /* Capture hot path: compare only liveness/fault counters atomically. Full
  * diagnostic/filter statistics remain available through get_stats(). */
 void comp_v11_microphone_hal_fault_baseline(const comp_v11_microphone_hal_t *,

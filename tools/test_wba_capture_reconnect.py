@@ -22,7 +22,7 @@ typedef uint8_t tBleStatus;
 typedef struct { bool running; } microphone_t;
 typedef struct { microphone_t microphone; } board_t;
 typedef struct { bool command_pending,start_pending; } runtime_t;
-typedef struct { board_t *board; runtime_t runtime; struct {bool recovering;} recording; uint32_t capture_cycle_started_ms; } product_t;
+typedef struct { board_t *board; runtime_t runtime; struct {bool recovering; struct {bool discard_exclusive;} pipeline;} recording; uint32_t capture_cycle_started_ms; } product_t;
 static board_t board;static product_t app={.board=&board};static product_t *product=&app;
 static uint32_t tick,external_revision;static bool update_busy,nvm_busy,nvm_pending,window_open;
 static uint32_t HAL_GetTick(void){return tick;}
@@ -30,7 +30,7 @@ static bool comp_v11_update_product_busy(void){return update_busy;}
 static bool comp_v11_update_product_reboot_pending(void){return false;}
 static bool comp_wba_recording_product_recovering(const void *p){(void)p;return app.recording.recovering;}
 static bool comp_v11_ble_nvm_busy(void){return nvm_pending || nvm_busy;}
-static bool comp_v11_microphone_hal_encode_window(microphone_t *m){assert(m==&board.microphone);return window_open;}
+static bool comp_v11_microphone_hal_io_window(microphone_t *m){assert(m==&board.microphone);return window_open;}
 static bool ready,advertise_pending,identity_ready,radio_enabled,advertising,connection_secured;
 static uint8_t advertise_stop_pending,local_name_length,local_name[COMP_PREFS_NAME_BYTES];
 static uint16_t connection,advertising_rearms,advertising_recoveries;

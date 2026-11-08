@@ -426,7 +426,7 @@ static bool advertising_commands_allowed(void)
      * Admit one GAP/HCI step only after audio service, away from the next DMA
      * boundary; the existing hard 10ms capture deadline still applies. */
     return HAL_GetTick()-product->capture_cycle_started_ms<=2u &&
-        comp_v11_microphone_hal_encode_window(&product->board->microphone);
+        comp_v11_microphone_hal_io_window(&product->board->microphone);
 }
 bool comp_v11_ble_foreground_pending(void)
 {

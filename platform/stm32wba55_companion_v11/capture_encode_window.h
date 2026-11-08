@@ -10,9 +10,11 @@
  * budgets include the measured encoder/PDM upper bounds and 1 ms headroom;
  * they do not change the separate 10 ms hard service deadline. */
 #define COMP_V11_CAPTURE_HALF_MS 10u
-#define COMP_V11_CAPTURE_ENCODE_BUDGET_MS 8u
-#define COMP_V11_CAPTURE_CONVERT_BUDGET_MS 5u
+#define COMP_V11_CAPTURE_ENCODE_BUDGET_MS 7u
+#define COMP_V11_CAPTURE_CONVERT_BUDGET_MS 4u
 #define COMP_V11_CAPTURE_DISPATCH_HEADROOM_MS 1u
+/* Peripheral/GAP work retains its original independent4ms DMA headroom. */
+#define COMP_V11_CAPTURE_IO_GUARD_MS 4u
 #define COMP_V11_CAPTURE_ENCODE_GUARD_MS \
     (COMP_V11_CAPTURE_ENCODE_BUDGET_MS + COMP_V11_CAPTURE_CONVERT_BUDGET_MS + \
      COMP_V11_CAPTURE_DISPATCH_HEADROOM_MS - COMP_V11_CAPTURE_HALF_MS)
@@ -27,13 +29,14 @@ static inline bool comp_v11_capture_work_window_open(uint32_t elapsed_ms,
     return pcm_staging_pending ? elapsed_ms<=5u : elapsed_ms<=2u && encode_window_open;
 }
 
-static inline bool comp_v11_capture_encode_window_open(
+static inline bool comp_v11_capture_guarded_window_open(
     uint32_t dma_remaining_bytes, uint32_t half_bytes,
-    uint8_t published_writing_half, bool dma_event_pending)
+    uint8_t published_writing_half, bool dma_event_pending,uint32_t guard_ms)
 {
     if (dma_event_pending || half_bytes == 0u ||
         half_bytes > UINT32_MAX / 2u || dma_remaining_bytes == 0u ||
-        dma_remaining_bytes > 2u * half_bytes || published_writing_half > 1u)
+        dma_remaining_bytes > 2u * half_bytes || published_writing_half > 1u ||
+        guard_ms>COMP_V11_CAPTURE_HALF_MS)
         return false;
     const uint8_t hardware_writing_half =
         (uint8_t)(dma_remaining_bytes > half_bytes ? 0u : 1u);
@@ -43,9 +46,15 @@ static inline bool comp_v11_capture_encode_window_open(
     const uint32_t bytes_to_boundary = hardware_writing_half == 0u ?
         dma_remaining_bytes - half_bytes : dma_remaining_bytes;
     const uint32_t guard_bytes = (uint32_t)(
-        ((uint64_t)half_bytes * COMP_V11_CAPTURE_ENCODE_GUARD_MS +
+        ((uint64_t)half_bytes * guard_ms +
          COMP_V11_CAPTURE_HALF_MS - 1u) / COMP_V11_CAPTURE_HALF_MS);
     return bytes_to_boundary > guard_bytes;
+}
+static inline bool comp_v11_capture_encode_window_open(
+    uint32_t remaining,uint32_t half,uint8_t writing_half,bool pending)
+{
+    return comp_v11_capture_guarded_window_open(remaining,half,writing_half,pending,
+        COMP_V11_CAPTURE_ENCODE_GUARD_MS);
 }
 
 #endif
