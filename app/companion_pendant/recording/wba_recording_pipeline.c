@@ -184,7 +184,21 @@ static comp_segment_result_t consume_progress(comp_wba_recording_pipeline_t *p)
         return r;
     }
     if(p->consume_phase==CONSUME_RANGE){
+        const uint32_t began=p->config.now_ms(p->config.context);
         r=comp_wba_segment_storage_catalog_poll(p->config.storage,c);
+        /* Stopped range proof/blank verification used to pay a complete app
+         * turn for every256B read. Bound a read-only run to four operations
+         * and1ms, yielding before a program/erase or active capture. Keep the
+         * same worker, complete SHA/blank readback and durable journal order. */
+        for(unsigned step=1u;step<4u&&r==COMP_SEG_PENDING&&
+            (p->state==COMP_PIPE_IDLE||p->state==COMP_PIPE_FINISHED)&&
+            !p->config.storage->nor->erase_active&&
+            (uint32_t)(p->config.now_ms(p->config.context)-began)<1u;step++) {
+            comp_segment_io_t io;
+            if(comp_segment_catalog_next_io(c,&io)!=COMP_SEG_OK||
+               io.kind!=COMP_SEG_IO_READ||io.bytes>256u)break;
+            r=comp_wba_segment_storage_catalog_poll(p->config.storage,c);
+        }
         if(r==COMP_SEG_OK){p->consume_phase=CONSUME_RANGE_DONE;p->consume_result=COMP_SEG_OK;}
         else if(r!=COMP_SEG_PENDING)return consume_failed(p,r);
         return r;

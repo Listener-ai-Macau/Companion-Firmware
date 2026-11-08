@@ -27,6 +27,9 @@ def run(command, out, name):
 
 
 def main():
+    scenario=sys.argv[2:]
+    baseline='--baseline-pipeline-af2e4be' in scenario
+    if baseline:scenario.remove('--baseline-pipeline-af2e4be')
     out = ROOT / '.cache/recording-core-20261011' / sys.argv[1]
     out.mkdir(exist_ok=False)
     frozen = out / 'source'
@@ -40,7 +43,9 @@ def main():
     hashes = {}
     for path in sorted(files):
         relative = path.relative_to(ROOT); target = frozen / relative
-        target.parent.mkdir(parents=True, exist_ok=True); target.write_bytes(path.read_bytes())
+        target.parent.mkdir(parents=True, exist_ok=True)
+        data=subprocess.check_output(['git','show','af2e4be:'+relative.as_posix()],cwd=ROOT) if baseline and relative.as_posix()=='app/companion_pendant/recording/wba_recording_pipeline.c' else path.read_bytes()
+        target.write_bytes(data)
         hashes[relative.as_posix()] = hashlib.sha256(target.read_bytes()).hexdigest()
     (out / 'source.json').write_text(json.dumps(hashes, indent=2) + '\n', encoding='utf-8')
     sdk = out / 'host-sdk'; sdk.mkdir()
@@ -63,7 +68,7 @@ def main():
     commands = []
     try:
         run(['cmd.exe', '/d', '/c', str(cmd)], out, 'compile.txt')
-        result = run([str(out / 'radio.exe'), *sys.argv[2:]], out, 'result.txt')
+        result = run([str(out / 'radio.exe'), *scenario], out, 'result.txt')
         cc = shutil.which('arm-none-eabi-gcc'); assert cc
         for relative in ['runtime/companion_link.c', 'recording/wba_recording_radio.c',
                          'recording/wba_recording_pipeline.c', 'recording/wba_segment_pull.c',
@@ -76,7 +81,8 @@ def main():
         report = dict(result='PASS_RADIO_RUNTIME_SOFTWARE_ONLY', softwareOutput=result,
                       physicalBoard=False, realBle=False, typeDurability=False, timingQualification=False,
                       productionAppBound=False, installed=False,
-                      opusHostLibrarySha256=hashlib.sha256(lib.read_bytes()).hexdigest())
+                       opusHostLibrarySha256=hashlib.sha256(lib.read_bytes()).hexdigest(),
+                       pipelineBaselineCommit='af2e4beefdf066fff93ac9157852021ead7a22d3' if baseline else None)
     except Exception as error:
         report = dict(result='FAILED_RADIO_RUNTIME_SOFTWARE', error=str(error), installed=False)
         (out / 'result.json').write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')
