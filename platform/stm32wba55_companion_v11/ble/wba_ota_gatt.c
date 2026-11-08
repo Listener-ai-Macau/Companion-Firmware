@@ -174,10 +174,12 @@ static void report_timing(void)
         (unsigned long)t->queue_max_us,(unsigned long)t->data_us,(unsigned long)t->data_max_us,
         (unsigned long)t->peak_queue,(unsigned long)t->overflow);
     if(n>0&&(unsigned)n<sizeof(line))(void)comp_v11_hal_debug_write(line);
+#if COMPANION_WBA_VERBOSE_BLE_DIAGNOSTICS
     n=snprintf(line,sizeof(line),"OTA3 status_calls=%lu status_us=%lu status_max_us=%lu status_skips=%lu\r\n",
         (unsigned long)t->status_calls,(unsigned long)t->status_us,
         (unsigned long)t->status_max_us,(unsigned long)t->status_skips);
     if(n>0&&(unsigned)n<sizeof(line))(void)comp_v11_hal_debug_write(line);
+#endif
     const comp_v11_ota_publish_diagnostics_t *pub=&publish_diagnostics;
     n=snprintf(line,sizeof(line),"OTA13 scope=payload_notify generation=%lu calls=%lu not_accepted=%lu owner_invalid=%lu last_status=%lu max_us=%lu flags=%lu\r\n",
         (unsigned long)observation.generation,(unsigned long)pub->notify_calls,
@@ -185,14 +187,17 @@ static void report_timing(void)
         (unsigned long)pub->last_status,(unsigned long)pub->max_us,(unsigned long)pub->flags);
     if(n>0&&(unsigned)n<sizeof(line))(void)comp_v11_hal_debug_write(line);
     const comp_v11_update_diagnostics_t *io=comp_v11_update_product_diagnostics();
+#if COMPANION_WBA_VERBOSE_BLE_DIAGNOSTICS
     n=snprintf(line,sizeof(line),"OTA14 scope=durable_credit_while_next_DATA_partial accepted=%lu\r\n",
         (unsigned long)pub->partial_data_notifies);
     if(n>0&&(unsigned)n<sizeof(line))(void)comp_v11_hal_debug_write(line);
+#endif
     n=snprintf(line,sizeof(line),"OTA4 quantum_ms=1 scope=payload_pending program_n=%lu program_ms=%lu erase4_n=%lu erase4_ms=%lu erase64_n=%lu erase64_ms=%lu flags=%lu\r\n",
         (unsigned long)io->program_calls,(unsigned long)io->program_ms,
         (unsigned long)io->erase4_calls,(unsigned long)io->erase4_ms,
         (unsigned long)io->erase64_calls,(unsigned long)io->erase64_ms,(unsigned long)io->io_flags);
     if(n>0&&(unsigned)n<sizeof(line))(void)comp_v11_hal_debug_write(line);
+#if COMPANION_WBA_VERBOSE_BLE_DIAGNOSTICS
     const comp_v11_update_program_diagnostics_t *program=comp_v11_update_program_diagnostics();
     n=snprintf(line,sizeof(line),"OTA11 scope=program_wall us=%lu spi_us=%lu progress_us=%lu spi_n=%lu progress_n=%lu flags=%lu\r\n",
         (unsigned long)program->program_us,(unsigned long)program->program_spi_us,
@@ -202,12 +207,14 @@ static void report_timing(void)
     n=snprintf(line,sizeof(line),"OTA12 scope=data_prepare prepare_us=%lu suspend_us=%lu\r\n",
         (unsigned long)program->data_prepare_us,(unsigned long)program->data_suspend_us);
     if(n>0&&(unsigned)n<sizeof(line))(void)comp_v11_hal_debug_write(line);
+#endif
     const comp_v11_ota_phase_timing_t *p=&phase_timing;
     n=snprintf(line,sizeof(line),"OTA5 scope=first_complete_to_full_durable span_us=%lu empty_us=%lu ready_us=%lu data_us=%lu status_us=%lu other_us=%lu started=%u running=%u invalid=%u\r\n",
         (unsigned long)p->span_us,(unsigned long)p->empty_us,(unsigned long)p->ready_us,
         (unsigned long)p->data_us,(unsigned long)p->status_us,(unsigned long)p->other_us,
         (unsigned)p->started,(unsigned)p->running,(unsigned)p->invalid);
     if(n>0&&(unsigned)n<sizeof(line))(void)comp_v11_hal_debug_write(line);
+#if COMPANION_WBA_VERBOSE_BLE_DIAGNOSTICS
     const comp_v11_ota_wall_context_t *w=&wall_context;
     n=snprintf(line,sizeof(line),"OTA6 schema=3 scope=ready_context outside_us=%lu update_other_us=%lu gatt_other_us=%lu seq_run_us=%lu ble_other_us=%lu product_other_us=%lu parent_us=%lu\r\n",
         (unsigned long)w->ready_us[0],(unsigned long)w->ready_us[1],(unsigned long)w->ready_us[2],
@@ -225,6 +232,7 @@ static void report_timing(void)
     n=snprintf(line,sizeof(line),"OTA10 schema=3 scope=empty_product hal_us=%lu recorder_us=%lu runtime_us=%lu presenter_us=%lu render_us=%lu\r\n",
         (unsigned long)w->empty_us[6],(unsigned long)w->empty_us[7],(unsigned long)w->empty_us[8],(unsigned long)w->empty_us[9],(unsigned long)w->empty_us[10]);
     if(n>0&&(unsigned)n<sizeof(line))(void)comp_v11_hal_debug_write(line);
+#endif
 #endif
 }
 /* UUID bytes are little endian as required by the ST ACI API. DOV1 UUIDs
