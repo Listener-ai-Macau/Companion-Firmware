@@ -35,7 +35,8 @@ def main():
     selected_only='--selected-discard' in sys.argv[2:]
     bookmarks_only='--bookmarks' in sys.argv[2:]
     unused_only='--unused-future' in sys.argv[2:]
-    sources = [REC / ('tests/test_wba_unused_future.c' if unused_only else 'tests/test_wba_recording_bookmarks.c' if bookmarks_only else 'tests/test_wba_recording_pause_capacity.c' if capacity_only else 'tests/test_wba_recording_product.c'), APP / 'runtime/companion_link.c',
+    aligned_only='--aligned-placement' in sys.argv[2:]
+    sources = [REC / ('tests/test_wba_aligned_placement.c' if aligned_only else 'tests/test_wba_unused_future.c' if unused_only else 'tests/test_wba_recording_bookmarks.c' if bookmarks_only else 'tests/test_wba_recording_pause_capacity.c' if capacity_only else 'tests/test_wba_recording_product.c'), APP / 'runtime/companion_link.c',
                *[REC / (n + '.c') for n in NAMES], APP / 'storage/spi_nor_stm32wba.c']
     files = set(sources) | set(APP.rglob('*.h'))
     files |= {REC / 'tests/test_wba_recording_product.c', REC / 'tests/test_wba_recording_radio.c', REC / 'tests/test_wba_recording_recovery.c', REC / 'tests/test_wba_recording_pipeline.c',
@@ -61,8 +62,8 @@ def main():
     # with explicit integer casts. The assertion itself remains evaluated.
     args = ['cl.exe', '/nologo', '/W4', '/WX', '/wd5287', '/std:c11', '/TC', '/O2', '/MD',
             '/DCOMPANION_OPUS16_WBA_LOWDELAY=1', '/DCOMPANION_OPUS16_ENCODER_BYTES=65536',
-            *(['/DCOMP_NOR_FIXTURE_BYTES=1048576'] if capacity_only or bookmarks_only else []),
-            *(['/DCOMPANION_RECORDING_SEGMENTED_ONLY=1'] if selected_only or capacity_only or bookmarks_only or any(a in sys.argv[2:] for a in ['--local-control','--logical-control','--pause-control','--initial-status','--workspace-restart','--terminal-cause']) else []),
+            *(['/DCOMP_NOR_FIXTURE_BYTES=1048576'] if capacity_only or bookmarks_only or aligned_only else []),
+            *(['/DCOMPANION_RECORDING_SEGMENTED_ONLY=1'] if selected_only or capacity_only or bookmarks_only or aligned_only or any(a in sys.argv[2:] for a in ['--local-control','--logical-control','--pause-control','--initial-status','--workspace-restart','--terminal-cause']) else []),
             *['/I' + str(p) for p in includes], '/I' + str(ROOT / 'third_party/opus/include'),
             *[str(frozen / p.relative_to(ROOT)) for p in sources],
             '/Fe:' + str(out / 'radio.exe'), '/link', str(lib)]
@@ -86,7 +87,7 @@ def main():
         for relative in ['runtime/companion_link.c', 'recording/wba_recording_radio.c',
                          'recording/wba_recording_pipeline.c', 'recording/wba_segment_pull.c',
                          'recording/wba_recording_transfer.c', 'recording/wba_recording_product.c',
-                         *(['recording/companion_segment_reserve.c','recording/companion_segment_audio.c','recording/wba_segment_storage.c'] if unused_only else []),
+                         *(['recording/companion_segment_reserve.c','recording/companion_segment_audio.c','recording/wba_segment_storage.c'] if unused_only or aligned_only else []),
                          *(['recording/wba_segment_discard_preview.c','recording/wba_segment_discard_control.c','recording/wba_segment_discard_wire.c'] if selected_only else []),
                          *(['recording/companion_continuous_recording.c','recording/companion_segment_audio.c'] if capacity_only or bookmarks_only else [])]:
             if capacity_only and relative not in ['recording/companion_continuous_recording.c','recording/wba_recording_pipeline.c']:continue
@@ -94,6 +95,7 @@ def main():
             if initial_only and relative!='runtime/companion_link.c':continue
             if workspace_only and relative!='recording/wba_recording_product.c':continue
             if logical_only and relative not in ['runtime/companion_link.c','recording/wba_recording_product.c']:continue
+            if aligned_only and relative not in ['recording/wba_recording_product.c','recording/companion_segment_reserve.c']:continue
             path = frozen / 'app/companion_pendant' / relative
             command = [cc, '-std=c11', '-mcpu=cortex-m33', '-mthumb', '-Os', '-Wall', '-Wextra',
                        '-Werror', '-Wconversion', '-Wshadow', '-pedantic', '-fstack-usage',

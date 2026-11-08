@@ -109,7 +109,7 @@ static COMP_REC_BOOT_ONLY comp_segment_result_t space_poll(comp_wba_recording_pr
     while(s->scan<COMP_SEGMENT_CAPACITY&&c->slots[s->scan]==255u)s->scan++;
     if(s->phase==SPACE_METRICS) {
         if(s->scan==COMP_SEGMENT_CAPACITY) {
-            s->phase=SPACE_GAP;s->scan=0u;s->nearest_start=arena;return COMP_SEG_PENDING;
+            s->phase=SPACE_GAP;s->scan=0u;s->nearest_start=arena;s->session=0u;return COMP_SEG_PENDING;
         }
         r=comp_wba_segment_storage_entry(&p->storage,c,s->scan,&e);
         if(r!=COMP_SEG_OK)return r;
@@ -141,6 +141,11 @@ static COMP_REC_BOOT_ONLY comp_segment_result_t space_poll(comp_wba_recording_pr
          * this from total free bytes, which can include unusable fragments. */
         uint32_t extent=p->pipeline.config.extent_bytes;
         if(!extent||s->used>COMP_SEGMENT_CAPACITY)return COMP_SEG_CORRUPT;
+        uint32_t aligned;
+        if(c->reclaim_block_sectors==8u&&gap>s->aligned_gap.bytes&&
+           comp_segment_reserve_aligned_hint(c->data_base,s->cursor,gap,extent,s->cursor,&aligned)) {
+            s->aligned_gap.offset=s->cursor;s->aligned_gap.bytes=gap;
+        }
         uint32_t slots=(uint32_t)s->allocatable_segments+gap/extent;
         uint32_t available=COMP_SEGMENT_CAPACITY-s->used;
         s->allocatable_segments=(uint8_t)(slots<available?slots:available);
@@ -485,8 +490,9 @@ bool comp_wba_recording_product_prepare_timeline(comp_wba_recording_product_t *p
      * occupied extent and restarts on a changed catalog generation. */
     const bool gap=comp_wba_recording_product_space_current(p)&&!p->space.allocation_uncertain&&
         p->space.largest_gap>=p->pipeline.config.extent_bytes;
-    const uint32_t offset=gap?p->space.largest_gap_offset:0u;
-    const uint32_t slots=gap?p->space.largest_gap/p->pipeline.config.extent_bytes:0u;
+    const bool aligned=gap&&p->space.aligned_gap.bytes>=p->pipeline.config.extent_bytes;
+    const uint32_t offset=gap?(aligned?p->space.aligned_gap.offset:p->space.largest_gap_offset):0u;
+    const uint32_t slots=gap?(aligned?p->space.aligned_gap.bytes:p->space.largest_gap)/p->pipeline.config.extent_bytes:0u;
     if(p->ready)p->last_fault=COMP_WBA_RECORDING_FAULT_NONE;
     comp_segment_result_t r=comp_wba_recording_pipeline_begin_timeline(&p->pipeline,session,mode,started,token,timeline);
     if(r!=COMP_SEG_PENDING){p->last_fault=r==COMP_SEG_FULL?COMP_WBA_RECORDING_FAULT_STORAGE_FULL:COMP_WBA_RECORDING_FAULT_STORAGE_IO;return false;}

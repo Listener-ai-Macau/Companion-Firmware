@@ -7,7 +7,13 @@
 /* A generation-qualified, cooperative view. Physical segments and logical
  * recordings are separate counts. No array of64 descriptors or heap. */
 typedef struct {
-    uint64_t session;
+    /* SPACE_LOGICAL retires its comparison key before SPACE_GAP begins.
+     * Reuse it for the best capacity-preserving aligned gap until generation
+     * invalidation. No new resident state or descriptor/gap arrays. */
+    union {
+        uint64_t session;
+        struct {uint32_t offset,bytes;} aligned_gap;
+    };
     uint32_t generation,arena_bytes,encoded_bytes,reserved_bytes,consumed_bytes;
     uint32_t highest_end,largest_gap,largest_gap_offset,cursor,nearest_start,nearest_end;
     uint8_t used,unsynced,writing,consumed,logical; /* each <=64 catalog slots */

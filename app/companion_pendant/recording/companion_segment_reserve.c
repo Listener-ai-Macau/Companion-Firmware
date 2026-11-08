@@ -103,6 +103,23 @@ static bool move_candidate(comp_segment_reserve_t *r,uint32_t next)
     r->candidate=next;r->scan=0u;r->cursor=0u;r->gap_end=c->data_bytes;return true;
 }
 
+bool comp_segment_reserve_aligned_hint(uint32_t base,uint32_t gap,uint32_t size,
+    uint32_t bytes,uint32_t hint,uint32_t *out)
+{
+    if(!out||bytes<32768u||bytes%4096u||size<bytes||gap%4096u||size%4096u||
+       base%4096u||gap>UINT32_MAX-size||base>UINT32_MAX-gap-size)return false;
+    const uint32_t slots=size/bytes,slack=size%bytes;
+    const uint32_t chosen=hint>=gap?(hint-gap)/bytes%slots:0u;
+    for(uint32_t i=0u;i<8u;i++) {
+        const uint32_t slot=chosen>=i?chosen-i:i;
+        if(slot>=slots)continue;
+        const uint32_t at=gap+slot*bytes;
+        const uint32_t padding=(0u-base-at)&32767u;
+        if(padding<=slack){*out=at+padding;return true;}
+    }
+    return false;
+}
+
 comp_segment_result_t comp_segment_reserve_poll_scoped(comp_segment_reserve_t *r,
     comp_segment_catalog_scoped_read_fn read,void *context)
 {
@@ -158,16 +175,8 @@ comp_segment_result_t comp_segment_reserve_poll_scoped(comp_segment_reserve_t *r
              * even when the preceding legacy owner ends one sector off-grid.
              * Eight strides exhaust the 32K residues of sector-aligned slots. */
             if(c->reclaim_block_sectors==8u && r->bytes>=32768u) {
-                const uint32_t slots=(r->gap_end-r->cursor)/r->bytes;
-                const uint32_t slack=(r->gap_end-r->cursor)%r->bytes;
-                const uint32_t chosen=(r->candidate-r->cursor)/r->bytes;
-                for(uint32_t i=0u;i<8u;i++) {
-                    const uint32_t slot=chosen>=i?chosen-i:i;
-                    if(slot>=slots)continue;
-                    const uint32_t at=r->cursor+slot*r->bytes;
-                    const uint32_t padding=(0u-c->data_base-at)&32767u;
-                    if(padding<=slack){r->candidate=at+padding;break;}
-                }
+                (void)comp_segment_reserve_aligned_hint(c->data_base,r->cursor,
+                    r->gap_end-r->cursor,r->bytes,r->candidate,&r->candidate);
             }
         }
         r->entry->extent_offset=r->candidate;r->entry->reserved_bytes=r->bytes;
