@@ -162,21 +162,17 @@ static void range_error(comp_wba_recording_radio_t *r,const uint8_t request[96],
 }
 static bool queue_range_handoff(comp_wba_recording_radio_t *r,const uint8_t *wire,uint16_t bytes)
 {
-    const comp_rec_v2_descriptor_t *d=&r->config.pipeline->consume.descriptor;
-    const comp_range_plan_t *active=&r->config.pipeline->range_worker.plan;
     const uint8_t count=r->range_queue_count;
-    if(!(r->negotiated&8u)||!r->consume_subscribed||!active->end_sector||
-       count>=3u||(count&&r->range_queue_bytes[count-1u]==84u)||
-       comp_rec_get64(wire+28u)!=d->session_id||comp_rec_get32(wire+36u)!=d->segment_index||
-       comp_rec_get32(wire+40u)!=d->recording_id)return false;
+    if(count>=3u||(count&&r->range_queue[count-1u][3]=='2')||
+       comp_rec_get32(wire+40u)!=r->range_id)return false;
     /* Admission retains bytes in RAM, not an erase authorization. The existing
      * pipeline rechecks the entire CRC/UID/epoch/bounds/SHA before journal I/O
      * when popped. Keep only owner, credit and correlation checks here. */
     if(bytes==96u) {
-        if(count>=2u||!comp_rec_get32(wire+44u)||comp_rec_get32(wire+44u)==r->range_token)return false;
-        for(uint8_t i=0u;i<count;i++)if(comp_rec_get32(wire+44u)==comp_rec_get32(r->range_queue[i]+44u))return false;
+        if(count&&!memcmp(wire,r->range_queue[count-1u],96u))return true;
+        if(count>=2u)return false;
     }
-    memcpy(r->range_queue[count],wire,bytes);r->range_queue_bytes[count]=(uint8_t)bytes;
+    memcpy(r->range_queue[count],wire,bytes);
     r->range_queue_count=(uint8_t)(count+1u);return true;
 }
 static bool resume_sealed_pull(comp_wba_recording_radio_t *r,const uint8_t p[32])
@@ -491,11 +487,12 @@ void comp_wba_recording_radio_poll(comp_wba_recording_radio_t *r,
             if(comp_rec_get32(receipt+44u)!=COMP_SEG_OK)r->range_queue_count=0u;
             if(r->range_queue_count) {
                 if(r->phase==RADIO_PULL&&!transfer_busy(r))r->phase=RADIO_IDLE;
-                uint8_t next[96];uint16_t bytes=r->range_queue_bytes[0];memcpy(next,r->range_queue[0],bytes);
+                uint16_t bytes=r->range_queue[0][3]=='2'?84u:96u;
+                /* Dispatch reads synchronously; keep its cell intact until the
+                 * existing parser has copied ownership into the pipeline. */
+                (void)comp_wba_recording_radio_write(r,COMPANION_GATT_CHAR_DELETE_PRIVACY,r->range_queue[0],bytes,true);
                 --r->range_queue_count;
                 memmove(r->range_queue,r->range_queue+1u,(size_t)r->range_queue_count*96u);
-                memmove(r->range_queue_bytes,r->range_queue_bytes+1u,r->range_queue_count);
-                (void)comp_wba_recording_radio_write(r,COMPANION_GATT_CHAR_DELETE_PRIVACY,next,bytes,true);
                 if(!r->range_pending&&!r->consume_pending)r->range_queue_count=0u;
             }
         }

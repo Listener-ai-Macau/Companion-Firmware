@@ -45,7 +45,7 @@ typedef struct {
     /* Two next durable range proofs plus one terminal CRA2. Volatile requests
      * are revalidated by the existing pipeline before any journal/erase I/O.
      * Disconnect/CCCD loss drops this queue, never the active durable owner. */
-    uint8_t range_queue[3][96],range_queue_bytes[3],range_queue_count;
+    uint8_t range_queue[3][96],range_queue_count;
 } comp_wba_recording_radio_t;
 
 bool comp_wba_recording_radio_init(comp_wba_recording_radio_t *,const comp_wba_recording_radio_config_t *);
