@@ -34,9 +34,9 @@ static uint32_t reclaim_bytes(const comp_segment_catalog_t *c)
          * normal STOP tail in one32K command too; its unwritten suffix was
          * already proved blank inside this same exclusive reservation.
          * Legacy sub-block frontiers retain their prior sector-exact path. */
-        if((c->range_end[c->index]&7u)==0u&&c->reclaim_block_sectors==8u && bytes>=16384u &&
-           (c->data_base+e->extent_offset)%32768u==0u) {
-            uint64_t block_end=(bytes+32767u)&~UINT64_C(32767);
+        if((c->range_end[c->index]&7u)==0u&&c->reclaim_block_sectors==8u && bytes>=16384u) {
+            uint32_t skew=(c->data_base+e->extent_offset)&32767u;
+            uint64_t block_end=((bytes+skew+32767u)&~UINT64_C(32767))-skew;
             if(block_end<=e->reserved_bytes)bytes=block_end;
         }
         if(bytes<e->reserved_bytes)return (uint32_t)bytes;
