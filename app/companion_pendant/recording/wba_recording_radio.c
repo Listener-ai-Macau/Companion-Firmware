@@ -28,7 +28,9 @@ static bool transfer_busy(const comp_wba_recording_radio_t *r)
 {return r->config.transfer->state==COMP_WBA_RECORDING_TRANSFER_ACTIVE||
     r->config.transfer->state==COMP_WBA_RECORDING_TRANSFER_BACKPRESSURED;}
 bool comp_wba_recording_radio_busy(const comp_wba_recording_radio_t *r)
-{return r&&(r->discard_running||r->consume_pending||r->range_pending||r->range_queue_count||r->phase!=RADIO_IDLE||transfer_busy(r));}
+/* Queued requests always have an active range owner; dequeue either installs
+ * the next owner or clears the queue in this same serialized foreground call. */
+{return r&&(r->discard_running||r->consume_pending||r->range_pending||r->phase!=RADIO_IDLE||transfer_busy(r));}
 bool comp_wba_recording_radio_interval_hint(comp_wba_recording_radio_t *r,uint32_t now,bool allowed)
 {
     if(!r)return false;
@@ -506,7 +508,7 @@ void comp_wba_recording_radio_poll(comp_wba_recording_radio_t *r,
             bool ranges=(r->config.transfer->packet[3]&0x40u)!=0u;
             bool queued=(r->config.transfer->packet[3]&0x20u)!=0u;
             r->negotiated=comp_wba_segment_pull_peer(&r->pull,c->uid,c->epoch,true)?
-                (uint8_t)(1u|(overlap?2u:0u)|(overlap&&ranges?4u:0u)|(overlap&&ranges&&queued?8u:0u)):0u;
+                (uint8_t)(1u|(overlap?2u:0u)|(overlap&&ranges?4u:0u)|(queued?8u:0u)):0u;
         }
         else if(r->pending_char==COMPANION_GATT_CHAR_RECORDING_LIST&&r->pending_bytes>=24u&&
                 r->config.transfer->packet[0]==2u&&comp_wba_segment_directory_next(&r->io.directory)) {
