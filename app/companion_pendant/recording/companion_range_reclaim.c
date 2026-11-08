@@ -72,7 +72,10 @@ comp_segment_result_t comp_range_reclaim_poll(comp_range_reclaim_t *w)
     comp_segment_io_t io;
     if(!w||!w->phase)return COMP_SEG_BAD_ARGUMENT;
     if(w->phase==TERMINAL)return w->result;
-    if(!comp_range_plan_matches(&w->plan,w->entry,w->plan.slot))return terminal(w,COMP_SEG_BAD_STATE);
+    /* begin validated and bound the entire immutable descriptor/plan. This
+     * exclusive owner retains both until terminal; polling WIP or a readback
+     * page must not serialize/CRC that same112B descriptor again. */
+    if(w->entry->descriptor.recording_id!=w->plan.recording_id)return terminal(w,COMP_SEG_BAD_STATE);
     if(comp_range_reclaim_next_io(w,&io)!=COMP_SEG_OK)return terminal(w,COMP_SEG_BAD_STATE);
     comp_range_plan_t decoded;
     comp_range_journal_state_t state;

@@ -5,7 +5,7 @@
 #include "companion_segment_audio.h"
 
 /* Transaction core for the range-reclaim refactor. The catalogue owner must
- * exclusively retain the sealed extent AND its committed CRR3 journal page
+ * exclusively retain the immutable sealed entry/extent AND its committed CRR3 journal page
  * through the entire operation. A range receipt never frees a catalogue slot,
  * changes the original SHA/length, or proves the whole recording complete.
  * Not yet advertised by the product: catalogue GC/rebase and host persistence

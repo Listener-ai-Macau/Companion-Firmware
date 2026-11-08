@@ -83,7 +83,7 @@ static comp_wba_transfer_read_result_t read_preflight(comp_wba_segment_pull_t *p
      * Keep the identity/frontier checks above, and recheck changed catalog
      * generations through the ordinary storage path before draining RAM. */
     if(p->cache&&c->generation==p->generation&&offset>=p->cache_offset&&
-       offset-p->cache_offset<=p->cache_bytes&&bytes<=p->cache_bytes-(offset-p->cache_offset))
+       offset-p->cache_offset+bytes<=p->cache_bytes)
         return COMP_WBA_TRANSFER_READ_OK;
     if(!comp_segment_catalog_transfer_readable(c)||!p->config.page_available(p->config.context))return COMP_WBA_TRANSFER_READ_WAIT;
     if(c->generation!=p->generation) {
