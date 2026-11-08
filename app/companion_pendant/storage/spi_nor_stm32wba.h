@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
+#include "spi_nor_blank_cache.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -105,6 +106,7 @@ typedef struct {
     bool erase_suspend_supported;
     bool erase_active;
     bool erase_command_failed;
+    companion_nor_blank_cache_t blank_cache;
 #if COMPANION_WBA_RECLAIM_TIMING
     companion_spi_nor_reclaim_timing_t reclaim_timing;
 #endif

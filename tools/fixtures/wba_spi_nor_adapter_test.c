@@ -542,6 +542,40 @@ static bool test_short_busy_progress(void)
     puts("PASS_SHORT_WIP_PROGRESS_HOST_ONLY cs_idle=1 no_delay_added=1 physical_ready_required=1 timeout_preserved=1 optional_owner=1");
     return true;
 }
+static bool test_physical_blank_cache(void)
+{
+    companion_spi_nor_stm32wba_t nor;uint8_t page[256],zero=0;bool released=false;
+    fake_reset(0xEFu,0x40u,0x14u);
+    if(!check(init_and_probe(&nor),"blank-cache probe"))return false;
+    if(!check(companion_nor_blank_begin(&nor.blank_cache,FAKE_NOR_SIZE,4096u,512u),"begin real blank proof") ||
+       !check(companion_spi_nor_stm32wba_read(&nor,4096u,page,256u)==COMPANION_SPI_NOR_STM32WBA_OK,"read first proof page") ||
+       !check(!companion_nor_blank_known(&nor.blank_cache,4096u,512u),"partial proof refused") ||
+       !check(companion_spi_nor_stm32wba_read_transient(&nor,4352u,page,256u,&released)==COMPANION_SPI_NOR_STM32WBA_OK,"transient proof page") ||
+       !check(companion_nor_blank_known(&nor.blank_cache,4096u,512u),"whole actual FF readback proved") ||
+       !check(companion_spi_nor_stm32wba_program(&nor,5120u,&zero,1u)==COMPANION_SPI_NOR_STM32WBA_OK,"disjoint program") ||
+       !check(companion_nor_blank_known(&nor.blank_cache,4096u,512u),"disjoint bytes keep proof") ||
+       !check(companion_spi_nor_stm32wba_program(&nor,4096u,&zero,1u)==COMPANION_SPI_NOR_STM32WBA_OK,"overlap program") ||
+       !check(!companion_nor_blank_known(&nor.blank_cache,4096u,512u),"program revoked proof"))return false;
+    fake_reset(0xEFu,0x40u,0x14u);if(!init_and_probe(&nor))return false;
+    if(!companion_nor_blank_begin(&nor.blank_cache,FAKE_NOR_SIZE,4096u,512u) ||
+       companion_spi_nor_stm32wba_read(&nor,4096u,page,256u)!=COMPANION_SPI_NOR_STM32WBA_OK ||
+       companion_spi_nor_stm32wba_program(&nor,4096u,&zero,1u)!=COMPANION_SPI_NOR_STM32WBA_OK ||
+       companion_spi_nor_stm32wba_read(&nor,4352u,page,256u)!=COMPANION_SPI_NOR_STM32WBA_OK ||
+       !check(!companion_nor_blank_known(&nor.blank_cache,4096u,512u),"mutation between scan pages cannot publish proof"))return false;
+    fake_reset(0xEFu,0x40u,0x14u);if(!init_and_probe(&nor))return false;
+    for(unsigned failure=0;failure<2u;++failure) {
+        if(!companion_nor_blank_begin(&nor.blank_cache,FAKE_NOR_SIZE,4096u,256u) ||
+           companion_spi_nor_stm32wba_read(&nor,4096u,page,256u)!=COMPANION_SPI_NOR_STM32WBA_OK ||
+           !companion_nor_blank_known(&nor.blank_cache,4096u,256u))return false;
+        s_fake.fail_erase_command=failure!=0u;
+        companion_spi_nor_stm32wba_status_t r=companion_spi_nor_stm32wba_erase_step(&nor,4096u,4096u);
+        if(!check(r==COMPANION_SPI_NOR_STM32WBA_PENDING || r==COMPANION_SPI_NOR_STM32WBA_ERROR,"cooperative erase attempted") ||
+           !check(!companion_nor_blank_known(&nor.blank_cache,4096u,256u),"even uncertain erase revokes proof"))return false;
+        while(nor.erase_active)(void)companion_spi_nor_stm32wba_erase_step(&nor,4096u,4096u);
+    }
+    puts("PASS_VOLATILE_BLANK_CACHE_ACTUAL_DRIVER full_readback=1 program_invalidation=1 interleaved_mutation=1 uncertain_erase_invalidation=1");
+    return true;
+}
 int main(int argc, char **argv)
 {
     if (argc == 2 && strcmp(argv[1], "--force-fail") == 0) {
@@ -550,6 +584,7 @@ int main(int argc, char **argv)
     }
     if(argc==2 && strcmp(argv[1],"--short-busy-progress")==0)return test_short_busy_progress()?0:1;
     if(argc==2 && strcmp(argv[1],"--cooperative-erase")==0)return test_cooperative_erase()?0:1;
+    if(argc==2 && strcmp(argv[1],"--blank-cache")==0)return test_physical_blank_cache()?0:1;
     if (!test_probe() ||
         !test_program_read_erase_and_timeout() ||
         !test_cooperative_erase() ||

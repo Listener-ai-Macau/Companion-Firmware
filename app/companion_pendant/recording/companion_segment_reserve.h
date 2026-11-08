@@ -63,4 +63,10 @@ bool comp_segment_reserve_ready(const comp_segment_reserve_t *);
  * the worker becomes free for preparing the following segment. Failed work
  * cannot be forgotten through this API and requires explicit recovery. */
 bool comp_segment_reserve_take(comp_segment_reserve_t *,comp_segment_entry_t **);
+/* Platform-only admission of a still-valid whole-range physical FF proof.
+ * The complete durable WRITING/search ownership checks must already be done.
+ * The platform must revoke its volatile proof before any overlapping write. */
+bool comp_segment_reserve_accept_blank_proof(comp_segment_reserve_t *);
+/* Pure current rotation preference; UINT32_MAX for an invalid arena. */
+uint32_t comp_segment_reserve_rotated_hint(const comp_segment_catalog_t *);
 #endif

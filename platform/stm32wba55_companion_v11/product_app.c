@@ -1457,6 +1457,16 @@ void comp_v11_product_app_poll(comp_v11_product_app_t *app)
     /* Runtime remount can change readiness without a new lease callback.
      * Publish it before BLE/update admission checks on this foreground turn. */
     app->recording_ready=app->recording.ready;
+    if(!board->microphone.running) {
+        bool warm_allowed=!board->playback_active && !app->runtime.capture_active &&
+            !app->runtime.prepare_pending && !app->runtime.start_pending &&
+            !app->runtime.command_pending && !app->runtime.stop_pending &&
+            companion_opus16_rt_workspace_available();
+#ifdef COMPANION_WBA_BLE_LINKED
+        warm_allowed=warm_allowed && !comp_v11_update_product_busy() && !comp_v11_ble_storage_busy();
+#endif
+        comp_wba_recording_product_warm_blank(&app->recording,warm_allowed);
+    }
 #if defined(COMPANION_WBA_BLE_LINKED) && defined(__arm__)
     (void)comp_v11_ota_gatt_wall_context(wall_recorder);
 #endif
