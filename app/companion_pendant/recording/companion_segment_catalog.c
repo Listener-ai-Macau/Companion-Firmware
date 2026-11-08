@@ -37,7 +37,11 @@ static uint32_t reclaim_bytes(const comp_segment_catalog_t *c)
         if((c->range_end[c->index]&7u)==0u&&c->reclaim_block_sectors==8u && bytes>=16384u) {
             uint32_t skew=(c->data_base+e->extent_offset)&32767u;
             uint64_t block_end=((bytes+skew+32767u)&~UINT64_C(32767))-skew;
-            if(block_end<=e->reserved_bytes)bytes=block_end;
+            uint64_t first_block=(uint64_t)c->range_end[c->index]*4096u+(skew?32768u-skew:0u);
+            /* A short unaligned prefix can end at the next boundary without
+             * containing ANY full32K erase. Rounding that case only adds blank
+             *4K sectors. Count a block after the actual retained frontier. */
+            if(block_end>=first_block+32768u&&block_end<=e->reserved_bytes)bytes=block_end;
         }
         if(bytes<e->reserved_bytes)return (uint32_t)bytes;
     }
