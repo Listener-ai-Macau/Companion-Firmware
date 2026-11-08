@@ -62,11 +62,11 @@ static comp_segment_result_t transfer_entry(comp_wba_segment_pull_t *p,uint8_t s
     if(r!=COMP_SEG_PENDING){p->read_retries=0u;p->read_retry_elapsed_ms=0u;}
     return r;
 }
-static comp_wba_transfer_read_result_t read_logical(void *v,uint32_t id,uint32_t offset,uint8_t *out,uint32_t bytes)
+static comp_wba_transfer_read_result_t read_preflight(comp_wba_segment_pull_t *p,uint32_t id,uint32_t offset,uint32_t bytes)
 {
-    comp_wba_segment_pull_t *p=v;comp_segment_catalog_t *c=p->config.catalog;
+    comp_segment_catalog_t *c=p->config.catalog;
     const comp_segment_entry_t *e=p->config.selected;
-    if(id!=e->descriptor.recording_id||!bytes||bytes>COMP_WBA_RECORDING_TRANSFER_COMPACT_PAYLOAD_BYTES||offset>e->descriptor.encoded_length||
+    if(id!=e->descriptor.recording_id||!bytes||bytes>COMP_SEGMENT_PAGE_DATA_BYTES||offset>e->descriptor.encoded_length||
        bytes>e->descriptor.encoded_length-offset)return COMP_WBA_TRANSFER_READ_ERROR;
     if(p->slot<64u){
         uint16_t frontier=c->range_id[p->slot]==id?c->range_end[p->slot]:0u;
@@ -83,6 +83,14 @@ static comp_wba_transfer_read_result_t read_logical(void *v,uint32_t id,uint32_t
         if(result!=COMP_SEG_OK||!(p->live?owned_prefix(e,&actual):same_entry(e,&actual)))return COMP_WBA_TRANSFER_READ_ERROR;
         p->generation=c->generation;return COMP_WBA_TRANSFER_READ_WAIT;
     }
+    return COMP_WBA_TRANSFER_READ_OK;
+}
+static comp_wba_transfer_read_result_t read_source(comp_wba_segment_pull_t *p,uint32_t id,uint32_t offset,uint8_t *out,uint32_t bytes)
+{
+    comp_wba_transfer_read_result_t ready=read_preflight(p,id,offset,bytes);
+    if(ready!=COMP_WBA_TRANSFER_READ_OK)return ready;
+    comp_segment_catalog_t *c=p->config.catalog;
+    const comp_segment_entry_t *e=p->config.selected;
     if(!p->read_bytes) {
         p->read_bytes=bytes;p->read_offset=offset;p->read_destination=out;p->copied=0u;
     } else if(p->read_bytes!=bytes||p->read_offset!=offset||p->read_destination!=out)
@@ -123,6 +131,68 @@ static comp_wba_transfer_read_result_t read_logical(void *v,uint32_t id,uint32_t
     if(p->copied!=bytes)return COMP_WBA_TRANSFER_READ_WAIT;
     p->read_bytes=0u;p->read_destination=NULL;p->copied=0u;return COMP_WBA_TRANSFER_READ_OK;
 }
+void comp_wba_segment_pull_cache_release(comp_wba_segment_pull_t *p)
+{
+    if(!p||!p->cache)return;
+    p->cache_ports->release(p->cache_ports->context,p->cache);p->cache=NULL;
+    p->cache_head=p->cache_bytes=0u;
+    /* Any incomplete cache fill is read-only and has not advanced its ring.
+     * Drop its scratch destination before a producer reuses the workspace. */
+    p->read_bytes=0u;p->read_destination=NULL;p->copied=0u;
+}
+void comp_wba_segment_pull_cache_bind(comp_wba_segment_pull_t *p,const comp_wba_segment_pull_cache_ports_t *ports)
+{
+    if(!p)return;
+    comp_wba_segment_pull_cache_release(p);
+    p->cache_ports=ports&&ports->acquire&&ports->release?ports:NULL;
+}
+static comp_wba_transfer_read_result_t read_logical(void *v,uint32_t id,uint32_t offset,uint8_t *out,uint32_t bytes)
+{
+    comp_wba_segment_pull_t *p=v;
+    if(p->live||!p->cache_ports)return read_source(p,id,offset,out,bytes);
+    comp_wba_transfer_read_result_t r=read_preflight(p,id,offset,bytes);
+    if(r!=COMP_WBA_TRANSFER_READ_OK)return r;
+    if(!p->cache) {
+        if(p->read_bytes)return read_source(p,id,offset,out,bytes);
+        p->cache=p->cache_ports->acquire(p->cache_ports->context,COMP_SEG_PULL_PREFETCH_BYTES);
+        if(!p->cache)return read_source(p,id,offset,out,bytes);
+        p->cache_offset=offset;p->cache_head=p->cache_bytes=0u;
+    }
+    if(offset<p->cache_offset||offset-p->cache_offset>p->cache_bytes) {
+        comp_wba_segment_pull_cache_release(p);return COMP_WBA_TRANSFER_READ_ERROR;
+    }
+    uint32_t drop=offset-p->cache_offset;
+    p->cache_head=(uint16_t)((p->cache_head+drop)%COMP_SEG_PULL_PREFETCH_BYTES);
+    p->cache_bytes=(uint16_t)(p->cache_bytes-drop);p->cache_offset=offset;
+    companion_spi_nor_stm32wba_t *nor=p->config.storage->nor;
+    const uint32_t started=nor->config.now_ms(nor->config.context);
+    /* Up to four existing page reads, within 1ms. Reads outrun consumption
+     * while idle, then radio drains the same ring with NO NOR access or erase
+     * suspension while its independently owned prefix is physically erased. */
+    for(unsigned i=0u;i<4u&&!nor->erase_active&&
+        COMP_SEG_PULL_PREFETCH_BYTES-p->cache_bytes>=248u;i++) {
+        uint32_t end=p->cache_offset+p->cache_bytes;
+        if(end==p->config.selected->descriptor.encoded_length)break;
+        uint32_t tail=((uint32_t)p->cache_head+p->cache_bytes)%COMP_SEG_PULL_PREFETCH_BYTES;
+        uint32_t n=248u-end%248u;
+        if(n>p->config.selected->descriptor.encoded_length-end)n=p->config.selected->descriptor.encoded_length-end;
+        if(n>COMP_SEG_PULL_PREFETCH_BYTES-tail)n=COMP_SEG_PULL_PREFETCH_BYTES-tail;
+        r=read_source(p,id,end,p->cache+tail,n);
+        if(r==COMP_WBA_TRANSFER_READ_ERROR){comp_wba_segment_pull_cache_release(p);return r;}
+        if(r==COMP_WBA_TRANSFER_READ_WAIT)break;
+        p->cache_bytes=(uint16_t)(p->cache_bytes+n);++p->cache_pages;
+        if((uint32_t)(nor->config.now_ms(nor->config.context)-started)>=1u)break;
+    }
+    if(p->cache_bytes<bytes)return COMP_WBA_TRANSFER_READ_WAIT;
+    uint32_t first=COMP_SEG_PULL_PREFETCH_BYTES-p->cache_head;
+    if(first>bytes)first=bytes;
+    memcpy(out,p->cache+p->cache_head,first);
+    if(first<bytes)memcpy(out+first,p->cache,bytes-first);
+    ++p->cache_hits;if(nor->erase_active)++p->cache_erase_hits;
+    if(offset+bytes==p->config.selected->descriptor.encoded_length)
+        comp_wba_segment_pull_cache_release(p); /* final bytes now in existing TX packet */
+    return COMP_WBA_TRANSFER_READ_OK;
+}
 static const comp_wba_recording_transfer_backend_t backend={metadata,read_logical};
 bool comp_wba_segment_pull_init(comp_wba_segment_pull_t *p,const comp_wba_segment_pull_config_t *cfg)
 {
@@ -139,6 +209,7 @@ bool comp_wba_segment_pull_init(comp_wba_segment_pull_t *p,const comp_wba_segmen
 void comp_wba_segment_pull_cancel(comp_wba_segment_pull_t *p)
 {
     if(!p)return;
+    comp_wba_segment_pull_cache_release(p);
     if(p->config.storage)p->config.storage->transfer_read_yield=false;
     comp_wba_recording_transfer_cancel(p->config.transfer);p->phase=PULL_IDLE;
     p->read_bytes=0u;p->read_destination=NULL;p->copied=0u;p->read_retries=0u;p->read_retry_elapsed_ms=0u;p->result=COMP_SEG_OK;p->live=false;
@@ -185,6 +256,7 @@ comp_segment_result_t comp_wba_segment_pull_begin(comp_wba_segment_pull_t *p,con
             return COMP_SEG_BAD_ARGUMENT;
     }
     comp_wba_segment_pull_cancel(p);p->live=live;p->session=comp_rec_get64(request+16u);
+    p->cache_hits=p->cache_erase_hits=p->cache_pages=0u;
     p->segment_index=comp_rec_get32(request+24u);
     memset(&p->request,0,sizeof(p->request));p->request.schema_version=1u;p->request.flags=request[2];
     p->request.recording_id=comp_rec_get32(request+4u);p->request.byte_offset=comp_rec_get32(request+28u);
@@ -197,7 +269,7 @@ comp_segment_result_t comp_wba_segment_pull_begin(comp_wba_segment_pull_t *p,con
     return COMP_SEG_PENDING;
 }
 static comp_segment_result_t failure(comp_wba_segment_pull_t *p,comp_segment_result_t result)
-{p->phase=PULL_FAILED;p->result=result;comp_wba_recording_transfer_cancel(p->config.transfer);return result;}
+{comp_wba_segment_pull_cache_release(p);p->phase=PULL_FAILED;p->result=result;comp_wba_recording_transfer_cancel(p->config.transfer);return result;}
 comp_segment_result_t comp_wba_segment_pull_select_poll(comp_wba_segment_pull_t *p)
 {
     if(!p)return COMP_SEG_BAD_ARGUMENT;

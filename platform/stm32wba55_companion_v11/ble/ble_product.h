@@ -83,6 +83,8 @@ bool comp_v11_ble_storage_busy(void);
 /* Physical/transient owners only; a stopped FAILED pipeline is not itself
  * a reason to deadlock its explicit recording retry. Internal guards remain. */
 bool comp_v11_ble_recording_recovery_idle(void);
+/* Capture has priority over stopped-file read-ahead in the idle codec arena. */
+void comp_v11_ble_release_transfer_workspace(void);
 /* Read-only local-menu rejection reasons: product/host/link not ready,
  * local clear, update, exact segment consumption (bits0..5). */
 uint8_t comp_v11_ble_menu_blockers(void);

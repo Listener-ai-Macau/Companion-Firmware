@@ -7,7 +7,7 @@ static comp_segment_entry_t selected;
 static bool foreground,scratch;
 static unsigned foreground_calls,foreground_block_call;
 static unsigned reject_count;
-static uint8_t host_bytes[4096],retry_packet[248];
+static uint8_t host_bytes[32768],retry_packet[248];
 static uint16_t retry_length;
 static uint32_t host_offset;
 static bool foreground_available(void *v)
@@ -522,8 +522,135 @@ static void erase_timeout_starts_after_command(void)
     assert(companion_spi_nor_stm32wba_erase_step(&nor,DATA_BASE,65536u)==PENDING && f.erases==1u);
     puts("PASS erase timeout and resume guard start after command completion; original owner retained");
 }
+static unsigned cache_claims,cache_returns;
+static bool cache_capture_owned;
+static void *cache_claim(void *context,uint32_t bytes)
+{
+    (void)context;
+    if(cache_capture_owned)return NULL;
+    void *memory=companion_opus16_rt_workspace_borrow(bytes);
+    if(memory)++cache_claims;
+    return memory;
+}
+static void cache_return(void *context,void *memory)
+{(void)context;++cache_returns;companion_opus16_rt_workspace_release(memory);}
+static const comp_wba_segment_pull_cache_ports_t cache_ports={cache_claim,cache_return,NULL};
+static uint8_t cache_expected[32768];
+static comp_segment_entry_t cache_clip;
+static void cache_fixture(void)
+{
+    init();comp_wba_pipeline_config_t cfg=pipeline.config;
+    cfg.segment_frames=600u;cfg.extent_bytes=32768u;
+    assert(comp_wba_recording_pipeline_init(&pipeline,&cfg));ready(55u);
+    assert(comp_wba_recording_pipeline_start(&pipeline,91u));
+    for(unsigned block=0u;block<1060u;block++) {
+        int16_t samples[160];pcm(block,samples);assert(comp_cont_recording_pcm(&engine,samples,160u));
+        for(unsigned i=0u;i<160u;i++)poll();
+    }
+    stop_recording();cache_clip=recovered_entry();
+    assert(cache_clip.descriptor.encoded_length==22272u&&!mic&&companion_opus16_rt_workspace_available());
+    for(uint32_t at=0u;at<cache_clip.descriptor.encoded_length;at++)
+        cache_expected[at]=f.bytes[DATA_BASE+cache_clip.extent_offset+256u+(at/248u)*256u+at%248u];
+    init_pull();cache_claims=cache_returns=0u;cache_capture_owned=false;
+    comp_wba_segment_pull_cache_bind(&pull,&cache_ports);
+    assert(comp_wba_segment_pull_peer(&pull,device_uid,7u,true));
+}
+static comp_segment_result_t cache_poll(void)
+{
+    unsigned reads=f.reads;f.now++;
+    comp_segment_result_t result=comp_wba_segment_pull_poll(&pull);
+    assert(f.reads-reads<=5u); /* one catalog recheck OR at most four page fills */
+    return result;
+}
+static void cache_begin(uint32_t offset)
+{
+    uint8_t request[32];request_for(&cache_clip,offset,request);host_offset=offset;
+    assert(comp_wba_segment_pull_begin(&pull,request)==COMP_SEG_PENDING);
+}
+static void cache_finish(uint32_t start)
+{
+    comp_segment_result_t result=COMP_SEG_PENDING;
+    for(unsigned i=0u;i<10000u&&result==COMP_SEG_PENDING;i++)result=cache_poll();
+    assert(result==COMP_SEG_OK&&host_offset==cache_clip.descriptor.encoded_length);
+    assert(!memcmp(host_bytes+start,cache_expected+start,host_offset-start));
+    assert(!pull.cache&&cache_claims==cache_returns&&companion_opus16_rt_workspace_available());
+}
+static void prefetch_during_prefix_erase(void)
+{
+    cache_fixture();cache_begin(0u);
+    while(host_offset<4096u)assert(cache_poll()==COMP_SEG_PENDING);
+    assert(pull.cache&&pull.cache_bytes>4096u&&cache_claims==1u);
+    /* Real catalog/range worker hashes the already received prefix, persists
+     * intent and owns exact first-sector erase. Host bytes are memory here;
+     * this is NOT a phone-filesystem durability or electrical timing claim. */
+    comp_range_reclaim_t worker;companion_sha256_t sha;uint8_t proof[32];
+    companion_sha256_init(&sha);companion_sha256_update(&sha,cache_expected,15u*248u);
+    companion_sha256_final(&sha,proof);
+    assert(comp_segment_catalog_range_begin(&catalog,&worker,&cache_clip,pull.slot,0u,1u,1u,proof)==COMP_SEG_PENDING);
+    f.automatic_erase=false;
+    for(unsigned i=0u;i<1000u&&!nor.erase_active;i++) {
+        f.now++;assert(comp_wba_segment_storage_catalog_poll(&storage,&catalog)==COMP_SEG_PENDING);
+        assert(cache_poll()==COMP_SEG_PENDING);
+    }
+    assert(nor.erase_active&&f.erase_address==DATA_BASE+cache_clip.extent_offset&&f.erase_bytes==4096u);
+    unsigned reads=f.reads,suspends=f.suspends;uint32_t before=host_offset;
+    for(unsigned i=0u;i<12u;i++)assert(cache_poll()==COMP_SEG_PENDING);
+    assert(host_offset>=before+6u*224u&&f.reads==reads&&f.suspends==suspends&&pull.cache_erase_hits>=6u);
+    for(unsigned i=0u;i<60u;i++)assert(cache_poll()==COMP_SEG_PENDING);
+    before=host_offset;
+    for(unsigned i=0u;i<5u;i++)assert(cache_poll()==COMP_SEG_PENDING&&host_offset==before);
+    assert(f.reads==reads&&f.suspends==suspends&&nor.erase_active);
+    complete();f.automatic_erase=true;comp_segment_result_t done=COMP_SEG_PENDING;
+    for(unsigned i=0u;i<1000u&&done==COMP_SEG_PENDING;i++) {
+        f.now++;done=comp_wba_segment_storage_catalog_poll(&storage,&catalog);
+    }
+    assert(done==COMP_SEG_OK&&catalog.range_end[pull.slot]==1u&&!nor.erase_active);
+    cache_finish(0u);
+    puts("PASS prefetch: real Opus/CSP2 exact compact CRC/final SHA, bounded reads, radio progresses with zero NOR reads/suspends during own prefix erase; cache starvation yields; software only");
+}
+static void prefetch_preemption_and_resume(void)
+{
+    cache_fixture();cache_begin(317u);
+    while(host_offset<2000u)assert(cache_poll()==COMP_SEG_PENDING);
+    assert(pull.cache&&!companion_opus16_rt_workspace_available());
+    /* The product START hook does this before claiming DMA/encoder. Remaining
+     * bytes remain in NOR; the original transfer and offset are not canceled. */
+    comp_wba_segment_pull_cache_release(&pull);cache_capture_owned=true;
+    assert(companion_opus16_rt_workspace_available()&&cache_returns==1u);
+    ready(56u);assert(comp_wba_recording_pipeline_start(&pipeline,91u));
+    for(unsigned block=0u;block<6u;block++) {
+        int16_t samples[160];pcm(block+2000u,samples);assert(comp_cont_recording_pcm(&engine,samples,160u));
+        for(unsigned i=0u;i<160u;i++) {
+            poll();comp_segment_result_t r=cache_poll();assert(r==COMP_SEG_PENDING||r==COMP_SEG_OK);
+        }
+    }
+    assert(mic&&host_offset==cache_clip.descriptor.encoded_length&&engine.stats.accepted_pcm_blocks==6u);
+    assert(!memcmp(host_bytes+317u,cache_expected+317u,host_offset-317u)&&cache_claims==cache_returns);
+    stop_recording();cache_capture_owned=false;
+    cache_begin(1237u);cache_finish(1237u); /* unaligned reconnect plus ring wrap */
+    cache_begin(0u);while(!pull.cache)assert(cache_poll()==COMP_SEG_PENDING);
+    assert(!comp_wba_segment_pull_peer(&pull,NULL,0u,false));
+    assert(!pull.cache&&cache_claims==cache_returns&&companion_opus16_rt_workspace_available());
+    comp_wba_segment_pull_cancel(&pull);assert(cache_claims==cache_returns);
+    puts("PASS prefetch ownership: START takes idle encoder workspace without canceling sealed stream; active real capture falls back, reconnect/ring wrap exact, disconnect releases once; software only");
+}
+static void prefetch_faults(void)
+{
+    cache_fixture();cache_begin(0u);
+    while(transfer_window.state==COMP_WBA_RECORDING_TRANSFER_IDLE)assert(cache_poll()==COMP_SEG_PENDING);
+    f.fail_read_data_once=true;assert(cache_poll()==COMP_SEG_PENDING);
+    cache_finish(0u); /* same exact cache fill survives one released read failure */
+    cache_fixture();cache_begin(0u);
+    f.bytes[DATA_BASE+cache_clip.extent_offset+256u+3u*256u]^=1u;
+    comp_segment_result_t r=COMP_SEG_PENDING;
+    for(unsigned i=0u;i<100u&&r==COMP_SEG_PENDING;i++)r=cache_poll();
+    assert(r!=COMP_SEG_OK&&r!=COMP_SEG_PENDING&&!pull.cache&&cache_claims==cache_returns);
+    assert(companion_opus16_rt_workspace_available()&&host_offset==0u);
+    puts("PASS prefetch faults: released read retry preserves destination; corrupt prefetched CSP2 page is rejected before radio publishes it; workspace released; software only");
+}
 int main(int argc,char **argv)
 {
+    if(argc==2&&!strcmp(argv[1],"--prefetch")){prefetch_during_prefix_erase();prefetch_preemption_and_resume();prefetch_faults();return 0;}
     if(argc==2&&!strcmp(argv[1],"--erase-start-guard")){erase_timeout_starts_after_command();return 0;}
     if(argc==2&&!strcmp(argv[1],"--failed-erase-owner")){failed_erase_does_not_stall_gate();return 0;}
     if(argc==2&&!strcmp(argv[1],"--erase-gate-budget")){erase_gate_status_wait_is_bounded();return 0;}

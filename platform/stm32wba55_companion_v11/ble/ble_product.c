@@ -911,6 +911,13 @@ void comp_v11_ble_download_timing_diagnostic(void)
         (unsigned)t->notify_staged_bytes,(unsigned)notify_gate.waiting,
         (unsigned)sealed_transfer_allowed());
     if(n>0 && (unsigned)n<sizeof(line))(void)comp_v11_hal_debug_write(line);
+    if(product_link.segmented) {
+        const comp_wba_segment_pull_t *p=&product_link.segmented->pull;
+        n=snprintf(line,sizeof(line),"PREFETCH id=%lu packets=%lu erase_packets=%lu fills=%lu leased=%u\r\n",
+            (unsigned long)t->recording_id,(unsigned long)p->cache_hits,
+            (unsigned long)p->cache_erase_hits,(unsigned long)p->cache_pages,(unsigned)(p->cache!=NULL));
+        if(n>0 && (unsigned)n<sizeof(line))(void)comp_v11_hal_debug_write(line);
+    }
 }
 static void publish_settings(void)
 {
@@ -947,6 +954,21 @@ static void publish_name(void)
     companion_gatt_ble_name_config_v1_t value;companion_ble_name_get_config(&names,&value);
     value.max_len=COMP_PREFS_NAME_BYTES;
     (void)publish(NULL,COMPANION_GATT_CHAR_BLE_NAME_CONFIG,(uint8_t*)&value,sizeof(value));
+}
+static void *transfer_cache_acquire(void *context,uint32_t bytes)
+{
+    (void)context;
+    if(!product||product->board->microphone.running||product->runtime.capture_active||
+       product->runtime.prepare_pending||product->runtime.start_pending||comp_v11_update_product_busy())return NULL;
+    return companion_opus16_rt_workspace_borrow(bytes);
+}
+static void transfer_cache_release(void *context,void *memory)
+{(void)context;companion_opus16_rt_workspace_release(memory);}
+static const comp_wba_segment_pull_cache_ports_t transfer_cache_ports={transfer_cache_acquire,transfer_cache_release,NULL};
+void comp_v11_ble_release_transfer_workspace(void)
+{
+    if(link_ready&&product_link.segmented)
+        comp_wba_segment_pull_cache_release(&product_link.segmented->pull);
 }
 bool comp_v11_ble_recording_recovery_idle(void)
 {
@@ -1444,6 +1466,7 @@ void comp_v11_ble_poll(void)
     uint32_t tasks=UTIL_SEQ_DEFAULT;
     bool writes_allowed;
     if(!product)return;
+    if(link_ready&&!sealed_transfer_work())comp_v11_ble_release_transfer_workspace();
     if(fatal_error){menu_completions(HAL_GetTick());return;}
     writes_allowed=stack_writes_allowed();
     if(!writes_allowed)
@@ -1459,6 +1482,7 @@ void comp_v11_ble_poll(void)
             link_ready=comp_link_init_segmented(&product_link,&config,&product_link.io.segmented_state,
                 &product->recording.pipeline,comp_v11_ble_value_capacity());
             if(link_ready) {
+                comp_wba_segment_pull_cache_bind(&product_link.segmented->pull,&transfer_cache_ports);
                 download_read_backend=product_link.transfer.backend;
                 product_link.transfer.backend=&observed_backend;
                 comp_link_connection(&product_link,linked,secured,HAL_GetTick());

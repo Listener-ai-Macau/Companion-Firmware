@@ -11,6 +11,12 @@
  * the complete GATT/Type/recovery/consumption binding exists. */
 #define COMP_SEG_PULL_REQUEST_BYTES 32u
 #define COMP_SEG_PULL_COMMAND 0x21u
+#define COMP_SEG_PULL_PREFETCH_BYTES (32u*COMP_SEGMENT_PAGE_DATA_BYTES)
+typedef struct {
+    void *(*acquire)(void *,uint32_t);
+    void (*release)(void *,void *);
+    void *context;
+} comp_wba_segment_pull_cache_ports_t;
 typedef struct {
     comp_wba_segment_storage_t *storage;
     comp_segment_catalog_t *catalog;
@@ -32,6 +38,10 @@ typedef struct {
     uint8_t scan,slot,phase,read_retries,read_retry_elapsed_ms;
     bool live;
     comp_segment_result_t result;
+    const comp_wba_segment_pull_cache_ports_t *cache_ports;
+    uint8_t *cache;
+    uint32_t cache_offset,cache_hits,cache_erase_hits,cache_pages;
+    uint16_t cache_head,cache_bytes;
 } comp_wba_segment_pull_t;
 
 bool comp_wba_segment_pull_init(comp_wba_segment_pull_t *,const comp_wba_segment_pull_config_t *);
@@ -46,6 +56,11 @@ comp_segment_result_t comp_wba_segment_pull_poll(comp_wba_segment_pull_t *);
  * sole ownership of stopped bulk sending and its existing75KiB/s baseline. */
 comp_segment_result_t comp_wba_segment_pull_select_poll(comp_wba_segment_pull_t *);
 void comp_wba_segment_pull_cancel(comp_wba_segment_pull_t *);
+/* Optional exclusive idle workspace, never a resident audio allocation.
+ * Release may preempt read-ahead before capture claims the same memory; all
+ * unsent bytes still exist in NOR and normal reads continue without a skip. */
+void comp_wba_segment_pull_cache_bind(comp_wba_segment_pull_t *,const comp_wba_segment_pull_cache_ports_t *);
+void comp_wba_segment_pull_cache_release(comp_wba_segment_pull_t *);
 /* Freeze only the readback-committed complete COP1 frames of the owned
  * WRITING tail. This is NOT a sealed descriptor or a consume proof.
  * CLP2 flags@74:1 legacy schema1;3 schema2 with real timeline records.

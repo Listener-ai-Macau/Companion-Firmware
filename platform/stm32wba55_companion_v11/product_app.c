@@ -422,6 +422,11 @@ static bool recording_prepare(void *c,uint32_t token)
     if (!token || !app->board->microphone.initialized ||
         (app->board->faults & COMP_V11_FAULT_SPEAKER_SHUTDOWN) != 0u || app->pet_profile.writing) return false;
     if(!recording_power_allowed(app))return false;
+#ifdef COMPANION_WBA_BLE_LINKED
+    /* Unsent read-ahead still has its NOR original. Return the temporary idle
+     * lease before this START checks/claims the same real codec/DMA arena. */
+    comp_v11_ble_release_transfer_workspace();
+#endif
     if(!comp_wba_recording_product_capture_available(&app->recording)) {
         /* A fresh START may retry only the exhausted read-only idle fault.
          * The ordinary recovery gate prevents any other NOR/audio owner from
