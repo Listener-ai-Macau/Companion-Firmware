@@ -413,6 +413,15 @@ static void ota_gatt_poll_owned(void)
 {
     uint8_t status[COMP_V11_OTA_STATUS_BYTES];
     if(!service || processing)return;
+    /* Link loss ends RECEIVING without a COMPLETE/ERROR status publication.
+     * Retire its existing ledger once here, before a queued successor BEGIN
+     * clears it. Never format UART in the HCI/security callback or while a
+     * storage callback still owns an active command. invalid=2 means this is
+     * a failed/incomplete payload, not a successful durable boundary. */
+    if(observation.active && !observation.reported && phase_timing.started &&
+       !phase_timing.running && phase_timing.invalid==2u) {
+        observation.reported=true;report_timing();
+    }
     if(observation.overrun_pending) {
         phase_stop(clock_us(),3u);
         /* No NOR or abort callback can run in HCI delivery. Keep the lease
