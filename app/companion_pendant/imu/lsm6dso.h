@@ -26,6 +26,7 @@ typedef struct {
     bool recovery_waiting;
     uint8_t tap_source; /* Fresh TAP_SRC of the last successful sample; tail padding. */
     bool recording_taps;
+    bool tap_irq_pending; /* Fresh physical INT1 via IO-expander, not DRDY. */
     uint32_t tap_reads;
     uint32_t tap_counts; /* Saturated SINGLE low16 / DOUBLE high16, TAP_IA required. */
 } comp_lsm6dso_t;

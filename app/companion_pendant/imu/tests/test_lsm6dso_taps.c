@@ -34,15 +34,15 @@ int main(void)
     assert(comp_lsm6dso_set_recording_taps(&imu,true)&&b.reg[0x10]==0x68u&&b.reg[0x11]==0x30u&&b.reg[0x5E]==8u);
     assert(!comp_lsm6dso_set_idle(&imu,true));b.taps_read=0u;
     /* No sample must leave the chip's latched gesture for the next real sample. */
-    b.reg[0x1C]=COMP_LSM6DSO_DOUBLE_TAP;
+    b.reg[0x1C]=COMP_LSM6DSO_DOUBLE_TAP;imu.tap_irq_pending=true;
     assert(comp_lsm6dso_poll(&imu,20u,&sample)==COMP_IMU_NO_SAMPLE&&b.taps_read==0u&&imu.tap_source==0u);
     b.reg[0x1E]=3u;
     assert(comp_lsm6dso_poll(&imu,30u,&sample)==COMP_IMU_SAMPLE&&imu.tap_source==0x50u&&b.taps_read==1u);
-    assert(comp_lsm6dso_poll(&imu,40u,&sample)==COMP_IMU_SAMPLE&&imu.tap_source==0u);
-    b.reg[0x1C]=0x60u;assert(comp_lsm6dso_poll(&imu,41u,&sample)==COMP_IMU_SAMPLE);
-    assert(imu.tap_reads==3u&&imu.tap_counts==0x00010001u);
-    b.reg[0x1C]=0x10u;assert(comp_lsm6dso_poll(&imu,42u,&sample)==COMP_IMU_SAMPLE&&imu.tap_counts==0x00010001u);
-    imu.tap_reads=UINT32_MAX;imu.tap_counts=UINT32_MAX;b.reg[0x1C]=0x70u;
+    assert(comp_lsm6dso_poll(&imu,40u,&sample)==COMP_IMU_SAMPLE&&imu.tap_source==0u&&b.taps_read==1u);
+    b.reg[0x1C]=0x60u;imu.tap_irq_pending=true;assert(comp_lsm6dso_poll(&imu,41u,&sample)==COMP_IMU_SAMPLE);
+    assert(imu.tap_reads==2u&&imu.tap_counts==0x00010001u);
+    b.reg[0x1C]=0x10u;imu.tap_irq_pending=true;assert(comp_lsm6dso_poll(&imu,42u,&sample)==COMP_IMU_SAMPLE&&imu.tap_counts==0x00010001u);
+    imu.tap_reads=UINT32_MAX;imu.tap_counts=UINT32_MAX;b.reg[0x1C]=0x70u;imu.tap_irq_pending=true;
     assert(comp_lsm6dso_poll(&imu,43u,&sample)==COMP_IMU_SAMPLE&&imu.tap_reads==UINT32_MAX&&imu.tap_counts==UINT32_MAX);
     b.reg[0x1E]=0u;
     assert(comp_lsm6dso_poll(&imu,50u,&sample)==COMP_IMU_NO_SAMPLE&&imu.tap_source==0u);
@@ -51,8 +51,8 @@ int main(void)
     assert(comp_lsm6dso_set_idle(&imu,true)&&b.reg[0x10]==0x18u&&b.reg[0x11]==0u&&b.reg[0x0D]==1u);
     b.reg[0x1E]=1u;b.reg[0x1C]=0x50u;
     assert(comp_lsm6dso_poll(&imu,60u,&sample)==COMP_IMU_SAMPLE&&imu.tap_source==0u);
-    assert(comp_lsm6dso_set_recording_taps(&imu,true)&&b.reg[0x10]==0x68u&&b.reg[0x11]==0x30u&&b.reg[0x0D]==3u&&b.reg[0x1C]==0u);
-    b.reg[0x1E]=3u;b.fail_read=0x1C;unsigned samples=imu.samples;
+    assert(comp_lsm6dso_set_recording_taps(&imu,true)&&b.reg[0x10]==0x68u&&b.reg[0x11]==0x30u&&b.reg[0x0D]==0u&&b.reg[0x1C]==0u);
+    b.reg[0x1E]=3u;b.fail_read=0x1C;imu.tap_irq_pending=true;unsigned samples=imu.samples;
     assert(comp_lsm6dso_poll(&imu,70u,&sample)==COMP_IMU_IO_ERROR&&imu.tap_source==0u&&imu.samples==samples);
     b.fail_read=-1;assert(!comp_lsm6dso_recover(&imu,80u));assert(comp_lsm6dso_recover(&imu,1080u));
     b.reg[0x12]=0u;b.reg[0x56]=0u;b.reg[0x5E]=0u;

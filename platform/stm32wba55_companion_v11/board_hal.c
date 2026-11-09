@@ -608,6 +608,8 @@ static bool io_read(void *p, uint8_t addr, uint8_t reg, uint8_t *data)
     if (b != NULL && reg == 0u) {
         b->expander_input_valid = ok;
         if (ok) b->expander_raw_inputs = *data;
+        if(ok && b->imu.recording_taps && (*data&COMP_V11_IMU_INT))
+            b->imu.tap_irq_pending=true;
     }
     return ok;
 }
