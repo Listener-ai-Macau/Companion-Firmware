@@ -77,6 +77,7 @@ int main(void)
     const uint32_t expected[7][4]={{77u,6500u,1900u,10u},{77u,20000u,30u,1800u},
         {77u,60u,1600u,300u},{77u,0x02010303u,9000u,0u},{77u,0u,0u,0u},
         {77u,10u,1u,0u},{77u,77u,0x55667788u,0x11223344u}};
+    FILE *dump=fopen("codec-pages.bin","wb");assert(dump);
     for(unsigned page=0u;page<7u;page++) {
         uint8_t op=(uint8_t)(32u+page),wire[32];assert(request(op,123u,false));
         assert(!request(op,0u,false) && !request(op,123u,true));
@@ -85,7 +86,9 @@ int main(void)
         assert(!memcmp(wire,"CRM1",4u) && wire[4]==op && wire[5]==0u && wire[6]==15u && wire[7]==1u);
         assert(comp_maint_get32(wire+8u)==123u && comp_maint_get32(wire+28u)==companion_crc32(0u,wire,28u));
         for(unsigned i=0u;i<4u;i++)assert(comp_maint_get32(wire+12u+4u*i)==expected[page][i]);
+        assert(fwrite(wire,1u,sizeof(wire),dump)==sizeof(wire));
     }
+    assert(fclose(dump)==0);
     uint8_t wire[32]={0};residence.active=true;maintenance_codec_fields(32u,wire);
     assert(wire[5]==COMP_MAINT_BUSY && !comp_v11_cpu_codec_read(0u,v,&flags));residence.active=false;
     transport_capture=true;assert(!comp_v11_cpu_codec_read(0u,v,&flags));transport_capture=false;
