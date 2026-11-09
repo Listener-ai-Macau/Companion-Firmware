@@ -81,9 +81,13 @@ _Static_assert(sizeof(outer_irq)+sizeof(codec_irq)==36u,"reuse original IRQ obse
 typedef struct {
     uint64_t hits,misses;
     uint32_t begins,calls,saturations,foreign,peak_us,peak_hits,peak_misses,peak_irq_us;
+    uint32_t peak_admission_flags,peak_admission_next_us;
     bool owned;
 } codec_cache_stats_t;
 static codec_cache_stats_t codec_cache;
+static uint32_t codec_admission_flags,codec_admission_next_us;
+void comp_cpu_codec_admission(uint32_t flags,uint32_t next_radio_us)
+{codec_admission_flags=flags;codec_admission_next_us=next_radio_us;}
 _Static_assert(sizeof(codec_cache_stats_t)<=64u,"bounded optional codec cache observation");
 static void codec_cache_stop_owned(void)
 {
@@ -109,7 +113,7 @@ static void codec_cache_end(uint32_t wall,uint32_t irq,bool completed)
     ++codec_cache.calls;codec_cache.hits+=hits;codec_cache.misses+=misses;
     /* WBA55 CMSIS defines a 32-bit HIT and 16-bit MISS saturating counter. */
     if(hits==UINT32_MAX || misses>=UINT16_MAX)++codec_cache.saturations;
-    if(wall>=codec_cache.peak_us){codec_cache.peak_us=wall;codec_cache.peak_irq_us=irq;codec_cache.peak_hits=hits;codec_cache.peak_misses=misses;comp_cpu_codec_irq_peak(&codec_irq);}
+    if(wall>=codec_cache.peak_us){codec_cache.peak_us=wall;codec_cache.peak_irq_us=irq;codec_cache.peak_hits=hits;codec_cache.peak_misses=misses;codec_cache.peak_admission_flags=codec_admission_flags;codec_cache.peak_admission_next_us=codec_admission_next_us;comp_cpu_codec_irq_peak(&codec_irq);}
 }
 /* CODEC_CACHE_MODEL_END */
 /* Keep explicit IRQ call sites inspectable. The opt-in CPU observer owns
@@ -225,6 +229,7 @@ void comp_v11_cpu_capture_begin(uint32_t token)
      * accounting in recording builds with optional idle Stop1 enabled. */
     if(timer_start())valid=stamp(false,&now);
     codec_cache_stop_owned();memset(&codec_cache,0,sizeof(codec_cache));
+    codec_admission_flags=0u;codec_admission_next_us=0u;
     memset(stage_stats,0,sizeof(stage_stats));memset(opus_over_budget,0,sizeof(opus_over_budget));
     comp_cpu_self_reset(&stage_self);
     comp_cpu_residence_begin(&residence,token,SystemCoreClock,now,valid);reference(now);__set_PRIMASK(mask);
@@ -494,6 +499,12 @@ void comp_v11_cpu_emit(void)
     (void)comp_v11_hal_debug_write(line);
     (void)snprintf(line,sizeof(line),"OCACHE2 token=%lu peak_outer_irq_us=%lu peak_outer_exception=%lu includes_nested=1\r\n",
         (unsigned long)s.stats.token,(unsigned long)codec_irq.peak_us,(unsigned long)codec_irq.peak_kind);
+    (void)comp_v11_hal_debug_write(line);
+    uint32_t admission=codec_cache.peak_admission_flags;
+    (void)snprintf(line,sizeof(line),"OCACHE4 token=%lu reason=%lu pending=%u query_valid=%u radio_busy=%u queued_pcm=%lu next_radio_us=%lu same_worst_wall=1\r\n",
+        (unsigned long)s.stats.token,(unsigned long)((admission>>8u)&255u),
+        (unsigned)(admission&1u),(unsigned)((admission>>1u)&1u),(unsigned)((admission>>2u)&1u),
+        (unsigned long)((admission>>16u)&255u),(unsigned long)codec_cache.peak_admission_next_us);
     (void)comp_v11_hal_debug_write(line);
     /* Radio classes are outer envelopes, including any nested capture/tick
      * IRQs. Their complement partitions this same worst-wall Opus frame;

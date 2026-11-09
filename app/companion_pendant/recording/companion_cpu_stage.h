@@ -21,6 +21,8 @@ comp_cpu_stage_span_t comp_cpu_bulk_stage_begin(void);
 void comp_cpu_bulk_stage_end(unsigned,comp_cpu_stage_span_t);
 void comp_cpu_stage_end(unsigned,comp_cpu_stage_span_t,bool completed);
 void comp_cpu_codec_cache_begin(void);
+/* Optional metadata paired with the same observed worst-wall codec frame. */
+void comp_cpu_codec_admission(uint32_t flags,uint32_t next_radio_us);
 void comp_cpu_panel_stage_end(comp_cpu_stage_span_t,bool completed,uint16_t bytes);
 #else
 static inline bool comp_cpu_bulk_owned(void){return false;}

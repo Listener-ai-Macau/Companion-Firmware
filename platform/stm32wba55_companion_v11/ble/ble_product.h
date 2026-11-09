@@ -104,6 +104,9 @@ bool comp_v11_ble_linked(void);
 bool comp_v11_ble_secured(void);
 /* Only a ready full Opus frame may wait; housekeeping/PCM staging never waits. */
 bool comp_v11_ble_capture_encode_window(bool pending);
+#if COMPANION_WBA_CPU_RESIDENCE_PROFILE
+void comp_v11_ble_capture_admission_observed(uint32_t *flags,uint32_t *next_radio_us);
+#endif
 void comp_v11_ble_tx_pool_available(void);
 void comp_v11_ble_controller_progress_hint(void);
 void comp_v11_ble_host_cycle_completed(void);

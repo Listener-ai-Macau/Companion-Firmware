@@ -503,12 +503,27 @@ static bool capture_radio_remaining(uint32_t *next_us,bool *busy)
         NVIC_GetPendingIRQ(RADIO_SW_LOW_INTR_NUM)!=0u;
     return valid;
 }
+#if COMPANION_WBA_CPU_RESIDENCE_PROFILE
+static uint32_t codec_admission_flags,codec_admission_next_us;
+void comp_v11_ble_capture_admission_observed(uint32_t *flags,uint32_t *next_radio_us)
+{*flags=codec_admission_flags;*next_radio_us=codec_admission_next_us;}
+#endif
 bool comp_v11_ble_capture_encode_window(bool pending)
 {
     static comp_capture_radio_window_t wait;
     uint32_t next_us=0u;bool busy=false;
     bool valid=pending && capture_radio_remaining(&next_us,&busy);
-    return comp_capture_radio_window_open(&wait,HAL_GetTick(),pending,valid,busy,next_us);
+    bool allowed=comp_capture_radio_window_open(&wait,HAL_GetTick(),pending,valid,busy,next_us);
+#if COMPANION_WBA_CPU_RESIDENCE_PROFILE
+    if(allowed) {
+        /* No extra controller reads or timing/admission changes. Reason1
+         * bypass,2 missing query,3 observed quiet gap,4 bounded timeout. */
+        uint32_t reason=!pending?1u:!valid?2u:!busy&&next_us>7000u?3u:4u;
+        codec_admission_flags=(pending?1u:0u)|(valid?2u:0u)|(busy?4u:0u)|(reason<<8u);
+        codec_admission_next_us=next_us;
+    }
+#endif
+    return allowed;
 }
 uint32_t comp_v11_ble_fatal_error(void) { return fatal_error; }
 void RTC_IRQHandler(void) {
