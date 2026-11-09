@@ -75,6 +75,8 @@ typedef struct {
     uint32_t max_capture_runtime_ms,max_capture_presenter_ms,max_capture_render_ms;
     bool assets_ready, settings_ready, recording_ready;
     bool storage_layout_ready, silence_stop_requested,recording_link_retry;
+    /* One actual stopped-fault event may recover its existing durable prefix. */
+    bool recording_fault_recovery_pending;
     uint8_t identity_entropy_words;
     /* First real capture-deadline failure location; no live UART logging. */
     uint8_t capture_deadline_site;
@@ -91,7 +93,7 @@ void comp_v11_product_recording_level_enable(comp_v11_product_app_t *,bool enabl
 /* Valid only while capture is active and the final-output window is fresh. */
 bool comp_v11_product_recording_level(const comp_v11_product_app_t *,uint32_t now_ms,
                                       comp_wba_recording_level_snapshot_t *);
-/* Explicit wired service only: bounded recovery of an already-stopped fault.
+/* Explicit service retry after automatic stopped-fault recovery was refused.
  * True means accepted, not saved/finished. No START, identity allocation,
  * forced lease release, erase, reset or automatic retry. Poll normally. */
 bool comp_v11_product_recording_recover(comp_v11_product_app_t *);

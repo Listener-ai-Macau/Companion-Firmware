@@ -65,7 +65,9 @@ static inline bool comp_wba_recording_product_pcm_staging_pending(const comp_wba
         comp_cont_recording_pcm_staging_pending(&p->capture.engine);
 }
 bool comp_wba_recording_product_stage_pcm_half(comp_wba_recording_product_t *);
-/* Explicit retry after a stopped capture fault. The caller first retires all
+/* Pure cached admission, with no NOR access or new recovery attempt. */
+bool comp_wba_recording_product_recoverable(const comp_wba_recording_product_t *);
+/* Begin recovery after a stopped capture fault. The caller first retires all
  * external radio/update/playback owners. This checks internal ownership before
  * lending the dead engine's RAM to bounded CSP2 recovery. No microphone start,
  * new session ID, erase of unconsumed audio, or implicit boot-lease replay. */

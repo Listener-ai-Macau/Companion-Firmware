@@ -694,6 +694,81 @@ static int power_guard_journey(const char *artifact_path)
     puts("PASS_WBA_POWER_GUARD_PRODUCT_SOFTWARE_ONLY fresh-samples/unknown-gap/late-start-cancel/ordinary-seal/retained-SHA/critical-admission/hysteresis/no-auto-restart/wrap/raw-rejected");
     free(fixture.flash);return 0;
 }
+static int automatic_fault_original_journey(void)
+{
+    comp_v11_hal_t board;comp_v11_product_app_t app;
+    memset(&fixture,0,sizeof(fixture));fixture.flash=malloc(FLASH_BYTES);
+    REQUIRE(fixture.flash,"automatic recovery NOR allocation");
+    memset(fixture.flash,255u,FLASH_BYTES);layout_root();init_board(&app,&board);
+    REQUIRE(wait_state(&app,COMP_WBA_RECORDING_IDLE,20000u),"automatic recovery boot");
+    REQUIRE(comp_runtime_record(&app.runtime,true,fixture.tick)==COMP_RUNTIME_OK,"retained original START");
+    REQUIRE(wait_state(&app,COMP_WBA_RECORDING_CAPTURING,20000u),"retained original MIC");
+    step(&app,60u);uint64_t retained=app.recording_session_id;
+    REQUIRE(comp_runtime_record(&app.runtime,false,fixture.tick)==COMP_RUNTIME_OK,"retained original STOP");
+    REQUIRE(wait_state(&app,COMP_WBA_RECORDING_TRANSFER_READY,30000u)&&settled_space(&app),"retained original save");
+    comp_segment_entry_t old={0};bool found=false;
+    for(uint8_t i=0;i<64u;i++)if(app.recording.catalog.slots[i]!=255u) {
+        REQUIRE(comp_wba_segment_storage_entry(&app.recording.storage,&app.recording.catalog,i,&old)==COMP_SEG_OK,"retained descriptor");
+        if(old.descriptor.session_id==retained){found=true;break;}
+    }
+    REQUIRE(found,"retained original missing");
+    uint8_t *old_bytes=malloc(old.reserved_bytes);REQUIRE(old_bytes,"retained original bytes");
+    memcpy(old_bytes,fixture.flash+COMP_WBA_NOR_RECORDING_BASE+old.extent_offset,old.reserved_bytes);
+    REQUIRE(comp_runtime_record(&app.runtime,true,fixture.tick)==COMP_RUNTIME_OK,"fault source START");
+    REQUIRE(wait_state(&app,COMP_WBA_RECORDING_CAPTURING,20000u),"fault source MIC");
+    step(&app,60u);uint64_t original=app.recording_session_id;
+    REQUIRE(app.recording.capture.engine.stats.durable_bytes>0u,"fault source has no committed audio");
+    comp_wba_recording_product_fault(&app.recording,COMP_WBA_RECORDING_FAULT_DEADLINE);
+    REQUIRE(!board.microphone.running&&!app.runtime.capture_active,"fault microphone not stopped");
+    unsigned starts=fixture.mic_starts;uint64_t next=app.recording_identity.record.next_session_id;
+    void *held=companion_opus16_rt_workspace_borrow(512u);REQUIRE(held,"stopped codec workspace lease");
+    step(&app,20u);
+    REQUIRE(app.recording.pipeline.state==COMP_PIPE_FAILED&&fixture.mic_starts==starts,"recovery stole external workspace");
+    companion_opus16_rt_workspace_release(held);
+    for(unsigned i=0u;i<30000u&&app.recording.pipeline.state!=COMP_PIPE_IDLE;i++)step(&app,1u);
+    REQUIRE(app.recording.ready&&app.recording.pipeline.state==COMP_PIPE_IDLE&&
+        !board.microphone.running&&fixture.mic_starts==starts&&
+        app.recording_identity.record.next_session_id==next&&
+        app.runtime.recording==DENZIC_AUDIO_RECORDING_STATE_ERROR_RECOVERY,
+        "stopped failed original requires another START instead of automatic bounded recovery");
+    comp_segment_entry_t recovered={0};found=false;
+    for(uint8_t i=0;i<64u;i++)if(app.recording.catalog.slots[i]!=255u) {
+        REQUIRE(comp_wba_segment_storage_entry(&app.recording.storage,&app.recording.catalog,i,&recovered)==COMP_SEG_OK,"recovered descriptor");
+        if(recovered.descriptor.session_id==original){found=true;break;}
+    }
+    REQUIRE(found&&recovered.state==COMP_SEG_UNSYNCED&&recovered.descriptor.sample_count>0u&&
+        (recovered.descriptor.flags&COMP_REC_V2_RECOVERED),"original not honestly recovered");
+    REQUIRE(!memcmp(old_bytes,fixture.flash+COMP_WBA_NOR_RECORDING_BASE+old.extent_offset,old.reserved_bytes),"automatic recovery touched retained original audio");
+    companion_sha256_t hash;companion_sha256_init(&hash);uint32_t total=0u;
+    comp_segment_audio_port_t port=comp_wba_segment_storage_audio_port(&app.recording.storage);
+    for(uint32_t page=0u;total<recovered.descriptor.encoded_length;page++) {
+        uint8_t bytes[256],n=0u;
+        REQUIRE(comp_segment_audio_read_page(&port,&recovered,COMP_WBA_NOR_RECORDING_BASE,page,bytes,&n)==COMP_SEG_OK,"recovered page");
+        if(n>recovered.descriptor.encoded_length-total)n=(uint8_t)(recovered.descriptor.encoded_length-total);
+        companion_sha256_update(&hash,bytes,n);total+=n;
+    }
+    uint8_t digest[32];companion_sha256_final(&hash,digest);
+    REQUIRE(!memcmp(digest,recovered.descriptor.sha256,32u),"automatic recovery SHA differs from committed original");
+    /* An unqualified physical observation is one failed attempt, not an IO loop. */
+    REQUIRE(comp_runtime_record(&app.runtime,true,fixture.tick)==COMP_RUNTIME_OK,"after automatic recovery START");
+    REQUIRE(wait_state(&app,COMP_WBA_RECORDING_CAPTURING,30000u),"after automatic recovery MIC");
+    step(&app,40u);comp_wba_recording_product_fault(&app.recording,COMP_WBA_RECORDING_FAULT_STORAGE_IO);
+    app.recording.storage.poisoned=true;fake_recovery_quiescent=false;
+    starts=fixture.mic_starts;next=app.recording_identity.record.next_session_id;
+    unsigned observed=fake_recovery_observations;step(&app,100u);
+    REQUIRE(fake_recovery_observations==observed+1u,"automatic recovery did not make one qualified attempt");
+    step(&app,300u);
+    REQUIRE(fake_recovery_observations==observed+1u&&app.recording.pipeline.state==COMP_PIPE_FAILED&&
+        fixture.mic_starts==starts&&app.recording_identity.record.next_session_id==next,"failed automatic recovery loops or restarts microphone");
+    fake_recovery_quiescent=true;step(&app,20u);
+    REQUIRE(fake_recovery_observations==observed+1u,"physical condition alone rearmed failed recovery");
+    REQUIRE(comp_v11_product_recording_recover(&app),"explicit existing recovery unavailable after automatic refusal");
+    for(unsigned i=0u;i<30000u&&app.recording.pipeline.state!=COMP_PIPE_IDLE;i++)step(&app,1u);
+    REQUIRE(app.recording.ready&&!board.microphone.running&&fixture.mic_starts==starts&&
+        app.recording_identity.record.next_session_id==next,"explicit recovery restarted audio or allocated session");
+    puts("PASS_AUTOMATIC_FAILED_ORIGINAL_SOFTWARE_ONLY real product/runtime/NOR/Opus; no new START/identity; committed prefix/SHA and retained audio preserved; workspace waits; one failed physical observation; explicit recovery remains usable");
+    free(old_bytes);free(fixture.flash);return 0;
+}
 static int runtime_recovery_journey(void)
 {
     comp_v11_hal_t board;comp_v11_product_app_t app;
@@ -719,8 +794,11 @@ static int runtime_recovery_journey(void)
     unsigned starts=fixture.mic_starts;
     uint8_t *saved_fault_extent=NULL, saved_fault_sha[32]={0};
     uint32_t saved_fault_offset=0,saved_fault_bytes=0;
+    void *recovery_wait=companion_opus16_rt_workspace_borrow(512u);
+    REQUIRE(recovery_wait,"explicit START handoff workspace");
     for(unsigned i=0u;i<40u;i++)step(&app,1u);
-    REQUIRE(app.recording.pipeline.state==COMP_PIPE_FAILED&&fixture.mic_starts==starts,"idle poll silently retried fault");
+    REQUIRE(app.recording.pipeline.state==COMP_PIPE_FAILED&&fixture.mic_starts==starts,"automatic recovery stole workspace");
+    companion_opus16_rt_workspace_release(recovery_wait);
     REQUIRE(comp_runtime_record(&app.runtime,true,fixture.tick)==COMP_RUNTIME_OK&&
         app.runtime.prepare_pending&&!app.recording.media_ready&&!board.microphone.running,"retry must defer START to bounded recovery");
     REQUIRE(app.recording_identity.record.next_session_id==old+1u,"recovery allocated premature identity");
@@ -1749,6 +1827,7 @@ static int capture_controls_journey(const char *path)
 }
 int main(int argc,char **argv)
 {
+    if(argc==3&&!strcmp(argv[2],"--auto-fault-recovery-only"))return automatic_fault_original_journey();
     if(argc==3&&!strcmp(argv[2],"--idle-prime-only"))return idle_prime_handoff_journey();
     if(argc==3&&!strcmp(argv[2],"--capture-controls-only"))return capture_controls_journey(argv[1]);
     if(argc==3&&!strcmp(argv[2],"--late-button-release-only"))return late_release_button_journey();

@@ -302,7 +302,7 @@ static COMP_REC_BOOT_ONLY void boot_poll(comp_wba_recording_product_t *p)
         else if(r!=COMP_SEG_PENDING)fail(p,r);
     }
 }
-bool comp_wba_recording_product_recover_begin(comp_wba_recording_product_t *p)
+bool comp_wba_recording_product_recoverable(const comp_wba_recording_product_t *p)
 {
     if(!comp_wba_recording_product_capture_available(p)||
        p->pipeline.state!=COMP_PIPE_FAILED||!p->pipeline.engine_bound||
@@ -311,6 +311,11 @@ bool comp_wba_recording_product_recover_begin(comp_wba_recording_product_t *p)
        p->pipeline.workspace_requested||p->pipeline.discard_exclusive||
        comp_wba_recording_pipeline_consume_result(&p->pipeline)==COMP_SEG_PENDING||
        !p->storage.nor||p->storage.nor->erase_active)return false;
+    return p->storage.poisoned||!p->catalog.mounted||(!p->pipeline.sealing&&!p->catalog.phase);
+}
+bool comp_wba_recording_product_recover_begin(comp_wba_recording_product_t *p)
+{
+    if(!comp_wba_recording_product_recoverable(p))return false;
     if(p->storage.poisoned||!p->catalog.mounted) {
         /* Caller holds the full-device lease across preflight and all polls.
          * Retire no uncertain erase and never treat cached ready as WIP/SUS. */
@@ -323,7 +328,6 @@ bool comp_wba_recording_product_recover_begin(comp_wba_recording_product_t *p)
         p->pipeline.engine_bound=false;p->ready=false;p->media_ready=false;
         p->boot_phase=BOOT_RUNTIME_REMOUNT;return true;
     }
-    if(p->pipeline.sealing||p->catalog.phase)return false;
     if(comp_wba_recording_recovery_begin(&p->capture.recovery,&p->storage,
         &p->catalog,p->catalog.page)!=COMP_SEG_PENDING)return false;
     p->pipeline.engine_bound=false;p->ready=false;p->media_ready=false;

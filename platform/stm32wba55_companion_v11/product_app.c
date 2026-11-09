@@ -150,6 +150,10 @@ static void recording_capture_clock(comp_v11_product_app_t *app)
 static void recording_report(void *c,uint32_t token,denzic_audio_recording_state_v1_t state,bool active)
 {
     comp_v11_product_app_t *app=c;
+    if(token&&token==app->runtime.record_token&&!active&&
+       state==DENZIC_AUDIO_RECORDING_STATE_ERROR_RECOVERY&&
+       app->recording.pipeline.state==COMP_PIPE_FAILED&&app->recording.pipeline.engine_bound)
+        app->recording_fault_recovery_pending=true;
     recording_catalog(app);
     recording_capture_clock(app);
     if(!active&&(state==DENZIC_AUDIO_RECORDING_STATE_ERROR_RECOVERY ||
@@ -404,7 +408,7 @@ static bool recording_power_allowed(comp_v11_product_app_t *app)
         COMP_RECORD_STOP_LOW_BATTERY:COMP_RECORD_STOP_POWER_UNKNOWN;
     return false;
 }
-bool comp_v11_product_recording_recover(comp_v11_product_app_t *app)
+static bool recording_recovery_idle(comp_v11_product_app_t *app)
 {
     if(!app||!app->board||!comp_wba_recording_product_capture_available(&app->recording)||app->pet_profile.writing||app->runtime.menu_pending||
        app->runtime.capture_active||app->runtime.command_pending||app->runtime.prepare_pending||
@@ -413,7 +417,25 @@ bool comp_v11_product_recording_recover(comp_v11_product_app_t *app)
 #ifdef COMPANION_WBA_BLE_LINKED
     if(!comp_v11_ble_recording_recovery_idle())return false;
 #endif
+    return true;
+}
+bool comp_v11_product_recording_recover(comp_v11_product_app_t *app)
+{
+    if(!recording_recovery_idle(app)||!comp_wba_recording_product_recoverable(&app->recording))return false;
+    app->recording_fault_recovery_pending=false;
     return comp_wba_recording_product_recover_begin(&app->recording);
+}
+static void recording_fault_recovery_poll(comp_v11_product_app_t *app)
+{
+    /* This event comes from a real failed capture, never a status read. Wait
+     * for existing audio/NOR/radio owners, then reuse the ordinary bounded
+     * recovery once. No microphone start, session allocation, forced lease
+     * release or endless physical-status retry belongs to this transition. */
+    if(!comp_wba_recording_product_capture_available(&app->recording)||
+       app->recording.pipeline.state!=COMP_PIPE_FAILED) {
+        app->recording_fault_recovery_pending=false;return;
+    }
+    (void)comp_v11_product_recording_recover(app);
 }
 static bool recording_prepare(void *c,uint32_t token)
 {
@@ -442,8 +464,9 @@ static bool recording_prepare(void *c,uint32_t token)
         return comp_wba_recording_product_retry_idle_explicit(&app->recording,HAL_GetTick());
     }
     if(app->recording.pipeline.state==COMP_PIPE_FAILED) {
-        /* Only a new explicit START retries the stopped fault. Never recover
-         * from a status read or race live DMA, playback, radio, or WUS2. */
+        /* An explicit START may own recovery before its stopped-fault event
+         * is serviced. Status reads never request it; keep the same DMA,
+         * playback, radio and WUS2 ownership as ordinary recovery. */
         if(app->board->microphone.running||app->board->playback_active||
            !companion_opus16_rt_workspace_available())return false;
 #ifdef COMPANION_WBA_BLE_LINKED
@@ -1427,6 +1450,7 @@ void comp_v11_product_app_poll(comp_v11_product_app_t *app)
     app->capture_cycle_started_ms=now;
     identity_entropy_poll(app);
     recording_namespace_poll(app);
+    if(app->recording_fault_recovery_pending)recording_fault_recovery_poll(app);
     recording_boot_retry_poll(app,now);
 #ifdef COMPANION_WBA_BLE_LINKED
     comp_v11_clock_poll(&app->clock,now,!board->microphone.running &&

@@ -33,6 +33,8 @@ parser.add_argument('--screen-disabled',action='store_true')
 parser.add_argument('--late-button-release-only',action='store_true')
 parser.add_argument('--capture-controls-only',action='store_true')
 parser.add_argument('--idle-prime-only',action='store_true')
+parser.add_argument('--auto-fault-recovery-only',action='store_true')
+parser.add_argument('--opus-lib',type=pathlib.Path)
 options=parser.parse_args()
 ROOT = options.source_root.resolve() if options.source_root else REPO
 OUT = REPO / ".cache/recording-core-20261011" / options.artifact_name
@@ -197,7 +199,7 @@ def main() -> int:
         target.write_bytes(p.read_bytes());hashes[p.relative_to(ROOT).as_posix()]=sha256(target)
     (OUT/'source.json').write_text(json.dumps(hashes,indent=2)+'\n',encoding='utf-8')
     exe=OUT/'product.exe';cop1=OUT/'product.cop1';wav=OUT/'product.wav'
-    lib=REPO/'.cache/opus-host-fixed/opus.lib'
+    lib=options.opus_lib.resolve() if options.opus_lib else REPO/'.cache/opus-host-fixed/opus.lib'
     includes=[PLATFORM/'tests/fakes',PLATFORM,*[APP/n for n in ['board','imu','playback','storage','v1_features','power','touch','recording','epaper','runtime','runtime/generated','update']],WIRE]
     args=['cl.exe','/nologo','/TC','/std:c11','/O2','/W4','/WX','/wd4127','/wd5287','/wd4100','/utf-8','/MD','/D_CRT_SECURE_NO_WARNINGS',
         '/DCOMPANION_WBA_RESOURCE_PROFILE=1','/DCOMP_V11_PANEL_PASSIVE_TRACE=1',
@@ -215,7 +217,11 @@ def main() -> int:
         return result.stdout
     try:
         stage(['cmd.exe','/d','/c',str(script)],'compile.txt')
-        output=stage([str(exe),str(cop1),*(['--idle-prime-only'] if options.idle_prime_only else ['--capture-controls-only'] if options.capture_controls_only else (['--late-button-release-only'] if options.late_button_release_only else (['--idle-display-failure-only'] if options.idle_display_failure_only else (['--resource-uncertain-only'] if options.resource_uncertain_only else (['--resource-timeout-only'] if options.resource_timeout_only else (['--power-guard-only'] if POWER_GUARD_ONLY else []))))))],'result.txt')
+        output=stage([str(exe),str(cop1),*(['--auto-fault-recovery-only'] if options.auto_fault_recovery_only else ['--idle-prime-only'] if options.idle_prime_only else ['--capture-controls-only'] if options.capture_controls_only else (['--late-button-release-only'] if options.late_button_release_only else (['--idle-display-failure-only'] if options.idle_display_failure_only else (['--resource-uncertain-only'] if options.resource_uncertain_only else (['--resource-timeout-only'] if options.resource_timeout_only else (['--power-guard-only'] if POWER_GUARD_ONLY else []))))))],'result.txt')
+        if options.auto_fault_recovery_only:
+            assert output.startswith('PASS_AUTOMATIC_FAILED_ORIGINAL_SOFTWARE_ONLY'),output
+            result=dict(result='PASS_AUTOMATIC_FAILED_ORIGINAL_SOFTWARE_ONLY',output=output,physicalBoard=False,installed=False)
+            (OUT/'result.json').write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8');print(json.dumps(result));return 0
         if options.idle_prime_only:
             assert output.startswith('PASS real product idle erase handoff'),output
             result=dict(result='PASS_IDLE_PRIME_PRODUCT_HANDOFF_SOFTWARE_ONLY',output=output,physicalBoard=False,installed=False)
