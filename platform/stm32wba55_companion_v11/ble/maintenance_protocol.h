@@ -83,7 +83,9 @@ static inline bool comp_maint_request(const uint8_t *p,uint16_t n,uint8_t *opera
  * recording command. First two u32 are current logical session low/high.
  * Flags: IMU ready, mic running,417Hz tap mode, tap read seen, valid PCM owner.
  * 16: last PDM-run TAP_SRC read count and saturated SINGLE low16/DOUBLE high16.
- * 17: current logical bookmark request and durable bookmark sequence.
+ * 17: current logical bookmark request and accepted bookmark sequence. A
+ * sequence is durable only with the ordinary successful STOP/complete-source
+ * proof; this cached page alone does not confirm a pending NOR commit.
  * Tap counters reset at each actual microphone admission (also resume), not
  * on these reads or STOP; bookmark sequence retains the whole logical source.
  * During new preparation before first PCM, owner-valid is clear. This avoids

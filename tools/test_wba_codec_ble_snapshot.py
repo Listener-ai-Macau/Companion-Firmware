@@ -63,7 +63,7 @@ int main(void)
     product->recording.media_ready=false;maintenance_imu_fields(16u,iw);assert(iw[5]==COMP_MAINT_BUSY);
     product->recording.media_ready=true;r->active.descriptor.session_id=0u;maintenance_imu_fields(17u,iw);assert(iw[5]==COMP_MAINT_BUSY);
     r->active.descriptor.session_id=UINT64_C(0x1122334455667788);
-    puts("PASS cached IMU scalars: explicit source session, saturated raw counts and durable marks, no mutation/I/O, invalid preparation owner and missing media distinguished");
+    puts("PASS cached IMU scalars: explicit source session, saturated raw counts and accepted marks, no mutation/I/O, invalid preparation owner and missing media distinguished");
 #if COMPANION_WBA_CPU_RESIDENCE_PROFILE
     uint32_t v[4];uint8_t flags;
     assert(comp_v11_cpu_codec_read(0u,v,&flags) && v[0]==0u && v[3]==0u && flags==5u);
@@ -97,7 +97,7 @@ int main(void)
     puts("PASS production BLE codec pages: one token/frame/session,IRQ split,admission/errors,busy ownership,nonce/CRC; cached read does not clear or sample; software only");
 #else
     for(unsigned op=32u;op<=38u;op++)assert(!request((uint8_t)op,123u,false));
-    puts("PASS normal CRM1 unchanged: all optional codec operations rejected; old operations retained");
+    puts("PASS normal CRM1: old operations retained, cached IMU operations accepted, optional codec operations rejected");
 #endif
     return 0;
 }'''
