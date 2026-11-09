@@ -405,6 +405,35 @@ static bool consume_byte_pairs(comp_wba_pdm_capture_t *capture,
                                 const uint8_t *raw, size_t raw_bytes,
                                 bool priming)
 {
+    /* The ordinary selected-mono DMA frame has exactly160 complete96x
+     * samples. Resolve its geometry/channel choice once, rather than for
+     * every PCM boundary. The same integrator, comb, gain, DC and output
+     * functions retain all arithmetic/statistics and the final callback.
+     * Partial spans, other profiles and pair observation keep the general
+     * path below. No callback runs inside this complete-frame fast path
+     * before its final sample, so it cannot change the frozen geometry. */
+    if(raw_bytes==COMP_WBA_PDM_PCM_FRAME_SAMPLES*24u &&
+       capture->pcm_frame_count==0u &&
+       capture->config.decimation==96u && capture->config.selected_only &&
+       capture->config.output<=COMP_WBA_PDM_OUTPUT_RIGHT &&
+       capture->config.observe_pair_frame==NULL &&
+       capture->config.bit_order==COMP_WBA_PDM_MSB_FIRST &&
+       !(capture->config.output==COMP_WBA_PDM_OUTPUT_LEFT?capture->config.invert_left:capture->config.invert_right) &&
+       capture->channels[capture->config.output==COMP_WBA_PDM_OUTPUT_LEFT?0u:1u].decimation_phase==0u) {
+        const bool left=capture->config.output==COMP_WBA_PDM_OUTPUT_LEFT;
+        comp_wba_pdm_channel_state_t *channel=&capture->channels[left?0u:1u];
+        const size_t offset=(capture->config.layout==COMP_WBA_PDM_LAYOUT_LEFT_RIGHT_BYTES?0u:1u)^(left?0u:1u);
+        for(size_t at=0u;at<raw_bytes;at+=24u) {
+            integrate_byte_run(channel,raw+at+offset,12u,false,false);
+            int32_t sample=finish_sample(&capture->config,channel);
+            capture->stats.pdm_bits_per_channel+=96u;
+            if(priming) {
+                capture->stats.pcm_samples_generated++;
+                capture->stats.pcm_samples_discarded++;
+            } else emit_sample(capture,left?sample:0,left?0:sample);
+        }
+        return true;
+    }
     size_t pair_index;
     uint32_t pending_bits = 0u;
     const size_t left_offset = capture->config.layout == COMP_WBA_PDM_LAYOUT_LEFT_RIGHT_BYTES ? 0u : 1u;

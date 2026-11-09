@@ -10,20 +10,32 @@ int main(void)
     assert(comp_capture_radio_window_open(&w,0,true,true,false,7001));
     assert(!comp_capture_radio_window_open(&w,0,true,true,false,7000));
     assert(!comp_capture_radio_window_open(&w,5,true,true,false,0));
-    assert(comp_capture_radio_window_open(&w,6,true,true,true,UINT32_MAX));
+    assert(!comp_capture_radio_window_open(&w,6,true,true,true,UINT32_MAX));
+    assert(comp_capture_radio_window_open(&w,12,true,true,true,UINT32_MAX));
     /* No permanently blocked audio at a connection interval without a gap. */
-    assert(!comp_capture_radio_window_open(&w,11,true,true,true,15000));
-    assert(comp_capture_radio_window_open(&w,12,true,false,true,0));
+    assert(!comp_capture_radio_window_open(&w,13,true,true,true,15000));
+    assert(comp_capture_radio_window_open(&w,14,true,false,true,0));
     assert(!w.waiting);
-    assert(!comp_capture_radio_window_open(&w,13,true,true,true,UINT32_MAX));
-    assert(comp_capture_radio_window_open(&w,14,false,true,true,0));
+    assert(!comp_capture_radio_window_open(&w,15,true,true,true,UINT32_MAX));
+    assert(comp_capture_radio_window_open(&w,16,false,true,true,0));
     assert(!w.waiting);
     assert(!comp_capture_radio_window_open(&w,UINT32_MAX-2u,true,true,true,0));
     assert(!comp_capture_radio_window_open(&w,2,true,true,true,0));
-    assert(comp_capture_radio_window_open(&w,3,true,true,true,0));
+    assert(!comp_capture_radio_window_open(&w,3,true,true,true,0));
+    assert(comp_capture_radio_window_open(&w,9,true,true,true,0));
     assert(!comp_capture_radio_window_open(&w,8,true,true,false,100));
     /* The radio event finishing releases admission immediately, without sleep. */
     assert(comp_capture_radio_window_open(&w,8,true,true,false,15000));
+    /* A valid controller timeline announces an event6.5ms away, lasting
+     * through8.5ms. The old6ms timeout ran a full frame500us before it;
+     * retain capture service and admit the real quiet gap at9ms instead.
+     * This is a deterministic admission scenario, not an RF timing receipt. */
+    w=(comp_capture_radio_window_t){0};
+    for(uint32_t ms=0u;ms<=6u;++ms)
+        assert(!comp_capture_radio_window_open(&w,ms,true,true,false,6500u-ms*1000u));
+    assert(!comp_capture_radio_window_open(&w,7,true,true,true,14500));
+    assert(!comp_capture_radio_window_open(&w,8,true,true,true,13500));
+    assert(comp_capture_radio_window_open(&w,9,true,true,false,12500));
     /* Real DMA boundaries: codec has 2ms, other foreground work retains 4ms.
      * A queued DMA event or unpublished hardware transition always wins. */
     assert(COMP_V11_CAPTURE_ENCODE_GUARD_MS==2u);
