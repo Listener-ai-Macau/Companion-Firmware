@@ -14,9 +14,10 @@ import sys
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 IMU = ROOT / "app" / "companion_pendant" / "imu"
-SOURCE = IMU / "tests" / "test_lsm6dso_power.c"
+TAPS = sys.argv[1:] == ["--taps"]
+SOURCE = IMU / "tests" / ("test_lsm6dso_taps.c" if TAPS else "test_lsm6dso_power.c")
 DRIVER = IMU / "lsm6dso.c"
-OUT = ROOT / ".cache" / "host-tests" / "wba-imu-power"
+OUT = ROOT / ".cache" / "host-tests" / ("wba-imu-taps" if TAPS else "wba-imu-power")
 RESULT = OUT / "result.json"
 SOURCES = [
     IMU / "lsm6dso.h",

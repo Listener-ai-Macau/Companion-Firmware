@@ -704,6 +704,12 @@ bool comp_v11_product_recording_bookmark(comp_v11_product_app_t *app,uint32_t to
     return app&&comp_wba_recording_product_capture_available(&app->recording)&&!comp_runtime_recording_hold(&app->runtime)&&
         token==app->runtime.record_token&&comp_wba_recording_product_bookmark(&app->recording,token,request);
 }
+static void recording_local_bookmark(comp_v11_product_app_t *app)
+{
+    uint32_t request=app->recording.capture.engine.bookmark_request+1u;
+    if(!request)request=1u;
+    (void)comp_v11_product_recording_bookmark(app,app->runtime.record_token,request);
+}
 comp_segment_result_t comp_v11_product_recording_bookmark_result(const comp_v11_product_app_t *app,uint32_t token,uint32_t request)
 {
     if(!app||!comp_wba_recording_product_capture_available(&app->recording)||token!=app->runtime.record_token)return COMP_SEG_BAD_STATE;
@@ -1577,9 +1583,18 @@ void comp_v11_product_app_poll(comp_v11_product_app_t *app)
          * wake/reply or renew carrying from an old heartbeat. Match the
          * existing services.motion_flags 250ms freshness contract using
          * the actual post-input clock, rather than the HAL/radio entry tick. */
-        if(now-board->motion_event_ms<250u)
-            comp_runtime_motion_pose(&app->runtime,board->motion_event_flags,board->motion.orientation,
+        if(now-board->motion_event_ms<250u) {
+            /* Both local inputs use the same durable mark path. A tap never
+             * starts/stops capture, and an idle/pre-START latch cannot become
+             * a mark in the next session. Consume each HAL event only once. */
+            if((board->motion_event_flags&COMP_MOTION_DOUBLE_TAP) && board->microphone.running &&
+               app->runtime.recording==DENZIC_AUDIO_RECORDING_STATE_RECORDING &&
+               (int32_t)(board->motion_event_ms-app->capture_started_ms)>=0)
+                recording_local_bookmark(app);
+            uint8_t pose=(uint8_t)(board->motion_event_flags&~COMP_MOTION_DOUBLE_TAP);
+            if(pose)comp_runtime_motion_pose(&app->runtime,pose,board->motion.orientation,
                 board->motion.tilt,board->motion_event_ms,now);
+        }
     }
     comp_wba_power_snapshot_t power=comp_wba_power_monitor_snapshot(&board->power_monitor,now);
     comp_wba_power_monitor_recording_guard(&board->power_monitor,now);
@@ -1647,9 +1662,7 @@ void comp_v11_product_app_poll(comp_v11_product_app_t *app)
                  * microphone. Reuse the durable schema3/5 timeline and its
                  * monotonic nonce; no beep is injected into a live recording.
                  * Accepted is pending until the existing NOR writer commits. */
-                uint32_t request=app->recording.capture.engine.bookmark_request+1u;
-                if(!request)request=1u;
-                (void)comp_v11_product_recording_bookmark(app,app->runtime.record_token,request);
+                recording_local_bookmark(app);
             } else {
 #ifdef COMPANION_WBA_BLE_LINKED
                 /* Short idle press wakes/advertises for the app. An existing

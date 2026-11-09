@@ -32,6 +32,7 @@ parser.add_argument('--idle-display-failure-only',action='store_true')
 parser.add_argument('--screen-disabled',action='store_true')
 parser.add_argument('--late-button-release-only',action='store_true')
 parser.add_argument('--capture-controls-only',action='store_true')
+parser.add_argument('--imu-highlight-only',action='store_true')
 parser.add_argument('--idle-prime-only',action='store_true')
 parser.add_argument('--auto-fault-recovery-only',action='store_true')
 parser.add_argument('--opus-lib',type=pathlib.Path)
@@ -217,7 +218,7 @@ def main() -> int:
         return result.stdout
     try:
         stage(['cmd.exe','/d','/c',str(script)],'compile.txt')
-        output=stage([str(exe),str(cop1),*(['--auto-fault-recovery-only'] if options.auto_fault_recovery_only else ['--idle-prime-only'] if options.idle_prime_only else ['--capture-controls-only'] if options.capture_controls_only else (['--late-button-release-only'] if options.late_button_release_only else (['--idle-display-failure-only'] if options.idle_display_failure_only else (['--resource-uncertain-only'] if options.resource_uncertain_only else (['--resource-timeout-only'] if options.resource_timeout_only else (['--power-guard-only'] if POWER_GUARD_ONLY else []))))))],'result.txt')
+        output=stage([str(exe),str(cop1),*(['--imu-highlight-only'] if options.imu_highlight_only else ['--auto-fault-recovery-only'] if options.auto_fault_recovery_only else ['--idle-prime-only'] if options.idle_prime_only else ['--capture-controls-only'] if options.capture_controls_only else (['--late-button-release-only'] if options.late_button_release_only else (['--idle-display-failure-only'] if options.idle_display_failure_only else (['--resource-uncertain-only'] if options.resource_uncertain_only else (['--resource-timeout-only'] if options.resource_timeout_only else (['--power-guard-only'] if POWER_GUARD_ONLY else []))))))],'result.txt')
         if options.auto_fault_recovery_only:
             assert output.startswith('PASS_AUTOMATIC_FAILED_ORIGINAL_SOFTWARE_ONLY'),output
             result=dict(result='PASS_AUTOMATIC_FAILED_ORIGINAL_SOFTWARE_ONLY',output=output,physicalBoard=False,installed=False)
@@ -226,8 +227,8 @@ def main() -> int:
             assert output.startswith('PASS real product idle erase handoff'),output
             result=dict(result='PASS_IDLE_PRIME_PRODUCT_HANDOFF_SOFTWARE_ONLY',output=output,physicalBoard=False,installed=False)
             (OUT/'result.json').write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8');print(json.dumps(result));return 0
-        if options.capture_controls_only:
-            assert output.startswith('PASS Capture recorder-card controls'),output
+        if options.capture_controls_only or options.imu_highlight_only:
+            assert output.startswith('PASS IMU highlight' if options.imu_highlight_only else 'PASS Capture recorder-card controls'),output
             decoded=decode_cop1(cop1,wav)
             raw=cop1.read_bytes()
             marks=[]
@@ -237,8 +238,11 @@ def main() -> int:
                     import zlib
                     assert wire[6]==4 and zlib.crc32(wire[:28])==struct.unpack_from('<I',wire,28)[0]
                     marks.append(dict(sequence=struct.unpack_from('<I',wire,8)[0],sampleOffset=struct.unpack_from('<Q',wire,12)[0],elapsedMs=struct.unpack_from('<Q',wire,20)[0]))
-            assert len(marks)==2 and [m['sequence'] for m in marks]==[1,2] and marks[0]['sampleOffset']<marks[1]['sampleOffset']
-            result=dict(result='PASS_CAPTURE_RECORDER_CONTROLS_SOFTWARE_ONLY',output=output,physicalBoard=False,installed=False,
+            expected_marks=1 if options.imu_highlight_only else 2
+            assert len(marks)==expected_marks and [m['sequence'] for m in marks]==list(range(1,expected_marks+1))
+            assert all(m['sampleOffset']>0 for m in marks)
+            if expected_marks==2:assert marks[0]['sampleOffset']<marks[1]['sampleOffset']
+            result=dict(result='PASS_IMU_OFFLINE_HIGHLIGHT_SOFTWARE_ONLY' if options.imu_highlight_only else 'PASS_CAPTURE_RECORDER_CONTROLS_SOFTWARE_ONLY',output=output,physicalBoard=False,installed=False,
                 sourceSha256=hashes,decoded=decoded,marks=marks,cop1=dict(bytes=len(raw),sha256=sha256(cop1)))
             (OUT/'result.json').write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8');print(json.dumps({k:v for k,v in result.items() if k!='sourceSha256'}));return 0
         if options.late_button_release_only:

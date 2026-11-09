@@ -24,7 +24,9 @@ typedef struct {
     bool idle_accel_only;
     uint8_t recovery_attempts;
     bool recovery_waiting;
+    uint8_t tap_source; /* Fresh TAP_SRC of the last successful sample; tail padding. */
 } comp_lsm6dso_t;
+#define COMP_LSM6DSO_DOUBLE_TAP 0x50u /* TAP_IA and DOUBLE_TAP, AN5192 */
 /* Registers callbacks use one atomic CS-bounded shared-bus transaction.
  * Driver configures +/-4g, +/-250dps, 52Hz, BDU, auto-increment, DRDY INT1.
  * Poll fallback is required: V1.1 INT1 arrives via the I/O expander. */

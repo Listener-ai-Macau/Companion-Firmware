@@ -1825,8 +1825,55 @@ static int capture_controls_journey(const char *path)
     puts("PASS restore preferences: refuses live capture, preserves saved original/date/calibration, no-op repeat and reboot durability");
     free(fixture.flash);return 0;
 }
+static int imu_highlight_journey(const char *path)
+{
+    comp_v11_hal_t board;comp_v11_product_app_t app;
+    memset(&fixture,0,sizeof(fixture));fixture.flash=malloc(FLASH_BYTES);
+    REQUIRE(fixture.flash,"IMU NOR allocation");memset(fixture.flash,255u,FLASH_BYTES);layout_root();
+    init_board(&app,&board);REQUIRE(wait_state(&app,COMP_WBA_RECORDING_IDLE,20000u),"IMU recorder boot");
+    board.motion_event_flags=COMP_MOTION_DOUBLE_TAP;board.motion_event_ms=fixture.tick;
+    step(&app,5u);REQUIRE(fixture.mic_starts==0u,"idle tap started microphone");
+    key(&app,true,110u);key(&app,false,4u);
+    REQUIRE(wait_state(&app,COMP_WBA_RECORDING_CAPTURING,20000u),"IMU recorder start");step(&app,30u);
+    comp_cont_recording_t *engine=&app.recording.capture.engine;
+    REQUIRE(engine->bookmark_sequence==0u,"idle gesture leaked into new recording");
+    const uint32_t blocks=engine->stats.accepted_pcm_blocks;
+    board.motion_event_ms=fixture.tick;step(&app,20u);
+    REQUIRE(engine->bookmark_sequence==1u&&board.microphone.running&&fixture.mic_starts==1u&&
+        engine->stats.accepted_pcm_blocks>blocks,"fresh tap did not persist exactly one mark while sampling");
+    step(&app,30u);REQUIRE(engine->bookmark_sequence==1u,"latched gesture produced duplicate marks");
+    board.motion_event_ms=fixture.tick-300u;step(&app,2u);
+    board.motion_event_ms=app.capture_started_ms-1u;step(&app,2u);
+    board.motion_event_flags=COMP_MOTION_SHAKE;board.motion_event_ms=fixture.tick;step(&app,2u);
+    REQUIRE(engine->bookmark_sequence==1u&&fixture.mic_starts==1u,"stale/pre-start/shake event made a mark or restarted capture");
+    key(&app,true,110u);key(&app,false,4u);
+    REQUIRE(wait_state(&app,COMP_WBA_RECORDING_TRANSFER_READY,20000u)&&!app.recording.last_fault,"IMU stop/save");
+    REQUIRE(engine->bookmark_sequence==1u&&!board.microphone.running&&fixture.mic_starts==1u&&
+        fixture.speaker_submits_while_recording==0u,"IMU mark interrupted or polluted audio");
+    board.motion_event_flags=COMP_MOTION_DOUBLE_TAP;board.motion_event_ms=fixture.tick;step(&app,5u);
+    REQUIRE(fixture.mic_starts==1u&&engine->bookmark_sequence==1u,"post-stop tap changed recording");
+    comp_segment_entry_t entry={0};bool found=false;
+    for(uint8_t i=0u;i<COMP_SEGMENT_CAPACITY;i++)if(app.recording.catalog.slots[i]!=255u) {
+        REQUIRE(comp_wba_segment_storage_entry(&app.recording.storage,&app.recording.catalog,i,&entry)==COMP_SEG_OK,"IMU saved metadata");found=true;
+    }
+    REQUIRE(found&&entry.state==COMP_SEG_UNSYNCED,"IMU original missing");
+    FILE *artifact=fopen(path,"wb");REQUIRE(artifact,"IMU artifact open");
+    comp_segment_audio_port_t audio=comp_wba_segment_storage_audio_port(&app.recording.storage);
+    uint32_t offset=0u,index=0u;
+    while(offset<entry.descriptor.encoded_length) {
+        uint8_t page[256],n;
+        REQUIRE(comp_segment_audio_read_page(&audio,&entry,COMP_WBA_NOR_RECORDING_BASE,index++,page,&n)==COMP_SEG_OK,"IMU original read");
+        REQUIRE(fwrite(page,1u,n,artifact)==n,"IMU artifact write");offset+=n;
+    }
+    REQUIRE(fclose(artifact)==0&&offset==entry.descriptor.encoded_length,"IMU original incomplete");
+    init_board(&app,&board);REQUIRE(wait_state(&app,COMP_WBA_RECORDING_IDLE,20000u)&&app.recording.space.logical==1u,
+        "IMU original lost on reboot");
+    puts("PASS IMU highlight: fresh double-tap persists one offline mark without pause; idle, duplicate, expired, pre-start and shake ignored; original survives reboot");
+    free(fixture.flash);return 0;
+}
 int main(int argc,char **argv)
 {
+    if(argc==3&&!strcmp(argv[2],"--imu-highlight-only"))return imu_highlight_journey(argv[1]);
     if(argc==3&&!strcmp(argv[2],"--auto-fault-recovery-only"))return automatic_fault_original_journey();
     if(argc==3&&!strcmp(argv[2],"--idle-prime-only"))return idle_prime_handoff_journey();
     if(argc==3&&!strcmp(argv[2],"--capture-controls-only"))return capture_controls_journey(argv[1]);

@@ -1406,6 +1406,8 @@ static void imu_poll_with_recovery(comp_v11_hal_t *b, uint32_t tick)
         /* Only a real sample establishes recovery; READY alone does not. */
         b->faults &= ~COMP_V11_FAULT_IMU;
         uint8_t events = comp_motion_events_update(&b->motion, &b->imu_sample);
+        if((b->imu.tap_source&COMP_LSM6DSO_DOUBLE_TAP)==COMP_LSM6DSO_DOUBLE_TAP)
+            events|=COMP_MOTION_DOUBLE_TAP;
         b->sample_events |= events;
         if (events != 0u) { b->motion_event_flags = events; b->motion_event_ms = tick; }
     } else if (result == COMP_IMU_IO_ERROR) {

@@ -8,8 +8,23 @@ static comp_imu_poll_t fail(comp_lsm6dso_t *imu)
 {
     imu->state = COMP_IMU_FAULT;
     imu->recovery_waiting = false;
+    imu->tap_source = 0u;
     imu->errors++;
     return COMP_IMU_IO_ERROR;
+}
+static bool configure_taps(comp_lsm6dso_t *imu)
+{
+    /* AN5192 sec5.5 and ST lsm6dso-pid: latched XYZ double-tap to INT1.
+     * Keep the existing52Hz/run and12.5Hz/idle ODRs. The embedded recognizer
+     * works independently of selected output rate. At+/-4g,9LSB=1.125g;
+     * shock/quiet/duration are provisional until real enclosure tuning. */
+    static const uint8_t config[6]={0x0Fu,0x09u,0x89u,0x09u,0x7Fu,0x80u};
+    uint8_t actual[6],route;
+    return imu->write(imu->context,0x56u,config,sizeof(config)) &&
+        write_byte(imu,0x5Eu,0x08u) &&
+        imu->read(imu->context,0x56u,actual,sizeof(actual)) &&
+        imu->read(imu->context,0x5Eu,&route,1u) &&
+        !memcmp(config,actual,sizeof(config)) && route==0x08u;
 }
 static bool configure_idle(comp_lsm6dso_t *imu, bool idle)
 {
@@ -60,11 +75,12 @@ bool comp_lsm6dso_start(comp_lsm6dso_t *imu, comp_lsm6dso_read_fn read,
 comp_imu_poll_t comp_lsm6dso_poll(comp_lsm6dso_t *imu, uint32_t now_ms,
                                  comp_imu_sample_t *sample)
 {
-    uint8_t status, bytes[14];
+    uint8_t status, bytes[14], tap;
     comp_imu_sample_t value = {.timestamp_ms = now_ms};
     if (imu == NULL || sample == NULL || imu->read == NULL || imu->write == NULL) {
         return COMP_IMU_IO_ERROR;
     }
+    imu->tap_source=0u;
     if (imu->state == COMP_IMU_RESET_WAIT) {
         if (!imu->read(imu->context, 0x12u, &status, 1u)) { return fail(imu); }
         if ((status & 1u) != 0u) {
@@ -76,7 +92,8 @@ comp_imu_poll_t comp_lsm6dso_poll(comp_lsm6dso_t *imu, uint32_t now_ms,
             !write_byte(imu, 0x11u, 0x30u) || /* 52Hz, +/-250dps */
             !write_byte(imu, 0x0Du, 0x03u) || /* both data-ready signals to INT1 */
             !imu->read(imu->context, 0x10u, bytes, 3u) ||
-            bytes[0] != 0x38u || bytes[1] != 0x30u || bytes[2] != 0x44u) { return fail(imu); }
+            bytes[0] != 0x38u || bytes[1] != 0x30u || bytes[2] != 0x44u ||
+            !configure_taps(imu)) { return fail(imu); }
         imu->state = COMP_IMU_READY;
         return COMP_IMU_NO_SAMPLE;
     }
@@ -96,6 +113,10 @@ comp_imu_poll_t comp_lsm6dso_poll(comp_lsm6dso_t *imu, uint32_t now_ms,
     for (size_t axis = 0u; axis < 3u; ++axis) {
         value.accel_mg[axis] = (int16_t)(signed16(bytes + 8u + 2u * axis) * 122 / 1000);
     }
+    /* TAP_SRC clears only this latched event. Polling the existing data-ready
+     * fallback also works through the V1.1 IO-expander interrupt route. */
+    if(!imu->read(imu->context,0x1Cu,&tap,1u))return fail(imu);
+    imu->tap_source=tap;
     *sample = value; imu->samples++;
     imu->recovery_attempts = 0u;
     imu->recovery_waiting = false;
@@ -115,11 +136,13 @@ bool comp_lsm6dso_set_idle(comp_lsm6dso_t *imu, bool idle)
 bool comp_lsm6dso_stop(comp_lsm6dso_t *imu)
 {
     if (imu == NULL || imu->write == NULL) { return false; }
-    if (!write_byte(imu, 0x0Du, 0u) || !write_byte(imu, 0x10u, 0u) || !write_byte(imu, 0x11u, 0u)) {
+    if (!write_byte(imu, 0x5Eu, 0u) || !write_byte(imu, 0x0Du, 0u) ||
+        !write_byte(imu, 0x10u, 0u) || !write_byte(imu, 0x11u, 0u)) {
         (void)fail(imu); return false;
     }
     imu->state = COMP_IMU_OFF;
     imu->idle_accel_only = false;
+    imu->tap_source=0u;
     return true;
 }
 
