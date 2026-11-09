@@ -104,7 +104,6 @@ bool comp_v11_ble_linked(void);
 bool comp_v11_ble_secured(void);
 /* Only a ready full Opus frame may wait; housekeeping/PCM staging never waits. */
 bool comp_v11_ble_capture_encode_window(bool pending);
-bool comp_v11_ble_capture_convert_window(uint32_t dma_remaining_bytes,uint32_t half_bytes);
 void comp_v11_ble_tx_pool_available(void);
 void comp_v11_ble_controller_progress_hint(void);
 void comp_v11_ble_host_cycle_completed(void);

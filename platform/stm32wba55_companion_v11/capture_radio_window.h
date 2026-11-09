@@ -23,17 +23,4 @@ static inline bool comp_capture_radio_window_open(comp_capture_radio_window_t *w
     return false;
 }
 
-/* A completed DMA half remains live until the next10ms boundary. Wait only
- * while more than3ms remains for copying it; urgency always wins over radio.
- * Snapshot/sequence/deadline checks still run unchanged after admission. */
-static inline bool comp_capture_radio_convert_open(bool valid,bool radio_busy,
-    uint32_t next_us,uint32_t remaining,uint32_t half_bytes)
-{
-    if(!valid || !half_bytes || half_bytes>UINT32_MAX/2u || !remaining ||
-       remaining>2u*half_bytes)return true;
-    uint32_t to_boundary=remaining>half_bytes?remaining-half_bytes:remaining;
-    if((uint64_t)to_boundary*10u<=(uint64_t)half_bytes*3u)return true;
-    return !radio_busy && next_us>3500u;
-}
-
 #endif

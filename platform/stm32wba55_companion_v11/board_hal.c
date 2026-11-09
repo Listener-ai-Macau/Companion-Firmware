@@ -1304,9 +1304,6 @@ bool comp_v11_hal_init(comp_v11_hal_t *b)
     if (!b->audio_clock_ready || !comp_v11_microphone_hal_init(&b->microphone, &mic_config)) {
         b->faults |= COMP_V11_FAULT_MICROPHONE;
     }
-#ifdef COMPANION_WBA_BLE_LINKED
-    else b->microphone.conversion_window=comp_v11_ble_capture_convert_window;
-#endif
     comp_power_policy_set_blocker(&b->power, COMP_POWER_BLOCKER_BOOT, false);
     return b->faults == 0;
 }

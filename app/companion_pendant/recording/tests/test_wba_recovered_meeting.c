@@ -14,13 +14,13 @@ static void failed_original(void)
     for(unsigned i=0u;i<20000u&&!comp_wba_recording_product_ready(&product_rec,link_owner.runtime.record_token);i++)product_tick();
     assert(comp_wba_recording_product_control(&product_rec,true,link_owner.runtime.record_token));
     link_owner.runtime.prepare_pending=link_owner.runtime.command_pending=false;pause_control_tick();
-    assert(logical_status_bytes==80u&&logical_status[1]==1u&&!logical_status[2]);
+    assert(logical_status_bytes==80u&&logical_status[1]==0u&&!logical_status[2]);
     for(unsigned block=0u;block<14u;block++) {
         int16_t samples[160];pcm(block,samples);
         assert(comp_wba_recording_product_pcm(&product_rec,samples,160u,16000u));
         for(unsigned i=0u;i<160u;i++)pause_control_tick();
     }
-    assert(product_rec.capture.engine.stats.durable_bytes>0u);
+    assert(product_rec.capture.engine.stats.durable_bytes>0u&&logical_status[1]==1u&&!logical_status[2]);
     int16_t samples[160];pcm(15u,samples);
     for(unsigned block=0u;block<8u;block++)assert(comp_wba_recording_product_pcm(&product_rec,samples,160u,16000u));
     assert(!comp_wba_recording_product_pcm(&product_rec,samples,160u,16000u));
@@ -29,7 +29,16 @@ static void failed_original(void)
      * app test exercises the production report, pending/cancel and CSI1. */
     link_owner.runtime.recording=DENZIC_AUDIO_RECORDING_STATE_ERROR_RECOVERY;
     assert(!mic&&product_rec.pipeline.state==COMP_PIPE_FAILED&&logical_status_bytes==80u&&
-        logical_status[1]==1u&&logical_status[2]==COMPANION_V1_MEETING_ERROR_REJECTED);
+        logical_status[1]==0u&&logical_status[2]==COMPANION_V1_MEETING_ERROR_REJECTED&&
+        comp_rec_get64(logical_status+52u)==501u&&comp_rec_get32(logical_status+20u)>0u);
+    /* An actual failed microphone stop still owns capture: never claim idle. */
+    product_rec.capture.engine.microphone_active=true;
+    logical_status[1]=link_owner.features.meeting.state=1u;
+    comp_link_poll(&link_owner.link,f.now);
+    assert(logical_status[1]==1u&&logical_status[2]==COMPANION_V1_MEETING_ERROR_REJECTED);
+    product_rec.capture.engine.microphone_active=false;
+    comp_link_poll(&link_owner.link,f.now);
+    assert(logical_status[1]==0u&&logical_status[2]==COMPANION_V1_MEETING_ERROR_REJECTED);
 }
 static void finish_runtime_link_recovery(bool retain_request)
 {
@@ -110,6 +119,8 @@ static void pending_remote_start(bool cancel)
     assert(comp_wba_recording_product_prepare_bookmarked(&product_rec,502u,1u,0u,token));
     for(unsigned i=0u;i<20000u&&!comp_wba_recording_product_ready(&product_rec,token);i++)pause_control_tick();
     assert(comp_wba_recording_product_control(&product_rec,true,token));pause_control_tick();
+    int16_t first_pcm[160];pcm(0u,first_pcm);
+    assert(comp_wba_recording_product_pcm(&product_rec,first_pcm,160u,16000u));pause_control_tick();
     assert(logical_status_bytes==80u&&logical_status[1]==1u&&!logical_status[2]&&
         comp_rec_get32(logical_status+8u)==202u&&comp_rec_get64(logical_status+52u)==502u&&mic_starts==starts+1u);
     assert(comp_wba_recording_product_control(&product_rec,false,token));

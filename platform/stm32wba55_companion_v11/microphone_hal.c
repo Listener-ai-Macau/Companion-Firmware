@@ -359,24 +359,6 @@ bool comp_v11_microphone_hal_stop(comp_v11_microphone_hal_t *microphone)
     return stopped;
 }
 
-static bool conversion_window_open(comp_v11_microphone_hal_t *microphone)
-{
-    if(!microphone->conversion_window || !microphone->running ||
-       microphone->startup_halves_remaining>1u)return true;
-    uint32_t mask=__get_PRIMASK();__disable_irq();
-    uint8_t tail=microphone->event_tail;
-    bool pending=tail!=microphone->event_head;
-    comp_v11_microphone_event_t event={0};uint32_t remaining=0u;
-    if(pending) {
-        __DMB();event.half=microphone->events[tail].half;
-        event.sequence=microphone->events[tail].sequence;
-        remaining=__HAL_DMA_GET_COUNTER(&microphone->dma);
-    }
-    __set_PRIMASK(mask);
-    /* A stale event must reach the existing fault accounting immediately. */
-    return !pending || !half_is_current(microphone,&event) ||
-        microphone->conversion_window(remaining,COMP_V11_MIC_RAW_HALF_BYTES);
-}
 static comp_v11_microphone_poll_result_t microphone_hal_poll_body(
     comp_v11_microphone_hal_t *microphone)
 {
@@ -410,7 +392,10 @@ static comp_v11_microphone_poll_result_t microphone_hal_poll_body(
         (void)comp_v11_microphone_hal_stop(microphone);
         return COMP_V11_MIC_POLL_ERROR;
     }
-    if (!conversion_window_open(microphone)) return COMP_V11_MIC_POLL_IDLE;
+    /* A completed half has a finite DMA lifetime. Snapshot it before yielding
+     * to radio work: a later bounded foreground slice can still cross reuse.
+     * The full copy is validated before/after; IRQs remain enabled, and codec
+     * quiet-window admission stays independent of this capture priority. */
     if (!pop_event(microphone, &event)) return COMP_V11_MIC_POLL_IDLE;
     if (!half_is_current(microphone, &event)) {
         microphone->stale_dma_halves++;

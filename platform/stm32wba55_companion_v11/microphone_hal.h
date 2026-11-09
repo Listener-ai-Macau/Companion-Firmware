@@ -111,9 +111,6 @@ typedef struct {
     uint8_t partial_stop_attempts;
     uint32_t partial_stop_due_ms;
     comp_duration_stats_t pdm_duration;
-    /* Optional cooperative board policy. NULL preserves standalone behavior;
-     * a false result retains the pending DMA event, never discards samples. */
-    bool (*conversion_window)(uint32_t dma_remaining_bytes,uint32_t half_bytes);
 } comp_v11_microphone_hal_t;
 
 /* Configures only SAI1 Block A and GPDMA1 Channel 1. The caller must already

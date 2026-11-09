@@ -147,7 +147,16 @@ static void meeting_refresh(comp_link_t *l,uint32_t now)
              * owner before this poll. Keep the request's terminal failure:
              * an idle/pending snapshot would hide FULL and fence every retry. */
             status->last_error=COMPANION_V1_MEETING_ERROR_STORAGE_FULL;
-        } else if(p->state==COMP_PIPE_FAILED)status->last_error=COMPANION_V1_MEETING_ERROR_REJECTED;
+        } else if(p->state==COMP_PIPE_FAILED) {
+            status->last_error=COMPANION_V1_MEETING_ERROR_REJECTED;
+            /* Retain the original key and failure, but never advertise an
+             * already-quiesced fault as still recording or safely finalized.
+             * Recovery must validate its durable prefix before it is saved. */
+            if(p->engine_bound&&!e->microphone_active) {
+                status->state=MEETING_STATE_IDLE;
+                status->duration_ms=e->stats.accepted_pcm_blocks*10u;
+            }
+        }
         else if(p->engine_bound&&(p->state==COMP_PIPE_RECORDING||p->state==COMP_PIPE_STOPPING||p->state==COMP_PIPE_FINISHED)) {
             /* Opening the microphone is still START preparation: its first
              * DMA halves are acoustic settling, not accepted audio. Keep the

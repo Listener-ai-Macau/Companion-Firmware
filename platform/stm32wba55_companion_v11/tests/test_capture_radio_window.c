@@ -24,17 +24,6 @@ int main(void)
     assert(!comp_capture_radio_window_open(&w,8,true,true,false,100));
     /* The radio event finishing releases admission immediately, without sleep. */
     assert(comp_capture_radio_window_open(&w,8,true,true,false,15000));
-    assert(comp_capture_radio_convert_open(false,true,0,2000,1000));
-    assert(!comp_capture_radio_convert_open(true,true,UINT32_MAX,1400,1000));
-    assert(!comp_capture_radio_convert_open(true,false,3500,1400,1000));
-    assert(comp_capture_radio_convert_open(true,false,3501,1400,1000));
-    assert(comp_capture_radio_convert_open(true,true,0,1300,1000));
-    assert(comp_capture_radio_convert_open(true,true,0,300,1000));
-    assert(!comp_capture_radio_convert_open(true,true,0,301,1000));
-    assert(comp_capture_radio_convert_open(true,true,0,0,1000));
-    assert(comp_capture_radio_convert_open(true,true,0,2001,1000));
-    assert(comp_capture_radio_convert_open(true,true,0,1000,0));
-    assert(comp_capture_radio_convert_open(true,true,0,1000,UINT32_MAX));
     /* Real DMA boundaries: codec has 2ms, other foreground work retains 4ms.
      * A queued DMA event or unpublished hardware transition always wins. */
     assert(COMP_V11_CAPTURE_ENCODE_GUARD_MS==2u);

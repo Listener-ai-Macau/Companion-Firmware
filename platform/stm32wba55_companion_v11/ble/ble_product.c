@@ -510,12 +510,6 @@ bool comp_v11_ble_capture_encode_window(bool pending)
     bool valid=pending && capture_radio_remaining(&next_us,&busy);
     return comp_capture_radio_window_open(&wait,HAL_GetTick(),pending,valid,busy,next_us);
 }
-bool comp_v11_ble_capture_convert_window(uint32_t remaining,uint32_t half_bytes)
-{
-    uint32_t next_us=0u;bool busy=false;
-    bool valid=capture_radio_remaining(&next_us,&busy);
-    return comp_capture_radio_convert_open(valid,busy,next_us,remaining,half_bytes);
-}
 uint32_t comp_v11_ble_fatal_error(void) { return fatal_error; }
 void RTC_IRQHandler(void) {
     comp_v11_cpu_irq_enter(false); HAL_RTC_AlarmIRQHandler(&hrtc); HAL_RTCEx_SSRUIRQHandler(&hrtc); 
