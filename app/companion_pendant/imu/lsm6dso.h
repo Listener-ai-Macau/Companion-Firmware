@@ -26,6 +26,8 @@ typedef struct {
     bool recovery_waiting;
     uint8_t tap_source; /* Fresh TAP_SRC of the last successful sample; tail padding. */
     bool recording_taps;
+    uint32_t tap_reads;
+    uint32_t tap_counts; /* Saturated SINGLE low16 / DOUBLE high16, TAP_IA required. */
 } comp_lsm6dso_t;
 #define COMP_LSM6DSO_DOUBLE_TAP 0x50u /* TAP_IA and DOUBLE_TAP, AN5192 */
 /* Registers callbacks use one atomic CS-bounded shared-bus transaction.

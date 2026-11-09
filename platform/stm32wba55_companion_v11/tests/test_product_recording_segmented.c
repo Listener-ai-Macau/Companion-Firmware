@@ -1833,8 +1833,10 @@ static int imu_highlight_journey(const char *path)
     init_board(&app,&board);REQUIRE(wait_state(&app,COMP_WBA_RECORDING_IDLE,20000u),"IMU recorder boot");
     board.motion_event_flags=COMP_MOTION_DOUBLE_TAP;board.motion_event_ms=fixture.tick;
     step(&app,5u);REQUIRE(fixture.mic_starts==0u,"idle tap started microphone");
+    board.imu.tap_reads=99u;board.imu.tap_counts=0x10001u;
     key(&app,true,110u);key(&app,false,4u);
     REQUIRE(wait_state(&app,COMP_WBA_RECORDING_CAPTURING,20000u),"IMU recorder start");step(&app,30u);
+    REQUIRE(board.imu.tap_reads==0u&&board.imu.tap_counts==0u,"new microphone admission retained previous tap counters");
     comp_cont_recording_t *engine=&app.recording.capture.engine;
     REQUIRE(engine->bookmark_sequence==0u,"idle gesture leaked into new recording");
     const uint32_t blocks=engine->stats.accepted_pcm_blocks;

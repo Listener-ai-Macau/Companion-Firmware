@@ -6,7 +6,8 @@
 #include "companion_crc32.h"
 enum { COMP_MAINT_QUERY=0,COMP_MAINT_PAIR_WINDOW=1,COMP_MAINT_DEFAULTS=2,COMP_MAINT_CLEAR_BONDS=3,
        COMP_MAINT_BLE_DIAGNOSTICS=4,COMP_MAINT_MEMORY=5,COMP_MAINT_AUDIO_TIMING=6,
-       COMP_MAINT_AUDIO_FAULTS=7,COMP_MAINT_AUDIO_SERVICE=8,COMP_MAINT_CPU_DUTY=9,COMP_MAINT_STORAGE=10 };
+        COMP_MAINT_AUDIO_FAULTS=7,COMP_MAINT_AUDIO_SERVICE=8,COMP_MAINT_CPU_DUTY=9,COMP_MAINT_STORAGE=10,
+        COMP_MAINT_IMU_TAPS=16,COMP_MAINT_IMU_MARKS=17 };
 enum { COMP_MAINT_OK=0,COMP_MAINT_PENDING=1,COMP_MAINT_BUSY=2,COMP_MAINT_INVALID=3,COMP_MAINT_FAILED=4 };
 #if defined(COMPANION_WBA_CPU_RESIDENCE_PROFILE) && COMPANION_WBA_CPU_RESIDENCE_PROFILE
 /* Engineering-only cached pages on the existing encrypted characteristic.
@@ -18,7 +19,7 @@ static inline bool comp_maint_operation_supported(uint8_t operation)
 #if defined(COMPANION_WBA_CPU_RESIDENCE_PROFILE) && COMPANION_WBA_CPU_RESIDENCE_PROFILE
     if(operation>=COMP_MAINT_CODEC_FIRST && operation<=COMP_MAINT_CODEC_LAST)return true;
 #endif
-    return operation<=COMP_MAINT_STORAGE;
+    return operation<=COMP_MAINT_STORAGE || operation==COMP_MAINT_IMU_TAPS || operation==COMP_MAINT_IMU_MARKS;
 }
 static inline uint32_t comp_maint_get32(const uint8_t *p)
 {return (uint32_t)p[0]|((uint32_t)p[1]<<8u)|((uint32_t)p[2]<<16u)|((uint32_t)p[3]<<24u);}
@@ -78,6 +79,15 @@ static inline bool comp_maint_request(const uint8_t *p,uint16_t n,uint8_t *opera
  * byte25 consume phase,26 erase phase,27 known consume descriptor flags. No NOR I/O or new
  * state. Last erase attribution still requires exact target containment;
  * inactive cached facts alone do not measure elapsed time or prove ownership. */
+/* 16/17 cached IMU recorder scalars, schema1; no sensor/flash I/O, clearing or
+ * recording command. First two u32 are current logical session low/high.
+ * Flags: IMU ready, mic running,417Hz tap mode, tap read seen, valid PCM owner.
+ * 16: last PDM-run TAP_SRC read count and saturated SINGLE low16/DOUBLE high16.
+ * 17: current logical bookmark request and durable bookmark sequence.
+ * Tap counters reset at each actual microphone admission (also resume), not
+ * on these reads or STOP; bookmark sequence retains the whole logical source.
+ * During new preparation before first PCM, owner-valid is clear. This avoids
+ * interpreting the1Hz/250ms motion-status latch as a complete event history. */
 static inline void comp_maint_timing16(uint8_t p[32],unsigned at,unsigned bit,
     bool valid,uint32_t value)
 {

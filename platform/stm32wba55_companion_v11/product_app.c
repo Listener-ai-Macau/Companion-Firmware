@@ -80,6 +80,11 @@ static uint32_t recording_now(void *c) { (void)c; return HAL_GetTick(); }
 static bool microphone_control(void *c,bool enabled)
 {
     comp_v11_product_app_t *app=c;
+    if(enabled && !app->board->microphone.running) {
+        /* Most recent PDM run, including a failed/unavailable optional IMU.
+         * Pauses restart this scope; the logical bookmark sequence persists. */
+        app->board->imu.tap_reads=0u;app->board->imu.tap_counts=0u;
+    }
     if(enabled && !app->board->microphone.running &&
        !comp_v11_hal_microphone_profile(app->board,app->capture_profile,
            app->recording.pipeline.pause_timeline==COMP_CONT_TIMELINE_AUDIO_PROFILE))return false;

@@ -118,6 +118,11 @@ comp_imu_poll_t comp_lsm6dso_poll(comp_lsm6dso_t *imu, uint32_t now_ms,
     if(imu->recording_taps) {
         if(!imu->read(imu->context,0x1Cu,&tap,1u))return fail(imu);
         imu->tap_source=tap;
+        if(imu->tap_reads!=UINT32_MAX)++imu->tap_reads;
+        if(tap&0x40u) {
+            if((tap&0x20u) && (imu->tap_counts&0xFFFFu)!=0xFFFFu)++imu->tap_counts;
+            if((tap&0x10u) && (imu->tap_counts>>16u)!=0xFFFFu)imu->tap_counts+=0x10000u;
+        }
     }
     *sample = value; imu->samples++;
     imu->recovery_attempts = 0u;

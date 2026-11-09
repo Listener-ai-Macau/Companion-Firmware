@@ -1046,6 +1046,22 @@ static void maintenance_storage_fields(const companion_spi_nor_stm32wba_t *n,
     response[24]=(uint8_t)(n->erase_bytes/4096u);response[25]=p->consume_phase;
     response[26]=n->erase_phase;response[27]=known?e->descriptor.flags:0u;
 }
+static void maintenance_imu_fields(uint8_t operation,uint8_t response[32])
+{
+    const comp_lsm6dso_t *imu=&product->board->imu;
+    const comp_cont_recording_t *r=&product->recording.capture.engine;
+    const uint64_t session=r->active.descriptor.session_id;
+    response[7]=1u;
+    if(!product->recording.media_ready || !r->token || !session) {
+        response[5]=COMP_MAINT_BUSY;response[6]=0u;return;
+    }
+    response[6]=(uint8_t)((unsigned)(imu->state==COMP_IMU_READY)|
+        (unsigned)product->board->microphone.running<<1u|(unsigned)imu->recording_taps<<2u|
+        (unsigned)(imu->tap_reads!=0u)<<3u|(unsigned)(r->stats.accepted_pcm_blocks!=0u)<<4u);
+    comp_maint_put32(response+12u,(uint32_t)session);comp_maint_put32(response+16u,(uint32_t)(session>>32u));
+    comp_maint_put32(response+20u,operation==COMP_MAINT_IMU_TAPS?imu->tap_reads:r->bookmark_request);
+    comp_maint_put32(response+24u,operation==COMP_MAINT_IMU_TAPS?imu->tap_counts:r->bookmark_sequence);
+}
 #if COMPANION_WBA_CPU_RESIDENCE_PROFILE
 static void maintenance_codec_fields(uint8_t operation,uint8_t response[32])
 {
@@ -1072,6 +1088,9 @@ static void maintenance_codec_fields(uint8_t operation,uint8_t response[32])
 static void maintenance_runtime_fields(uint8_t operation,uint8_t response[32])
 {
     response[6]=0u;response[7]=1u;
+    if(operation==COMP_MAINT_IMU_TAPS || operation==COMP_MAINT_IMU_MARKS) {
+        maintenance_imu_fields(operation,response);return;
+    }
 #if COMPANION_WBA_CPU_RESIDENCE_PROFILE
     if(operation>=COMP_MAINT_CODEC_FIRST && operation<=COMP_MAINT_CODEC_LAST) {
         maintenance_codec_fields(operation,response);return;

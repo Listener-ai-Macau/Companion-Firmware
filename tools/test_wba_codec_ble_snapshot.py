@@ -7,13 +7,20 @@ p=argparse.ArgumentParser();p.add_argument('--output',type=Path,required=True);a
 root=Path(__file__).resolve().parents[1];platform=root/'platform/stm32wba55_companion_v11';out=a.output.resolve();out.mkdir(parents=True,exist_ok=False)
 cpu=(platform/'cpu_profile_target.c').read_text();ble=(platform/'ble/ble_product.c').read_text()
 getter=function(cpu,'bool comp_v11_cpu_codec_read');fields=function(ble,'static void maintenance_codec_fields')
-(out/'getter.inc').write_text(getter);(out/'fields.inc').write_text(fields)
+imu_fields=function(ble,'static void maintenance_imu_fields')
+(out/'getter.inc').write_text(getter);(out/'fields.inc').write_text(fields);(out/'imu_fields.inc').write_text(imu_fields)
 fixture=r'''
 #include "maintenance_protocol.h"
 #include "cpu_codec_irq.h"
 #include "companion_cpu_stage.h"
 #include <assert.h>
 #include <stdio.h>
+#include "lsm6dso.h"
+typedef struct {uint32_t token,bookmark_request,bookmark_sequence;struct {uint32_t accepted_pcm_blocks;}stats;struct {struct {uint64_t session_id;} descriptor;}active;} comp_cont_recording_t;
+typedef struct {comp_lsm6dso_t imu;struct {bool running;}microphone;} board_t;
+static board_t board;
+static struct {struct {bool media_ready;struct {comp_cont_recording_t engine;}capture;}recording;board_t *board;} instance,*product=&instance;
+#include "imu_fields.inc"
 #if COMPANION_WBA_CPU_RESIDENCE_PROFILE
 static struct {bool active;struct {uint32_t clock_errors,order_errors,reference_errors,token;}stats;} residence;
 static bool transport_capture;
@@ -21,8 +28,6 @@ static struct {uint32_t calls,peak_us,peak_irq_us,peak_hits,peak_misses,peak_adm
 static comp_cpu_codec_irq_t codec_irq;
 static struct {uint32_t calls,invalid;} stage_stats[COMP_CPU_STAGE_STORAGE_COUNT];
 static uint32_t opus_over_budget[3];
-typedef struct {uint32_t token;struct {struct {uint64_t session_id;} descriptor;}active;} comp_cont_recording_t;
-static struct {struct {bool media_ready;struct {comp_cont_recording_t engine;}capture;}recording;} instance,*product=&instance;
 #include "getter.inc"
 #include "fields.inc"
 #endif
@@ -38,6 +43,27 @@ int main(void)
 {
     for(unsigned op=0u;op<=10u;op++)assert(request((uint8_t)op,123u,false));
     assert(!request(11u,123u,false) && !request(31u,123u,false) && !request(39u,123u,false));
+    product->board=&board;product->recording.media_ready=true;
+    comp_cont_recording_t *r=&product->recording.capture.engine;
+    r->token=77u;r->active.descriptor.session_id=UINT64_C(0x1122334455667788);
+    r->stats.accepted_pcm_blocks=100u;r->bookmark_request=88u;r->bookmark_sequence=2u;
+    board.imu.state=COMP_IMU_READY;board.imu.tap_reads=42u;board.imu.tap_counts=0x00020005u;
+    for(uint8_t op=16u;op<=17u;op++) {
+        uint8_t w[32];assert(request(op,123u,false)&&!request(op,0u,false)&&!request(op,123u,true));
+        comp_maint_response(w,op,COMP_MAINT_OK,123u,0u,0u,0u,0u,0u,0u);
+        maintenance_imu_fields(op,w);comp_maint_put32(w+28u,companion_crc32(0u,w,28u));
+        assert(w[5]==COMP_MAINT_OK&&w[6]==25u&&w[7]==1u);
+        assert(comp_maint_get32(w+12u)==0x55667788u&&comp_maint_get32(w+16u)==0x11223344u);
+        assert(comp_maint_get32(w+20u)==(op==16u?42u:88u)&&comp_maint_get32(w+24u)==(op==16u?0x20005u:2u));
+        assert(comp_maint_get32(w+28u)==companion_crc32(0u,w,28u));
+    }
+    uint8_t iw[32]={0};board.microphone.running=true;board.imu.recording_taps=true;
+    maintenance_imu_fields(16u,iw);assert(iw[6]==31u&&board.imu.tap_reads==42u&&board.imu.tap_counts==0x20005u);
+    r->stats.accepted_pcm_blocks=0u;maintenance_imu_fields(16u,iw);assert(!(iw[6]&16u));
+    product->recording.media_ready=false;maintenance_imu_fields(16u,iw);assert(iw[5]==COMP_MAINT_BUSY);
+    product->recording.media_ready=true;r->active.descriptor.session_id=0u;maintenance_imu_fields(17u,iw);assert(iw[5]==COMP_MAINT_BUSY);
+    r->active.descriptor.session_id=UINT64_C(0x1122334455667788);
+    puts("PASS cached IMU scalars: explicit source session, saturated raw counts and durable marks, no mutation/I/O, invalid preparation owner and missing media distinguished");
 #if COMPANION_WBA_CPU_RESIDENCE_PROFILE
     uint32_t v[4];uint8_t flags;
     assert(comp_v11_cpu_codec_read(0u,v,&flags) && v[0]==0u && v[3]==0u && flags==5u);
@@ -80,7 +106,7 @@ results={}
 for profile in (0,1):
     folder=out/str(profile);folder.mkdir();exe=folder/'test.exe'
     args=['cl.exe','/nologo','/TC','/std:c11','/O2','/W4','/WX','/wd4127','/utf-8','/DCOMPANION_WBA_CPU_RESIDENCE_PROFILE='+str(profile),
-        '/I'+str(out),'/I'+str(platform),'/I'+str(platform/'ble'),'/I'+str(root/'app/companion_pendant/storage'),'/I'+str(root/'app/companion_pendant/recording'),str(out/'model.c'),'/Fe:'+str(exe)]
+        '/I'+str(out),'/I'+str(platform),'/I'+str(platform/'ble'),'/I'+str(root/'app/companion_pendant/imu'),'/I'+str(root/'app/companion_pendant/storage'),'/I'+str(root/'app/companion_pendant/recording'),str(out/'model.c'),'/Fe:'+str(exe)]
     batch=folder/'compile.cmd';batch.write_text('@echo off\ncall "'+str(find_vsdevcmd())+'" -arch=amd64 -host_arch=amd64 >nul\nif errorlevel 1 exit /b %errorlevel%\n'+subprocess.list2cmdline(args)+'\n')
     for stage,cmd in [('compile',['cmd.exe','/d','/c',str(batch)]),('run',[str(exe)])]:
         r=subprocess.run(cmd,cwd=folder,capture_output=True,text=True,encoding='utf8',errors='replace');(folder/(stage+'.log')).write_text(r.stdout+r.stderr,encoding='utf8');print(profile,stage,r.returncode,r.stdout+r.stderr,flush=True);r.check_returncode();results[f'{profile}-{stage}']=r.returncode

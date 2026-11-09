@@ -39,9 +39,15 @@ int main(void)
     b.reg[0x1E]=3u;
     assert(comp_lsm6dso_poll(&imu,30u,&sample)==COMP_IMU_SAMPLE&&imu.tap_source==0x50u&&b.taps_read==1u);
     assert(comp_lsm6dso_poll(&imu,40u,&sample)==COMP_IMU_SAMPLE&&imu.tap_source==0u);
+    b.reg[0x1C]=0x60u;assert(comp_lsm6dso_poll(&imu,41u,&sample)==COMP_IMU_SAMPLE);
+    assert(imu.tap_reads==3u&&imu.tap_counts==0x00010001u);
+    b.reg[0x1C]=0x10u;assert(comp_lsm6dso_poll(&imu,42u,&sample)==COMP_IMU_SAMPLE&&imu.tap_counts==0x00010001u);
+    imu.tap_reads=UINT32_MAX;imu.tap_counts=UINT32_MAX;b.reg[0x1C]=0x70u;
+    assert(comp_lsm6dso_poll(&imu,43u,&sample)==COMP_IMU_SAMPLE&&imu.tap_reads==UINT32_MAX&&imu.tap_counts==UINT32_MAX);
     b.reg[0x1E]=0u;
     assert(comp_lsm6dso_poll(&imu,50u,&sample)==COMP_IMU_NO_SAMPLE&&imu.tap_source==0u);
     assert(comp_lsm6dso_set_recording_taps(&imu,false)&&b.reg[0x10]==0x38u&&b.reg[0x5E]==0u);
+    assert(imu.tap_reads==UINT32_MAX&&imu.tap_counts==UINT32_MAX);
     assert(comp_lsm6dso_set_idle(&imu,true)&&b.reg[0x10]==0x18u&&b.reg[0x11]==0u&&b.reg[0x0D]==1u);
     b.reg[0x1E]=1u;b.reg[0x1C]=0x50u;
     assert(comp_lsm6dso_poll(&imu,60u,&sample)==COMP_IMU_SAMPLE&&imu.tap_source==0u);
