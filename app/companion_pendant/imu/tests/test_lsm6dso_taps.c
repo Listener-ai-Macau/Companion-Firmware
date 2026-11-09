@@ -25,7 +25,7 @@ static void start(comp_lsm6dso_t *imu,bus_t *b)
     assert(comp_lsm6dso_start(imu,read_reg,write_reg,b,0u));
     b->reg[0x12]=0u;comp_imu_sample_t sample={0};
     assert(comp_lsm6dso_poll(imu,10u,&sample)==COMP_IMU_NO_SAMPLE&&imu->state==COMP_IMU_READY);
-    assert(b->reg[0x56]==0x0Fu&&b->reg[0x57]==9u&&b->reg[0x58]==0x89u&&b->reg[0x59]==9u);
+    assert(b->reg[0x56]==0x0Fu&&b->reg[0x57]==4u&&b->reg[0x58]==0x84u&&b->reg[0x59]==4u);
     assert(b->reg[0x5A]==0x7Fu&&b->reg[0x5B]==0x80u&&b->reg[0x5E]==0u&&b->reg[0x0D]==3u);
 }
 int main(void)

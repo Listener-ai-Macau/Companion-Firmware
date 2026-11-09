@@ -16,9 +16,9 @@ static bool configure_taps(comp_lsm6dso_t *imu)
 {
     /* AN5192 sec5.5 and ST lsm6dso-pid: latched XYZ double-tap to INT1.
      * Route remains disabled until recording uses recommended417Hz accel.
-     * At+/-4g,9LSB=1.125g;
+     * At+/-4g,4LSB=0.5g slope threshold for a finger tap on the small card;
      * shock/quiet/duration are provisional until real enclosure tuning. */
-    static const uint8_t config[6]={0x0Fu,0x09u,0x89u,0x09u,0x7Fu,0x80u};
+    static const uint8_t config[6]={0x0Fu,0x04u,0x84u,0x04u,0x7Fu,0x80u};
     uint8_t actual[6],route;
     return imu->write(imu->context,0x56u,config,sizeof(config)) &&
         write_byte(imu,0x5Eu,0u) &&
