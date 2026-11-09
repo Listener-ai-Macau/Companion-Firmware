@@ -1101,7 +1101,13 @@ bool comp_v11_hal_microphone_enable(comp_v11_hal_t *b, bool enabled)
     }
 #endif
     if(enabled && !battery_capture_prepare(b)) {b->faults|=COMP_V11_FAULT_BATTERY;return false;}
+    /* Optional gestures configure before PDM starts, never reset/configure the
+     * shared SPI sensor in live capture. Missing IMU must not lose a recording. */
+    if(enabled && b->imu.state==COMP_IMU_READY && !panel_holds_shared_bus(b) &&
+       !comp_lsm6dso_set_recording_taps(&b->imu,true))b->faults|=COMP_V11_FAULT_IMU;
     ok = enabled ? comp_v11_microphone_hal_start(&b->microphone) : comp_v11_microphone_hal_stop(&b->microphone);
+    if(!b->microphone.running && b->imu.state==COMP_IMU_READY && !panel_holds_shared_bus(b) &&
+       !comp_lsm6dso_set_recording_taps(&b->imu,false))b->faults|=COMP_V11_FAULT_IMU;
 #if COMPANION_WBA_DUAL_MIC_PROBE
     if(enabled&&ok){
         dual_probe_failure_baseline=dual_probe_failures(b);

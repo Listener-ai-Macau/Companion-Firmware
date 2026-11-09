@@ -26,11 +26,13 @@ static void start(comp_lsm6dso_t *imu,bus_t *b)
     b->reg[0x12]=0u;comp_imu_sample_t sample={0};
     assert(comp_lsm6dso_poll(imu,10u,&sample)==COMP_IMU_NO_SAMPLE&&imu->state==COMP_IMU_READY);
     assert(b->reg[0x56]==0x0Fu&&b->reg[0x57]==9u&&b->reg[0x58]==0x89u&&b->reg[0x59]==9u);
-    assert(b->reg[0x5A]==0x7Fu&&b->reg[0x5B]==0x80u&&b->reg[0x5E]==8u&&b->reg[0x0D]==3u);
+    assert(b->reg[0x5A]==0x7Fu&&b->reg[0x5B]==0x80u&&b->reg[0x5E]==0u&&b->reg[0x0D]==3u);
 }
 int main(void)
 {
     comp_lsm6dso_t imu;bus_t b;comp_imu_sample_t sample={0};start(&imu,&b);
+    assert(comp_lsm6dso_set_recording_taps(&imu,true)&&b.reg[0x10]==0x68u&&b.reg[0x11]==0x30u&&b.reg[0x5E]==8u);
+    assert(!comp_lsm6dso_set_idle(&imu,true));b.taps_read=0u;
     /* No sample must leave the chip's latched gesture for the next real sample. */
     b.reg[0x1C]=COMP_LSM6DSO_DOUBLE_TAP;
     assert(comp_lsm6dso_poll(&imu,20u,&sample)==COMP_IMU_NO_SAMPLE&&b.taps_read==0u&&imu.tap_source==0u);
@@ -39,15 +41,16 @@ int main(void)
     assert(comp_lsm6dso_poll(&imu,40u,&sample)==COMP_IMU_SAMPLE&&imu.tap_source==0u);
     b.reg[0x1E]=0u;
     assert(comp_lsm6dso_poll(&imu,50u,&sample)==COMP_IMU_NO_SAMPLE&&imu.tap_source==0u);
+    assert(comp_lsm6dso_set_recording_taps(&imu,false)&&b.reg[0x10]==0x38u&&b.reg[0x5E]==0u);
     assert(comp_lsm6dso_set_idle(&imu,true)&&b.reg[0x10]==0x18u&&b.reg[0x11]==0u&&b.reg[0x0D]==1u);
     b.reg[0x1E]=1u;b.reg[0x1C]=0x50u;
-    assert(comp_lsm6dso_poll(&imu,60u,&sample)==COMP_IMU_SAMPLE&&imu.tap_source==0x50u);
-    assert(comp_lsm6dso_set_idle(&imu,false)&&b.reg[0x10]==0x38u&&b.reg[0x11]==0x30u&&b.reg[0x0D]==3u);
+    assert(comp_lsm6dso_poll(&imu,60u,&sample)==COMP_IMU_SAMPLE&&imu.tap_source==0u);
+    assert(comp_lsm6dso_set_recording_taps(&imu,true)&&b.reg[0x10]==0x68u&&b.reg[0x11]==0x30u&&b.reg[0x0D]==3u&&b.reg[0x1C]==0u);
     b.reg[0x1E]=3u;b.fail_read=0x1C;unsigned samples=imu.samples;
     assert(comp_lsm6dso_poll(&imu,70u,&sample)==COMP_IMU_IO_ERROR&&imu.tap_source==0u&&imu.samples==samples);
     b.fail_read=-1;assert(!comp_lsm6dso_recover(&imu,80u));assert(comp_lsm6dso_recover(&imu,1080u));
     b.reg[0x12]=0u;b.reg[0x56]=0u;b.reg[0x5E]=0u;
-    assert(comp_lsm6dso_poll(&imu,1090u,&sample)==COMP_IMU_NO_SAMPLE&&imu.state==COMP_IMU_READY&&b.reg[0x56]==15u&&b.reg[0x5E]==8u);
+    assert(comp_lsm6dso_poll(&imu,1090u,&sample)==COMP_IMU_NO_SAMPLE&&imu.state==COMP_IMU_READY&&b.reg[0x56]==15u&&b.reg[0x5E]==0u&&!imu.recording_taps);
     assert(comp_lsm6dso_stop(&imu)&&b.reg[0x5E]==0u&&b.reg[0x0D]==0u&&b.reg[0x10]==0u&&b.reg[0x11]==0u&&imu.tap_source==0u);
     /* Configuration failures do not report READY with a missing gesture route. */
     for(unsigned i=0u;i<3u;i++) {
@@ -55,6 +58,6 @@ int main(void)
         if(i==0u)b.fail_write=0x56;else if(i==1u)b.corrupt=0x58;else b.fail_read=0x5E;
         assert(comp_lsm6dso_poll(&imu,2010u,&sample)==COMP_IMU_IO_ERROR&&imu.state==COMP_IMU_FAULT&&imu.tap_source==0u);
     }
-    puts("PASS LSM6DSO double-tap: verified chip configuration, latched event once, no-sample retention, run/idle, recovery and I/O failure");
+    puts("PASS LSM6DSO double-tap: verified417Hz recording accel/52Hz gyro,52Hz awake/12.5Hz idle, latched event once, no-sample retention, recovery and I/O failure");
     return 0;
 }

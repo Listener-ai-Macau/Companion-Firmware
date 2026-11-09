@@ -25,6 +25,7 @@ typedef struct {
     uint8_t recovery_attempts;
     bool recovery_waiting;
     uint8_t tap_source; /* Fresh TAP_SRC of the last successful sample; tail padding. */
+    bool recording_taps;
 } comp_lsm6dso_t;
 #define COMP_LSM6DSO_DOUBLE_TAP 0x50u /* TAP_IA and DOUBLE_TAP, AN5192 */
 /* Registers callbacks use one atomic CS-bounded shared-bus transaction.
@@ -38,6 +39,10 @@ comp_imu_poll_t comp_lsm6dso_poll(comp_lsm6dso_t *imu, uint32_t now_ms,
  * accelerometer low-power mode and powers the gyroscope down. Returning to
  * run mode restores the accepted 52 Hz accel+gyro configuration. */
 bool comp_lsm6dso_set_idle(comp_lsm6dso_t *imu, bool idle);
+/* Call only before microphone START / after actual STOP. Embedded taps need
+ * the AN5192 recommended417Hz accel rate; gyro and host polling stay52Hz.
+ * Ordinary awake/idle modes remain52/12.5Hz with the tap route disabled. */
+bool comp_lsm6dso_set_recording_taps(comp_lsm6dso_t *imu, bool enabled);
 /* Idle-only product recovery. Wait at least 1 s before each reset; stop after
  * three attempts without a valid sample. No loop, delay or sample is emitted
  * here. Poll RESET_WAIT normally; only a real sample clears the retry budget.

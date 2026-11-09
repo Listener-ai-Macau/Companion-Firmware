@@ -15,21 +15,21 @@ static comp_imu_poll_t fail(comp_lsm6dso_t *imu)
 static bool configure_taps(comp_lsm6dso_t *imu)
 {
     /* AN5192 sec5.5 and ST lsm6dso-pid: latched XYZ double-tap to INT1.
-     * Keep the existing52Hz/run and12.5Hz/idle ODRs. The embedded recognizer
-     * works independently of selected output rate. At+/-4g,9LSB=1.125g;
+     * Route remains disabled until recording uses recommended417Hz accel.
+     * At+/-4g,9LSB=1.125g;
      * shock/quiet/duration are provisional until real enclosure tuning. */
     static const uint8_t config[6]={0x0Fu,0x09u,0x89u,0x09u,0x7Fu,0x80u};
     uint8_t actual[6],route;
     return imu->write(imu->context,0x56u,config,sizeof(config)) &&
-        write_byte(imu,0x5Eu,0x08u) &&
+        write_byte(imu,0x5Eu,0u) &&
         imu->read(imu->context,0x56u,actual,sizeof(actual)) &&
         imu->read(imu->context,0x5Eu,&route,1u) &&
-        !memcmp(config,actual,sizeof(config)) && route==0x08u;
+        !memcmp(config,actual,sizeof(config)) && route==0u;
 }
 static bool configure_idle(comp_lsm6dso_t *imu, bool idle)
 {
     uint8_t ctrl[2], ctrl6, int1;
-    const uint8_t ctrl1 = idle ? 0x18u : 0x38u; /* 12.5/52 Hz, +/-4 g */
+    const uint8_t ctrl1 = idle ? 0x18u : imu->recording_taps ? 0x68u : 0x38u;
     const uint8_t ctrl2 = idle ? 0x00u : 0x30u; /* gyro off / 52 Hz +/-250 dps */
     const uint8_t low_power = idle ? 0x10u : 0x00u; /* CTRL6_C XL_HM_MODE */
     const uint8_t route = idle ? 0x01u : 0x03u; /* XL / XL+gyro DRDY on INT1 */
@@ -115,8 +115,10 @@ comp_imu_poll_t comp_lsm6dso_poll(comp_lsm6dso_t *imu, uint32_t now_ms,
     }
     /* TAP_SRC clears only this latched event. Polling the existing data-ready
      * fallback also works through the V1.1 IO-expander interrupt route. */
-    if(!imu->read(imu->context,0x1Cu,&tap,1u))return fail(imu);
-    imu->tap_source=tap;
+    if(imu->recording_taps) {
+        if(!imu->read(imu->context,0x1Cu,&tap,1u))return fail(imu);
+        imu->tap_source=tap;
+    }
     *sample = value; imu->samples++;
     imu->recovery_attempts = 0u;
     imu->recovery_waiting = false;
@@ -124,7 +126,7 @@ comp_imu_poll_t comp_lsm6dso_poll(comp_lsm6dso_t *imu, uint32_t now_ms,
 }
 bool comp_lsm6dso_set_idle(comp_lsm6dso_t *imu, bool idle)
 {
-    if (imu == NULL || imu->state != COMP_IMU_READY || imu->read == NULL ||
+    if (imu == NULL || (idle && imu->recording_taps) || imu->state != COMP_IMU_READY || imu->read == NULL ||
         imu->write == NULL) {
         return false;
     }
@@ -132,6 +134,21 @@ bool comp_lsm6dso_set_idle(comp_lsm6dso_t *imu, bool idle)
         return true;
     }
     return configure_idle(imu, idle);
+}
+bool comp_lsm6dso_set_recording_taps(comp_lsm6dso_t *imu, bool enabled)
+{
+    uint8_t ctrl,route,discard;
+    if(!imu || imu->state!=COMP_IMU_READY)return false;
+    if(imu->recording_taps==enabled)return true;
+    if(enabled && imu->idle_accel_only && !configure_idle(imu,false))return false;
+    const uint8_t rate=enabled?0x68u:0x38u;
+    if(!write_byte(imu,0x10u,rate) || !write_byte(imu,0x5Eu,enabled?8u:0u) ||
+       !imu->read(imu->context,0x10u,&ctrl,1u) || !imu->read(imu->context,0x5Eu,&route,1u) ||
+       !imu->read(imu->context,0x1Cu,&discard,1u) || ctrl!=rate || route!=(enabled?8u:0u)) {
+        (void)fail(imu);return false;
+    }
+    imu->recording_taps=enabled;imu->tap_source=0u;
+    return true;
 }
 bool comp_lsm6dso_stop(comp_lsm6dso_t *imu)
 {
@@ -143,6 +160,7 @@ bool comp_lsm6dso_stop(comp_lsm6dso_t *imu)
     imu->state = COMP_IMU_OFF;
     imu->idle_accel_only = false;
     imu->tap_source=0u;
+    imu->recording_taps=false;
     return true;
 }
 
@@ -171,5 +189,6 @@ bool comp_lsm6dso_recover(comp_lsm6dso_t *imu, uint32_t now_ms)
     imu->state = COMP_IMU_RESET_WAIT;
     imu->reset_ms = now_ms;
     imu->idle_accel_only = false;
+    imu->recording_taps=false;
     return true;
 }

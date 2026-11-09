@@ -15,9 +15,10 @@ import sys
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 IMU = ROOT / "app" / "companion_pendant" / "imu"
 TAPS = sys.argv[1:] == ["--taps"]
-SOURCE = IMU / "tests" / ("test_lsm6dso_taps.c" if TAPS else "test_lsm6dso_power.c")
+PORT = sys.argv[1:] == ["--recording-port"]
+SOURCE = IMU / "tests" / ("test_lsm6dso_recording_port.c" if PORT else "test_lsm6dso_taps.c" if TAPS else "test_lsm6dso_power.c")
 DRIVER = IMU / "lsm6dso.c"
-OUT = ROOT / ".cache" / "host-tests" / ("wba-imu-taps" if TAPS else "wba-imu-power")
+OUT = ROOT / ".cache" / "host-tests" / ("wba-imu-recording-port" if PORT else "wba-imu-taps" if TAPS else "wba-imu-power")
 RESULT = OUT / "result.json"
 SOURCES = [
     IMU / "lsm6dso.h",
@@ -46,11 +47,19 @@ def write_result(stdout: str) -> None:
 def main() -> int:
     OUT.mkdir(parents=True, exist_ok=True)
     RESULT.unlink(missing_ok=True)
+    if PORT:
+        board=ROOT/'platform/stm32wba55_companion_v11/board_hal.c'
+        text=board.read_text();begin=text.index('bool comp_v11_hal_microphone_enable(')
+        brace=text.index('{',begin);depth=1;end=brace+1
+        while depth:
+            depth+=(text[end]=='{')-(text[end]=='}');end+=1
+        (OUT/'imu_microphone_port.inc').write_text(text[begin:end]+'\n')
+        SOURCES.extend([board,IMU/'tests/test_lsm6dso_taps.c'])
     exe = OUT / ("test_lsm6dso_power.exe" if sys.platform == "win32" else "test_lsm6dso_power")
     compiler = shutil.which("clang") or shutil.which("gcc")
     if compiler is not None:
         command = [compiler, "-std=c11", "-Wall", "-Wextra", "-Werror",
-                   f"-I{IMU}", str(SOURCE), str(DRIVER), "-o", str(exe)]
+                   f"-I{IMU}",f"-I{OUT}", str(SOURCE), str(DRIVER), "-o", str(exe)]
         built = subprocess.run(command, cwd=ROOT, text=True, capture_output=True)
     else:
         vcvars = pathlib.Path(
@@ -65,7 +74,7 @@ def main() -> int:
             "@echo off\n"
             f'call "{vcvars}" >nul\n'
             "if errorlevel 1 exit /b %errorlevel%\n"
-            f'cl.exe /nologo /W4 /WX /std:c11 /I"{IMU}" "{SOURCE}" '
+            f'cl.exe /nologo /W4 /WX /std:c11 /I"{IMU}" /I"{OUT}" "{SOURCE}" '
             f'"{DRIVER}" /Fe:"{exe}"\n',
             encoding="utf-8",
         )

@@ -168,7 +168,9 @@ static bool imu_status(void *context, uint32_t now_ms, companion_gatt_imu_status
         now_ms - v->timestamp_ms > 500u) {
         out->sensor_state = COMPANION_V1_IMU_STATE_ERROR; return true;
     }
-    out->sensor_state = COMPANION_V1_IMU_STATE_READY; out->sample_rate_hz = 52;
+    out->sensor_state = COMPANION_V1_IMU_STATE_READY;
+    /* Nominal accelerometer ODR, rounded to integer Hz (idle12.5Hz). */
+    out->sample_rate_hz = s->imu->recording_taps ? 417u : s->imu->idle_accel_only ? 13u : 52u;
     out->motion_flags = s->motion_flags; out->sample_timestamp_ms = v->timestamp_ms;
     out->accel_x_mg = v->accel_mg[0]; out->accel_y_mg = v->accel_mg[1]; out->accel_z_mg = v->accel_mg[2];
     out->gyro_x_dps = (int16_t)(v->gyro_mdps[0] / 1000); out->gyro_y_dps = (int16_t)(v->gyro_mdps[1] / 1000);
