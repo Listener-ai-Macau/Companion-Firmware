@@ -1715,6 +1715,12 @@ static void range_reclaim_dispatch(unsigned queued)
             for(unsigned i=0u;i<20000u&&comp_wba_recording_radio_busy(&radio);i++){poll();lookup_tick();}
             assert(!radio.range_queue_count&&!radio.range_pending&&receipt_count==0u&&catalog.range_end[0]==1u);
             assert(last_reply_bytes==60u&&comp_rec_get32(last_reply+44u)==COMP_SEG_BAD_ARGUMENT);
+            assert(!memcmp(last_reply,"CRR3\x03\0\x3c\0",8u)&&!memcmp(last_reply+8u,device_uid,12u));
+            assert(comp_rec_get64(last_reply+20u)==7u&&comp_rec_get32(last_reply+28u)==original.descriptor.recording_id);
+            assert(comp_rec_get32(last_reply+32u)==503u);
+            if(queued!=5u)assert(!comp_rec_get32(last_reply+36u)&&!comp_rec_get32(last_reply+40u));
+            assert(!comp_rec_get32(last_reply+48u)&&comp_rec_get32(last_reply+52u)==comp_rec_get32(command+52u));
+            assert(comp_rec_get32(last_reply+56u)==comp_rec_crc(last_reply,56u));
             if(queued>=6u) {
                 assert(!interrupt_range_error&&!comp_wba_recording_radio_busy(&radio));
                 assert(!radio.consume_subscribed);

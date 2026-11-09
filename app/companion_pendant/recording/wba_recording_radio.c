@@ -163,8 +163,10 @@ static void range_error(comp_wba_recording_radio_t *r,const uint8_t request[96],
     const comp_segment_catalog_t *c=r->config.pipeline->config.catalog;uint8_t out[60]={0};
     memcpy(out,"CRR3",4u);comp_rec_put16(out+4u,3u);comp_rec_put16(out+6u,60u);
     memcpy(out+8u,c->uid,12u);comp_rec_put64(out+20u,c->epoch);
-    comp_rec_put32(out+28u,comp_rec_get32(request+40u));comp_rec_put32(out+32u,comp_rec_get32(request+44u));
-    comp_rec_put32(out+44u,(uint32_t)result);comp_rec_put32(out+52u,comp_rec_get32(request+52u));
+    /* The correlated fields already have the reply's little-endian wire
+     * representation. Echo their exact bytes instead of decoding/reencoding. */
+    memcpy(out+28u,request+40u,8u);
+    comp_rec_put32(out+44u,(uint32_t)result);memcpy(out+52u,request+52u,4u);
     comp_rec_put32(out+56u,comp_rec_crc(out,56u));(void)publish(r,COMPANION_GATT_CHAR_DELETE_PRIVACY,out,60u);
 }
 static bool queue_range_handoff(comp_wba_recording_radio_t *r,const uint8_t *wire,uint16_t bytes)
@@ -494,7 +496,6 @@ void comp_wba_recording_radio_poll(comp_wba_recording_radio_t *r,
             if(comp_rec_get32(receipt+44u)!=COMP_SEG_OK)r->range_queue_count=0u;
             if(r->range_queue_count) {
                 if(r->phase==RADIO_PULL&&!transfer_busy(r))r->phase=RADIO_IDLE;
-                uint16_t bytes=r->range_queue[0][3]=='2'?84u:96u;
                 /* Reuse the retired receipt buffer for this request. Remove
                  * its cell BEFORE dispatch: an error publication can pump a
                  * disconnect/CCCD callback which clears the queue. Never
@@ -502,6 +503,7 @@ void comp_wba_recording_radio_poll(comp_wba_recording_radio_t *r,
                 memcpy(receipt,r->range_queue[0],96u);
                 --r->range_queue_count;
                 memmove(r->range_queue,r->range_queue+1u,(size_t)r->range_queue_count*96u);
+                uint16_t bytes=receipt[3]=='2'?84u:96u;
                 (void)comp_wba_recording_radio_write(r,COMPANION_GATT_CHAR_DELETE_PRIVACY,receipt,bytes,true);
                 if(!r->range_pending&&!r->consume_pending)r->range_queue_count=0u;
             }
