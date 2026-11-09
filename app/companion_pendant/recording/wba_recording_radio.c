@@ -486,7 +486,7 @@ void comp_wba_recording_radio_poll(comp_wba_recording_radio_t *r,
     if(!r->authenticated)return;
     if(r->range_pending&&r->consume_subscribed&&
        comp_wba_recording_pipeline_consume_result(r->config.pipeline)!=COMP_SEG_PENDING){
-        uint8_t receipt[60];
+        uint8_t receipt[96];
         if(!comp_wba_recording_pipeline_range_reply(r->config.pipeline,receipt)||
            comp_rec_get32(receipt+28u)!=r->range_id||comp_rec_get32(receipt+32u)!=r->range_token){r->range_pending=false;return;}
         if(publish(r,COMPANION_GATT_CHAR_DELETE_PRIVACY,receipt,60u)){
@@ -495,11 +495,14 @@ void comp_wba_recording_radio_poll(comp_wba_recording_radio_t *r,
             if(r->range_queue_count) {
                 if(r->phase==RADIO_PULL&&!transfer_busy(r))r->phase=RADIO_IDLE;
                 uint16_t bytes=r->range_queue[0][3]=='2'?84u:96u;
-                /* Dispatch reads synchronously; keep its cell intact until the
-                 * existing parser has copied ownership into the pipeline. */
-                (void)comp_wba_recording_radio_write(r,COMPANION_GATT_CHAR_DELETE_PRIVACY,r->range_queue[0],bytes,true);
+                /* Reuse the retired receipt buffer for this request. Remove
+                 * its cell BEFORE dispatch: an error publication can pump a
+                 * disconnect/CCCD callback which clears the queue. Never
+                 * decrement or move that retired owner's queue afterwards. */
+                memcpy(receipt,r->range_queue[0],96u);
                 --r->range_queue_count;
                 memmove(r->range_queue,r->range_queue+1u,(size_t)r->range_queue_count*96u);
+                (void)comp_wba_recording_radio_write(r,COMPANION_GATT_CHAR_DELETE_PRIVACY,receipt,bytes,true);
                 if(!r->range_pending&&!r->consume_pending)r->range_queue_count=0u;
             }
         }
