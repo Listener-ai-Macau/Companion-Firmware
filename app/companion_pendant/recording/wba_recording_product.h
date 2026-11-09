@@ -46,6 +46,7 @@ bool comp_wba_recording_product_bind(comp_wba_recording_product_t *,
     const uint8_t uid[12],uint64_t epoch,const comp_wba_pipeline_config_t *,
     comp_wba_recording_report_fn_t);
 void comp_wba_recording_product_poll(comp_wba_recording_product_t *);
+void comp_wba_recording_product_prime(comp_wba_recording_product_t *,bool allowed);
 /* Pending inactive storage work should return to the complete product poll,
  * with IRQs/radio/inputs serviced between bounded slices. Erase waits and
  * active/paused/draining audio retain their normal idle policy. */

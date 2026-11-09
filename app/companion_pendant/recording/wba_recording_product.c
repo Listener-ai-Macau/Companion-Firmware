@@ -341,7 +341,31 @@ bool comp_wba_recording_product_foreground_pending(const comp_wba_recording_prod
     /* Metadata/search/blank reads can progress now. A physical erase still
      * needs time, so keep its normal WFI policy instead of busy-spinning. */
     return p&&p->media_ready&&!p->storage.poisoned&&p->storage.nor&&
-        !p->storage.nor->erase_active&&inactive_storage_slice(p);
+        !p->storage.nor->erase_active&&(inactive_storage_slice(p)||
+        (comp_wba_recording_pipeline_primed(&p->pipeline)&&!comp_segment_reserve_ready(&p->pipeline.reserve)));
+}
+static void space_hint(comp_wba_recording_product_t *p)
+{
+    if(comp_wba_recording_product_space_current(p)&&!p->space.allocation_uncertain&&
+       p->space.largest_gap>=p->pipeline.config.extent_bytes) {
+        uint32_t bytes=p->pipeline.config.extent_bytes,slots=p->space.largest_gap/bytes;
+        (void)comp_segment_reserve_set_search_hint(&p->pipeline.reserve,
+            p->space.largest_gap_offset+(p->pipeline.reserve.hint/bytes%slots)*bytes);
+    }
+}
+void comp_wba_recording_product_prime(comp_wba_recording_product_t *p,bool allowed)
+{
+    if(!p||!comp_wba_recording_product_capture_available(p))return;
+    allowed=allowed&&p->ready&&comp_wba_recording_product_space_current(p)&&
+        !p->space.allocation_uncertain&&p->space.allocatable_segments;
+    uint32_t began=p->pipeline.config.now_ms(p->pipeline.config.context);
+    for(unsigned i=0u;i<16u;++i) {
+        bool existing=comp_wba_recording_pipeline_primed(&p->pipeline);
+        comp_segment_result_t r=comp_wba_recording_pipeline_prime(&p->pipeline,allowed);
+        if(!existing&&comp_wba_recording_pipeline_primed(&p->pipeline))space_hint(p);
+        if(r!=COMP_SEG_PENDING||p->storage.nor->erase_active||
+           (uint32_t)(p->pipeline.config.now_ms(p->pipeline.config.context)-began)>=1u)return;
+    }
 }
 void comp_wba_recording_product_poll(comp_wba_recording_product_t *p)
 {
@@ -483,15 +507,10 @@ bool comp_wba_recording_product_prepare_timeline(comp_wba_recording_product_t *p
     /* A known free gap avoids repeatedly starting inside old owners. This
      * only chooses the first candidate: the allocator still checks every
      * occupied extent and restarts on a changed catalog generation. */
-    const bool gap=comp_wba_recording_product_space_current(p)&&!p->space.allocation_uncertain&&
-        p->space.largest_gap>=p->pipeline.config.extent_bytes;
-    const uint32_t offset=gap?p->space.largest_gap_offset:0u;
-    const uint32_t slots=gap?p->space.largest_gap/p->pipeline.config.extent_bytes:0u;
     if(p->ready)p->last_fault=COMP_WBA_RECORDING_FAULT_NONE;
     comp_segment_result_t r=comp_wba_recording_pipeline_begin_timeline(&p->pipeline,session,mode,started,token,timeline);
     if(r!=COMP_SEG_PENDING){p->last_fault=r==COMP_SEG_FULL?COMP_WBA_RECORDING_FAULT_STORAGE_FULL:COMP_WBA_RECORDING_FAULT_STORAGE_IO;return false;}
-    if(gap)(void)comp_segment_reserve_set_search_hint(&p->pipeline.reserve,
-        offset+(p->pipeline.reserve.hint/p->pipeline.config.extent_bytes%slots)*p->pipeline.config.extent_bytes);
+    space_hint(p);
     p->reported_state=255u;report(p);return true;
 }
 bool comp_wba_recording_product_ready(const comp_wba_recording_product_t *p,uint32_t token)

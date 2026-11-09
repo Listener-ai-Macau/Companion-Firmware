@@ -51,6 +51,11 @@ typedef struct {
 } comp_wba_recording_pipeline_t;
 
 bool comp_wba_recording_pipeline_init(comp_wba_recording_pipeline_t *,const comp_wba_pipeline_config_t *);
+/* Optional idle work, with the same full-sized allocator and existing scratch.
+ * allowed=false settles only an issued erase, then drops the unbound proof.
+ * No session/recording ID exists until an explicit begin. */
+bool comp_wba_recording_pipeline_primed(const comp_wba_recording_pipeline_t *);
+comp_segment_result_t comp_wba_recording_pipeline_prime(comp_wba_recording_pipeline_t *,bool allowed);
 comp_segment_result_t comp_wba_recording_pipeline_begin(comp_wba_recording_pipeline_t *,
     uint64_t session_id,uint8_t source_mode,uint32_t started_unix_s,uint32_t token);
 /* Explicit per-session format opt-in. Legacy begin remains schema1. Product

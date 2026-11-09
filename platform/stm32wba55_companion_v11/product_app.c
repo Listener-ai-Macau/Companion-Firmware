@@ -454,7 +454,13 @@ static bool recording_prepare(void *c,uint32_t token)
 #ifdef COMPANION_WBA_BLE_LINKED
     if(comp_v11_ble_storage_busy() || !companion_opus16_rt_workspace_available())return false;
 #endif
-    if (app->board->nor.erase_active)return false;
+    if (app->board->nor.erase_active) {
+        if(!comp_wba_recording_pipeline_primed(&app->recording.pipeline))return false;
+        /* CSI1 identity persistence is synchronous and must not race an idle
+         * erase. Accept this explicit request; the foreground settles that
+         * one chunk before recording_is_ready allocates its real identity. */
+        app->recording_session_id=0u;return true;
+    }
     comp_wba_pipeline_state_t state=app->recording.pipeline.state;
     if(state!=COMP_PIPE_IDLE&&state!=COMP_PIPE_FINISHED)return false;
     if(!comp_wba_recording_product_capture_prepare_available(&app->recording))return false;
@@ -498,11 +504,12 @@ static bool recording_is_ready(void *c)
             DENZIC_AUDIO_RECORDING_STATE_ERROR_RECOVERY,false,HAL_GetTick());
         return false;
     }
-    /* A recovered fault has no live engine or new session yet. Re-enter the
-     * ordinary durable identity/prepare path only for the still-pending START.
-     * Cancel during recovery leaves a stopped idle recorder, never auto-start. */
+    /* A recovered fault or accepted idle-erase handoff has no new identity.
+     * Re-enter only for this still-pending explicit START. Cancellation never
+     * creates a session and the synchronous identity writer sees idle NOR. */
     if(app->runtime.prepare_pending && comp_wba_recording_product_capture_available(&app->recording) &&
-       app->recording.pipeline.state==COMP_PIPE_IDLE && app->recording.last_fault &&
+        (app->recording.pipeline.state==COMP_PIPE_IDLE||app->recording.pipeline.state==COMP_PIPE_FINISHED) &&
+        (app->recording.last_fault||!app->recording_session_id) && !app->board->nor.erase_active &&
        !recording_prepare(c,app->runtime.record_token)) {
         /* Recovery has completed, but the one requested prepare failed.
          * End this request rather than polling it again and repeatedly
@@ -1462,6 +1469,16 @@ void comp_v11_product_app_poll(comp_v11_product_app_t *app)
     /* Runtime remount can change readiness without a new lease callback.
      * Publish it before BLE/update admission checks on this foreground turn. */
     app->recording_ready=app->recording.ready;
+    if(!board->microphone.running) {
+        bool prime_allowed=!board->playback_active&&!app->runtime.capture_active&&
+            !app->runtime.prepare_pending&&!app->runtime.start_pending&&
+            !app->runtime.command_pending&&!app->runtime.stop_pending&&
+            companion_opus16_rt_workspace_available();
+#ifdef COMPANION_WBA_BLE_LINKED
+        prime_allowed=prime_allowed&&!comp_v11_ble_storage_busy()&&comp_v11_ble_recording_recovery_idle();
+#endif
+        comp_wba_recording_product_prime(&app->recording,prime_allowed);
+    }
 #if defined(COMPANION_WBA_BLE_LINKED) && defined(__arm__)
     (void)comp_v11_ota_gatt_wall_context(wall_recorder);
 #endif

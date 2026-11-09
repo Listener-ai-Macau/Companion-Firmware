@@ -41,6 +41,7 @@ comp_segment_result_t comp_segment_reserve_cancel_poll(comp_segment_reserve_t *r
     comp_segment_catalog_t *c=r->catalog;
     if(!c->mounted||r->phase==FREE||r->phase==FAILED)return COMP_SEG_BAD_STATE;
     if(r->phase==CANCELED)return COMP_SEG_OK;
+    if(r->preparation==1u) {r->phase=CANCELED;return COMP_SEG_OK;}
     if(r->phase==COMMIT||r->phase==CANCEL_COMMIT) {
         if(!c->phase||c->pending!=r->entry)return failed(r,COMP_SEG_BAD_STATE);
         comp_segment_result_t result=comp_segment_catalog_poll(c);
@@ -103,6 +104,17 @@ static bool move_candidate(comp_segment_reserve_t *r,uint32_t next)
     r->candidate=next;r->scan=0u;r->cursor=0u;r->gap_end=c->data_bytes;return true;
 }
 
+comp_segment_result_t comp_segment_reserve_bind_prepared(comp_segment_reserve_t *r)
+{
+    if(!r||!r->catalog||!r->entry)return COMP_SEG_BAD_ARGUMENT;
+    if(r->preparation!=1u||r->phase!=READY||r->catalog->phase||
+       r->entry->descriptor.recording_id)return COMP_SEG_BAD_STATE;
+    r->entry->descriptor.recording_id=r->catalog->next_id;
+    comp_segment_result_t result=comp_segment_catalog_put_begin(r->catalog,r->entry);
+    if(result!=COMP_SEG_PENDING)return failed(r,result);
+    r->preparation=2u;r->phase=COMMIT;return result;
+}
+
 comp_segment_result_t comp_segment_reserve_poll_scoped(comp_segment_reserve_t *r,
     comp_segment_catalog_scoped_read_fn read,void *context)
 {
@@ -115,6 +127,7 @@ comp_segment_result_t comp_segment_reserve_poll_scoped(comp_segment_reserve_t *r
         comp_segment_result_t result=comp_segment_catalog_poll(c);
         if (result==COMP_SEG_PENDING) return result;
         if (result!=COMP_SEG_OK) return failed(r,result);
+        if(r->preparation==2u){r->preparation=0u;r->phase=READY;return COMP_SEG_OK;}
         r->phase=CHECK_BLANK;r->cursor=0u;r->erase_end=0u;return COMP_SEG_PENDING;
     }
     if (c->phase!=0u) return COMP_SEG_PENDING;
@@ -171,6 +184,9 @@ comp_segment_result_t comp_segment_reserve_poll_scoped(comp_segment_reserve_t *r
             }
         }
         r->entry->extent_offset=r->candidate;r->entry->reserved_bytes=r->bytes;
+        if(r->preparation==1u) {
+            r->phase=CHECK_BLANK;r->cursor=0u;r->erase_end=0u;return COMP_SEG_PENDING;
+        }
         r->entry->descriptor.recording_id=c->next_id;
         comp_segment_result_t result=comp_segment_catalog_put_begin(c,r->entry);
         if (result!=COMP_SEG_PENDING) return failed(r,result);
@@ -246,6 +262,6 @@ bool comp_segment_reserve_ready(const comp_segment_reserve_t *r)
 
 bool comp_segment_reserve_take(comp_segment_reserve_t *r,comp_segment_entry_t **out)
 {
-    if (!out || !comp_segment_reserve_ready(r)) return false;
+    if (!out || !comp_segment_reserve_ready(r) || r->preparation) return false;
     *out=r->entry;memset(r,0,sizeof(*r));return true;
 }

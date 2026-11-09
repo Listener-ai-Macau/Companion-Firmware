@@ -2,7 +2,7 @@
 #include "wba_recording_pipeline.h"
 #include "wba_recording_crc.h"
 
-enum {FUTURE_NONE=0,FUTURE_RESERVE,FUTURE_PROVENANCE,FUTURE_READY,FUTURE_TAKEN,FUTURE_FULL,FUTURE_CANCEL};
+enum {FUTURE_NONE=0,FUTURE_RESERVE,FUTURE_PROVENANCE,FUTURE_READY,FUTURE_TAKEN,FUTURE_FULL,FUTURE_CANCEL,FUTURE_PRIME,FUTURE_PRIME_BIND};
 enum {CONSUME_NONE=0,CONSUME_FIND,CONSUME_RECEIPT,CONSUME_ACK,CONSUME_RECLAIM_BEGIN,CONSUME_RECLAIM,CONSUME_DONE,CONSUME_FAILED,CONSUME_IDLE_READ_FAILED,
       CONSUME_RANGE_FIND,CONSUME_RANGE,CONSUME_RANGE_DONE};
 
@@ -39,6 +39,48 @@ static bool whole_consumer_active(const comp_wba_recording_pipeline_t *p)
 {return p->consume_phase>=CONSUME_FIND&&p->consume_phase<=CONSUME_RECLAIM;}
 static bool consumer_active(const comp_wba_recording_pipeline_t *p)
 {return whole_consumer_active(p)||p->consume_phase==CONSUME_RANGE_FIND||p->consume_phase==CONSUME_RANGE;}
+bool comp_wba_recording_pipeline_primed(const comp_wba_recording_pipeline_t *p)
+{return p&&p->future_phase==FUTURE_PRIME;}
+static bool release_prime(comp_wba_recording_pipeline_t *p)
+{
+    if(!comp_wba_recording_pipeline_primed(p))return true;
+    if(p->config.storage->nor->erase_active)return false;
+    memset(&p->reserve,0,sizeof(p->reserve));p->future_phase=FUTURE_NONE;return true;
+}
+
+comp_segment_result_t comp_wba_recording_pipeline_prime(comp_wba_recording_pipeline_t *p,bool allowed)
+{
+    if(!p||(p->state!=COMP_PIPE_IDLE&&p->state!=COMP_PIPE_FINISHED))return COMP_SEG_BAD_STATE;
+    comp_segment_catalog_t *c=p->config.catalog;
+    if(p->config.storage->poisoned)return COMP_SEG_IO_ERROR;
+    allowed=allowed&&!consumer_active(p)&&!p->discard_exclusive&&!p->workspace_bytes&&!p->workspace_requested&&
+        !c->phase&&!p->sealing&&!p->config.recording->microphone_active&&!p->config.recording->encoder_owned;
+    if(!allowed) {
+        if(release_prime(p))return COMP_SEG_OK;
+        comp_segment_result_t r=comp_wba_segment_storage_reserve_cancel_poll(p->config.storage,&p->reserve);
+        if(r==COMP_SEG_OK)(void)release_prime(p);
+        return r;
+    }
+    if(comp_wba_recording_pipeline_primed(p)) {
+        if(p->full_generation!=c->generation) {
+            /* A new metadata owner invalidates even a completed blank proof.
+             * An issued command must retire before this scratch can be reused. */
+            return comp_wba_recording_pipeline_prime(p,false);
+        }
+        comp_segment_result_t r=comp_wba_segment_storage_reserve_poll(p->config.storage,&p->reserve);
+        if(r==COMP_SEG_FULL){(void)release_prime(p);return r;}
+        if(r!=COMP_SEG_OK&&r!=COMP_SEG_PENDING)(void)failed(p,r);
+        return r;
+    }
+    if(p->config.storage->nor->erase_active)return COMP_SEG_PENDING;
+    memset(&p->future,0,sizeof(p->future));memset(&p->reserve,0,sizeof(p->reserve));
+    p->future.state=COMP_SEG_WRITING;
+    comp_segment_result_t r=comp_segment_reserve_begin_rotated(&p->reserve,c,&p->future,p->config.extent_bytes);
+    if(r==COMP_SEG_PENDING) {
+        p->reserve.preparation=1u;p->future_phase=FUTURE_PRIME;p->full_generation=c->generation;
+    }
+    return r;
+}
 #if COMPANION_WBA_RECLAIM_TIMING
 static void reclaim_timing_owner(comp_wba_recording_pipeline_t *p,uint32_t id)
 {
@@ -85,7 +127,8 @@ static bool page_available(const comp_wba_recording_pipeline_t *p,bool transfer)
          p->config.catalog->pending==&p->consume&&comp_segment_catalog_transfer_readable(p->config.catalog)))&&!p->sealing&&
         p->future_phase!=FUTURE_PROVENANCE&&p->future_phase!=FUTURE_CANCEL&&
         !(p->core_cancel_started&&p->config.recording->state==COMP_CONT_CANCELING)&&
-        p->state!=COMP_PIPE_PREPARING&&p->state!=COMP_PIPE_FAILED;
+        p->state!=COMP_PIPE_PREPARING&&p->state!=COMP_PIPE_FAILED&&
+        (!comp_wba_recording_pipeline_primed(p)||comp_segment_reserve_ready(&p->reserve));
 }
 bool comp_wba_recording_pipeline_page_available(const comp_wba_recording_pipeline_t *p)
 {return page_available(p,false);}
@@ -95,7 +138,8 @@ bool comp_wba_recording_pipeline_storage_busy(const comp_wba_recording_pipeline_
 {
     return p&&(p->discard_exclusive||p->workspace_bytes||p->workspace_requested||consumer_active(p)||p->sealing||p->config.catalog->phase||
         p->state==COMP_PIPE_PREPARING||p->state==COMP_PIPE_READY||p->state==COMP_PIPE_RECORDING||
-        p->state==COMP_PIPE_STOPPING||p->state==COMP_PIPE_CLEANUP||p->state==COMP_PIPE_FAILED);
+         p->state==COMP_PIPE_STOPPING||p->state==COMP_PIPE_CLEANUP||p->state==COMP_PIPE_FAILED||
+         (comp_wba_recording_pipeline_primed(p)&&!comp_segment_reserve_ready(&p->reserve)));
 }
 bool comp_wba_recording_pipeline_discard_acquire(comp_wba_recording_pipeline_t *p)
 {
@@ -104,6 +148,7 @@ bool comp_wba_recording_pipeline_discard_acquire(comp_wba_recording_pipeline_t *
        p->config.recording->microphone_active||p->config.recording->encoder_owned||
        (p->state!=COMP_PIPE_IDLE&&p->state!=COMP_PIPE_FINISHED)||
        comp_wba_recording_pipeline_storage_busy(p))return false;
+    if(!release_prime(p))return false;
     p->discard_exclusive=true;return true;
 }
 bool comp_wba_recording_pipeline_discard_release(comp_wba_recording_pipeline_t *p)
@@ -138,6 +183,13 @@ static comp_segment_result_t start_future(comp_wba_recording_pipeline_t *p,const
 static comp_segment_result_t future_progress(comp_wba_recording_pipeline_t *p)
 {
     comp_segment_result_t r;
+    if(p->future_phase==FUTURE_PRIME_BIND) {
+        r=comp_wba_segment_storage_reserve_poll(p->config.storage,&p->reserve);
+        if(r!=COMP_SEG_OK)return r;
+        r=comp_segment_reserve_bind_prepared(&p->reserve);
+        if(r==COMP_SEG_PENDING)p->future_phase=FUTURE_RESERVE;
+        return r;
+    }
     if(p->future_phase==FUTURE_CANCEL) {
         r=comp_wba_segment_storage_cancel_poll(p->config.storage,&p->future_writer);
         if(r==COMP_SEG_OK)p->future_phase=FUTURE_NONE;
@@ -389,15 +441,19 @@ comp_segment_result_t comp_wba_recording_pipeline_begin_timeline(comp_wba_record
     if(!p||!session||!token||mode>2u)return COMP_SEG_BAD_ARGUMENT;
     if((p->state!=COMP_PIPE_IDLE&&p->state!=COMP_PIPE_FINISHED)||p->discard_exclusive||p->workspace_bytes||p->workspace_requested||consumer_active(p)||
        p->config.catalog->phase||p->config.storage->poisoned)return COMP_SEG_BAD_STATE;
+    bool primed=comp_wba_recording_pipeline_primed(p)&&p->full_generation==p->config.catalog->generation;
+    if(!primed&&!release_prime(p))return COMP_SEG_BAD_STATE;
     const bool previous=p->state==COMP_PIPE_FINISHED&&p->engine_bound;
     const uint32_t end=previous?p->config.recording->active.extent_offset+p->config.recording->active.reserved_bytes:0u;
     p->engine_bound=false;p->stop_requested=false;p->seal_started=false;p->core_cancel_started=false;p->sealing=NULL;
     p->fault_stop_attempts=0u;
     p->pause_timeline=timeline;
-    memset(&p->future,0,sizeof(p->future));memset(&p->future_writer,0,sizeof(p->future_writer));memset(&p->reserve,0,sizeof(p->reserve));
+    if(!primed){memset(&p->future,0,sizeof(p->future));memset(&p->reserve,0,sizeof(p->reserve));}
+    memset(&p->future_writer,0,sizeof(p->future_writer));
     p->future.state=COMP_SEG_WRITING;p->future.descriptor.session_id=session;p->future.descriptor.codec=3u;
     p->future.descriptor.format_epoch=p->config.catalog->epoch;p->future.descriptor.source_mode=mode;
     memcpy(p->future.descriptor.device_uid,p->config.catalog->uid,12u);p->future.started_unix_s=started;p->token=token;
+    if(primed){p->state=COMP_PIPE_PREPARING;p->future_phase=FUTURE_PRIME_BIND;return COMP_SEG_PENDING;}
     comp_segment_result_t r=comp_segment_reserve_begin_rotated(&p->reserve,p->config.catalog,&p->future,p->config.extent_bytes);
     if(r==COMP_SEG_PENDING&&previous&&end<=p->config.catalog->data_bytes)
         (void)comp_segment_reserve_set_search_hint(&p->reserve,end==p->config.catalog->data_bytes?0u:end);
@@ -445,7 +501,7 @@ bool comp_wba_recording_pipeline_stop_reason(comp_wba_recording_pipeline_t *p,ui
 }
 static comp_segment_result_t cleanup(comp_wba_recording_pipeline_t *p)
 {
-    if(p->future_phase==FUTURE_RESERVE) {
+    if(p->future_phase==FUTURE_RESERVE||p->future_phase==FUTURE_PRIME_BIND) {
         if(p->config.catalog->phase&&p->config.catalog->pending!=&p->future)return other_owner(p);
         comp_segment_result_t r=comp_wba_segment_storage_reserve_cancel_poll(p->config.storage,&p->reserve);
         if(r==COMP_SEG_OK)p->future_phase=FUTURE_NONE;
@@ -472,6 +528,10 @@ static comp_wba_pipeline_state_t pipeline_poll_body(comp_wba_recording_pipeline_
 {
     if(!p)return COMP_PIPE_FAILED;
     if(p->discard_exclusive)return p->state;
+    if(comp_wba_recording_pipeline_primed(p)) {
+        if(consumer_active(p))(void)comp_wba_recording_pipeline_prime(p,false);
+        return p->state;
+    }
     if(p->state==COMP_PIPE_FAILED) {
         /* A real stopped fault must not strand a catalogue commit which
          * already began under this pipeline's ownership. Never restart the
@@ -637,6 +697,7 @@ comp_segment_result_t comp_wba_recording_pipeline_range_wire(comp_wba_recording_
     uint16_t end=(uint16_t)((uint16_t)wire[50u]|((uint16_t)wire[51u]<<8u));
     if(wire[88u]?(end<=first||!comp_rec_not_uniform(wire+56u,32u,0u)):
        (first||end||comp_rec_not_uniform(wire+56u,32u,0u)))return COMP_SEG_BAD_ARGUMENT;
+    if(!release_prime(p))return COMP_SEG_BAD_STATE;
     if((p->state!=COMP_PIPE_IDLE&&p->state!=COMP_PIPE_FINISHED)||p->discard_exclusive||
        p->workspace_bytes||p->workspace_requested||p->sealing||p->config.storage->poisoned||
        consumer_active(p)||c->phase||p->future_phase!=FUTURE_NONE||p->config.recording->microphone_active)
@@ -701,6 +762,7 @@ comp_segment_result_t comp_wba_recording_pipeline_workspace(comp_wba_recording_p
 {
     if(!p||!physical)return COMP_SEG_BAD_ARGUMENT;
     *physical=0u;
+    if(!release_prime(p))return COMP_SEG_BAD_STATE;
     if((p->state!=COMP_PIPE_IDLE&&p->state!=COMP_PIPE_FINISHED)||p->discard_exclusive||consumer_active(p)||
        p->config.catalog->phase||p->config.storage->poisoned||p->config.storage->nor->erase_active)
         return COMP_SEG_BAD_STATE;
@@ -743,6 +805,7 @@ comp_segment_result_t comp_wba_recording_pipeline_workspace_at_snapshot(comp_wba
 {
     if(!p||!physical||!p->config.catalog||!p->config.storage)return COMP_SEG_BAD_ARGUMENT;
     *physical=0u;
+    if(!release_prime(p))return COMP_SEG_BAD_STATE;
     if((p->state!=COMP_PIPE_IDLE&&p->state!=COMP_PIPE_FINISHED)||p->discard_exclusive||consumer_active(p)||p->workspace_requested||
        p->config.catalog->phase||p->config.storage->poisoned||p->config.storage->nor->erase_active)
         return COMP_SEG_BAD_STATE;

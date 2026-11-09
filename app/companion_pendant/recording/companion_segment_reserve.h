@@ -17,6 +17,7 @@ typedef struct {
     union {uint32_t gap_end,erase_end;};
     uint8_t scan, phase, read_retries;
     bool wrapped, align_to_gap;
+    uint8_t preparation; /* 0 durable owner; 1 exclusive unbound idle preparation; 2 verified handoff */
 } comp_segment_reserve_t;
 
 /* template contains a session/index/sample_offset/codec/source/UID/epoch;
@@ -43,6 +44,13 @@ comp_segment_result_t comp_segment_reserve_begin_rotated(comp_segment_reserve_t 
 /* A search hint only: all occupied entries/generation checks still run.
  * Allowed before the first search step, never for a persisted owner. */
 comp_segment_result_t comp_segment_reserve_set_search_hint(comp_segment_reserve_t *,uint32_t);
+
+/* An exclusive idle coordinator may prepare a fully searched FREE extent
+ * before a session exists. It must exclude every allocator/workspace writer
+ * through handoff or cancellation. No catalog row/recording ID is fabricated.
+ * Only a complete blank proof can be bound to a real session; catalog commit
+ * still validates the exact physical ownership before exposing a writer. */
+comp_segment_result_t comp_segment_reserve_bind_prepared(comp_segment_reserve_t *);
 
 /* Cancel this live, not-yet-taken allocator. The adapter must first settle
  * its exact in-flight physical erase (without starting another chunk) and

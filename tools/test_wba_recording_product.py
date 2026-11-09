@@ -35,7 +35,8 @@ def main():
     selected_only='--selected-discard' in sys.argv[2:]
     bookmarks_only='--bookmarks' in sys.argv[2:]
     unused_only='--unused-future' in sys.argv[2:]
-    sources = [REC / ('tests/test_wba_unused_future.c' if unused_only else 'tests/test_wba_recording_bookmarks.c' if bookmarks_only else 'tests/test_wba_recording_pause_capacity.c' if capacity_only else 'tests/test_wba_recording_product.c'), APP / 'runtime/companion_link.c',
+    prime_only='--idle-prime' in sys.argv[2:]
+    sources = [REC / ('tests/test_wba_idle_prime.c' if prime_only else 'tests/test_wba_unused_future.c' if unused_only else 'tests/test_wba_recording_bookmarks.c' if bookmarks_only else 'tests/test_wba_recording_pause_capacity.c' if capacity_only else 'tests/test_wba_recording_product.c'), APP / 'runtime/companion_link.c',
                *[REC / (n + '.c') for n in NAMES], APP / 'storage/spi_nor_stm32wba.c']
     files = set(sources) | set(APP.rglob('*.h'))
     files |= {REC / 'tests/test_wba_recording_product.c', REC / 'tests/test_wba_recording_radio.c', REC / 'tests/test_wba_recording_recovery.c', REC / 'tests/test_wba_recording_pipeline.c',
@@ -61,7 +62,7 @@ def main():
     # with explicit integer casts. The assertion itself remains evaluated.
     args = ['cl.exe', '/nologo', '/W4', '/WX', '/wd5287', '/std:c11', '/TC', '/O2', '/MD',
             '/DCOMPANION_OPUS16_WBA_LOWDELAY=1', '/DCOMPANION_OPUS16_ENCODER_BYTES=65536',
-            *(['/DCOMP_NOR_FIXTURE_BYTES=1048576'] if capacity_only or bookmarks_only else []),
+            *(['/DCOMP_NOR_FIXTURE_BYTES=1048576'] if capacity_only or bookmarks_only or prime_only else []),
             *(['/DCOMPANION_RECORDING_SEGMENTED_ONLY=1'] if selected_only or capacity_only or bookmarks_only or any(a in sys.argv[2:] for a in ['--local-control','--logical-control','--pause-control','--initial-status','--workspace-restart','--terminal-cause']) else []),
             *['/I' + str(p) for p in includes], '/I' + str(ROOT / 'third_party/opus/include'),
             *[str(frozen / p.relative_to(ROOT)) for p in sources],
