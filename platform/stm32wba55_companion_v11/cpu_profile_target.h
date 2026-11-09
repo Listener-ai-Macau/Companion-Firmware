@@ -31,6 +31,9 @@ void comp_v11_cpu_wait_enter(void);
 void comp_v11_cpu_wait_exit(void);
 void comp_v11_cpu_poll(void);
 void comp_v11_cpu_emit(void);
+/* Read stopped capture caches only, without UART, timer reads or clearing.
+ * Every page repeats the same capture token; live/transport owners yield. */
+bool comp_v11_cpu_codec_read(uint8_t page,uint32_t values[4],uint8_t *flags);
 #else
 #if COMPANION_WBA_CPU_DUTY_OBSERVER
 #if defined(COMPANION_WBA_EXPERIMENTAL_STOP1) && COMPANION_WBA_EXPERIMENTAL_STOP1

@@ -1046,9 +1046,37 @@ static void maintenance_storage_fields(const companion_spi_nor_stm32wba_t *n,
     response[24]=(uint8_t)(n->erase_bytes/4096u);response[25]=p->consume_phase;
     response[26]=n->erase_phase;response[27]=known?e->descriptor.flags:0u;
 }
+#if COMPANION_WBA_CPU_RESIDENCE_PROFILE
+static void maintenance_codec_fields(uint8_t operation,uint8_t response[32])
+{
+    uint32_t values[4];uint8_t flags;
+    const uint8_t page=(uint8_t)(operation-COMP_MAINT_CODEC_FIRST);
+    response[7]=1u;
+    if(page>6u || !comp_v11_cpu_codec_read(page==6u?0u:page,values,&flags)) {
+        response[5]=COMP_MAINT_BUSY;response[6]=0u;return;
+    }
+    if(page==6u) {
+        /* Bind the cached profile token to the actual latest logical source,
+         * not to a host nonce or a different completed recording. */
+        const comp_cont_recording_t *r=&product->recording.capture.engine;
+        if(!product->recording.media_ready || r->token!=values[0]) {
+            response[5]=COMP_MAINT_BUSY;response[6]=0u;return;
+        }
+        values[1]=r->token;values[2]=(uint32_t)r->active.descriptor.session_id;
+        values[3]=(uint32_t)(r->active.descriptor.session_id>>32u);
+    }
+    response[6]=flags;
+    for(unsigned i=0u;i<4u;i++)comp_maint_put32(response+12u+4u*i,values[i]);
+}
+#endif
 static void maintenance_runtime_fields(uint8_t operation,uint8_t response[32])
 {
     response[6]=0u;response[7]=1u;
+#if COMPANION_WBA_CPU_RESIDENCE_PROFILE
+    if(operation>=COMP_MAINT_CODEC_FIRST && operation<=COMP_MAINT_CODEC_LAST) {
+        maintenance_codec_fields(operation,response);return;
+    }
+#endif
     if(operation==COMP_MAINT_STORAGE){maintenance_storage_fields(&product->board->nor,&product->recording.pipeline,response);return;}
     if(operation==COMP_MAINT_CPU_DUTY){
         comp_cpu_duty_snapshot_t s=comp_cpu_duty_snapshot();

@@ -126,6 +126,26 @@ static void codec_cache_end(uint32_t wall,uint32_t irq,bool completed)
     if(wall>=codec_cache.peak_us){codec_cache.peak_us=wall;codec_cache.peak_irq_us=irq;codec_cache.peak_hits=hits;codec_cache.peak_misses=misses;codec_cache.peak_admission_flags=codec_admission_flags;codec_cache.peak_admission_next_us=codec_admission_next_us;comp_cpu_codec_irq_peak(&codec_irq);}
 }
 /* CODEC_CACHE_MODEL_END */
+bool comp_v11_cpu_codec_read(uint8_t page,uint32_t values[4],uint8_t *flags)
+{
+    if(!values || !flags || page>5u || residence.active || transport_capture)return false;
+    const bool clean=!residence.stats.clock_errors && !residence.stats.order_errors &&
+        !residence.stats.reference_errors;
+    const bool frame=codec_cache.calls!=0u;
+    const bool split=frame && clean && codec_cache.peak_irq_us<=codec_cache.peak_us &&
+        codec_irq.peak_radio_us<=codec_cache.peak_irq_us;
+    *flags=(uint8_t)(1u|(unsigned)frame<<1u|(unsigned)clean<<2u|(unsigned)split<<3u);
+    values[0]=residence.stats.token;
+    switch(page) {
+    case 0u:values[1]=codec_cache.peak_us;values[2]=codec_cache.peak_irq_us;values[3]=codec_cache.calls;break;
+    case 1u:values[1]=codec_cache.peak_hits;values[2]=codec_cache.peak_misses;values[3]=codec_irq.peak_us;break;
+    case 2u:values[1]=codec_irq.peak_kind;values[2]=codec_irq.peak_radio_us;values[3]=split?codec_cache.peak_irq_us-codec_irq.peak_radio_us:0u;break;
+    case 3u:values[1]=codec_cache.peak_admission_flags;values[2]=codec_cache.peak_admission_next_us;values[3]=codec_cache.saturations;break;
+    case 4u:values[1]=residence.stats.clock_errors;values[2]=residence.stats.order_errors;values[3]=residence.stats.reference_errors;break;
+    default:values[1]=stage_stats[COMP_CPU_STAGE_OPUS].calls;values[2]=opus_over_budget[1];values[3]=stage_stats[COMP_CPU_STAGE_OPUS].invalid;break;
+    }
+    return true;
+}
 /* Keep explicit IRQ call sites inspectable. The opt-in CPU observer owns
  * TIM2 only during capture, including WFI; no DWT/NVIC/IRQ-context output. */
 #if defined(__GNUC__)

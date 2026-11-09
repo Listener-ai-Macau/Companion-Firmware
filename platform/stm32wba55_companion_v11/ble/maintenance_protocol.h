@@ -8,6 +8,18 @@ enum { COMP_MAINT_QUERY=0,COMP_MAINT_PAIR_WINDOW=1,COMP_MAINT_DEFAULTS=2,COMP_MA
        COMP_MAINT_BLE_DIAGNOSTICS=4,COMP_MAINT_MEMORY=5,COMP_MAINT_AUDIO_TIMING=6,
        COMP_MAINT_AUDIO_FAULTS=7,COMP_MAINT_AUDIO_SERVICE=8,COMP_MAINT_CPU_DUTY=9,COMP_MAINT_STORAGE=10 };
 enum { COMP_MAINT_OK=0,COMP_MAINT_PENDING=1,COMP_MAINT_BUSY=2,COMP_MAINT_INVALID=3,COMP_MAINT_FAILED=4 };
+#if defined(COMPANION_WBA_CPU_RESIDENCE_PROFILE) && COMPANION_WBA_CPU_RESIDENCE_PROFILE
+/* Engineering-only cached pages on the existing encrypted characteristic.
+ * Normal builds reject these operations; no product protocol/owner changes. */
+enum {COMP_MAINT_CODEC_FIRST=32,COMP_MAINT_CODEC_LAST=38};
+#endif
+static inline bool comp_maint_operation_supported(uint8_t operation)
+{
+#if defined(COMPANION_WBA_CPU_RESIDENCE_PROFILE) && COMPANION_WBA_CPU_RESIDENCE_PROFILE
+    if(operation>=COMP_MAINT_CODEC_FIRST && operation<=COMP_MAINT_CODEC_LAST)return true;
+#endif
+    return operation<=COMP_MAINT_STORAGE;
+}
 static inline uint32_t comp_maint_get32(const uint8_t *p)
 {return (uint32_t)p[0]|((uint32_t)p[1]<<8u)|((uint32_t)p[2]<<16u)|((uint32_t)p[3]<<24u);}
 static inline void comp_maint_put32(uint8_t *p,uint32_t n)
@@ -15,7 +27,7 @@ static inline void comp_maint_put32(uint8_t *p,uint32_t n)
 /* Existing encrypted4003 characteristic. No new GATT service or database. */
 static inline bool comp_maint_request(const uint8_t *p,uint16_t n,uint8_t *operation,uint32_t *request)
 {
-    if(!p||!operation||!request||n!=16u||memcmp(p,"CRM1",4u)||p[4]>COMP_MAINT_STORAGE||
+    if(!p||!operation||!request||n!=16u||memcmp(p,"CRM1",4u)||!comp_maint_operation_supported(p[4])||
        p[5]||p[6]||p[7]||!comp_maint_get32(p+8u)||
        companion_crc32(0u,p,12u)!=comp_maint_get32(p+12u))return false;
     *operation=p[4];*request=comp_maint_get32(p+8u);return true;
