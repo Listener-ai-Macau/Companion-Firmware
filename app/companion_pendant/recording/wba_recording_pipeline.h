@@ -19,6 +19,7 @@ typedef struct {
     uint32_t segment_frames,extent_bytes;
     bool (*audio_profile)(void *,comp_rec_audio_profile_t *);
     bool (*capacity_snapshot)(const void *,uint32_t *,uint8_t *);
+    bool (*encode_window)(void *,bool microphone_active,uint8_t queued_pcm);
 } comp_wba_pipeline_config_t;
 
 typedef enum {COMP_PIPE_IDLE=0,COMP_PIPE_PREPARING,COMP_PIPE_READY,COMP_PIPE_RECORDING,

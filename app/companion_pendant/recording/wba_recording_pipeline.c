@@ -361,6 +361,11 @@ static bool audio_profile(void *context,comp_rec_audio_profile_t *out)
     comp_wba_recording_pipeline_t *p=context;
     return p && p->config.audio_profile && p->config.audio_profile(p->config.context,out);
 }
+static bool encode_window(void *context,bool microphone_active,uint8_t queued_pcm)
+{
+    comp_wba_recording_pipeline_t *p=context;
+    return p->config.encode_window(p->config.context,microphone_active,queued_pcm);
+}
 static bool microphone(void *v,bool enabled)
 {comp_wba_recording_pipeline_t *p=v;return p->config.microphone(p->config.context,enabled);}
 static uint32_t now(void *v)
@@ -616,7 +621,7 @@ static comp_wba_pipeline_state_t pipeline_poll_body(comp_wba_recording_pipeline_
         result=future_progress(p);
         if(result==COMP_SEG_OK&&p->future_phase==FUTURE_READY) {
             comp_cont_config_t cfg={microphone,now,next,seal,cancel_core,background,p,p->config.segment_frames,10u,p->pause_timeline,
-                p->config.audio_profile?audio_profile:NULL};
+                p->config.audio_profile?audio_profile:NULL,p->config.encode_window?encode_window:NULL};
             if(!comp_cont_recording_init(p->config.recording,&cfg,&p->future,&p->future_writer,p->token))
                 result=COMP_SEG_BAD_STATE;
             else {

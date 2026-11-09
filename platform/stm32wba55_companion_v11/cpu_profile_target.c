@@ -92,8 +92,8 @@ void comp_cpu_codec_admission(uint32_t flags,uint32_t next_radio_us)
 void comp_cpu_codec_admission_end(void){codec_admission_pending=false;}
 void comp_cpu_codec_source(uint32_t recording_state,uint32_t queued_pcm)
 {
-    /* STOP/PAUSE draining can encode outside product radio admission. Never
-     * attach a previous RUNNING frame's quiet-gap ticket to that later work. */
+    /* Unported callers can encode without a platform admission ticket. Never
+     * attach a previous frame's quiet-gap ticket to that later work. */
     if(!codec_admission_pending){codec_admission_flags=5u<<8u;codec_admission_next_us=0u;}
     codec_admission_flags=(codec_admission_flags&65535u)|((queued_pcm&255u)<<16u)|((recording_state&255u)<<24u);
     codec_admission_pending=false;

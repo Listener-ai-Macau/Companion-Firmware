@@ -69,6 +69,11 @@ typedef struct {
     /* Schema5 only: pure immutable session snapshot, no I/O. Each segment
      * repeats it; a changed CRC faults before emitting a successor header. */
     bool (*audio_profile)(void *,comp_rec_audio_profile_t *);
+    /* Optional nonblocking admission immediately before each real codec frame,
+     * including PAUSE/STOP drain and the final padding frame. false yields
+     * without consuming PCM or changing the codec/timeline. The port owns its
+     * bounded wait/urgent-capture policy; half-frame staging never calls it. */
+    bool (*encode_window)(void *,bool microphone_active,uint8_t queued_pcm);
 } comp_cont_config_t;
 
 typedef struct {

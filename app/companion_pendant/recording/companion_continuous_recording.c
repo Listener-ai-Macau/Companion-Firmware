@@ -307,9 +307,11 @@ static bool encoded_packet(comp_cont_recording_t *r,uint32_t before,size_t bytes
 
 static bool encode_one(comp_cont_recording_t *r)
 {
+    const bool complete_input=r->codec.pcm_fill+COMP_CONT_PCM_BLOCK_SAMPLES>=r->codec.frame_samples;
+    if(complete_input && r->config.encode_window &&
+       !r->config.encode_window(r->config.context,r->microphone_active,r->ring_count))return false;
     uint32_t before=r->codec.frames_encoded;
     comp_duration_stamp_t at=comp_duration_begin(r->config.now_ms(r->config.context));
-    const bool complete_input=r->codec.pcm_fill+COMP_CONT_PCM_BLOCK_SAMPLES>=r->codec.frame_samples;
     comp_cpu_stage_span_t cpu_span=complete_input?comp_cpu_stage_begin():(comp_cpu_stage_span_t){0};
     if(complete_input) {
 #if COMPANION_WBA_CPU_RESIDENCE_PROFILE
@@ -564,9 +566,11 @@ static void work(comp_cont_recording_t *r)
         if (!r->flush_complete) {
             if(source_boundary(r)&&!r->source_end_phase){source_end_progress(r);return;}
             if(r->stage_length>PACKET_OFFSET){(void)program_stage(r,false);return;}
+            bool will_encode=source_boundary(r)||r->codec.pcm_fill!=0u;
+            if(will_encode && r->config.encode_window &&
+               !r->config.encode_window(r->config.context,r->microphone_active,r->ring_count))return;
             uint32_t before=r->codec.frames_encoded;
             comp_duration_stamp_t at=comp_duration_begin(r->config.now_ms(r->config.context));
-            bool will_encode=source_boundary(r)||r->codec.pcm_fill!=0u;
             comp_cpu_stage_span_t span=will_encode?comp_cpu_stage_begin():(comp_cpu_stage_span_t){0};
             if(will_encode) {
 #if COMPANION_WBA_CPU_RESIDENCE_PROFILE

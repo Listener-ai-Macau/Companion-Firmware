@@ -194,6 +194,23 @@ static void capture_validate(comp_v11_product_app_t *app)
     capture_validate_body(app);
     comp_cpu_detail_end(COMP_CPU_STAGE_VALIDATE,cpu,true);
 }
+static bool recording_encode_window(void *context,bool microphone_active,uint8_t queued_pcm)
+{
+    comp_v11_product_app_t *app=context;
+    if(microphone_active && !comp_v11_microphone_hal_encode_window(&app->board->microphone))return false;
+#ifdef COMPANION_WBA_BLE_LINKED
+    /* The core calls this at every actual encode, also after capture stops.
+     * Only active capture with30ms queued PCM bypasses radio courtesy. */
+    if(!comp_v11_ble_capture_encode_window(!microphone_active || queued_pcm<3u))return false;
+#if COMPANION_WBA_CPU_RESIDENCE_PROFILE
+    uint32_t flags,next_us;comp_v11_ble_capture_admission_observed(&flags,&next_us);
+    comp_cpu_codec_admission(flags|((uint32_t)queued_pcm<<16u),next_us);
+#endif
+#else
+    (void)queued_pcm;
+#endif
+    return true;
+}
 static bool recording_work_poll(comp_v11_product_app_t *app,uint32_t elapsed_ms,bool converted)
 {
     const bool staging=comp_wba_recording_product_pcm_staging_pending(&app->recording);
@@ -201,29 +218,9 @@ static bool recording_work_poll(comp_v11_product_app_t *app,uint32_t elapsed_ms,
      * first PCM half is only bounded RAM staging and retains its old gate. */
     if((converted && !staging) || !comp_v11_capture_work_window_open(elapsed_ms,staging,
         staging || comp_v11_microphone_hal_encode_window(&app->board->microphone)))return false;
-#ifdef COMPANION_WBA_BLE_LINKED
-    const comp_cont_recording_t *r=&app->recording.capture.engine;
-    const bool frame_ready=r->state==COMP_CONT_RUNNING && r->microphone_active &&
-        r->ring_count && r->encoder_owned && r->codec.ready &&
-        r->codec.frame_samples==320u && r->codec.pcm_fill==160u &&
-        !r->writer.phase && !r->roll_packet_bytes && !r->bookmark_phase &&
-        r->stage_length<=COMP_CONT_STAGE_BYTES-(COMPANION_OPUS16_MAX_PACKET+2u);
-    /* Radio courtesy must not accumulate audio:30ms queued PCM takes the
-     * next real DMA-safe encode slot without waiting for another quiet gap. */
-    if(!comp_v11_ble_capture_encode_window(frame_ready && r->ring_count<3u))return false;
-#if COMPANION_WBA_CPU_RESIDENCE_PROFILE
-    if(frame_ready) {
-        uint32_t flags,next_us;comp_v11_ble_capture_admission_observed(&flags,&next_us);
-        comp_cpu_codec_admission(flags|((uint32_t)r->ring_count<<16u),next_us);
-    }
-#endif
-#endif
     uint32_t before=app->recording.capture.engine.stats.encoded_packets;
     if(staging)(void)comp_wba_recording_product_stage_pcm_half(&app->recording);
     else comp_wba_recording_product_poll(&app->recording);
-#if COMPANION_WBA_CPU_RESIDENCE_PROFILE
-    comp_cpu_codec_admission_end();
-#endif
     return app->recording.pipeline.engine_bound &&
         app->recording.capture.engine.stats.encoded_packets!=before;
 }
@@ -362,6 +359,7 @@ static void recording_namespace_poll(comp_v11_product_app_t *app)
     }
     comp_wba_pipeline_config_t cfg={0};
     cfg.microphone=microphone_control;cfg.now_ms=recording_now;cfg.context=app;
+    cfg.encode_window=recording_encode_window;
 #if COMPANION_WBA_AUDIO_PROFILE
     cfg.audio_profile=recording_audio_profile;
 #endif
