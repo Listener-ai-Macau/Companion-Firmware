@@ -39,6 +39,14 @@ static bool whole_consumer_active(const comp_wba_recording_pipeline_t *p)
 {return p->consume_phase>=CONSUME_FIND&&p->consume_phase<=CONSUME_RECLAIM;}
 static bool consumer_active(const comp_wba_recording_pipeline_t *p)
 {return whole_consumer_active(p)||p->consume_phase==CONSUME_RANGE_FIND||p->consume_phase==CONSUME_RANGE;}
+#if defined(__GNUC__)
+__attribute__((noinline))
+#endif
+static bool idle_storage(const comp_wba_recording_pipeline_t *p)
+{
+    return (p->state==COMP_PIPE_IDLE||p->state==COMP_PIPE_FINISHED)&&!p->discard_exclusive&&
+        !consumer_active(p)&&!p->config.catalog->phase&&!p->config.storage->poisoned;
+}
 bool comp_wba_recording_pipeline_primed(const comp_wba_recording_pipeline_t *p)
 {return p&&p->future_phase==FUTURE_PRIME;}
 static bool release_prime(comp_wba_recording_pipeline_t *p)
@@ -53,8 +61,8 @@ comp_segment_result_t comp_wba_recording_pipeline_prime(comp_wba_recording_pipel
     if(!p||(p->state!=COMP_PIPE_IDLE&&p->state!=COMP_PIPE_FINISHED))return COMP_SEG_BAD_STATE;
     comp_segment_catalog_t *c=p->config.catalog;
     if(p->config.storage->poisoned)return COMP_SEG_IO_ERROR;
-    allowed=allowed&&!consumer_active(p)&&!p->discard_exclusive&&!p->workspace_bytes&&!p->workspace_requested&&
-        !c->phase&&!p->sealing&&!p->config.recording->microphone_active&&!p->config.recording->encoder_owned;
+    allowed=allowed&&idle_storage(p)&&!p->workspace_bytes&&!p->workspace_requested&&
+        !p->sealing&&!p->config.recording->microphone_active&&!p->config.recording->encoder_owned;
     if(!allowed) {
         if(release_prime(p))return COMP_SEG_OK;
         comp_segment_result_t r=comp_wba_segment_storage_reserve_cancel_poll(p->config.storage,&p->reserve);
@@ -439,8 +447,7 @@ comp_segment_result_t comp_wba_recording_pipeline_begin_timeline(comp_wba_record
     uint64_t session,uint8_t mode,uint32_t started,uint32_t token,bool timeline)
 {
     if(!p||!session||!token||mode>2u)return COMP_SEG_BAD_ARGUMENT;
-    if((p->state!=COMP_PIPE_IDLE&&p->state!=COMP_PIPE_FINISHED)||p->discard_exclusive||p->workspace_bytes||p->workspace_requested||consumer_active(p)||
-       p->config.catalog->phase||p->config.storage->poisoned)return COMP_SEG_BAD_STATE;
+    if(!idle_storage(p)||p->workspace_bytes||p->workspace_requested)return COMP_SEG_BAD_STATE;
     bool primed=comp_wba_recording_pipeline_primed(p)&&p->full_generation==p->config.catalog->generation;
     if(!primed&&!release_prime(p))return COMP_SEG_BAD_STATE;
     const bool previous=p->state==COMP_PIPE_FINISHED&&p->engine_bound;
@@ -763,8 +770,7 @@ comp_segment_result_t comp_wba_recording_pipeline_workspace(comp_wba_recording_p
     if(!p||!physical)return COMP_SEG_BAD_ARGUMENT;
     *physical=0u;
     if(!release_prime(p))return COMP_SEG_BAD_STATE;
-    if((p->state!=COMP_PIPE_IDLE&&p->state!=COMP_PIPE_FINISHED)||p->discard_exclusive||consumer_active(p)||
-       p->config.catalog->phase||p->config.storage->poisoned||p->config.storage->nor->erase_active)
+    if(!idle_storage(p)||p->config.storage->nor->erase_active)
         return COMP_SEG_BAD_STATE;
     comp_segment_catalog_t *c=p->config.catalog;
     if(bytes%4096u||bytes>c->data_bytes)return COMP_SEG_BAD_ARGUMENT;
@@ -806,8 +812,7 @@ comp_segment_result_t comp_wba_recording_pipeline_workspace_at_snapshot(comp_wba
     if(!p||!physical||!p->config.catalog||!p->config.storage)return COMP_SEG_BAD_ARGUMENT;
     *physical=0u;
     if(!release_prime(p))return COMP_SEG_BAD_STATE;
-    if((p->state!=COMP_PIPE_IDLE&&p->state!=COMP_PIPE_FINISHED)||p->discard_exclusive||consumer_active(p)||p->workspace_requested||
-       p->config.catalog->phase||p->config.storage->poisoned||p->config.storage->nor->erase_active)
+    if(!idle_storage(p)||p->workspace_requested||p->config.storage->nor->erase_active)
         return COMP_SEG_BAD_STATE;
     comp_segment_catalog_t *c=p->config.catalog;
     if(!c->mounted||bytes%4096u||bytes>c->data_bytes||offset%4096u||offset>c->data_bytes-bytes)return COMP_SEG_BAD_ARGUMENT;

@@ -254,6 +254,7 @@ companion_spi_nor_stm32wba_partition_program(
         length > partition->size_bytes - offset)
         return COMPANION_SPI_NOR_STM32WBA_OUT_OF_RANGE;
     if (partition->base_address == COMP_WBA_NOR_RECORDING_IDENTITY_BASE) {
+        if(partition->nor->erase_active)return COMPANION_SPI_NOR_STM32WBA_ERROR;
         if (active_board->microphone.running) fixture.identity_writes_during_capture++;
         if (fixture.fail_identity_program) return COMPANION_SPI_NOR_STM32WBA_ERROR;
     }
@@ -441,10 +442,22 @@ companion_spi_nor_stm32wba_status_t companion_spi_nor_stm32wba_program(
     companion_spi_nor_stm32wba_partition_t whole={nor,0u,FLASH_BYTES};
     return companion_spi_nor_stm32wba_partition_program(&whole,address,p,n);
 }
+static bool fake_hold_erase,fake_finish_erase;
+uint32_t companion_spi_nor_stm32wba_erase_chunk(const companion_spi_nor_stm32wba_t *nor,uint32_t at,uint32_t remaining)
+{
+    if(at%65536u==0u&&remaining>=65536u)return 65536u;
+    if(nor&&nor->info.erase_32k_supported&&at%32768u==0u&&remaining>=32768u)return 32768u;
+    return 4096u;
+}
 companion_spi_nor_stm32wba_status_t companion_spi_nor_stm32wba_erase_step(
     companion_spi_nor_stm32wba_t *nor,uint32_t at,uint32_t n)
 {
     if(!nor||at%4096u||n%4096u||at>FLASH_BYTES||n>FLASH_BYTES-at)return COMPANION_SPI_NOR_STM32WBA_BAD_PARAM;
+    if(fake_hold_erase) {
+        if(!nor->erase_active){nor->erase_active=true;nor->erase_address=at;nor->erase_bytes=n;}
+        if(!fake_finish_erase)return COMPANION_SPI_NOR_STM32WBA_PENDING;
+        fake_finish_erase=false;fake_hold_erase=false;nor->erase_active=false;
+    }
     memset(fixture.flash+at,255u,n);return COMPANION_SPI_NOR_STM32WBA_OK;
 }
 bool companion_spi_nor_stm32wba_erase_access_ready(const companion_spi_nor_stm32wba_t *nor,uint32_t at,size_t n)
@@ -1470,6 +1483,42 @@ static int idle_display_failure_journey(void)
     puts("PASS failed display idle policy: real inactivity, microphone/OTA/activity/disabled timer and active panel retained; healthy display completion unchanged");
     return 0;
 }
+static int idle_prime_handoff_journey(void)
+{
+    for(unsigned cancel=0u;cancel<2u;++cancel) {
+        comp_v11_hal_t board;comp_v11_product_app_t app;
+        memset(&fixture,0,sizeof(fixture));fixture.flash=malloc(FLASH_BYTES);
+        REQUIRE(fixture.flash,"idle prime NOR allocation");memset(fixture.flash,255u,FLASH_BYTES);layout_root();
+        init_board(&app,&board);REQUIRE(wait_state(&app,COMP_WBA_RECORDING_IDLE,20000u),"idle prime boot");
+        (void)comp_wba_recording_pipeline_prime(&app.recording.pipeline,false);
+        memset(fixture.flash+app.recording.catalog.data_base,0x5au,app.recording.catalog.data_bytes);
+        fake_hold_erase=true;fake_finish_erase=false;
+        for(unsigned i=0u;i<20000u&&!board.nor.erase_active;++i)step(&app,1u);
+        REQUIRE(board.nor.erase_active&&comp_wba_recording_pipeline_primed(&app.recording.pipeline),"no owned idle erase");
+        uint64_t next=app.recording_identity.record.next_session_id;
+        REQUIRE(comp_runtime_record(&app.runtime,true,fixture.tick)==COMP_RUNTIME_OK,"START while idle erase refused");
+        step(&app,3u);
+        REQUIRE(app.runtime.prepare_pending&&!board.microphone.running&&
+            app.recording_identity.record.next_session_id==next,"identity persisted before erase retired");
+        if(cancel)REQUIRE(comp_runtime_record(&app.runtime,false,fixture.tick)==COMP_RUNTIME_OK,"pending idle handoff cancel failed");
+        fake_finish_erase=true;step(&app,2u);
+        if(cancel) {
+            step(&app,200u);
+            REQUIRE(!app.runtime.prepare_pending&&!fixture.mic_starts&&app.recording_identity.record.next_session_id==next,
+                "canceled idle handoff auto-started or burned session");
+        } else {
+            REQUIRE(wait_state(&app,COMP_WBA_RECORDING_CAPTURING,20000u),"handoff did not start after quiescence");
+            REQUIRE(fixture.mic_starts==1u&&app.recording_identity.record.next_session_id==next+1u&&
+                !fixture.mic_before_durable_identity,"handoff identity/one-start ordering");
+            step(&app,60u);
+            REQUIRE(comp_runtime_record(&app.runtime,false,fixture.tick)==COMP_RUNTIME_OK,"handoff STOP");
+            REQUIRE(wait_state(&app,COMP_WBA_RECORDING_TRANSFER_READY,20000u),"handoff seal");
+        }
+        free(fixture.flash);
+    }
+    puts("PASS real product idle erase handoff: explicit START waits before CSI1 persistence, one MIC start after durable identity; cancel allocates nothing and never auto-starts");
+    return 0;
+}
 static int late_release_button_journey(void)
 {
     comp_v11_hal_t board;comp_v11_product_app_t app;
@@ -1700,6 +1749,7 @@ static int capture_controls_journey(const char *path)
 }
 int main(int argc,char **argv)
 {
+    if(argc==3&&!strcmp(argv[2],"--idle-prime-only"))return idle_prime_handoff_journey();
     if(argc==3&&!strcmp(argv[2],"--capture-controls-only"))return capture_controls_journey(argv[1]);
     if(argc==3&&!strcmp(argv[2],"--late-button-release-only"))return late_release_button_journey();
     if(argc==3&&!strcmp(argv[2],"--idle-display-failure-only"))return idle_display_failure_journey();

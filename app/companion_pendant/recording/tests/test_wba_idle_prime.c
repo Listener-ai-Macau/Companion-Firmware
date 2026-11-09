@@ -57,6 +57,9 @@ static void full_proof_handoff(void)
     comp_segment_entry_t *taken=NULL;
     assert(!comp_segment_reserve_take(&product_rec.pipeline.reserve,&taken));
     unsigned reads=f.reads,erases=f.erases;
+    prime_tick(false);
+    assert(comp_wba_recording_pipeline_primed(&product_rec.pipeline)&&
+        comp_segment_reserve_ready(&product_rec.pipeline.reserve)&&f.reads==reads&&f.erases==erases);
     bind_ready(901u,901u);
     assert(f.erases==erases&&f.reads-reads<150u);
     finish_empty(901u);

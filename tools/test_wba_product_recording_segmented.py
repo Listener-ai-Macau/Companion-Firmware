@@ -32,6 +32,7 @@ parser.add_argument('--idle-display-failure-only',action='store_true')
 parser.add_argument('--screen-disabled',action='store_true')
 parser.add_argument('--late-button-release-only',action='store_true')
 parser.add_argument('--capture-controls-only',action='store_true')
+parser.add_argument('--idle-prime-only',action='store_true')
 options=parser.parse_args()
 ROOT = options.source_root.resolve() if options.source_root else REPO
 OUT = REPO / ".cache/recording-core-20261011" / options.artifact_name
@@ -214,7 +215,11 @@ def main() -> int:
         return result.stdout
     try:
         stage(['cmd.exe','/d','/c',str(script)],'compile.txt')
-        output=stage([str(exe),str(cop1),*(['--capture-controls-only'] if options.capture_controls_only else (['--late-button-release-only'] if options.late_button_release_only else (['--idle-display-failure-only'] if options.idle_display_failure_only else (['--resource-uncertain-only'] if options.resource_uncertain_only else (['--resource-timeout-only'] if options.resource_timeout_only else (['--power-guard-only'] if POWER_GUARD_ONLY else []))))))],'result.txt')
+        output=stage([str(exe),str(cop1),*(['--idle-prime-only'] if options.idle_prime_only else ['--capture-controls-only'] if options.capture_controls_only else (['--late-button-release-only'] if options.late_button_release_only else (['--idle-display-failure-only'] if options.idle_display_failure_only else (['--resource-uncertain-only'] if options.resource_uncertain_only else (['--resource-timeout-only'] if options.resource_timeout_only else (['--power-guard-only'] if POWER_GUARD_ONLY else []))))))],'result.txt')
+        if options.idle_prime_only:
+            assert output.startswith('PASS real product idle erase handoff'),output
+            result=dict(result='PASS_IDLE_PRIME_PRODUCT_HANDOFF_SOFTWARE_ONLY',output=output,physicalBoard=False,installed=False)
+            (OUT/'result.json').write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8');print(json.dumps(result));return 0
         if options.capture_controls_only:
             assert output.startswith('PASS Capture recorder-card controls'),output
             decoded=decode_cop1(cop1,wav)

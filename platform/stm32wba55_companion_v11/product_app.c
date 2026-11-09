@@ -636,6 +636,11 @@ static bool recording_control(void *c,bool start,uint32_t token)
 {
     comp_v11_product_app_t *app=c;
     if(!start&&token==app->runtime.record_token&&
+       !app->recording_session_id&&!app->board->microphone.running&&
+       (app->recording.pipeline.state==COMP_PIPE_IDLE||app->recording.pipeline.state==COMP_PIPE_FINISHED))
+        return comp_runtime_recording_update(&app->runtime,token,
+            DENZIC_AUDIO_RECORDING_STATE_CANCELED,false,HAL_GetTick());
+    if(!start&&token==app->runtime.record_token&&
        comp_wba_recording_product_recovering(&app->recording)&&
        !app->recording.pipeline.engine_bound&&!app->board->microphone.running)
         return comp_runtime_recording_update(&app->runtime,token,
@@ -1518,6 +1523,7 @@ void comp_v11_product_app_poll(comp_v11_product_app_t *app)
      * higher-priority input slot and must start from its actual dispatch
      * time, including in builds without the BLE port. */
     now=HAL_GetTick();
+#if COMPANION_WBA_SCREEN_ENABLED
     if (board->touch.read_count!=app->last_touch_count) {
         app->last_touch_count=board->touch.read_count;
         comp_runtime_touch(&app->runtime,&board->touch_sample,board->touch.read_count,board->touch_ack,now);
@@ -1528,6 +1534,7 @@ void comp_v11_product_app_poll(comp_v11_product_app_t *app)
          * or leave a phantom finger/hold blocking idle behavior and sleep. */
         comp_runtime_touch_unavailable(&app->runtime);
     }
+#endif
     /* A touch/menu callback can synchronously save/read back preferences.
      * Recheck age after it returns so old motion and battery/reference
      * data cannot inherit the earlier, still-fresh dispatch timestamp. */

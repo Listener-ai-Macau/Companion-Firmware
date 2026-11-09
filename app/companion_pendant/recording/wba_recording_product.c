@@ -336,6 +336,12 @@ static bool inactive_storage_slice(const comp_wba_recording_product_t *p)
          comp_wba_recording_pipeline_consume_result(&p->pipeline)==COMP_SEG_PENDING))&&
         !p->capture.engine.microphone_active&&!p->capture.engine.encoder_owned;
 }
+static COMP_REC_BOOT_ONLY bool idle_recovery_quiet(const comp_wba_recording_product_t *p)
+{
+    return !p->pipeline.workspace_bytes&&!p->pipeline.workspace_requested&&!p->pipeline.discard_exclusive&&
+        !p->pipeline.sealing&&!p->catalog.phase&&p->storage.nor&&!p->storage.nor->erase_active&&
+        (!p->pipeline.engine_bound||(!p->capture.engine.microphone_active&&!p->capture.engine.encoder_owned));
+}
 bool comp_wba_recording_product_foreground_pending(const comp_wba_recording_product_t *p)
 {
     /* Metadata/search/blank reads can progress now. A physical erase still
@@ -358,6 +364,11 @@ void comp_wba_recording_product_prime(comp_wba_recording_product_t *p,bool allow
     if(!p||!comp_wba_recording_product_capture_available(p))return;
     allowed=allowed&&p->ready&&comp_wba_recording_product_space_current(p)&&
         !p->space.allocation_uncertain&&p->space.allocatable_segments;
+    /* Read-only BLE activity only pauses background I/O. Keep a completed
+     * proof; actual consume/discard/workspace writers explicitly retire it,
+     * and begin also verifies the exact catalog generation before handoff. */
+    if(!allowed&&comp_wba_recording_pipeline_primed(&p->pipeline)&&
+       comp_segment_reserve_ready(&p->pipeline.reserve)&&p->pipeline.full_generation==p->catalog.generation)return;
     uint32_t began=p->pipeline.config.now_ms(p->pipeline.config.context);
     for(unsigned i=0u;i<16u;++i) {
         bool existing=comp_wba_recording_pipeline_primed(&p->pipeline);
@@ -383,10 +394,7 @@ void comp_wba_recording_product_poll(comp_wba_recording_product_t *p)
      * Radio/other owners release before the foreground remount proceeds. */
     if(idle&&p->storage.poisoned&&p->storage.idle_lookup_read_failed&&
        (p->boot_phase==BOOT_READY||p->boot_phase==BOOT_SALVAGE_READY)&&
-       !p->pipeline.workspace_bytes&&!p->pipeline.workspace_requested&&!p->pipeline.discard_exclusive&&
-       !p->pipeline.sealing&&!p->catalog.phase&&p->storage.nor&&!p->storage.nor->erase_active&&
-       comp_wba_recording_pipeline_consume_result(&p->pipeline)!=COMP_SEG_PENDING&&
-       (!p->pipeline.engine_bound||(!p->capture.engine.microphone_active&&!p->capture.engine.encoder_owned))) {
+        idle_recovery_quiet(p)&&comp_wba_recording_pipeline_consume_result(&p->pipeline)!=COMP_SEG_PENDING) {
         p->last_fault=COMP_WBA_RECORDING_FAULT_STORAGE_IO;
         p->ready=false;p->media_ready=false;p->boot_phase=BOOT_FAILED;p->reported_state=BOOT_RETRY_IDLE_ARM0;
         return;
@@ -400,12 +408,7 @@ void comp_wba_recording_product_poll(comp_wba_recording_product_t *p)
              * format or retry a write, active lease or uncertain owner. */
             bool retry=r==COMP_SEG_IO_ERROR&&p->storage.poisoned&&
                 (p->boot_phase==BOOT_READY||p->boot_phase==BOOT_SALVAGE_READY)&&
-                !p->pipeline.workspace_bytes&&
-                !p->pipeline.workspace_requested&&!p->pipeline.discard_exclusive&&
-                !p->pipeline.sealing&&!p->catalog.phase&&p->storage.nor&&
-                !p->storage.nor->erase_active&&
-                (!p->pipeline.engine_bound||(!p->capture.engine.microphone_active&&
-                                             !p->capture.engine.encoder_owned));
+                idle_recovery_quiet(p);
             fail(p,r);
             if(retry){p->media_ready=false;p->reported_state=BOOT_RETRY_IDLE_ARM0;}
         }
@@ -424,9 +427,7 @@ void comp_wba_recording_product_poll(comp_wba_recording_product_t *p)
          * owner releases it, then uses the existing bounded remount. */
         if(comp_wba_recording_pipeline_consume_idle_read_failed(&p->pipeline)&&
            p->storage.poisoned&&(p->boot_phase==BOOT_READY||p->boot_phase==BOOT_SALVAGE_READY)&&
-           !p->pipeline.workspace_bytes&&!p->pipeline.workspace_requested&&!p->pipeline.discard_exclusive&&
-           !p->pipeline.sealing&&!p->catalog.phase&&p->storage.nor&&!p->storage.nor->erase_active&&
-           (!p->pipeline.engine_bound||(!p->capture.engine.microphone_active&&!p->capture.engine.encoder_owned))) {
+            idle_recovery_quiet(p)) {
             p->last_fault=COMP_WBA_RECORDING_FAULT_STORAGE_IO;
             p->ready=false;p->media_ready=false;p->boot_phase=BOOT_FAILED;
             p->reported_state=BOOT_RETRY_IDLE_ARM0;
