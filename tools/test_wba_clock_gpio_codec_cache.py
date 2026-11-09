@@ -40,18 +40,22 @@ int main(void){
  ICACHE->CR=5u;comp_cpu_codec_cache_begin();CHECK(starts==0 && resets==0 && !codec_cache.owned);
  residence.active=true;ICACHE->CR=5u|0x100u;comp_cpu_codec_cache_begin();CHECK(starts==0 && stops==0 && resets==0 && codec_cache.foreign==1u && ICACHE->CR==(5u|0x100u));
  comp_cpu_codec_admission(0x00010303u,15000u);
+ comp_cpu_codec_source(2u,1u);
  ICACHE->CR=5u;comp_cpu_codec_cache_begin();CHECK(codec_cache.owned && starts==1 && resets==1 && ICACHE->CR==(5u|ICACHE_MONITOR_HIT_MISS));fake_hits=200u;fake_misses=5u;codec_irq.current_us=180u;codec_irq.current_kind=39u;codec_cache_end(7000u,200u,true);
- CHECK(codec_cache.peak_admission_flags==0x00010303u && codec_cache.peak_admission_next_us==15000u);
+ CHECK(codec_cache.peak_admission_flags==0x02010303u && codec_cache.peak_admission_next_us==15000u);
  CHECK(!codec_cache.owned && stops==1u && ICACHE->CR==5u && codec_cache.calls==1u && codec_cache.hits==200u && codec_cache.misses==5u && codec_cache.peak_irq_us==200u && codec_irq.peak_us==180u && codec_irq.peak_kind==39u);
  comp_cpu_codec_admission(0x00030100u,0u);
+ comp_cpu_codec_source(2u,3u);
  comp_cpu_codec_cache_begin();fake_hits=300u;fake_misses=UINT16_MAX;codec_cache_end(9000u,750u,true);CHECK(codec_cache.calls==2u && codec_cache.saturations==1u && codec_cache.peak_us==9000u && codec_cache.peak_hits==300u && codec_cache.peak_misses==UINT16_MAX && codec_cache.peak_irq_us==750u && ICACHE->CR==5u);
- CHECK(codec_cache.peak_admission_flags==0x00030100u && codec_cache.peak_admission_next_us==0u);
+ CHECK(codec_cache.peak_admission_flags==0x02030100u && codec_cache.peak_admission_next_us==0u);
  comp_cpu_codec_admission(0x00010201u,0u);
+ comp_cpu_codec_admission_end();comp_cpu_codec_source(4u,3u);
+ CHECK(codec_admission_flags==0x04030500u && codec_admission_next_us==0u);
  comp_cpu_codec_cache_begin();codec_cache_end(1u,0u,false);CHECK(!codec_cache.owned && codec_cache.calls==2u && codec_cache.begins==3u && ICACHE->CR==5u);
  comp_cpu_codec_cache_begin();codec_cache_stop_owned();CHECK(!codec_cache.owned && codec_cache.calls==2u && codec_cache.begins==4u && ICACHE->CR==5u);
  cache_enabled=false;uint32_t prior_starts=starts;comp_cpu_codec_cache_begin();CHECK(!codec_cache.owned&&starts==prior_starts);cache_enabled=true;
  comp_cpu_codec_cache_begin();codec_cache_end(2000u,50u,true);
- CHECK(codec_cache.peak_us==9000u && codec_cache.peak_admission_flags==0x00030100u && codec_cache.peak_admission_next_us==0u);
+ CHECK(codec_cache.peak_us==9000u && codec_cache.peak_admission_flags==0x02030100u && codec_cache.peak_admission_next_us==0u);
  printf("PASS_GPIO_CLOCK_MODEL cases=%u ceil_no_faster_nominal_reference low61=40 ref98=64; electrical edges NOT_QUALIFIED\n",cases);
  printf("PASS_CACHE_OBSERVATION real_source sizeof=%zu reset_counters_only/foreign-owner/saturation/paired-peak/abort-release; no cache invalidate or associativity change\n",sizeof(codec_cache));return 0;
 }

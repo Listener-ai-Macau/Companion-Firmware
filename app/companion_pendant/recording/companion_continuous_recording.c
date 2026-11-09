@@ -311,7 +311,12 @@ static bool encode_one(comp_cont_recording_t *r)
     comp_duration_stamp_t at=comp_duration_begin(r->config.now_ms(r->config.context));
     const bool complete_input=r->codec.pcm_fill+COMP_CONT_PCM_BLOCK_SAMPLES>=r->codec.frame_samples;
     comp_cpu_stage_span_t cpu_span=complete_input?comp_cpu_stage_begin():(comp_cpu_stage_span_t){0};
-    if(complete_input)comp_cpu_codec_cache_begin();
+    if(complete_input) {
+#if COMPANION_WBA_CPU_RESIDENCE_PROFILE
+        comp_cpu_codec_source((uint32_t)r->state,r->ring_count);
+#endif
+        comp_cpu_codec_cache_begin();
+    }
     size_t bytes=companion_opus16_rt_encode(&r->codec,r->pcm[r->ring_read],
         COMP_CONT_PCM_BLOCK_SAMPLES,packet(r),PACKET_CAPACITY,false);
     if(complete_input)comp_cpu_stage_end(COMP_CPU_STAGE_OPUS,cpu_span,r->codec.frames_encoded!=before);
@@ -563,7 +568,12 @@ static void work(comp_cont_recording_t *r)
             comp_duration_stamp_t at=comp_duration_begin(r->config.now_ms(r->config.context));
             bool will_encode=source_boundary(r)||r->codec.pcm_fill!=0u;
             comp_cpu_stage_span_t span=will_encode?comp_cpu_stage_begin():(comp_cpu_stage_span_t){0};
-            if(will_encode)comp_cpu_codec_cache_begin();
+            if(will_encode) {
+#if COMPANION_WBA_CPU_RESIDENCE_PROFILE
+                comp_cpu_codec_source((uint32_t)r->state,r->ring_count);
+#endif
+                comp_cpu_codec_cache_begin();
+            }
             size_t n=source_boundary(r)?companion_opus16_rt_finish_exact(&r->codec,packet(r),PACKET_CAPACITY):
                 companion_opus16_rt_flush(&r->codec,packet(r),PACKET_CAPACITY);
             if(will_encode)comp_cpu_stage_end(COMP_CPU_STAGE_OPUS,span,r->codec.frames_encoded!=before);

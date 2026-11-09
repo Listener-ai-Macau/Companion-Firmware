@@ -86,8 +86,18 @@ typedef struct {
 } codec_cache_stats_t;
 static codec_cache_stats_t codec_cache;
 static uint32_t codec_admission_flags,codec_admission_next_us;
+static bool codec_admission_pending;
 void comp_cpu_codec_admission(uint32_t flags,uint32_t next_radio_us)
-{codec_admission_flags=flags;codec_admission_next_us=next_radio_us;}
+{codec_admission_flags=flags;codec_admission_next_us=next_radio_us;codec_admission_pending=true;}
+void comp_cpu_codec_admission_end(void){codec_admission_pending=false;}
+void comp_cpu_codec_source(uint32_t recording_state,uint32_t queued_pcm)
+{
+    /* STOP/PAUSE draining can encode outside product radio admission. Never
+     * attach a previous RUNNING frame's quiet-gap ticket to that later work. */
+    if(!codec_admission_pending){codec_admission_flags=5u<<8u;codec_admission_next_us=0u;}
+    codec_admission_flags=(codec_admission_flags&65535u)|((queued_pcm&255u)<<16u)|((recording_state&255u)<<24u);
+    codec_admission_pending=false;
+}
 _Static_assert(sizeof(codec_cache_stats_t)<=64u,"bounded optional codec cache observation");
 static void codec_cache_stop_owned(void)
 {
@@ -229,7 +239,7 @@ void comp_v11_cpu_capture_begin(uint32_t token)
      * accounting in recording builds with optional idle Stop1 enabled. */
     if(timer_start())valid=stamp(false,&now);
     codec_cache_stop_owned();memset(&codec_cache,0,sizeof(codec_cache));
-    codec_admission_flags=0u;codec_admission_next_us=0u;
+    codec_admission_flags=0u;codec_admission_next_us=0u;codec_admission_pending=false;
     memset(stage_stats,0,sizeof(stage_stats));memset(opus_over_budget,0,sizeof(opus_over_budget));
     comp_cpu_self_reset(&stage_self);
     comp_cpu_residence_begin(&residence,token,SystemCoreClock,now,valid);reference(now);__set_PRIMASK(mask);
@@ -501,10 +511,10 @@ void comp_v11_cpu_emit(void)
         (unsigned long)s.stats.token,(unsigned long)codec_irq.peak_us,(unsigned long)codec_irq.peak_kind);
     (void)comp_v11_hal_debug_write(line);
     uint32_t admission=codec_cache.peak_admission_flags;
-    (void)snprintf(line,sizeof(line),"OCACHE4 token=%lu reason=%lu pending=%u query_valid=%u radio_busy=%u queued_pcm=%lu next_radio_us=%lu same_worst_wall=1\r\n",
+    (void)snprintf(line,sizeof(line),"OCACHE4 token=%lu reason=%lu pending=%u query_valid=%u radio_busy=%u queued_pcm=%lu next_radio_us=%lu recording_state=%lu same_worst_wall=1\r\n",
         (unsigned long)s.stats.token,(unsigned long)((admission>>8u)&255u),
         (unsigned)(admission&1u),(unsigned)((admission>>1u)&1u),(unsigned)((admission>>2u)&1u),
-        (unsigned long)((admission>>16u)&255u),(unsigned long)codec_cache.peak_admission_next_us);
+        (unsigned long)((admission>>16u)&255u),(unsigned long)codec_cache.peak_admission_next_us,(unsigned long)(admission>>24u));
     (void)comp_v11_hal_debug_write(line);
     /* Radio classes are outer envelopes, including any nested capture/tick
      * IRQs. Their complement partitions this same worst-wall Opus frame;

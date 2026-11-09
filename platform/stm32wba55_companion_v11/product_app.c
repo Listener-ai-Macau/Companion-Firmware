@@ -221,6 +221,9 @@ static bool recording_work_poll(comp_v11_product_app_t *app,uint32_t elapsed_ms,
     uint32_t before=app->recording.capture.engine.stats.encoded_packets;
     if(staging)(void)comp_wba_recording_product_stage_pcm_half(&app->recording);
     else comp_wba_recording_product_poll(&app->recording);
+#if COMPANION_WBA_CPU_RESIDENCE_PROFILE
+    comp_cpu_codec_admission_end();
+#endif
     return app->recording.pipeline.engine_bound &&
         app->recording.capture.engine.stats.encoded_packets!=before;
 }
