@@ -3,7 +3,9 @@
 #include <stdbool.h>
 #include <stdint.h>
 typedef struct {
-    uint32_t changed_ms, click_ms;
+    uint32_t changed_ms;
+    /* Double-click timing and IRQ replay are mutually exclusive policies. */
+    union { uint32_t click_ms, edge_observed_ms; };
     unsigned char raw:1, pressed:1, consumed:1, wake_only:1;
     unsigned char click_pending:1, second_press:1, double_enabled:1;
     uint8_t last_event;

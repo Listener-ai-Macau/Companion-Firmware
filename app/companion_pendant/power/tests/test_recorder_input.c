@@ -16,6 +16,7 @@ int main(void)
     comp_recorder_input_t s={0};
     assert(comp_input_key(&s,key,false)==COMP_INPUT_START);
     assert(comp_input_key(&s,physical(&b,400u,480u),true)==COMP_INPUT_STOP);
+    comp_wba_button_init(&b,false,UINT32_MAX-200u);
     assert(comp_input_key(&s,physical(&b,UINT32_MAX-50u,40u),false)==COMP_INPUT_START);
     comp_wba_button_init(&b,true,0u);
     comp_wba_button_edges_t up={0u,100u,COMP_WBA_BUTTON_EDGE_UP,false};

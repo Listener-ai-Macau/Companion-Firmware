@@ -250,7 +250,7 @@ static int button(void)
     CHECK(comp_wba_button_poll_edges(&b,&edge,1000u,140u)==COMP_WBA_BUTTON_WAKE);
     edge=(comp_wba_button_edges_t){300u,250u,3u,true};
     CHECK(comp_wba_button_poll_edges(&b,&edge,1000u,340u)==(COMP_WBA_BUTTON_CONFIRM|COMP_WBA_BUTTON_WAKE));
-    comp_wba_button_init(&b,false,0u);
+    comp_wba_button_init(&b,false,UINT32_MAX-1000u);
     edge=(comp_wba_button_edges_t){UINT32_MAX-499u,500u,3u,false};
     CHECK((comp_wba_button_poll_edges(&b,&edge,1000u,550u)&COMP_WBA_BUTTON_RECORD_TOGGLE)!=0u);
     CHECK(comp_power_policy_self_test());

@@ -2,7 +2,8 @@
 #include <stddef.h>
 void comp_wba_button_init(comp_wba_button_t *b, bool raw, uint32_t now)
 {
-    if (b) *b=(comp_wba_button_t){.changed_ms=now,.raw=raw,.pressed=raw,.consumed=raw,.wake_only=raw};
+    if (b) *b=(comp_wba_button_t){.changed_ms=now,.edge_observed_ms=now,
+        .raw=raw,.pressed=raw,.consumed=raw,.wake_only=raw};
 }
 uint8_t comp_wba_button_poll_with_hold(comp_wba_button_t *b, bool raw,
     bool sleeping, bool enable_double, uint16_t hold_ms, uint32_t now)
@@ -87,8 +88,16 @@ static uint8_t replay_edges(comp_wba_button_t *b,
 {
     if(!b || !edge)return 0u;
     uint8_t event=0u;
-    const bool down=(edge->flags&COMP_WBA_BUTTON_EDGE_DOWN)!=0u;
-    const bool up=(edge->flags&COMP_WBA_BUTTON_EDGE_UP)!=0u;
+    uint32_t observed=b->edge_observed_ms;
+    if((int32_t)(b->changed_ms-observed)>0)observed=b->changed_ms;
+    /* A level may already have been sampled before its pending IRQ is
+     * published. Never replay accepted history or feed a backwards time to
+     * the debounce subtraction. Only unseen edges from this poll interval
+     * may reconstruct a completed press; the current level is always read. */
+    const bool down=(edge->flags&COMP_WBA_BUTTON_EDGE_DOWN)!=0u&&
+        (int32_t)(edge->down_ms-observed)>0&&(int32_t)(now-edge->down_ms)>=0;
+    const bool up=(edge->flags&COMP_WBA_BUTTON_EDGE_UP)!=0u&&
+        (int32_t)(edge->up_ms-observed)>0&&(int32_t)(now-edge->up_ms)>=0;
     if(down && up && (int32_t)(edge->up_ms-edge->down_ms)<0) {
         /* A previous release followed by a new press, not a wrapped hold. */
         event|=edge_poll(b,false,hold_ms,edge->up_ms,transitions);
@@ -104,6 +113,7 @@ static uint8_t replay_edges(comp_wba_button_t *b,
         if(up)event|=edge_poll(b,false,hold_ms,edge->up_ms,transitions);
     }
     event|=edge_poll(b,edge->raw_pressed,hold_ms,now,transitions);
+    b->edge_observed_ms=now;
     return event;
 }
 uint8_t comp_wba_button_poll_edges(comp_wba_button_t *b,
