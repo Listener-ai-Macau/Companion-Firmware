@@ -745,7 +745,8 @@ void comp_v11_product_input_status(const comp_v11_product_app_t *app,uint32_t re
     memset(response,0,64u);memcpy(response,"CIN1",4u);
     response[4]=1u;response[5]=result;response[6]=s->mode;
     response[7]=(uint8_t)((s->flags&COMP_INPUT_HELD?1u:0u)|
-        (app->board->microphone.running?2u:0u)|(comp_runtime_recording_owned(&app->runtime)?4u:0u));
+        (app->board->microphone.running?2u:0u)|(comp_runtime_recording_owned(&app->runtime)?4u:0u)|
+        (feedback.flags&COMP_CAPTURE_MARK_PENDING?8u:0u)|(feedback.flags&COMP_CAPTURE_MARK_CONFIRMED?16u:0u));
     comp_rec_put32(response+8u,request);comp_rec_put32(response+12u,s->sequence);
     comp_rec_put32(response+16u,s->event_ms);
     response[20]=(uint8_t)s->events;response[21]=(uint8_t)(s->events>>8u);
@@ -1737,8 +1738,16 @@ void comp_v11_product_app_poll(comp_v11_product_app_t *app)
         comp_wba_button_poll_transitions(&app->button,&key_edges,now);
     if ((key & COMP_WBA_BUTTON_WAKE) || key_edge)
         comp_runtime_wake_from(&app->runtime,now,COMP_RUNTIME_WAKE_KEY);
-    if(recorder_key)
+    if(recorder_key) {
+#ifdef COMPANION_WBA_BLE_LINKED
+        /* A deliberate idle key press also authorizes the normal first-pair
+         * window before its UP starts recording. IMU wake never opens pairing. */
+        if((key&COMP_WBA_BUTTON_DOWN)&&app->input.mode==COMP_INPUT_RECORDER&&
+           !comp_runtime_recording_owned(&app->runtime)&&!comp_v11_ble_linked())
+            (void)comp_v11_ble_menu(COMP_SCREEN_MENU_ACTION_BROWSER_PAIR);
+#endif
         recording_input_apply(app,comp_input_key(&app->input,key,comp_runtime_recording_owned(&app->runtime)),now);
+    }
     if ((key & (COMP_WBA_BUTTON_CONFIRM|COMP_WBA_BUTTON_DOUBLE_CONFIRM)) && !comp_runtime_recording_hold(&app->runtime)) {
         if(!COMPANION_WBA_SCREEN_ENABLED) {
             if(comp_runtime_recording_owned(&app->runtime)) {

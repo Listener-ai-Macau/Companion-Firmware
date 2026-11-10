@@ -23,7 +23,7 @@ The 64-byte reply is:
 |4|schema1|
 |5|result:0 accepted,1 busy,2 invalid mode/options|
 |6|actual mode|
-|7|flags: bit0 key held, bit1 microphone running, bit2 recording owned|
+|7|flags: bit0 key held, bit1 microphone running, bit2 recording owned, bit3 latest mark pending, bit4 latest mark durably confirmed|
 |8|u32 request nonce;0 means unsolicited live event/status|
 |12|u32 device event sequence; nonzero, wraps skipping0|
 |16|u32 event device tick in milliseconds|
