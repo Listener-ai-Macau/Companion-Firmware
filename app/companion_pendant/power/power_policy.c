@@ -43,6 +43,11 @@ bool comp_power_policy_stop_allowed(const comp_power_policy_t *policy)
     return policy != NULL && (policy->touch_wake_ready || policy->button_wake_ready) &&
            policy->blockers == COMP_POWER_BLOCKER_NONE;
 }
+bool comp_power_policy_idle_requested(const comp_power_policy_t *policy)
+{
+    return policy != NULL && (policy->touch_wake_ready || policy->button_wake_ready) &&
+        (policy->blockers & ~(uint32_t)COMP_POWER_BLOCKER_IMU_SETTLING)==0u;
+}
 
 bool comp_power_policy_self_test(void)
 {
@@ -62,6 +67,7 @@ bool comp_power_policy_self_test(void)
         COMP_POWER_BLOCKER_STORAGE,
         COMP_POWER_BLOCKER_UPDATE,
         COMP_POWER_BLOCKER_BOND_NVM,
+        COMP_POWER_BLOCKER_IMU_SETTLING,
     };
 
     comp_power_policy_init(&policy);

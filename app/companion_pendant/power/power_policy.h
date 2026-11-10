@@ -35,6 +35,7 @@ typedef enum {
     COMP_POWER_BLOCKER_STORAGE = 1u << 12,
     COMP_POWER_BLOCKER_UPDATE = 1u << 13,
     COMP_POWER_BLOCKER_BOND_NVM = 1u << 14,
+    COMP_POWER_BLOCKER_IMU_SETTLING = 1u << 15,
 } comp_power_blocker_t;
 
 typedef struct {
@@ -55,6 +56,9 @@ void comp_power_policy_set_blocker(comp_power_policy_t *policy,
                                    comp_power_blocker_t blocker,
                                    bool active);
 bool comp_power_policy_stop_allowed(const comp_power_policy_t *policy);
+/* Desired peripheral mode ignores only its own bounded settling phase.
+ * Actual MCU Stop still waits for the motion wake route to be armed. */
+bool comp_power_policy_idle_requested(const comp_power_policy_t *policy);
 bool comp_power_policy_self_test(void);
 
 void comp_power_idle_settings_init(comp_power_idle_settings_t *settings);

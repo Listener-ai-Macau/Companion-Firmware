@@ -31,7 +31,7 @@ int main(void)
 #if COMP_TEST_IRQ_LATCH
         /* Physical high sampled through the IO expander. DRDY must not share
          * the pin, otherwise the first-tap state is read/cleared prematurely. */
-        if((b.reg[0x5E]&8u)&&b.reg[0x0D]==0u&&b.stage==2u)imu.tap_irq_pending=true;
+        if((b.reg[0x5E]&8u)&&b.reg[0x0D]==0u&&b.stage==2u)imu.event_irq_pending=true;
 #endif
         assert(comp_lsm6dso_poll(&imu,now,&sample)==COMP_IMU_SAMPLE);
     }

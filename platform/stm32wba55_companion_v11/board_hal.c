@@ -608,8 +608,8 @@ static bool io_read(void *p, uint8_t addr, uint8_t reg, uint8_t *data)
     if (b != NULL && reg == 0u) {
         b->expander_input_valid = ok;
         if (ok) b->expander_raw_inputs = *data;
-        if(ok && b->imu.recording_taps && (*data&COMP_V11_IMU_INT))
-            b->imu.tap_irq_pending=true;
+        if(ok && (b->imu.recording_taps || b->imu.idle_accel_only) && (*data&COMP_V11_IMU_INT))
+            b->imu.event_irq_pending=true;
     }
     return ok;
 }
@@ -1132,17 +1132,18 @@ bool comp_v11_hal_set_idle_peripherals(comp_v11_hal_t *b, bool idle)
         return false;
     }
     if (panel_holds_shared_bus(b)) { return false; }
-    if (idle && (!comp_power_policy_stop_allowed(&b->power) || b->microphone.running || b->playback_active ||
+    if (idle && (!comp_power_policy_idle_requested(&b->power) || b->microphone.running || b->playback_active ||
         comp_ssd1681_wba_status(&b->panel) == COMP_SSD1681_WBA_ACTIVE)) {
         return false;
     }
     if (b->idle_peripherals == idle && b->imu.idle_accel_only == idle) { return true; }
-    if (!comp_lsm6dso_set_idle(&b->imu, idle)) {
+    if (!comp_lsm6dso_set_idle(&b->imu, idle,HAL_GetTick())) {
         b->faults |= COMP_V11_FAULT_IMU;
         b->idle_peripherals = false;
         return false;
     }
     b->idle_peripherals = idle;
+    comp_power_policy_set_blocker(&b->power,COMP_POWER_BLOCKER_IMU_SETTLING,comp_lsm6dso_idle_settling(&b->imu));
     return true;
 }
 static bool panel_transfer(void *context, bool data, const uint8_t *bytes, uint16_t size)
@@ -1386,6 +1387,7 @@ static uint32_t capture_hal_phase(uint32_t started,uint32_t *duration)
 }
 static void imu_poll_with_recovery(comp_v11_hal_t *b, uint32_t tick)
 {
+    comp_power_policy_set_blocker(&b->power,COMP_POWER_BLOCKER_IMU_SETTLING,comp_lsm6dso_idle_settling(&b->imu));
     const bool recovery_allowed = !b->microphone.running && !b->playback_active &&
         !b->power_sampling_inhibited &&
         (b->power.blockers & (COMP_POWER_BLOCKER_MIC_CAPTURE | COMP_POWER_BLOCKER_PLAYBACK |
@@ -1410,6 +1412,7 @@ static void imu_poll_with_recovery(comp_v11_hal_t *b, uint32_t tick)
      * recovery configuration burst too, not just the initial reset write. */
     if (b->imu.recovery_attempts != 0u && !recovery_allowed) return;
     const comp_imu_poll_t result = comp_lsm6dso_poll(&b->imu, tick, &b->imu_sample);
+    comp_power_policy_set_blocker(&b->power,COMP_POWER_BLOCKER_IMU_SETTLING,comp_lsm6dso_idle_settling(&b->imu));
     if (result == COMP_IMU_SAMPLE) {
         /* Only a real sample establishes recovery; READY alone does not. */
         b->faults &= ~COMP_V11_FAULT_IMU;

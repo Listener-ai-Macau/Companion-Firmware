@@ -1062,6 +1062,19 @@ static void maintenance_imu_fields(uint8_t operation,uint8_t response[32])
     comp_maint_put32(response+20u,operation==COMP_MAINT_IMU_TAPS?imu->tap_reads:r->bookmark_request);
     comp_maint_put32(response+24u,operation==COMP_MAINT_IMU_TAPS?imu->tap_counts:r->bookmark_sequence);
 }
+static void maintenance_imu_power_fields(uint8_t response[32])
+{
+    const comp_lsm6dso_t *imu=&product->board->imu;
+    response[7]=1u;
+    response[6]=(uint8_t)((unsigned)(imu->state==COMP_IMU_READY)|
+        (unsigned)imu->idle_accel_only<<1u|(unsigned)imu->recording_taps<<2u|
+        (unsigned)((imu->wake_source&COMP_LSM6DSO_WAKE_ARMED)!=0u)<<3u|
+        (unsigned)imu->event_irq_pending<<4u|(unsigned)comp_lsm6dso_idle_settling(imu)<<5u);
+    comp_maint_put32(response+12u,imu->samples);comp_maint_put32(response+16u,imu->errors);
+    comp_maint_put32(response+20u,(uint32_t)imu->wake_sequence|((uint32_t)imu->wake_source<<8u)|
+        ((uint32_t)imu->state<<16u)|((uint32_t)imu->recovery_attempts<<24u));
+    comp_maint_put32(response+24u,imu->reset_ms);
+}
 #if COMPANION_WBA_CPU_RESIDENCE_PROFILE
 static void maintenance_codec_fields(uint8_t operation,uint8_t response[32])
 {
@@ -1088,6 +1101,7 @@ static void maintenance_codec_fields(uint8_t operation,uint8_t response[32])
 static void maintenance_runtime_fields(uint8_t operation,uint8_t response[32])
 {
     response[6]=0u;response[7]=1u;
+    if(operation==COMP_MAINT_IMU_POWER){maintenance_imu_power_fields(response);return;}
     if(operation==COMP_MAINT_IMU_TAPS || operation==COMP_MAINT_IMU_MARKS) {
         maintenance_imu_fields(operation,response);return;
     }

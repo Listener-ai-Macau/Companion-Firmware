@@ -9,7 +9,8 @@ static comp_imu_poll_t fail(comp_lsm6dso_t *imu)
     imu->state = COMP_IMU_FAULT;
     imu->recovery_waiting = false;
     imu->tap_source = 0u;
-    imu->tap_irq_pending=false;
+    imu->event_irq_pending=false;
+    imu->wake_source=0u;
     imu->errors++;
     return COMP_IMU_IO_ERROR;
 }
@@ -19,39 +20,48 @@ static bool configure_taps(comp_lsm6dso_t *imu)
      * Route remains disabled until recording uses recommended417Hz accel.
      * At+/-4g,4LSB=0.5g slope threshold for a finger tap on the small card;
      * shock/quiet/duration are provisional until real enclosure tuning. */
-    static const uint8_t config[6]={0x0Fu,0x04u,0x84u,0x04u,0x7Fu,0x80u};
-    uint8_t actual[6],route;
+    /* ST int_notification_set sets both LIR and INT_CLR_ON_READ. The lower
+     * wake threshold2 gives125mg at4g; double-tap threshold stays0.5g. */
+    static const uint8_t config[7]={0x4Fu,0x04u,0x84u,0x04u,0x7Fu,0x82u,0u};
+    uint8_t actual[7],route;
     return imu->write(imu->context,0x56u,config,sizeof(config)) &&
         write_byte(imu,0x5Eu,0u) &&
         imu->read(imu->context,0x56u,actual,sizeof(actual)) &&
         imu->read(imu->context,0x5Eu,&route,1u) &&
         !memcmp(config,actual,sizeof(config)) && route==0u;
 }
-static bool configure_idle(comp_lsm6dso_t *imu, bool idle)
+static bool configure_idle(comp_lsm6dso_t *imu, bool idle, uint32_t now_ms)
 {
-    uint8_t ctrl[2], ctrl6, int1;
+    uint8_t ctrl[2], ctrl6, int1,md1;
     const uint8_t ctrl1 = idle ? 0x18u : imu->recording_taps ? 0x68u : 0x38u;
     const uint8_t ctrl2 = idle ? 0x00u : 0x30u; /* gyro off / 52 Hz +/-250 dps */
     const uint8_t low_power = idle ? 0x10u : 0x00u; /* CTRL6_C XL_HM_MODE */
-    const uint8_t route = idle ? 0x01u : imu->recording_taps ? 0u : 0x03u;
+    const uint8_t route = idle || imu->recording_taps ? 0u : 0x03u;
+    const uint8_t event_route = !idle && imu->recording_taps ? 8u : 0u;
 
     /* Power down the accelerometer before changing its operating mode. This
      * also gives one deterministic restore path after a partial transaction. */
     if (!write_byte(imu, 0x0Du, 0x00u) ||
+        !write_byte(imu, 0x5Eu, 0u) ||
         !write_byte(imu, 0x10u, 0x00u) ||
         !write_byte(imu, 0x11u, ctrl2) ||
         !write_byte(imu, 0x15u, low_power) ||
         !write_byte(imu, 0x10u, ctrl1) ||
         !write_byte(imu, 0x0Du, route) ||
+        !write_byte(imu, 0x5Eu, event_route) ||
         !imu->read(imu->context, 0x10u, ctrl, sizeof(ctrl)) ||
         !imu->read(imu->context, 0x15u, &ctrl6, 1u) ||
         !imu->read(imu->context, 0x0Du, &int1, 1u) ||
+        !imu->read(imu->context, 0x5Eu, &md1, 1u) ||
         ctrl[0] != ctrl1 || ctrl[1] != ctrl2 || ctrl6 != low_power ||
-        int1 != route) {
+        int1 != route || md1 != event_route) {
         (void)fail(imu);
         return false;
     }
     imu->idle_accel_only = idle;
+    imu->event_irq_pending=false;
+    imu->wake_source=0u;
+    if(idle)imu->reset_ms=now_ms;
     return true;
 }
 static int32_t signed16(const uint8_t *p)
@@ -99,6 +109,25 @@ comp_imu_poll_t comp_lsm6dso_poll(comp_lsm6dso_t *imu, uint32_t now_ms,
         return COMP_IMU_NO_SAMPLE;
     }
     if (imu->state != COMP_IMU_READY) { return COMP_IMU_NO_SAMPLE; }
+    if(comp_lsm6dso_idle_settling(imu) && now_ms-imu->reset_ms>=240u) {
+        /* Three12.5Hz samples settle the slope filter. No initial gravity step
+         * may become a user motion wake. This phase is nonblocking. */
+        uint8_t discard,route;
+        if(!imu->read(imu->context,0x1Bu,&discard,1u) ||
+           !write_byte(imu,0x5Eu,0x20u) || !imu->read(imu->context,0x5Eu,&route,1u) || route!=0x20u)return fail(imu);
+        imu->wake_source=COMP_LSM6DSO_WAKE_ARMED;
+        imu->event_irq_pending=false;
+    }
+    if(imu->idle_accel_only && (imu->wake_source&COMP_LSM6DSO_WAKE_ARMED) && imu->event_irq_pending) {
+        uint8_t source;
+        if(!imu->read(imu->context,0x1Bu,&source,1u))return fail(imu);
+        imu->event_irq_pending=false;
+        if(source&COMP_LSM6DSO_WAKE_DETECTED) {
+            imu->wake_source=(source&0x7Fu)|COMP_LSM6DSO_WAKE_ARMED;
+            ++imu->wake_sequence;imu->reset_ms=now_ms;
+        }
+        /* An IRQ is a real event, never a fabricated acceleration sample. */
+    }
     if (!imu->read(imu->context, 0x1Eu, &status, 1u)) { return fail(imu); }
     if (imu->idle_accel_only) {
         if ((status & 1u) == 0u) { return COMP_IMU_NO_SAMPLE; }
@@ -118,9 +147,9 @@ comp_imu_poll_t comp_lsm6dso_poll(comp_lsm6dso_t *imu, uint32_t now_ms,
      * between the two finger taps merely because data-ready was polled.
      * During recording INT1 carries DOUBLE_TAP only; the IO-expander reports
      * that physical high level, then the next real sample consumes it once. */
-    if(imu->recording_taps && imu->tap_irq_pending) {
+    if(imu->recording_taps && imu->event_irq_pending) {
         if(!imu->read(imu->context,0x1Cu,&tap,1u))return fail(imu);
-        imu->tap_irq_pending=false;
+        imu->event_irq_pending=false;
         imu->tap_source=tap;
         if(imu->tap_reads!=UINT32_MAX)++imu->tap_reads;
         if(tap&0x40u) {
@@ -133,7 +162,7 @@ comp_imu_poll_t comp_lsm6dso_poll(comp_lsm6dso_t *imu, uint32_t now_ms,
     imu->recovery_waiting = false;
     return COMP_IMU_SAMPLE;
 }
-bool comp_lsm6dso_set_idle(comp_lsm6dso_t *imu, bool idle)
+bool comp_lsm6dso_set_idle(comp_lsm6dso_t *imu, bool idle, uint32_t now_ms)
 {
     if (imu == NULL || (idle && imu->recording_taps) || imu->state != COMP_IMU_READY || imu->read == NULL ||
         imu->write == NULL) {
@@ -142,14 +171,14 @@ bool comp_lsm6dso_set_idle(comp_lsm6dso_t *imu, bool idle)
     if (imu->idle_accel_only == idle) {
         return true;
     }
-    return configure_idle(imu, idle);
+    return configure_idle(imu, idle, now_ms);
 }
 bool comp_lsm6dso_set_recording_taps(comp_lsm6dso_t *imu, bool enabled)
 {
     uint8_t ctrl,route,drdy,discard;
     if(!imu || imu->state!=COMP_IMU_READY)return false;
     if(imu->recording_taps==enabled)return true;
-    if(enabled && imu->idle_accel_only && !configure_idle(imu,false))return false;
+    if(enabled && imu->idle_accel_only && !configure_idle(imu,false,0u))return false;
     const uint8_t rate=enabled?0x68u:0x38u;
     if(!write_byte(imu,0x10u,rate) || !write_byte(imu,0x0Du,enabled?0u:3u) ||
        !write_byte(imu,0x5Eu,enabled?8u:0u) ||
@@ -158,7 +187,7 @@ bool comp_lsm6dso_set_recording_taps(comp_lsm6dso_t *imu, bool enabled)
        !imu->read(imu->context,0x1Cu,&discard,1u) || ctrl!=rate || route!=(enabled?8u:0u) || drdy!=(enabled?0u:3u)) {
         (void)fail(imu);return false;
     }
-    imu->recording_taps=enabled;imu->tap_source=0u;imu->tap_irq_pending=false;
+    imu->recording_taps=enabled;imu->tap_source=0u;imu->event_irq_pending=false;imu->wake_source=0u;
     return true;
 }
 bool comp_lsm6dso_stop(comp_lsm6dso_t *imu)
@@ -172,7 +201,8 @@ bool comp_lsm6dso_stop(comp_lsm6dso_t *imu)
     imu->idle_accel_only = false;
     imu->tap_source=0u;
     imu->recording_taps=false;
-    imu->tap_irq_pending=false;
+    imu->event_irq_pending=false;
+    imu->wake_source=0u;
     return true;
 }
 
@@ -202,6 +232,7 @@ bool comp_lsm6dso_recover(comp_lsm6dso_t *imu, uint32_t now_ms)
     imu->reset_ms = now_ms;
     imu->idle_accel_only = false;
     imu->recording_taps=false;
-    imu->tap_irq_pending=false;
+    imu->event_irq_pending=false;
+    imu->wake_source=0u;
     return true;
 }

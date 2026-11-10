@@ -127,8 +127,8 @@ static void imu_self_test(void)
     bool modes=false;
     if(io&&stimulus_off&&powered_down) {
         modes=comp_lsm6dso_start(&imu,imu_read,imu_write,NULL,HAL_GetTick())&&imu_mode_samples("run52",false)&&
-            comp_lsm6dso_set_idle(&imu,true)&&imu_mode_samples("idle12_5",true)&&
-            comp_lsm6dso_set_idle(&imu,false)&&imu_mode_samples("resume52",false);
+            comp_lsm6dso_set_idle(&imu,true,HAL_GetTick())&&imu_mode_samples("idle12_5",true)&&
+            comp_lsm6dso_set_idle(&imu,false,HAL_GetTick())&&imu_mode_samples("resume52",false);
     }
     bool stopped=comp_lsm6dso_stop(&imu);
     limits=xl_limits&&gy_limits;

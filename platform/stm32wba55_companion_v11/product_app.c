@@ -1237,6 +1237,14 @@ void comp_v11_product_app_init(comp_v11_product_app_t *app,comp_v11_hal_t *board
     app->presenter.status=COMP_SCREEN_PRESENTER_WBA_NOT_READY;
 #endif
 }
+static void imu_wake_activity(comp_v11_product_app_t *app,uint32_t now)
+{
+    const comp_lsm6dso_t *imu=&app->board->imu;
+    if(imu->wake_sequence==app->last_imu_wake_sequence)return;
+    app->last_imu_wake_sequence=imu->wake_sequence;
+    if(imu->state==COMP_IMU_READY && (imu->wake_source&COMP_LSM6DSO_WAKE_DETECTED) && now-imu->reset_ms<250u)
+        comp_runtime_wake_from(&app->runtime,now,COMP_RUNTIME_WAKE_MOTION);
+}
 bool comp_v11_product_update_idle_policy(comp_v11_product_app_t *app)
 {
     if (!app || !app->board) return false;
@@ -1269,7 +1277,7 @@ bool comp_v11_product_update_idle_policy(comp_v11_product_app_t *app)
         comp_ssd1681_wba_status(&app->board->panel)==COMP_SSD1681_WBA_ACTIVE);
     comp_power_policy_set_blocker(p,COMP_POWER_BLOCKER_BATTERY_SAMPLE,
         comp_wba_power_monitor_busy(&app->board->power_monitor));
-    return comp_power_policy_stop_allowed(p);
+    return comp_power_policy_idle_requested(p);
 }
 static void capture_phase_duration(comp_v11_product_app_t *app,uint32_t started,uint32_t *maximum)
 {
@@ -1581,6 +1589,7 @@ void comp_v11_product_app_poll(comp_v11_product_app_t *app)
      * Recheck age after it returns so old motion and battery/reference
      * data cannot inherit the earlier, still-fresh dispatch timestamp. */
     now=HAL_GetTick();
+    imu_wake_activity(app,now);
     if (board->motion_event_flags && board->motion_event_ms!=app->last_motion_ms) {
         app->last_motion_ms=board->motion_event_ms;
         /* The HAL's event latch survives a long foreground/bus pause.

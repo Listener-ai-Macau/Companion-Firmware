@@ -19,6 +19,7 @@ typedef struct {
     uint32_t faults, motion_event_ms;
     uint8_t sample_events, motion_event_flags, panel;
 } comp_v11_hal_t;
+static uint32_t HAL_GetTick(void){return 12u;}
 static bool imu_start_pending, bus_held;
 static bool panel_holds_shared_bus(comp_v11_hal_t *b) { (void)b; return bus_held; }
 static uint8_t comp_ssd1681_wba_status(uint8_t *p) { return *p; }
@@ -77,16 +78,16 @@ static void recover_sample(comp_lsm6dso_t *imu,bus_t *bus,uint32_t at)
 int main(void)
 {
     comp_lsm6dso_t imu;bus_t bus;comp_imu_sample_t sample;
-    for(unsigned operation=1;operation<=9;++operation) {
+    for(unsigned operation=1;operation<=12;++operation) {
         ready(&imu,&bus);bus.fail_at=operation;
-        assert(!comp_lsm6dso_set_idle(&imu,true));
+        assert(!comp_lsm6dso_set_idle(&imu,true,12u));
         assert(imu.state==COMP_IMU_FAULT&&imu.errors==1);
         bus.fail_at=0;recover_sample(&imu,&bus,UINT32_MAX-500u);
-        assert(comp_lsm6dso_set_idle(&imu,true));
+        assert(comp_lsm6dso_set_idle(&imu,true,12u));
         assert(imu.idle_accel_only&&bus.reg[0x10]==0x18&&bus.reg[0x11]==0);
-        assert(comp_lsm6dso_set_idle(&imu,false));
+        assert(comp_lsm6dso_set_idle(&imu,false,12u));
     }
-    puts("PASS all nine mode-switch I/O failures recover after delay, preserve history and tick wrap, and restore run/idle registers");
+    puts("PASS all twelve mode-switch I/O failures recover after delay, preserve history and tick wrap, and restore run/idle registers");
 
     ready(&imu,&bus);bus.fail_at=1;
     assert(comp_lsm6dso_poll(&imu,4,&sample)==COMP_IMU_IO_ERROR);

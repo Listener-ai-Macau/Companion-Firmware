@@ -68,6 +68,7 @@ typedef struct {
     uint32_t panel_debug_catch_until_ms, panel_debug_catch_full_count;
     uint32_t panel_debug_catch_failures;
     uint8_t panel_debug_catch_reply;
+    uint8_t last_imu_wake_sequence;
     /* Maximum unserviced capture interval, including each indivisible task.
      * Resource reads may yield to audio without changing rendered pixels. */
     uint32_t capture_started_ms, capture_cycle_started_ms, max_capture_foreground_ms, capture_deadline_faults;

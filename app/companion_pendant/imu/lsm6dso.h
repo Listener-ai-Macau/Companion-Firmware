@@ -18,7 +18,7 @@ typedef struct {
     comp_lsm6dso_write_fn write;
     void *context;
     comp_imu_state_t state;
-    uint32_t reset_ms;
+    uint32_t reset_ms; /* Reset/retry, idle-settle start, or last wake time by state. */
     uint32_t errors;
     uint32_t samples;
     bool idle_accel_only;
@@ -26,11 +26,17 @@ typedef struct {
     bool recovery_waiting;
     uint8_t tap_source; /* Fresh TAP_SRC of the last successful sample; tail padding. */
     bool recording_taps;
-    bool tap_irq_pending; /* Fresh physical INT1 via IO-expander, not DRDY. */
+    bool event_irq_pending; /* Fresh physical INT1: idle motion or recording double tap. */
+    uint8_t wake_source; /* Last WU source low7; high bit means idle route armed. */
+    uint8_t wake_sequence; /* Mod256 event generation, consumed once per product pass. */
     uint32_t tap_reads;
     uint32_t tap_counts; /* Saturated SINGLE low16 / DOUBLE high16, TAP_IA required. */
 } comp_lsm6dso_t;
 #define COMP_LSM6DSO_DOUBLE_TAP 0x50u /* TAP_IA and DOUBLE_TAP, AN5192 */
+#define COMP_LSM6DSO_WAKE_ARMED 0x80u
+#define COMP_LSM6DSO_WAKE_DETECTED 0x08u
+static inline bool comp_lsm6dso_idle_settling(const comp_lsm6dso_t *imu)
+{ return imu && imu->state==COMP_IMU_READY && imu->idle_accel_only && !(imu->wake_source&COMP_LSM6DSO_WAKE_ARMED); }
 /* Registers callbacks use one atomic CS-bounded shared-bus transaction.
  * Driver configures +/-4g, +/-250dps, 52Hz, BDU, auto-increment, DRDY INT1.
  * Poll fallback is required: V1.1 INT1 arrives via the I/O expander. */
@@ -39,9 +45,11 @@ bool comp_lsm6dso_start(comp_lsm6dso_t *imu, comp_lsm6dso_read_fn read,
 comp_imu_poll_t comp_lsm6dso_poll(comp_lsm6dso_t *imu, uint32_t now_ms,
                                  comp_imu_sample_t *sample);
 /* Product-idle mode keeps pickup/orientation sensing at 12.5 Hz in the
- * accelerometer low-power mode and powers the gyroscope down. Returning to
+ * accelerometer low-power mode and powers the gyroscope down. After240ms
+ * slope-filter settling, only motion wakes INT1, not periodic data-ready.
+ * Returning to
  * run mode restores the accepted 52 Hz accel+gyro configuration. */
-bool comp_lsm6dso_set_idle(comp_lsm6dso_t *imu, bool idle);
+bool comp_lsm6dso_set_idle(comp_lsm6dso_t *imu, bool idle, uint32_t now_ms);
 /* Call only before microphone START / after actual STOP. Embedded taps need
  * the AN5192 recommended417Hz accel rate; gyro and host polling stay52Hz.
  * Ordinary awake/idle modes remain52/12.5Hz with the tap route disabled. */

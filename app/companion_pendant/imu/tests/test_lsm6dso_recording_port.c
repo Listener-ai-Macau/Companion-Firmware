@@ -34,11 +34,11 @@ static bool comp_v11_battery_adc_busy(void){return false;}
 int main(void)
 {
     comp_v11_hal_t board={0};bus_t bus;active=&board;active_bus=&bus;
-    start(&board.imu,&bus);assert(comp_lsm6dso_set_idle(&board.imu,true));
+    start(&board.imu,&bus);assert(comp_lsm6dso_set_idle(&board.imu,true,12u));
     assert(comp_v11_hal_microphone_enable(&board,true)&&board.microphone.running&&starts==1u);
     assert(comp_v11_hal_microphone_enable(&board,true)&&starts==1u);
     assert(comp_v11_hal_microphone_enable(&board,false)&&!board.microphone.running&&!board.imu.recording_taps&&bus.reg[0x10]==0x38u&&bus.reg[0x5E]==0u);
-    assert(comp_lsm6dso_set_idle(&board.imu,true)&&bus.reg[0x10]==0x18u&&bus.reg[0x11]==0u);
+    assert(comp_lsm6dso_set_idle(&board.imu,true,12u)&&bus.reg[0x10]==0x18u&&bus.reg[0x11]==0u);
     start(&board.imu,&bus);start_ok=false;
     assert(!comp_v11_hal_microphone_enable(&board,true)&&!board.imu.recording_taps&&bus.reg[0x10]==0x38u&&bus.reg[0x5E]==0u);
     start_ok=true;start(&board.imu,&bus);battery_ok=false;unsigned count=starts;

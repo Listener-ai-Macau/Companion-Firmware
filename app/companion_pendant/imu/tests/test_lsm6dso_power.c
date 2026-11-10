@@ -59,9 +59,9 @@ int main(void)
         return fail("run-mode initialization");
     }
 
-    if (!comp_lsm6dso_set_idle(&imu, true) || !imu.idle_accel_only ||
+    if (!comp_lsm6dso_set_idle(&imu,true,12u) || !imu.idle_accel_only ||
         bus.registers[0x10u] != 0x18u || bus.registers[0x11u] != 0x00u ||
-        bus.registers[0x15u] != 0x10u || bus.registers[0x0Du] != 0x01u) {
+        bus.registers[0x15u] != 0x10u || bus.registers[0x0Du] != 0x00u || bus.registers[0x5Eu]!=0u) {
         return fail("idle accel-only register contract");
     }
 
@@ -77,7 +77,7 @@ int main(void)
         return fail("idle poll accepts accel-only data-ready");
     }
 
-    if (!comp_lsm6dso_set_idle(&imu, false) || imu.idle_accel_only ||
+    if (!comp_lsm6dso_set_idle(&imu,false,12u) || imu.idle_accel_only ||
         bus.registers[0x10u] != 0x38u || bus.registers[0x11u] != 0x30u ||
         bus.registers[0x15u] != 0x00u || bus.registers[0x0Du] != 0x03u) {
         return fail("run-mode restore");
@@ -89,7 +89,7 @@ int main(void)
 
     if (!start_ready(&imu, &bus)) return fail("fault test setup");
     bus.fail_write_register = 0x15u;
-    if (comp_lsm6dso_set_idle(&imu, true) || imu.state != COMP_IMU_FAULT ||
+    if (comp_lsm6dso_set_idle(&imu,true,12u) || imu.state != COMP_IMU_FAULT ||
         imu.errors != 1u) {
         return fail("partial mode switch fails closed");
     }

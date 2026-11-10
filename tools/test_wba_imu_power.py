@@ -16,9 +16,11 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 IMU = ROOT / "app" / "companion_pendant" / "imu"
 TAPS = sys.argv[1:] == ["--taps"]
 PORT = sys.argv[1:] == ["--recording-port"]
-SOURCE = IMU / "tests" / ("test_lsm6dso_recording_port.c" if PORT else "test_lsm6dso_taps.c" if TAPS else "test_lsm6dso_power.c")
+MOTION = sys.argv[1:] == ["--motion-wake"]
+RECOVERY = sys.argv[1:] == ["--recovery-current"]
+SOURCE = IMU / "tests" / ("test_lsm6dso_motion_wake.c" if MOTION else "test_lsm6dso_recovery.c" if RECOVERY else "test_lsm6dso_recording_port.c" if PORT else "test_lsm6dso_taps.c" if TAPS else "test_lsm6dso_power.c")
 DRIVER = IMU / "lsm6dso.c"
-OUT = ROOT / ".cache" / "host-tests" / ("wba-imu-recording-port" if PORT else "wba-imu-taps" if TAPS else "wba-imu-power")
+OUT = ROOT / ".cache" / "host-tests" / ("wba-imu-motion-wake" if MOTION else "wba-imu-recovery-current" if RECOVERY else "wba-imu-recording-port" if PORT else "wba-imu-taps" if TAPS else "wba-imu-power")
 RESULT = OUT / "result.json"
 SOURCES = [
     IMU / "lsm6dso.h",
@@ -47,6 +49,28 @@ def write_result(stdout: str) -> None:
 def main() -> int:
     OUT.mkdir(parents=True, exist_ok=True)
     RESULT.unlink(missing_ok=True)
+    extra=[];includes=[IMU,OUT]
+    if MOTION or RECOVERY:
+        power=ROOT/'app/companion_pendant/power'
+        includes += [power,ROOT/'app/companion_pendant/storage',ROOT/'platform/stm32wba55_companion_v11/ble']
+        extra += [power/'power_policy.c']
+        SOURCES.extend([power/'power_policy.c',power/'power_policy.h'])
+        def function(path,signature):
+            SOURCES.append(path);text=path.read_text();begin=text.index(signature)
+            brace=text.index('{',begin);depth=1;end=brace+1
+            while depth:depth+=(text[end]=='{')-(text[end]=='}');end+=1
+            return text[begin:end]+'\n'
+        if MOTION:
+            platform=ROOT/'platform/stm32wba55_companion_v11'
+            (OUT/'product_wake_dispatch.inc').write_text(function(platform/'product_app.c','static void imu_wake_activity('))
+            (OUT/'imu_power_wire.inc').write_text(function(platform/'ble/ble_product.c','static void maintenance_imu_power_fields('))
+            header=ROOT/'app/companion_pendant/runtime/companion_runtime.h';SOURCES.extend([header,platform/'ble/maintenance_protocol.h'])
+            text=header.read_text();at=text.index('COMP_RUNTIME_WAKE_GENERIC');begin=text.rfind('typedef enum',0,at);end=text.index(';',at)+1
+            (OUT/'wake_source_enum.inc').write_text(text[begin:end]+'\n')
+        else:
+            board=ROOT/'platform/stm32wba55_companion_v11/board_hal.c'
+            (OUT/'product_imu_functions.inc').write_text(function(board,'bool comp_v11_hal_set_idle_peripherals(')+function(board,'static void imu_poll_with_recovery('))
+            extra += [IMU/'motion_events.c'];SOURCES.extend([IMU/'motion_events.c',IMU/'motion_events.h'])
     if PORT:
         board=ROOT/'platform/stm32wba55_companion_v11/board_hal.c'
         text=board.read_text();begin=text.index('bool comp_v11_hal_microphone_enable(')
@@ -59,7 +83,7 @@ def main() -> int:
     compiler = shutil.which("clang") or shutil.which("gcc")
     if compiler is not None:
         command = [compiler, "-std=c11", "-Wall", "-Wextra", "-Werror",
-                   f"-I{IMU}",f"-I{OUT}", str(SOURCE), str(DRIVER), "-o", str(exe)]
+                   *(f'-I{p}' for p in includes), str(SOURCE), str(DRIVER),*(str(p) for p in extra), "-o", str(exe)]
         built = subprocess.run(command, cwd=ROOT, text=True, capture_output=True)
     else:
         vcvars = pathlib.Path(
@@ -74,8 +98,8 @@ def main() -> int:
             "@echo off\n"
             f'call "{vcvars}" >nul\n'
             "if errorlevel 1 exit /b %errorlevel%\n"
-            f'cl.exe /nologo /W4 /WX /std:c11 /I"{IMU}" /I"{OUT}" "{SOURCE}" '
-            f'"{DRIVER}" /Fe:"{exe}"\n',
+            'cl.exe /nologo /W4 /WX /std:c11 '+ ' '.join(f'/I"{p}"' for p in includes)+f' "{SOURCE}" '
+            f'"{DRIVER}" '+ ' '.join(f'"{p}"' for p in extra)+f' /Fe:"{exe}"\n',
             encoding="utf-8",
         )
         built = subprocess.run(
