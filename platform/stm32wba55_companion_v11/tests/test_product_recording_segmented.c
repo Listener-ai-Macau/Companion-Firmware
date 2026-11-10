@@ -1825,7 +1825,14 @@ static int capture_controls_journey(const char *path)
     puts("PASS restore preferences: refuses live capture, preserves saved original/date/calibration, no-op repeat and reboot durability");
     free(fixture.flash);return 0;
 }
-static int imu_highlight_journey(const char *path)
+static size_t input_mode_request(comp_v11_product_app_t *app,uint8_t mode,uint8_t options,uint8_t response[64])
+{
+    uint8_t p[36]={0};memcpy(p,"CIN1",4u);p[4]=1u;p[5]=1u;p[6]=mode;p[7]=options;
+    comp_rec_put32(p+8u,19u);memcpy(p+12u,app->recording.catalog.uid,12u);
+    comp_rec_put64(p+24u,app->recording.catalog.epoch);comp_rec_put32(p+32u,comp_rec_crc(p,32u));
+    return comp_v11_product_input_request(app,p,sizeof(p),false,fixture.tick,response);
+}
+static int imu_highlight_journey(const char *path,bool desktop)
 {
     comp_v11_hal_t board;comp_v11_product_app_t app;
     memset(&fixture,0,sizeof(fixture));fixture.flash=malloc(FLASH_BYTES);
@@ -1834,7 +1841,7 @@ static int imu_highlight_journey(const char *path)
     board.motion_event_flags=COMP_MOTION_DOUBLE_TAP;board.motion_event_ms=fixture.tick;
     step(&app,5u);REQUIRE(fixture.mic_starts==0u,"idle tap started microphone");
     board.imu.tap_reads=99u;board.imu.tap_counts=0x10001u;
-    key(&app,true,110u);key(&app,false,4u);
+    key(&app,true,8u);key(&app,false,4u);
     REQUIRE(wait_state(&app,COMP_WBA_RECORDING_CAPTURING,20000u),"IMU recorder start");step(&app,30u);
     REQUIRE(board.imu.tap_reads==0u&&board.imu.tap_counts==0u,"new microphone admission retained previous tap counters");
     comp_cont_recording_t *engine=&app.recording.capture.engine;
@@ -1848,7 +1855,7 @@ static int imu_highlight_journey(const char *path)
     board.motion_event_ms=app.capture_started_ms-1u;step(&app,2u);
     board.motion_event_flags=COMP_MOTION_SHAKE;board.motion_event_ms=fixture.tick;step(&app,2u);
     REQUIRE(engine->bookmark_sequence==1u&&fixture.mic_starts==1u,"stale/pre-start/shake event made a mark or restarted capture");
-    key(&app,true,110u);key(&app,false,4u);
+    key(&app,true,8u);key(&app,false,4u);
     REQUIRE(wait_state(&app,COMP_WBA_RECORDING_TRANSFER_READY,20000u)&&!app.recording.last_fault,"IMU stop/save");
     REQUIRE(engine->bookmark_sequence==1u&&!board.microphone.running&&fixture.mic_starts==1u&&
         fixture.speaker_submits_while_recording==0u,"IMU mark interrupted or polluted audio");
@@ -1870,12 +1877,46 @@ static int imu_highlight_journey(const char *path)
     REQUIRE(fclose(artifact)==0&&offset==entry.descriptor.encoded_length,"IMU original incomplete");
     init_board(&app,&board);REQUIRE(wait_state(&app,COMP_WBA_RECORDING_IDLE,20000u)&&app.recording.space.logical==1u,
         "IMU original lost on reboot");
-    puts("PASS IMU highlight: fresh double-tap persists one offline mark without pause; idle, duplicate, expired, pre-start and shake ignored; original survives reboot");
+    if(desktop) {
+        uint8_t response[64];
+        REQUIRE(input_mode_request(&app,COMP_INPUT_DICTATION,COMP_INPUT_UNDO,response)==64u&&
+            response[5]==0u&&response[6]==COMP_INPUT_DICTATION&&comp_rec_get32(response+60u)==comp_rec_crc(response,60u),
+            "CIN1 mode reply/CRC");
+        REQUIRE(input_mode_request(&app,99u,0u,response)==64u&&response[5]==2u&&
+            app.input.mode==COMP_INPUT_DICTATION,"invalid mode changed active policy");
+        key(&app,true,8u);
+        REQUIRE(wait_state(&app,COMP_WBA_RECORDING_CAPTURING,20000u)&&app.input.record_token==app.runtime.record_token,
+            "desktop DOWN did not start owned original");
+        REQUIRE(input_mode_request(&app,COMP_INPUT_RECORDER,0u,response)==64u&&response[5]==1u&&
+            app.input.mode==COMP_INPUT_DICTATION,"mode changed inside active dictation");
+        step(&app,100u);uint32_t starts=fixture.mic_starts;
+        comp_input_connection(&app.input,false);step(&app,20u);
+        REQUIRE(board.microphone.running&&app.input.mode==COMP_INPUT_DICTATION,"disconnect stopped held dictation");
+        key(&app,false,4u);
+        REQUIRE(wait_state(&app,COMP_WBA_RECORDING_TRANSFER_READY,20000u)&&!board.microphone.running&&
+            app.input.mode==COMP_INPUT_RECORDER&&fixture.mic_starts==starts,"detached UP did not stop and save once");
+        REQUIRE(input_mode_request(&app,COMP_INPUT_DICTATION,COMP_INPUT_SHAKE|COMP_INPUT_UNDO,response)==64u&&response[5]==0u,
+            "second desktop mode");
+        key(&app,true,8u);REQUIRE(wait_state(&app,COMP_WBA_RECORDING_CAPTURING,20000u),"cancel test DOWN");
+        step(&app,30u);board.motion_event_flags=COMP_MOTION_SHAKE;board.motion_event_ms=fixture.tick;
+        step(&app,5u);REQUIRE(wait_state(&app,COMP_WBA_RECORDING_TRANSFER_READY,20000u)&&
+            (app.input.events&COMP_INPUT_CANCEL),"shake cancellation did not retire own capture");
+        starts=fixture.mic_starts;key(&app,false,4u);step(&app,20u);
+        REQUIRE(fixture.mic_starts==starts&&!board.microphone.running,"release after cancel restarted or duplicated capture");
+        board.motion_event_flags=COMP_MOTION_DOUBLE_TAP;board.motion_event_ms=fixture.tick;step(&app,5u);
+        REQUIRE((app.input.events&COMP_INPUT_UNDO_LAST)&&board.input_taps_requested,"desktop idle double tap was not retained as undo");
+        comp_v11_product_input_status(&app,0u,0u,response);
+        REQUIRE(!memcmp(response,"CIN1",4u)&&response[6]==COMP_INPUT_DICTATION&&
+            comp_rec_get64(response+52u)==app.recording.catalog.epoch,"desktop feedback lost its device identity");
+    }
+    puts(desktop?"PASS recorder/desktop input: short-click start/stop and durable IMU mark; explicit CIN1 mode, held DOWN capture, release saves, disconnect preserves hold, shake cancels once, idle double tap undo, original survives reboot":
+        "PASS IMU highlight: fresh double-tap persists one offline mark without pause; idle, duplicate, expired, pre-start and shake ignored; original survives reboot");
     free(fixture.flash);return 0;
 }
 int main(int argc,char **argv)
 {
-    if(argc==3&&!strcmp(argv[2],"--imu-highlight-only"))return imu_highlight_journey(argv[1]);
+    if(argc==3&&!strcmp(argv[2],"--imu-highlight-only"))return imu_highlight_journey(argv[1],false);
+    if(argc==3&&!strcmp(argv[2],"--input-interaction-only"))return imu_highlight_journey(argv[1],true);
     if(argc==3&&!strcmp(argv[2],"--auto-fault-recovery-only"))return automatic_fault_original_journey();
     if(argc==3&&!strcmp(argv[2],"--idle-prime-only"))return idle_prime_handoff_journey();
     if(argc==3&&!strcmp(argv[2],"--capture-controls-only"))return capture_controls_journey(argv[1]);

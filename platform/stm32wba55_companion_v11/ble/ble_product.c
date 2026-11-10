@@ -48,6 +48,8 @@ static comp_acl_ready_t acl_readiness;
 RTC_HandleTypeDef hrtc;
 static comp_v11_product_app_t *product;
 static bool linked,secured,link_ready;
+static bool input_client;
+static uint8_t input_feedback,input_flags;
 
 /* CAPTURE_RADIO_MODEL_BEGIN */
 #if COMPANION_WBA_CPU_RESIDENCE_PROFILE
@@ -595,8 +597,12 @@ void comp_v11_ble_link(bool connected,bool encrypted)
         observe_gate_close(0u);comp_v11_ble_tx_gate_available(&notify_gate);
     }
     linked=connected; secured=connected&&encrypted;
+    if(!secured){input_client=false;input_feedback=input_flags=255u;}
     /* Queue only; the product foreground owner performs any NOR operation. */
-    if(product)comp_v11_product_recording_link_change(product,secured,new_secure);
+    if(product) {
+        comp_v11_product_recording_link_change(product,secured,new_secure);
+        comp_input_connection(&product->input,secured);
+    }
     if(!connected && product) {
         comp_pet_profile_abort(&product->pet_profile);
         comp_v11_ble_settings_changed(); /* Retire private PMP1 readback bytes. */
@@ -1343,6 +1349,19 @@ static void menu_completions(uint32_t now)
 static void event(const companion_gatt_event_t *e,void *context)
 {
     if(!e || !product)return;
+    if(e->type==COMPANION_GATT_EVENT_WRITE&&e->char_id==COMPANION_GATT_CHAR_SETTINGS&&
+       e->payload_len>=4u&&!memcmp(e->payload,"CIN1",4u)) {
+        if(!secured){++product_link.rejected_writes;return;}
+        uint8_t response[64];
+        size_t n=comp_v11_product_input_request(product,e->payload,e->payload_len,
+            comp_v11_update_product_busy()||!link_ready,HAL_GetTick(),response);
+        if(!n){++product_link.rejected_writes;return;}
+        input_client=true;
+        (void)companion_gatt_stm32wb_set_read_value(COMPANION_GATT_CHAR_SETTINGS,response,(uint16_t)n);
+        if(product_link.subscribed[COMPANION_GATT_CHAR_SETTINGS])
+            (void)publish(NULL,COMPANION_GATT_CHAR_SETTINGS,response,(uint16_t)n);
+        return;
+    }
     if(e->type==COMPANION_GATT_EVENT_WRITE&&e->char_id==COMPANION_GATT_CHAR_REPAIR_CONTROL) {
         maintenance_request(e);return;
     }
@@ -1531,6 +1550,15 @@ uint32_t comp_v11_ble_transfer_backpressure(void)
     /* Count actual SDK resource failures, not cheap polls of the wait gate. */
     return notify_resource_failures;
 }
+static void input_notify(void)
+{
+    if(!input_client||!secured||!product_link.subscribed[COMPANION_GATT_CHAR_SETTINGS])return;
+    uint8_t response[64];comp_v11_product_input_status(product,0u,0u,response);
+    if(!product->input.events&&input_feedback==response[23]&&input_flags==response[7])return;
+    if(publish(NULL,COMPANION_GATT_CHAR_SETTINGS,response,sizeof(response))) {
+        product->input.events=0u;input_feedback=response[23];input_flags=response[7];
+    }
+}
 void comp_v11_ble_poll(void)
 {
     uint32_t tasks=UTIL_SEQ_DEFAULT;
@@ -1581,6 +1609,7 @@ void comp_v11_ble_poll(void)
         product_link.transfer.compact_payload_limit=comp_v11_ble_recording_capacity();
         (void)companion_gatt_stm32wb_drain(event,&product_link);
         maintenance_poll();
+        input_notify();
         bool measuring=sealed_transfer_work();
         if(measuring)start_download_observation();
         if(!measuring && download_timing_enabled) {

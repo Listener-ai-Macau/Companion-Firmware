@@ -83,6 +83,7 @@ typedef struct {
     uint16_t touch_last_x, touch_last_y;
     uint32_t touch_reset_count;
     uint8_t touch_reset_phase;
+    bool input_taps_requested; /* Desktop undo only; shared IMU, no second driver. */
     /* Cached from ordinary expander input reads, including the physical P1
      * reset output. This is not the translated JP3-side voltage. */
     uint8_t expander_raw_inputs;

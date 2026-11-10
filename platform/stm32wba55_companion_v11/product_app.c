@@ -715,6 +715,64 @@ static void recording_local_bookmark(comp_v11_product_app_t *app)
     if(!request)request=1u;
     (void)comp_v11_product_recording_bookmark(app,app->runtime.record_token,request);
 }
+static void recording_input_apply(comp_v11_product_app_t *app,uint16_t events,uint32_t now)
+{
+    comp_recorder_input_t *s=&app->input;
+    if(events&COMP_INPUT_START) {
+        if(comp_runtime_record(&app->runtime,true,now)==COMP_RUNTIME_OK)s->record_token=app->runtime.record_token;
+        else events&=(uint16_t)~(COMP_INPUT_START|COMP_INPUT_STOP|COMP_INPUT_SUBMIT);
+    }
+    if(events&COMP_INPUT_STOP) {
+        const bool owned=s->mode!=COMP_INPUT_DICTATION&&!(s->flags&COMP_INPUT_DETACHED);
+        if((owned||s->record_token==app->runtime.record_token)&&comp_runtime_recording_owned(&app->runtime))
+            (void)comp_runtime_record(&app->runtime,false,now);
+        else events&=(uint16_t)~(COMP_INPUT_STOP|COMP_INPUT_SUBMIT);
+    }
+    if(events&COMP_INPUT_MARK) {
+        if(app->board->microphone.running&&app->runtime.recording==DENZIC_AUDIO_RECORDING_STATE_RECORDING)
+            recording_local_bookmark(app);
+        else events&=(uint16_t)~COMP_INPUT_MARK;
+    }
+    comp_input_note(s,events,now);
+    if(s->mode==COMP_INPUT_RECORDER&&!(s->flags&COMP_INPUT_HELD))s->flags=0u;
+}
+void comp_v11_product_input_status(const comp_v11_product_app_t *app,uint32_t request,
+    uint8_t result,uint8_t response[64])
+{
+    const comp_recorder_input_t *s=&app->input;
+    const bool updating=(app->board->power.blockers&COMP_POWER_BLOCKER_UPDATE)!=0u;
+    const comp_capture_feedback_t feedback=comp_v11_product_capture_feedback(app,updating);
+    memset(response,0,64u);memcpy(response,"CIN1",4u);
+    response[4]=1u;response[5]=result;response[6]=s->mode;
+    response[7]=(uint8_t)((s->flags&COMP_INPUT_HELD?1u:0u)|
+        (app->board->microphone.running?2u:0u)|(comp_runtime_recording_owned(&app->runtime)?4u:0u));
+    comp_rec_put32(response+8u,request);comp_rec_put32(response+12u,s->sequence);
+    comp_rec_put32(response+16u,s->event_ms);
+    response[20]=(uint8_t)s->events;response[21]=(uint8_t)(s->events>>8u);
+    response[22]=s->options;response[23]=feedback.state;
+    comp_rec_put32(response+24u,app->runtime.record_token);
+    comp_rec_put64(response+28u,app->recording_session_id);
+    comp_rec_put32(response+36u,app->recording.pipeline.engine_bound?
+        app->recording.capture.engine.bookmark_sequence:0u);
+    memcpy(response+40u,app->recording.catalog.uid,12u);
+    comp_rec_put64(response+52u,app->recording.catalog.epoch);
+    comp_rec_put32(response+60u,comp_rec_crc(response,60u));
+}
+size_t comp_v11_product_input_request(comp_v11_product_app_t *app,const uint8_t *p,size_t n,
+    bool busy,uint32_t now,uint8_t response[64])
+{
+    (void)now;
+    if(!app||!p||n!=36u||memcmp(p,"CIN1",4u)||p[4]!=1u||p[5]>1u||
+       !comp_rec_get32(p+8u)||memcmp(p+12u,app->recording.catalog.uid,12u)||
+       comp_rec_get64(p+24u)!=app->recording.catalog.epoch||comp_rec_get32(p+32u)!=comp_rec_crc(p,32u))return 0u;
+    uint8_t result=0u;
+    if(p[5]) {
+        if(p[6]>COMP_INPUT_PRESENTATION||(p[7]&~7u))result=2u;
+        else if(busy||!comp_input_mode(&app->input,p[6],p[7],
+            comp_runtime_recording_owned(&app->runtime),comp_wba_button_busy(&app->button)))result=1u;
+    } else if(p[6]||p[7])result=2u;
+    comp_v11_product_input_status(app,comp_rec_get32(p+8u),result,response);return 64u;
+}
 comp_segment_result_t comp_v11_product_recording_bookmark_result(const comp_v11_product_app_t *app,uint32_t token,uint32_t request)
 {
     if(!app||!comp_wba_recording_product_capture_available(&app->recording)||token!=app->runtime.record_token)return COMP_SEG_BAD_STATE;
@@ -1243,7 +1301,10 @@ static void imu_wake_activity(comp_v11_product_app_t *app,uint32_t now)
     if(imu->wake_sequence==app->last_imu_wake_sequence)return;
     app->last_imu_wake_sequence=imu->wake_sequence;
     if(imu->state==COMP_IMU_READY && (imu->wake_source&COMP_LSM6DSO_WAKE_DETECTED) && now-imu->reset_ms<250u)
+    {
         comp_runtime_wake_from(&app->runtime,now,COMP_RUNTIME_WAKE_MOTION);
+        comp_input_note(&app->input,COMP_INPUT_WAKE,now);
+    }
 }
 bool comp_v11_product_update_idle_policy(comp_v11_product_app_t *app)
 {
@@ -1491,6 +1552,8 @@ void comp_v11_product_app_poll(comp_v11_product_app_t *app)
         comp_audio_feedback_busy(&app->runtime.audio);
     board->power_sampling_inhibited=app->runtime.prepare_pending || app->runtime.start_pending ||
         app->runtime.command_pending;
+    board->input_taps_requested=app->input.mode==COMP_INPUT_DICTATION&&
+        (app->input.options&COMP_INPUT_UNDO)!=0u;
     if(board->microphone.running)(void)capture_progress(app,20u);
     uint32_t phase_started=HAL_GetTick();
 #if defined(COMPANION_WBA_BLE_LINKED) && defined(__arm__)
@@ -1601,15 +1664,19 @@ void comp_v11_product_app_poll(comp_v11_product_app_t *app)
             /* Both local inputs use the same durable mark path. A tap never
              * starts/stops capture, and an idle/pre-START latch cannot become
              * a mark in the next session. Consume each HAL event only once. */
-            if((board->motion_event_flags&COMP_MOTION_DOUBLE_TAP) && board->microphone.running &&
-               app->runtime.recording==DENZIC_AUDIO_RECORDING_STATE_RECORDING &&
-               (int32_t)(board->motion_event_ms-app->capture_started_ms)>=0)
-                recording_local_bookmark(app);
+            uint8_t input_motion=board->motion_event_flags;
+            if((int32_t)(board->motion_event_ms-app->capture_started_ms)<0)
+                input_motion&=127u;
+            recording_input_apply(app,comp_input_motion(&app->input,input_motion,&board->imu_sample,
+                board->motion.tilt,comp_runtime_recording_owned(&app->runtime)),now);
             uint8_t pose=(uint8_t)(board->motion_event_flags&~COMP_MOTION_DOUBLE_TAP);
             if(pose)comp_runtime_motion_pose(&app->runtime,pose,board->motion.orientation,
                 board->motion.tilt,board->motion_event_ms,now);
         }
     }
+    if(app->input.mode==COMP_INPUT_DICTATION&&now-board->imu_sample.timestamp_ms<100u)
+        recording_input_apply(app,comp_input_motion(&app->input,0u,&board->imu_sample,
+            board->motion.tilt,comp_runtime_recording_owned(&app->runtime)),now);
     comp_wba_power_snapshot_t power=comp_wba_power_monitor_snapshot(&board->power_monitor,now);
     comp_wba_power_monitor_recording_guard(&board->power_monitor,now);
     if(board->power_monitor.recording_power_blocked && comp_runtime_recording_owned(&app->runtime))
@@ -1653,7 +1720,8 @@ void comp_v11_product_app_poll(comp_v11_product_app_t *app)
      * for the next poll, where the debounce path still sees sleeping. */
     const bool key_edge = comp_v11_hal_take_key_wake(board);
     comp_wba_button_edges_t key_edges={0};
-    if(!COMPANION_WBA_SCREEN_ENABLED)key_edges=comp_v11_hal_take_key_edges(board);
+    const bool recorder_key=!COMPANION_WBA_SCREEN_ENABLED||app->input.mode!=COMP_INPUT_RECORDER;
+    if(recorder_key)key_edges=comp_v11_hal_take_key_edges(board);
     const bool pressed=COMPANION_WBA_SCREEN_ENABLED?comp_v11_hal_key_pressed():key_edges.raw_pressed;
     now=HAL_GetTick();
     /* Classify a physical gesture by its logical owner. Transient playback,
@@ -1664,11 +1732,13 @@ void comp_v11_product_app_poll(comp_v11_product_app_t *app)
         app->runtime.surface==COMP_SCREEN_SURFACE_HOME && !app->runtime.menu_pending &&
         (app->runtime.status_packed&COMP_SCREEN_STATUS_UPDATING)==0u;
     (void)pressed;(void)double_refresh;(void)was_sleeping; /* Screen-only branch may fold away. */
-    uint8_t key=COMPANION_WBA_SCREEN_ENABLED?
+    uint8_t key=!recorder_key?
         comp_wba_button_poll_with_hold(&app->button,pressed,was_sleeping,double_refresh,700u,now):
-        comp_wba_button_poll_edges(&app->button,&key_edges,1000u,now);
+        comp_wba_button_poll_transitions(&app->button,&key_edges,now);
     if ((key & COMP_WBA_BUTTON_WAKE) || key_edge)
         comp_runtime_wake_from(&app->runtime,now,COMP_RUNTIME_WAKE_KEY);
+    if(recorder_key)
+        recording_input_apply(app,comp_input_key(&app->input,key,comp_runtime_recording_owned(&app->runtime)),now);
     if ((key & (COMP_WBA_BUTTON_CONFIRM|COMP_WBA_BUTTON_DOUBLE_CONFIRM)) && !comp_runtime_recording_hold(&app->runtime)) {
         if(!COMPANION_WBA_SCREEN_ENABLED) {
             if(comp_runtime_recording_owned(&app->runtime)) {

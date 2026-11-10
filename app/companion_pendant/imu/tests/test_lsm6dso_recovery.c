@@ -15,7 +15,7 @@ typedef struct {
     comp_imu_sample_t imu_sample;
     comp_power_policy_t power;
     struct { bool running; } microphone;
-    bool playback_active, power_sampling_inhibited, idle_peripherals;
+    bool playback_active, power_sampling_inhibited, idle_peripherals,input_taps_requested;
     uint32_t faults, motion_event_ms;
     uint8_t sample_events, motion_event_flags, panel;
 } comp_v11_hal_t;

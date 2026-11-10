@@ -71,8 +71,19 @@ uint8_t comp_wba_button_poll_with_hold(comp_wba_button_t *b, bool raw,
 uint8_t comp_wba_button_poll_with_double(comp_wba_button_t *b, bool raw,
     bool sleeping, bool enable_double, uint32_t now)
 { return comp_wba_button_poll_with_hold(b,raw,sleeping,enable_double,700u,now); }
-uint8_t comp_wba_button_poll_edges(comp_wba_button_t *b,
-    const comp_wba_button_edges_t *edge, uint16_t hold_ms, uint32_t now)
+static uint8_t edge_poll(comp_wba_button_t *b,bool raw,uint16_t hold_ms,uint32_t now,bool transitions)
+{
+    const bool pressed=b->pressed,wake_only=b->wake_only;
+    uint8_t event=comp_wba_button_poll_with_hold(b,raw,false,false,hold_ms,now);
+    if(transitions) {
+        if(!pressed&&b->pressed&&!b->wake_only)event|=COMP_WBA_BUTTON_DOWN;
+        if(pressed&&!b->pressed&&!wake_only)event|=COMP_WBA_BUTTON_UP;
+        event&=(COMP_WBA_BUTTON_WAKE|COMP_WBA_BUTTON_DOWN|COMP_WBA_BUTTON_UP);
+    }
+    return event;
+}
+static uint8_t replay_edges(comp_wba_button_t *b,
+    const comp_wba_button_edges_t *edge,uint16_t hold_ms,uint32_t now,bool transitions)
 {
     if(!b || !edge)return 0u;
     uint8_t event=0u;
@@ -80,21 +91,27 @@ uint8_t comp_wba_button_poll_edges(comp_wba_button_t *b,
     const bool up=(edge->flags&COMP_WBA_BUTTON_EDGE_UP)!=0u;
     if(down && up && (int32_t)(edge->up_ms-edge->down_ms)<0) {
         /* A previous release followed by a new press, not a wrapped hold. */
-        event|=comp_wba_button_poll_with_hold(b,false,false,false,hold_ms,edge->up_ms);
-        event|=comp_wba_button_poll_with_hold(b,b->raw,false,false,hold_ms,edge->down_ms);
-        event|=comp_wba_button_poll_with_hold(b,true,false,false,hold_ms,edge->down_ms);
+        event|=edge_poll(b,false,hold_ms,edge->up_ms,transitions);
+        event|=edge_poll(b,b->raw,hold_ms,edge->down_ms,transitions);
+        event|=edge_poll(b,true,hold_ms,edge->down_ms,transitions);
     } else {
         if(down) {
-            event|=comp_wba_button_poll_with_hold(b,b->raw,false,false,hold_ms,edge->down_ms);
-            event|=comp_wba_button_poll_with_hold(b,true,false,false,hold_ms,edge->down_ms);
+            event|=edge_poll(b,b->raw,hold_ms,edge->down_ms,transitions);
+            event|=edge_poll(b,true,hold_ms,edge->down_ms,transitions);
             if(up && edge->up_ms-edge->down_ms>=30u)
-                event|=comp_wba_button_poll_with_hold(b,true,false,false,hold_ms,edge->down_ms+30u);
+                event|=edge_poll(b,true,hold_ms,edge->down_ms+30u,transitions);
         }
-        if(up)event|=comp_wba_button_poll_with_hold(b,false,false,false,hold_ms,edge->up_ms);
+        if(up)event|=edge_poll(b,false,hold_ms,edge->up_ms,transitions);
     }
-    event|=comp_wba_button_poll_with_hold(b,edge->raw_pressed,false,false,hold_ms,now);
+    event|=edge_poll(b,edge->raw_pressed,hold_ms,now,transitions);
     return event;
 }
+uint8_t comp_wba_button_poll_edges(comp_wba_button_t *b,
+    const comp_wba_button_edges_t *edge,uint16_t hold_ms,uint32_t now)
+{return replay_edges(b,edge,hold_ms,now,false);}
+uint8_t comp_wba_button_poll_transitions(comp_wba_button_t *b,
+    const comp_wba_button_edges_t *edge,uint32_t now)
+{return replay_edges(b,edge,UINT16_MAX,now,true);}
 uint8_t comp_wba_button_poll(comp_wba_button_t *b, bool raw, bool sleeping, uint32_t now)
 { return comp_wba_button_poll_with_double(b,raw,sleeping,false,now); }
 bool comp_wba_button_busy(const comp_wba_button_t *b)

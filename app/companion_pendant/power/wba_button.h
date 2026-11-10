@@ -11,7 +11,8 @@ typedef struct {
 } comp_wba_button_t;
 _Static_assert(sizeof(comp_wba_button_t)==12u,"button diagnostics must not grow RAM");
 enum { COMP_WBA_BUTTON_WAKE=1u, COMP_WBA_BUTTON_CONFIRM=2u,
-       COMP_WBA_BUTTON_RECORD_TOGGLE=4u, COMP_WBA_BUTTON_DOUBLE_CONFIRM=8u };
+       COMP_WBA_BUTTON_RECORD_TOGGLE=4u, COMP_WBA_BUTTON_DOUBLE_CONFIRM=8u,
+       COMP_WBA_BUTTON_DOWN=16u, COMP_WBA_BUTTON_UP=32u };
 enum { COMP_WBA_BUTTON_EDGE_DOWN=1u, COMP_WBA_BUTTON_EDGE_UP=2u };
 typedef struct {
     uint32_t down_ms, up_ms;
@@ -23,6 +24,10 @@ typedef struct {
  * product actions; timestamps are replayed by the foreground owner. */
 uint8_t comp_wba_button_poll_edges(comp_wba_button_t *,
     const comp_wba_button_edges_t *, uint16_t hold_ms, uint32_t now);
+/* Qualified transitions for recorder/desktop mode. No long-hold action;
+ * a held boot key is retired, and complete delayed presses retain both edges. */
+uint8_t comp_wba_button_poll_transitions(comp_wba_button_t *,
+    const comp_wba_button_edges_t *,uint32_t now);
 void comp_wba_button_init(comp_wba_button_t *, bool raw_pressed, uint32_t now);
 uint8_t comp_wba_button_poll(comp_wba_button_t *, bool raw_pressed, bool sleeping, uint32_t now);
 /* Opt in only on the idle Companion screen. The first release waits 320 ms so a

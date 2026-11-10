@@ -1,6 +1,7 @@
 #include "lsm6dso.h"
 #include "power_policy.h"
 #include "maintenance_protocol.h"
+#include "recorder_input.h"
 #include <assert.h>
 #include <stdio.h>
 #include <string.h>
@@ -23,7 +24,7 @@ static void ready(comp_lsm6dso_t *imu,bus_t *b)
 }
 typedef struct {comp_lsm6dso_t imu;} board_t;
 typedef struct {uint32_t last_activity_ms,wakes,source;} runtime_t;
-typedef struct {board_t *board;runtime_t runtime;uint8_t last_imu_wake_sequence;} comp_v11_product_app_t;
+typedef struct {board_t *board;runtime_t runtime;uint8_t last_imu_wake_sequence;comp_recorder_input_t input;} comp_v11_product_app_t;
 #include "wake_source_enum.inc"
 static void comp_runtime_wake_from(runtime_t *r,uint32_t now,comp_runtime_wake_source_t source)
 {r->last_activity_ms=now;r->source=source;++r->wakes;}

@@ -1411,6 +1411,9 @@ static void imu_poll_with_recovery(comp_v11_hal_t *b, uint32_t tick)
     /* A recording may begin between reset and the next poll. Defer the
      * recovery configuration burst too, not just the initial reset write. */
     if (b->imu.recovery_attempts != 0u && !recovery_allowed) return;
+    if(recovery_allowed&&b->imu.state==COMP_IMU_READY&&
+       b->imu.recording_taps!=b->input_taps_requested)
+        (void)comp_lsm6dso_set_recording_taps(&b->imu,b->input_taps_requested);
     const comp_imu_poll_t result = comp_lsm6dso_poll(&b->imu, tick, &b->imu_sample);
     comp_power_policy_set_blocker(&b->power,COMP_POWER_BLOCKER_IMU_SETTLING,comp_lsm6dso_idle_settling(&b->imu));
     if (result == COMP_IMU_SAMPLE) {

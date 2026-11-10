@@ -15,6 +15,7 @@
 #include "wba_silence_stop.h"
 #include "wba_recording_level.h"
 #include "wba_button.h"
+#include "recorder_input.h"
 typedef struct {
     comp_v11_hal_t *board;
     comp_runtime_t runtime;
@@ -56,6 +57,7 @@ typedef struct {
 #endif
     uint8_t panel_staging[COMPANION_WBA_SCREEN_ENABLED ? 5000 : 1];
     comp_wba_button_t button;
+    comp_recorder_input_t input;
     uint32_t last_touch_count, last_motion_ms;
     /* Physical UART service only: finite display hold/trace, never capture.
      * Holding stops new presenter submits; active transactions still finish. */
@@ -122,6 +124,12 @@ bool comp_v11_product_recording_capacity(const comp_v11_product_app_t *,
 /* No flash/radio access, recording command, resident queue or sleep blocker.
  * updating comes from the existing OTA owner, not a requested UI action. */
 comp_capture_feedback_t comp_v11_product_capture_feedback(const comp_v11_product_app_t *,bool updating);
+/* CIN1 on the existing encrypted settings characteristic. Mode is scoped to
+ * the connected host, has no flash preference, and cannot change mid-press. */
+size_t comp_v11_product_input_request(comp_v11_product_app_t *,const uint8_t *,size_t,
+    bool busy,uint32_t now,uint8_t response[64]);
+void comp_v11_product_input_status(const comp_v11_product_app_t *,uint32_t request,
+    uint8_t result,uint8_t response[64]);
 /* OTA owns a durable tail reservation; zero releases it. No implicit loss. */
 bool comp_v11_product_update_workspace(void *,uint32_t,uint32_t *);
 /* WUS2 mount/lease result, before capture becomes available. */
