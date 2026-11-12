@@ -29,15 +29,50 @@ static unsigned short_publish_length;
 static SVCCTL_EvtAckStatus_t (*product_handler)(void *);
 static unsigned payload_loans,payload_peak,payload_claims,payload_resumes;
 static bool deny_payload_loan;
+#ifdef COMP_GATT_TEST_REAL_AMM
+#include "advanced_memory_manager.h"
+#include "stm32_mm.h"
+__declspec(align(8)) static uint32_t sdk_pool[1006];
+static uint32_t *sdk_timers[12],*sdk_events[3];
+void AMM_ProcessRequest(void){}
+static void sdk_init(uint32_t *p,uint32_t words){UTIL_MM_Init((uint8_t*)p,words*4u);}
+static uint32_t *sdk_alloc(uint32_t words){return UTIL_MM_GetBuffer(words*4u);}
+static void sdk_free(uint32_t *p){UTIL_MM_ReleaseBuffer(p);}
+void AMM_RegisterBasicMemoryManager(AMM_BasicMemoryManagerFunctions_t *p)
+{p->Init=sdk_init;p->Allocate=sdk_alloc;p->Free=sdk_free;}
+static void payload_memory_init(void)
+{
+    _Static_assert(sizeof(void*)==4u && sizeof(VirtualMemoryInfo_t)==12u,"match target allocator word/header geometry");
+    AMM_VirtualMemoryConfig_t vm[2]={{1u,400u},{2u,68u}};
+    AMM_InitParameters_t p={sdk_pool,1006u,2u,vm};
+    if(AMM_Init(&p)!=AMM_ERROR_OK)abort();
+    for(unsigned i=0;i<12u;++i)if(AMM_Alloc(1u,10u,&sdk_timers[i],NULL)!=AMM_ERROR_OK)abort();
+    for(unsigned i=0;i<3u;++i)if(AMM_Alloc(2u,67u,&sdk_events[i],NULL)!=AMM_ERROR_OK)abort();
+}
+#else
+static void payload_memory_init(void){}
+#endif
 uint8_t *comp_v11_ble_command_payload_claim(uint16_t bytes)
 {
     if(deny_payload_loan)return NULL;
+#ifdef COMP_GATT_TEST_REAL_AMM
+    uint32_t *loan=NULL;
+    uint8_t *p=AMM_Alloc(2u,(bytes+3u)/4u,&loan,NULL)==AMM_ERROR_OK?(uint8_t*)loan:NULL;
+#else
     uint8_t *p=malloc(bytes);
+#endif
     if(p){++payload_claims;++payload_loans;if(payload_loans>payload_peak)payload_peak=payload_loans;}
     return p;
 }
 void comp_v11_ble_command_payload_release(uint8_t *p)
-{if(!payload_loans)abort();--payload_loans;free(p);}
+{
+    if(!payload_loans)abort();--payload_loans;
+#ifdef COMP_GATT_TEST_REAL_AMM
+    if(AMM_Free((uint32_t*)p)!=AMM_ERROR_OK)abort();
+#else
+    free(p);
+#endif
+}
 void comp_v11_ble_command_payload_resume(void){++payload_resumes;}
 tBleStatus reference_companion_gatt_stm32wb_init(void);
 
@@ -164,6 +199,12 @@ static int check_queue(void)
     CHECK(companion_gatt_stm32wb_init()==BLE_STATUS_SUCCESS);
     CHECK(!payload_loans && !companion_gatt_stm32wb_has_pending());
     printf("POOLED_QUEUE eight_slots_max245_mixed_wrap_rounds=120 loan_peak=%u claims=%u retry_preserved=1 disconnect_and_reinit_freed=1 loans_remaining=%u\n",payload_peak,payload_claims,payload_loans);
+#ifdef COMP_GATT_TEST_REAL_AMM
+    for(unsigned i=0;i<12u;++i)CHECK(AMM_Free(sdk_timers[i])==AMM_ERROR_OK);
+    for(unsigned i=0;i<3u;++i)CHECK(AMM_Free(sdk_events[i])==AMM_ERROR_OK);
+    CHECK(AMM_DeInit()==AMM_ERROR_OK);
+    puts("PINNED_ST_AMM_MM_32BIT pool4024_unchanged timers12_and_maxHCI3_held_through_all_queue_bursts no_physical_allocation_failure");
+#endif
     return 0;
 }
 bool comp_wba_update_open(comp_wba_update_service_t *s,const comp_wba_update_manifest_t *m,
@@ -172,6 +213,7 @@ bool comp_wba_update_open(comp_wba_update_service_t *s,const comp_wba_update_man
 
 int main(void)
 {
+    payload_memory_init();
     CHECK(reference_companion_gatt_stm32wb_init()==BLE_STATUS_SUCCESS);
     CHECK(services==10u && attributes==62u && chars==21u && callbacks==1u);
     memcpy(reference,declarations,sizeof(reference));

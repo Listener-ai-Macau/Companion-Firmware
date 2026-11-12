@@ -15,6 +15,8 @@ def main():
     parser.add_argument('--baseline-schema', type=Path, required=True)
     parser.add_argument('--sdk', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--real-sdk-allocator', action='store_true',
+        help='Run the same queue cases with pinned ST AMM/MM/list on 32-bit host')
     args = parser.parse_args()
     out = args.output.resolve();out.mkdir(parents=True, exist_ok=False)
     before = args.baseline_gatt.resolve()
@@ -32,14 +34,38 @@ def main():
     includes = [BLE/'tests/ota_fakes', GATT, BLE, UPDATE, official,
         ROOT/'third_party/denzic-platform/ota/embedded/c/include',
         ROOT/'app/companion_pendant/v1_features', ROOT/'app/companion_pendant/diag_log']
+    extra=[]
+    if args.real_sdk_allocator:
+        modules=args.sdk.resolve()/'Projects/Common/WPAN/Modules'
+        sources += [modules/'MemoryManager/advanced_memory_manager.c',
+            modules/'MemoryManager/stm32_mm.c',modules/'stm_list.c']
+        compat=out/'sdk-compat';compat.mkdir()
+        common='#include <stdint.h>\n#include <stddef.h>\n#define TRUE 1\n#define FALSE 0\n'
+        (compat/'utilities_common.h').write_text(common)
+        (compat/'utilities_conf.h').write_text('''#define UTIL_SEQ_INIT_CRITICAL_SECTION()
+#define UTIL_SEQ_ENTER_CRITICAL_SECTION()
+#define UTIL_SEQ_EXIT_CRITICAL_SECTION()
+''')
+        (compat/'stm32_wpan_common.h').write_text(common+'''#define __PACKED_STRUCT struct
+static __inline uint32_t __get_PRIMASK(void){return 0;}
+static __inline void __disable_irq(void){}
+static __inline void __set_PRIMASK(uint32_t x){(void)x;}
+''')
+        (compat/'attributes.h').write_text('#define __attribute__(x)\n#define AMM_USE_MEMORY_STATISTICS 0\n')
+        includes=[compat,*includes,modules,modules/'MemoryManager']
+        # Pinned vendor AMM line629 compares its signed overlap to unsigned
+        # size; retain that source unchanged for this allocator replay.
+        extra=['/DCOMP_GATT_TEST_REAL_AMM','/wd4018',f'/FI{compat/"attributes.h"}']
     exe = out/'budget.exe'
     command = ['cl.exe','/nologo','/TC','/std:c11','/Zc:preprocessor','/O2','/W4','/WX',
         '/DCOMPANION_GATT_WBA_HOST', '/DCOMP_WBA_INTERNAL_FLASH_KIB=512u',
         '/DCOMP_WBA_INTERNAL_NVM_KIB=0u',
         '/DCOMP_WBA_BOOT_FLASH_KIB=24u',
+        *extra,
         *(f'/I{p}' for p in includes), *(str(p) for p in sources), f'/Fe:{exe}']
     script = out/'build.cmd'
-    script.write_text('@echo off\ncall "'+str(find_vsdevcmd())+'" -arch=amd64 -host_arch=amd64 >nul\nif errorlevel 1 exit /b %errorlevel%\n'+subprocess.list2cmdline(command)+'\n', encoding='utf-8')
+    arch='x86' if args.real_sdk_allocator else 'amd64'
+    script.write_text('@echo off\ncall "'+str(find_vsdevcmd())+f'" -arch={arch} -host_arch=amd64 >nul\nif errorlevel 1 exit /b %errorlevel%\n'+subprocess.list2cmdline(command)+'\n', encoding='utf-8')
     log = out/'build.log';log.write_text('', encoding='utf-8')
     run(['cmd.exe','/d','/c',str(script)], out, log)
     result = run([str(exe)], out, log)
@@ -53,6 +79,7 @@ def main():
             sourceRetainedAndRetriedOnLoanExhaustion=True,ringWrapRounds=120,
             allEightMaximumWritesPreserved=True,disconnectAndReinitReturnLoans=True,
             physicalAllocatorOrThroughputQualified=False),
+        actualSdkAllocatorHost32=args.real_sdk_allocator,
         officialP2pPools=dict(hostBytes=7784,gattBytes=4448,links=8,mtu=251,
             scope='Calculated using pinned SDK macros and official app_conf.h, not a full example build'),
         coldRegistrationQualification='REQUIRES_ACTUAL_STACK; host fake does not emulate allocator',
