@@ -88,10 +88,12 @@ def main():
     ap.add_argument('--execute',action='store_true',help='Stage full signed package, publish pending, then let original Boot install')
     ap.add_argument('--inspect-device',action='store_true',help='Read only metadata through fixed V3, then reset original application')
     ap.add_argument('--replace-development-boot',type=Path,help='Explicit lost-development-key recovery: matched Boot build directory; changes board trust, not ordinary OTA')
+    ap.add_argument('--development-in-place',action='store_true',help='Explicit authorized development service: unchanged UI, signed App/Boot/current record; no recording arena needed')
     ap.add_argument('--previous-public-key',type=Path,help='Original installed raw public key, required with development Boot replacement')
     a=ap.parse_args();out=a.output.resolve();out.mkdir(parents=True,exist_ok=False)
     package=a.package.read_bytes();build=json.loads((a.build/'result.json').read_bytes())
     xy=bytes(int(x,16) for x in re.findall(r'0x([0-9a-fA-F]{2})',(a.build/'wba_update_trust_anchor.h').read_text()))
+    require(not a.development_in_place or a.replace_development_boot,'In-place service requires explicit development Boot replacement')
     replacement=None;replacement_report=None;previous_xy=None
     if a.replace_development_boot:
         require(a.previous_public_key is not None,'Lost development key recovery must identify the old trust anchor')
@@ -146,55 +148,59 @@ def main():
             (out/'catalog-inspection.log').write_text(cp.stdout+cp.stderr,encoding='utf-8')
             require(cp.returncode==0,'Product metadata parser did not qualify a disjoint OTA tail: '+str(cp.returncode))
             state['catalog']=json.loads(cp.stdout)
-            base=free_staging_base(state['catalog']['entries'],data_base,claim)
-            state['tailBase']=base;state['stagingPolicy']='EXISTING_UNOWNED_GAP_NO_AUDIO_MOVE'
-            current=[]
-            for rel in (0x2000,0x3000):
-                p=system[rel:rel+192]
-                if p[:8]==b'SCU3\x03\x00\xc0\x00' and struct.unpack_from('<I',p,188)[0]==zlib.crc32(p[:188]):
-                    h=p[12:188];fw=struct.unpack_from('<I',h,16)[0];ui=struct.unpack_from('<I',h,156)[0]
-                    require(struct.unpack_from('<I',h,168)[0]==static,'Live signed receipt has different static extent')
-                    current.append((fw,ui))
-            require(current and max(current)==(a.current_version,85),'Live signed current receipt differs from UART')
-            require(system[0x5000:0x5000+196]==b'\xff'*196,'Existing pending installation must finish first')
-            state['systemBeforeSha256']=sha(system);state['pairingBeforeSha256']=sha(system[0xc000:0xf000]);save(out/'result.json',state)
-            if a.execute:
-                lease();state['writesStarted']=True;save(out/'result.json',state)
-                staged=out/'signed-candidate.cup';staged.write_bytes(package)
-                probe.checked(probe.api.downloadFile(str(staged),NOR+base,0,1,None),'complete signed CUP staging')
-                require(external_read(probe,NOR+base,len(package),'candidate-readback.cup')==package,'Full staged CUP readback mismatch')
-                state['candidateReadbackVerified']=True;save(out/'result.json',state)
-                # Exactly the record published by normal OTA finish_stream.
-                target=pending_record(base,package);path=out/'pending-sector.bin';path.write_bytes(target)
-                lease();probe.checked(probe.api.downloadFile(str(path),NOR+static+0x5000,0,1,None),'normal pending publication')
-                require(external_read(probe,NOR+static+0x5000,4096,'pending-readback.bin')==target,'Pending readback mismatch')
-                expected=bytearray(system);expected[0x5000:0x6000]=target
-                require(external_read(probe,NOR+static,131072,'private-system-after-stage.bin')==expected,'Unrelated system metadata changed')
-                state['pendingPublished']=True;state['pairingAndRecordingMetadataPreserved']=True
-                state['result']='SIGNED_PACKAGE_STAGED_FOR_RESIDENT_BOOT';save(out/'result.json',state)
-                if replacement:
-                    # Only after the signed payload and normal pending record
-                    # are durable: replace the 24KiB Boot prefix, never App,
-                    # audio, bonds or current receipts. Resident Boot still
-                    # performs the signed application installation itself.
-                    lease();boot_path=Path(replacement_report['bin'])
-                    state['bootWriteStarted']=True;save(out/'result.json',state)
-                    try:
-                        probe.checked(probe.api.downloadFile(str(boot_path),TARGET.flash_base,0,1,None),'explicit development Boot trust replacement')
-                        observed_boot=probe.read(TARGET.flash_base,TARGET.boot_bytes,'resident-boot-after.bin')
-                        require(observed_boot==replacement+b'\xff'*(TARGET.boot_bytes-len(replacement)),'Replacement Boot readback differs')
-                    except Exception:
-                        # Reversible service operation: restore the exact old
-                        # prefix before allowing its normal reset on failure.
-                        previous_boot=out/'resident-boot-before.bin'
-                        probe.checked(probe.api.downloadFile(str(previous_boot),TARGET.flash_base,0,1,None),'restore original development Boot after failed replacement')
-                        require(probe.read(TARGET.flash_base,TARGET.boot_bytes,'resident-boot-restored.bin')==boot,'Original Boot restore readback differs')
-                        state['originalBootRestored']=True;save(out/'result.json',state)
-                        raise
-                    state['bootWrites']=1;state['hostInternalFlashWrites']=1
-                    state['boardTrustChanged']=True;save(out/'result.json',state)
+            if a.development_in_place:
+                from wba_development_in_place import install
+                install(probe,out,package,info,system,boot,replacement,previous_xy,a.current_version,a.execute,state,save)
             else:
-                state['result']='READ_ONLY_TAIL_QUALIFIED';save(out/'result.json',state)
+                base=free_staging_base(state['catalog']['entries'],data_base,claim)
+                state['tailBase']=base;state['stagingPolicy']='EXISTING_UNOWNED_GAP_NO_AUDIO_MOVE'
+                current=[]
+                for rel in (0x2000,0x3000):
+                    p=system[rel:rel+192]
+                    if p[:8]==b'SCU3\x03\x00\xc0\x00' and struct.unpack_from('<I',p,188)[0]==zlib.crc32(p[:188]):
+                        h=p[12:188];fw=struct.unpack_from('<I',h,16)[0];ui=struct.unpack_from('<I',h,156)[0]
+                        require(struct.unpack_from('<I',h,168)[0]==static,'Live signed receipt has different static extent')
+                        current.append((fw,ui))
+                require(current and max(current)==(a.current_version,85),'Live signed current receipt differs from UART')
+                require(system[0x5000:0x5000+196]==b'\xff'*196,'Existing pending installation must finish first')
+                state['systemBeforeSha256']=sha(system);state['pairingBeforeSha256']=sha(system[0xc000:0xf000]);save(out/'result.json',state)
+                if a.execute:
+                    lease();state['writesStarted']=True;save(out/'result.json',state)
+                    staged=out/'signed-candidate.cup';staged.write_bytes(package)
+                    probe.checked(probe.api.downloadFile(str(staged),NOR+base,0,1,None),'complete signed CUP staging')
+                    require(external_read(probe,NOR+base,len(package),'candidate-readback.cup')==package,'Full staged CUP readback mismatch')
+                    state['candidateReadbackVerified']=True;save(out/'result.json',state)
+                    # Exactly the record published by normal OTA finish_stream.
+                    target=pending_record(base,package);path=out/'pending-sector.bin';path.write_bytes(target)
+                    lease();probe.checked(probe.api.downloadFile(str(path),NOR+static+0x5000,0,1,None),'normal pending publication')
+                    require(external_read(probe,NOR+static+0x5000,4096,'pending-readback.bin')==target,'Pending readback mismatch')
+                    expected=bytearray(system);expected[0x5000:0x6000]=target
+                    require(external_read(probe,NOR+static,131072,'private-system-after-stage.bin')==expected,'Unrelated system metadata changed')
+                    state['pendingPublished']=True;state['pairingAndRecordingMetadataPreserved']=True
+                    state['result']='SIGNED_PACKAGE_STAGED_FOR_RESIDENT_BOOT';save(out/'result.json',state)
+                    if replacement:
+                        # Only after the signed payload and normal pending record
+                        # are durable: replace the 24KiB Boot prefix, never App,
+                        # audio, bonds or current receipts. Resident Boot still
+                        # performs the signed application installation itself.
+                        lease();boot_path=Path(replacement_report['bin'])
+                        state['bootWriteStarted']=True;save(out/'result.json',state)
+                        try:
+                            probe.checked(probe.api.downloadFile(str(boot_path),TARGET.flash_base,0,1,None),'explicit development Boot trust replacement')
+                            observed_boot=probe.read(TARGET.flash_base,TARGET.boot_bytes,'resident-boot-after.bin')
+                            require(observed_boot==replacement+b'\xff'*(TARGET.boot_bytes-len(replacement)),'Replacement Boot readback differs')
+                        except Exception:
+                            # Reversible service operation: restore the exact old
+                            # prefix before allowing its normal reset on failure.
+                            previous_boot=out/'resident-boot-before.bin'
+                            probe.checked(probe.api.downloadFile(str(previous_boot),TARGET.flash_base,0,1,None),'restore original development Boot after failed replacement')
+                            require(probe.read(TARGET.flash_base,TARGET.boot_bytes,'resident-boot-restored.bin')==boot,'Original Boot restore readback differs')
+                            state['originalBootRestored']=True;save(out/'result.json',state)
+                            raise
+                        state['bootWrites']=1;state['hostInternalFlashWrites']=1
+                        state['boardTrustChanged']=True;save(out/'result.json',state)
+                else:
+                    state['result']='READ_ONLY_TAIL_QUALIFIED';save(out/'result.json',state)
         finally:
             if loader_name:remove_loader(probe,loader_name)
             if freeze is not None:probe.word(0xE0044008,freeze)
@@ -219,7 +225,7 @@ def main():
     state['ownHandlesClosed']=True
     if a.execute:
         state['diagnosticJournalVisible']=b'DJ1 seq=' in raw
-        state['result']='INSTALLED_BY_ORIGINAL_BOOT' if state['diagnosticJournalVisible'] else 'INSTALLED_JOURNAL_NOT_OBSERVED'
+        state['result']='DEVELOPMENT_IN_PLACE_INSTALLED_AND_BOOT_VERIFIED' if a.development_in_place else ('INSTALLED_BY_ORIGINAL_BOOT' if state['diagnosticJournalVisible'] else 'INSTALLED_JOURNAL_NOT_OBSERVED')
     save(out/'result.json',state);print(json.dumps(state,ensure_ascii=False))
 
 if __name__=='__main__':
@@ -233,7 +239,7 @@ if __name__=='__main__':
             path=Path(sys.argv[sys.argv.index('--output')+1])/'result.json'
             if path.is_file():
                 state=json.loads(path.read_bytes())
-                state['result']='INSTALLATION_NOT_CONFIRMED' if state.get('pendingPublished') else 'FAILED_BEFORE_PENDING_PUBLICATION'
+                state['result']=('DEVELOPMENT_IN_PLACE_FAILED_ORIGINAL_RESTORED' if state.get('originalImagesRestored') else 'DEVELOPMENT_IN_PLACE_NOT_CONFIRMED') if '--development-in-place' in sys.argv else ('INSTALLATION_NOT_CONFIRMED' if state.get('pendingPublished') else 'FAILED_BEFORE_PENDING_PUBLICATION')
                 state['error']=str(error);state['ownHandlesClosed']=True
                 save(path,state)
         raise
