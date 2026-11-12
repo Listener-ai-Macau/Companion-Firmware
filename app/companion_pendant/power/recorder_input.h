@@ -34,7 +34,7 @@ static inline bool comp_input_mode(comp_recorder_input_t *s,uint8_t mode,uint8_t
 static inline void comp_input_connection(comp_recorder_input_t *s,bool connected)
 {
     if(connected)return;
-    if(s->mode==COMP_INPUT_DICTATION&&(s->flags&COMP_INPUT_HELD))s->flags|=COMP_INPUT_DETACHED;
+    if(s->mode!=COMP_INPUT_RECORDER&&(s->flags&COMP_INPUT_HELD))s->flags|=COMP_INPUT_DETACHED;
     else {s->mode=COMP_INPUT_RECORDER;s->options=0u;s->record_token=0u;s->events=0u;}
 }
 static inline uint16_t comp_input_key(comp_recorder_input_t *s,uint8_t key,bool capture_owned)

@@ -72,6 +72,11 @@ int main(void)
     assert(!comp_input_mode(&s,4u,0u,false,false));
     assert(!comp_input_mode(&s,COMP_INPUT_POINTER,0u,true,false));
     comp_input_connection(&s,false);assert(s.mode==COMP_INPUT_RECORDER);
+    assert(comp_input_mode(&s,COMP_INPUT_POINTER,0u,false,false));
+    assert(comp_input_key(&s,COMP_WBA_BUTTON_DOWN,false)==0u);
+    comp_input_connection(&s,false);
+    assert(s.mode==COMP_INPUT_POINTER&&(s.flags&COMP_INPUT_DETACHED));
+    assert(comp_input_key(&s,COMP_WBA_BUTTON_UP,false)==0u&&s.mode==COMP_INPUT_RECORDER);
     sample=(comp_imu_sample_t){.timestamp_ms=0xfffffff0u,.accel_mg={1,-2,1000},.gyro_mdps={8750,-250000,500000}};
     uint8_t packet[32];comp_imu_pointer_packet(&sample,7u,true,packet);
     assert(!memcmp(packet,"CIM1",4u)&&packet[4]==1u&&packet[5]==3u&&packet[6]==1u);
