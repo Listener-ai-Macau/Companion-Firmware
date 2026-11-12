@@ -2422,6 +2422,19 @@ comp_wba_button_edges_t comp_v11_hal_take_key_edges(comp_v11_hal_t *b)
 }
 void comp_v11_hal_log(const char *message)
 { (void)comp_v11_hal_debug_write(message); }
+#if COMPANION_WBA_IMU_RAW_UART
+static uint8_t imu_uart_packet[32];
+bool comp_v11_hal_debug_raw(const uint8_t *data,uint16_t length)
+{
+    if(!uart_ready||length!=sizeof(imu_uart_packet)||debug_uart.gState!=HAL_UART_STATE_READY)return false;
+    memcpy(imu_uart_packet,data,length);
+    HAL_NVIC_SetPriority(LPUART1_IRQn,6u,0u);HAL_NVIC_EnableIRQ(LPUART1_IRQn);
+    return HAL_UART_Transmit_IT(&debug_uart,imu_uart_packet,length)==HAL_OK;
+}
+void LPUART1_IRQHandler(void){HAL_UART_IRQHandler(&debug_uart);}
+void HAL_UART_TxCpltCallback(UART_HandleTypeDef *uart)
+{if(uart==&debug_uart)HAL_NVIC_DisableIRQ(LPUART1_IRQn);}
+#endif
 bool comp_v11_hal_debug_write(const char *message)
 {
     size_t length;

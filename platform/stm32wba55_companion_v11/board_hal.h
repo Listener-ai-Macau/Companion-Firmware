@@ -1,5 +1,13 @@
 #ifndef COMPANION_V11_BOARD_HAL_H
 #define COMPANION_V11_BOARD_HAL_H
+#ifndef COMPANION_WBA_IMU_RAW_UART
+#define COMPANION_WBA_IMU_RAW_UART 0
+#endif
+#if COMPANION_WBA_IMU_RAW_UART
+#include <stdbool.h>
+#include <stdint.h>
+bool comp_v11_hal_debug_raw(const uint8_t *data,uint16_t length);
+#endif
 #ifndef COMPANION_WBA_SCREEN_ENABLED
 #define COMPANION_WBA_SCREEN_ENABLED 1
 #endif

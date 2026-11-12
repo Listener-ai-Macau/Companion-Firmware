@@ -155,6 +155,9 @@ size_t comp_v11_product_pet_profile(comp_v11_product_app_t *,const uint8_t *,siz
 /* Physical service: validated mounting map only. Save/readback must succeed
  * before applying. Does not zero sensors, wake/reset or qualify any frame. */
 bool comp_v11_product_apply_imu_axes(comp_v11_product_app_t *,uint8_t packed);
+#if COMPANION_WBA_IMU_RAW_UART
+bool comp_v11_product_imu_uart(comp_v11_product_app_t *,bool enabled,uint32_t now);
+#endif
 /* EPD KEY arms for 120 seconds; EPD RUN exits. Normal startup is unarmed. */
 bool comp_v11_product_panel_debug_key(comp_v11_product_app_t *,bool enabled,uint32_t now_ms);
 /* EPD SAME admits one frozen, same-bitmap normal partial; no automatic replay. */

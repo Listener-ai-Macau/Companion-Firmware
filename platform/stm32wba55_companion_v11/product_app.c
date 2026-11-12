@@ -14,6 +14,18 @@
 #include "wba_storage_layout.h"
 #include "wba_workspace_layout.h"
 #include "wba_recording_crc.h"
+#if COMPANION_WBA_IMU_RAW_UART
+#include "imu_pointer_wire.h"
+static struct {uint32_t until,last_ms,sequence;} imu_uart;
+bool comp_v11_product_imu_uart(comp_v11_product_app_t *app,bool enabled,uint32_t now)
+{
+    if(!enabled){imu_uart.until=0u;comp_input_connection(&app->input,false);return true;}
+    if(comp_runtime_recording_owned(&app->runtime)||app->board->microphone.running||
+       (app->board->power.blockers&COMP_POWER_BLOCKER_UPDATE))return false;
+    if(!imu_uart.until&&!comp_input_mode(&app->input,COMP_INPUT_POINTER,24u,false,comp_wba_button_busy(&app->button)))return false;
+    imu_uart.until=(now+20000u)|1u;return true;
+}
+#endif
 #include <stdio.h>
 #include <string.h>
 #ifdef COMPANION_WBA_BLE_LINKED
@@ -1620,6 +1632,10 @@ void comp_v11_product_app_poll(comp_v11_product_app_t *app)
         comp_audio_feedback_busy(&app->runtime.audio);
     board->power_sampling_inhibited=app->runtime.prepare_pending || app->runtime.start_pending ||
         app->runtime.command_pending;
+    #if COMPANION_WBA_IMU_RAW_UART
+    if(imu_uart.until&&(int32_t)(now-imu_uart.until)>=0)(void)comp_v11_product_imu_uart(app,false,now);
+    if(imu_uart.until){app->input.mode=COMP_INPUT_POINTER;app->input.options=24u;}
+    #endif
     board->input_pointer_requested=app->input.mode==COMP_INPUT_POINTER;
     board->input_taps_requested=board->input_pointer_requested ||
         (app->input.mode==COMP_INPUT_DICTATION&&(app->input.options&COMP_INPUT_UNDO)!=0u);
@@ -1634,8 +1650,21 @@ void comp_v11_product_app_poll(comp_v11_product_app_t *app)
     comp_cpu_stage_span_t bulk_hal=comp_v11_cpu_transfer_stage_begin();
     comp_cpu_duty_span_t hal_span=comp_cpu_duty_span_begin();
     comp_v11_hal_poll(board);
+    #if COMPANION_WBA_IMU_RAW_UART
+    if(imu_uart.until&&!board->microphone.running&&board->imu_sample.timestamp_ms!=imu_uart.last_ms&&
+       now-board->imu_sample.timestamp_ms<100u&&board->imu.state==COMP_IMU_READY){
+        uint8_t packet[32];const comp_imu_sample_t *s=&board->imu_sample;
+        comp_imu_pointer_pack(s->timestamp_ms,++imu_uart.sequence,false,board->imu.tap_source,
+            5u,false,s->accel_mg,s->gyro_mdps,packet);
+        imu_uart.last_ms=s->timestamp_ms;(void)comp_v11_hal_debug_raw(packet,sizeof(packet));
+    }
+    #endif
     if(comp_input_pointer_v4(&app->input)&&(app->input.options&COMP_INPUT_POINTER_RAW)&&
-       (board->imu.tap_source&COMP_LSM6DSO_SINGLE_TAP)==COMP_LSM6DSO_SINGLE_TAP) {
+       (board->imu.tap_source&COMP_LSM6DSO_SINGLE_TAP)==COMP_LSM6DSO_SINGLE_TAP
+       #if COMPANION_WBA_IMU_RAW_UART
+       && !imu_uart.until
+       #endif
+       ) {
         comp_input_note(&app->input,COMP_INPUT_CLICK,board->imu_sample.timestamp_ms);
         comp_pointer_event_t *edge=&app->input.pointer_events[(app->input.pointer_head+app->input.pointer_count-1u)&7u];
         edge->reserved=board->imu.tap_source;++app->input.flick_sample_ms;

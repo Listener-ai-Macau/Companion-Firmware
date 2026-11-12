@@ -1068,11 +1068,22 @@ int main(void)
         }
         uint8_t imu_command,imu_axes;
         if(comp_v11_diag_console_take_imu(&diagnostic,&imu_command,&imu_axes)) {
+            #if COMPANION_WBA_IMU_RAW_UART
+            /* Reserved invalid maps only in the explicit engineering build.
+             * FF renews a20s UART-only motion lease; FE ends it. No map save,
+             * MIC command, BLE dependency or persistent boot option. */
+            if(imu_command==1u&&imu_axes>=0xFEu){
+                const bool ok=comp_v11_product_imu_uart(&companion_app,imu_axes==0xFFu,HAL_GetTick());
+                comp_v11_hal_log(ok?(imu_axes==0xFFu?"IMURAW1 ON\r\n":"IMURAW1 OFF\r\n"):"IMURAW1 BUSY\r\n");
+            }else
+            #endif
+            {
             /* Consume once. A busy request is rejected, never kept until
              * a later meeting/transfer ends. Only readback-verified NOR
              * preferences may install a map; no direct RAM/pin pokes. */
             const bool valid=imu_command==2u || (imu_axes!=0u && comp_imu_screen_axes_valid(imu_axes));
             imu_reply=safe && valid && comp_v11_product_apply_imu_axes(&companion_app,imu_axes)?1u:2u;
+            }
         }
         if(imu_reply && pairing_safe && !panel_debug.dumping) {
             char line[128];

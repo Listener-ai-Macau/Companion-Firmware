@@ -132,6 +132,7 @@ def main() -> int:
                         help='DEV capture-scoped thread/IRQ/WFI-envelope wall ledger; not physical CPU duty or current qualification')
     parser.add_argument('--cpu-duty-observer', action='store_true',
                         help='Compact opt-in RTC wall/sleep-gated TIM2 one-second CPU busy upper bound; original WFI retained, no DWT/stage/cache/IRQ tracing')
+    parser.add_argument('--imu-raw-uart',action='store_true',help='Engineering only: finite UART raw IMU capture, absent from normal build')
     parser.add_argument('--reclaim-timing-profile', action='store_true', help='DEV only: bounded consume-scoped NOR busy/poll/program timing; default absent, no persistent logging')
     parser.add_argument('--verbose-ble-diagnostics', action='store_true', help='DEV only: long UART BLE transport/hash/residence transcripts; default compact link/failure/state output and product metrics remain')
     parser.add_argument('--codec-phase-profile', action='store_true', help='Bounded recording Opus wall-phase observation; no output while capturing')
@@ -514,6 +515,7 @@ def main() -> int:
                  f'-DCOMPANION_WBA_ACL_READINESS_PROFILE={int(args.acl_readiness_profile)}',
                  f'-DCOMPANION_WBA_CPU_RESIDENCE_PROFILE={int(args.cpu_residence_profile)}',
                  f'-DCOMPANION_WBA_CPU_DUTY_OBSERVER={int(args.cpu_duty_observer)}',
+                 f'-DCOMPANION_WBA_IMU_RAW_UART={int(args.imu_raw_uart)}',
                  f'-DCOMPANION_WBA_RECLAIM_TIMING={int(args.reclaim_timing_profile)}',
                  f'-DCOMPANION_WBA_VERBOSE_BLE_DIAGNOSTICS={int(args.verbose_ble_diagnostics)}',
                  '-DCOMPANION_FINE_DURATION_CLOCK=1',
@@ -609,6 +611,7 @@ def main() -> int:
             sources.append(PLATFORM / 'dual_mic_capture.c')
         result['diag_flash_logging_enabled']=args.diag_flash_log
         result['cpu_duty_observer_enabled']=args.cpu_duty_observer
+        result['imu_raw_uart_enabled']=args.imu_raw_uart
         result['reclaim_timing_profile_enabled']=args.reclaim_timing_profile
         result['verbose_ble_diagnostics_enabled']=args.verbose_ble_diagnostics
         if args.cpu_duty_observer:
