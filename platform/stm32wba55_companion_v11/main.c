@@ -331,6 +331,9 @@ static void panel_debug_pins(void)
 
 static void panel_debug_service(panel_debug_uart_t *d,comp_v11_diag_panel_command_t command)
 {
+    /* No disconnected-screen/debug traversal for an empty UART turn. Sound
+     * requests and their pending completion still use the original path. */
+    if(!COMPANION_WBA_SCREEN_ENABLED && command==COMP_V11_DIAG_PANEL_NONE && !d->sound_reply)return;
     uint32_t tick=HAL_GetTick();
     bool service_safe=diagnostic_output_safe(true);
     bool stable=service_safe && diagnostic_output_safe(false) &&
@@ -355,7 +358,8 @@ static void panel_debug_service(panel_debug_uart_t *d,comp_v11_diag_panel_comman
             "SOUND1 COMPLETE\r\n":"SOUND1 FAILED\r\n";
         d->sound_reply=0u;comp_v11_hal_log(reply);
         comp_v11_hal_speaker_diagnostic_report(&companion_v11);
-        panel_debug_status();return;
+        if(COMPANION_WBA_SCREEN_ENABLED)panel_debug_status();
+        return;
     }
     if(!COMPANION_WBA_SCREEN_ENABLED)return;
     if(command!=COMP_V11_DIAG_PANEL_NONE) {
