@@ -1834,7 +1834,11 @@ void comp_v11_product_app_poll(comp_v11_product_app_t *app)
     (void)previous_chat_state;
 #endif
     capture_phase_duration(app,phase_started,&app->max_capture_runtime_ms);
-    if(board->microphone.running)(void)capture_progress(app,23u);
+    /* With no display, presenter/render below perform no I/O. The final
+     * capture checkpoint still follows runtime and idle-peripheral policy;
+     * do not traverse the recorder again around each compiled-out service. */
+    if(COMPANION_WBA_SCREEN_ENABLED && board->microphone.running)
+        (void)capture_progress(app,23u);
     phase_started=HAL_GetTick();
 #if defined(COMPANION_WBA_BLE_LINKED) && defined(__arm__)
     uint8_t wall_presenter=comp_v11_ota_gatt_wall_context(COMP_OTA_WALL_PRODUCT_PRESENTER);
@@ -1855,7 +1859,8 @@ void comp_v11_product_app_poll(comp_v11_product_app_t *app)
     (void)comp_v11_ota_gatt_wall_context(wall_presenter);
 #endif
     capture_phase_duration(app,phase_started,&app->max_capture_presenter_ms);
-    if(board->microphone.running)(void)capture_progress(app,24u);
+    if(COMPANION_WBA_SCREEN_ENABLED && board->microphone.running)
+        (void)capture_progress(app,24u);
     phase_started=HAL_GetTick();
 #if COMP_V11_PANEL_SOFTWARE_SPI && COMP_V11_PANEL_STARTUP_READBACK
     /* Capture a stable, completed full frame before the next renderer submit.
@@ -1931,7 +1936,8 @@ void comp_v11_product_app_poll(comp_v11_product_app_t *app)
     (void)comp_v11_ota_gatt_wall_context(wall_render);
 #endif
     capture_phase_duration(app,phase_started,&app->max_capture_render_ms);
-    if(board->microphone.running)(void)capture_progress(app,26u);
+    if(COMPANION_WBA_SCREEN_ENABLED && board->microphone.running)
+        (void)capture_progress(app,26u);
     /* The visible low-power product state has a real peripheral effect even
      * while CubeWBA STOP remains disabled: gyro off, accel 12.5 Hz low-power.
      * Any active audio or panel transaction makes the board API defer entry. */

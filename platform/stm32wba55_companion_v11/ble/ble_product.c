@@ -1367,6 +1367,8 @@ static void event(const companion_gatt_event_t *e,void *context)
         size_t n=comp_v11_product_input_request(product,e->payload,e->payload_len,
             comp_v11_update_product_busy()||!link_ready,HAL_GetTick(),response);
         if(!n){++product_link.rejected_writes;return;}
+        if(e->payload_len>=7u&&e->payload[5]==1u&&response[5]==0u&&response[6]==COMP_INPUT_POINTER)
+            pointer_fusion.active=false;
         input_client=true;
         (void)companion_gatt_stm32wb_set_read_value(COMPANION_GATT_CHAR_SETTINGS,response,(uint16_t)n);
         if(product_link.subscribed[COMPANION_GATT_CHAR_SETTINGS])
@@ -1581,12 +1583,12 @@ static void pointer_notify(void)
     const comp_imu_sample_t *sample=&product->board->imu_sample;
     if(imu->state!=COMP_IMU_READY||imu->idle_accel_only||now-sample->timestamp_ms>100u||
        sample->timestamp_ms==pointer_sample_ms)return;
-    comp_imu_sample_t fused;
+    comp_imu_fused_sample_t fused;
     if(!comp_imu_fusion_update(&pointer_fusion,sample,&fused))return;
     uint8_t packet[32];
     if(++pointer_sequence==0u)++pointer_sequence;
-    comp_imu_pointer_packet(&fused,pointer_sequence,
-        (product->input.flags&COMP_INPUT_HELD)!=0u,(uint8_t)product->input.flick_sample_ms,true,packet);
+    comp_imu_pointer_fused_packet(&fused,pointer_sequence,
+        (product->input.flags&COMP_INPUT_HELD)!=0u,(uint8_t)product->input.flick_sample_ms,packet);
     pointer_sample_ms=sample->timestamp_ms;
     /* One current sample, no retry queue: failed delivery is superseded by
      * the next sample, with the original sensor timestamp and button level. */

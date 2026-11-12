@@ -5,6 +5,31 @@
 
 static bool gate_closed;
 static unsigned gate_calls,drain_calls,finish_calls;
+static unsigned successor_calls;
+static comp_segment_result_t invalid_successor(void *context,bool take,
+    const comp_segment_entry_t **entry,comp_segment_audio_t **writer)
+{
+    (void)context;(void)take;*entry=NULL;*writer=NULL;
+    ++successor_calls;return COMP_SEG_CORRUPT;
+}
+static bool empty_poll_and_boundary(void)
+{
+    fixture_t *f=&fixture;CHECK(initialize_mode(f,true,0u));
+    comp_cont_recording_t *r=&f->recorder;
+    successor_calls=0u;r->config.next=invalid_successor;
+    /* No samples can cross into a successor during these idle calls. */
+    CHECK(poll_many(f,100u));CHECK(!successor_calls && r->state==COMP_CONT_RUNNING);
+    int16_t pcm[160];pcm_block(0u,pcm);CHECK(comp_cont_recording_pcm(r,pcm,160u));
+    CHECK(comp_cont_recording_poll(r)==COMP_CONT_FAULT);
+    CHECK(successor_calls==1u && r->failure==COMP_SEG_CORRUPT && !r->codec.frames_encoded);
+    /* A staged half at the last packet still needs the late/full decision,
+     * even when no further PCM is queued. */
+    CHECK(initialize_mode(f,true,0u));r=&f->recorder;
+    r->codec.frames_encoded=r->active_frame_limit-1u;r->codec.pcm_fill=160u;
+    r->config.next=invalid_successor;successor_calls=0u;
+    CHECK(comp_cont_recording_poll(r)==COMP_CONT_FAULT && successor_calls==1u);
+    return true;
+}
 static bool admission(void *context,bool active,uint8_t queued)
 {
     fixture_t *f=context;
@@ -71,6 +96,7 @@ static bool run_case(unsigned blocks,unsigned mode,uint8_t timeline,bool gated,
 
 int main(void)
 {
+    if(!empty_poll_and_boundary())return 1;
     static uint8_t expected[MAX_RAW],actual[MAX_RAW];unsigned cases=0u;
     const unsigned specs[][3]={{2u,0u,0u},{4u,0u,3u},{2u,1u,0u},
         {4u,1u,3u},{1u,1u,0u},{1u,1u,3u},{2u,1u,3u},{2u,2u,3u},{4u,2u,3u}};

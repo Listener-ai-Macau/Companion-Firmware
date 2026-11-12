@@ -1,6 +1,7 @@
 #ifndef COMP_IMU_POINTER_WIRE_H
 #define COMP_IMU_POINTER_WIRE_H
 #include "lsm6dso.h"
+#include "imu_fusion.h"
 #include "companion_crc32.h"
 #include <string.h>
 
@@ -12,18 +13,24 @@ static inline void comp_imu_pointer_put16(uint8_t *p,int16_t v)
 {p[0]=(uint8_t)v;p[1]=(uint8_t)((uint16_t)v>>8u);}
 static inline void comp_imu_pointer_put32(uint8_t *p,uint32_t v)
 {for(unsigned i=0;i<4u;++i)p[i]=(uint8_t)(v>>(8u*i));}
-static inline void comp_imu_pointer_packet(const comp_imu_sample_t *s,uint32_t sequence,
-                                         bool held,uint8_t tap_serial,bool fused,uint8_t packet[32])
+static inline void comp_imu_pointer_pack(uint32_t timestamp,uint32_t sequence,bool held,uint8_t tap_serial,
+    uint8_t schema,bool ready,const int16_t acceleration[3],const int32_t gyro[3],uint8_t packet[32])
 {
-    memcpy(packet,"CIM1",4u);packet[4]=fused?2u:1u;packet[5]=3u;packet[6]=held?1u:0u;packet[7]=tap_serial;
+    memcpy(packet,"CIM1",4u);packet[4]=schema;packet[5]=3u;packet[6]=(held?1u:0u)|(ready?2u:0u);packet[7]=tap_serial;
     comp_imu_pointer_put32(packet+8u,sequence);
-    comp_imu_pointer_put32(packet+12u,s->timestamp_ms);
+    comp_imu_pointer_put32(packet+12u,timestamp);
     for(unsigned i=0;i<3u;++i) {
-        comp_imu_pointer_put16(packet+16u+2u*i,s->accel_mg[i]);
-        int32_t rate=s->gyro_mdps[i]/10;
+        comp_imu_pointer_put16(packet+16u+2u*i,acceleration[i]);
+        int32_t rate=gyro[i]/10;
         if(rate>32767)rate=32767;else if(rate< -32768)rate= -32768;
         comp_imu_pointer_put16(packet+22u+2u*i,(int16_t)rate);
     }
     comp_imu_pointer_put32(packet+28u,companion_crc32(0u,packet,28u));
 }
+static inline void comp_imu_pointer_packet(const comp_imu_sample_t *s,uint32_t sequence,
+    bool held,uint8_t tap_serial,bool fused,uint8_t packet[32])
+{comp_imu_pointer_pack(s->timestamp_ms,sequence,held,tap_serial,fused?2u:1u,false,s->accel_mg,s->gyro_mdps,packet);}
+static inline void comp_imu_pointer_fused_packet(const comp_imu_fused_sample_t *s,uint32_t sequence,
+    bool held,uint8_t tap_serial,uint8_t packet[32])
+{comp_imu_pointer_pack(s->timestamp_ms,sequence,held,tap_serial,3u,s->ready,s->gravity_q14,s->gyro_mdps,packet);}
 #endif

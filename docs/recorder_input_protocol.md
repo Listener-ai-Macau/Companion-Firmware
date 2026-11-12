@@ -64,12 +64,13 @@ Pointer mode alone uses104Hz gyro/417Hz hardware-tap accel, polled near100Hz.
 It reuses upstream Fusion AHRS/bias on the MCU at61.44MHz and publishes each
 fresh sample on the same encrypted4001 subscription. Recorder gyro remains52Hz.
 The existing bulk interval hint is shared and restored on exit. Legacy9001 remains the1Hz diagnostic interface. CIM1 is32 bytes:
-magic0..3, schema1(raw) or2(fused) at4, mode3 at5, held bit0 at6,
+magic0..3, schema1(raw),2(legacy fused) or3(device calibrated) at4, mode3 at5, held bit0 and schema3 calibrated bit1 at6,
 mod256 hardware-double-tap serial at7, u32 sequence at8,
 u32 original sensor milliseconds at12, three i16 acceleration mg at16, three i16
 angular rates in0.01deg/s at22, IEEE CRC32 at28. The peer UID/epoch are already
 validated by the CIN1 handshake. Schema2 substitutes fused gravity in mg for
 raw acceleration and bias-corrected gyro rates; hosts must not fuse it again.
+Schema3 sends unit gravity in signed Q14, corrected gyro and an explicit device-ready bit; hosts wait for the measured stationary interval and must not learn a second fixed bias. It retains the same32B size.
 The first tap serial establishes a baseline; advance1 means one click. Repeats,
 paused/stale events, held-button taps and multi-event loss are never replayed. No buffered old samples are replayed after loss.
 Disconnect returns mode0 and the existing low-power policy. Clients must stop

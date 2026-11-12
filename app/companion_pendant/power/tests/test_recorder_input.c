@@ -88,6 +88,10 @@ int main(void)
     printf("CIM2_GOLDEN ");for(unsigned i=0;i<32u;++i)printf("%02x",packet[i]);puts("");
     comp_imu_pointer_packet(&sample,7u,true,0u,false,packet);
     printf("CIM1_GOLDEN ");for(unsigned i=0;i<32u;++i)printf("%02x",packet[i]);puts("");
+    comp_imu_fused_sample_t fused={.gravity_q14={0,8192,14189},.gyro_mdps={8750,-250000,500000},.timestamp_ms=0xfffffff0u,.ready=true};
+    comp_imu_pointer_fused_packet(&fused,7u,true,255u,packet);
+    assert(packet[4]==3u&&packet[6]==3u);
+    printf("CIM3_GOLDEN ");for(unsigned i=0;i<32u;++i)printf("%02x",packet[i]);puts("");
     puts("PASS pointer mode: keys/motion never start MIC; disconnect restores recorder; timestamp/centidegree precision and bounded saturation");
     puts("SOFTWARE_ONLY: real enclosure thresholds, wake, audio first-word and Mac insertion not qualified");
     return 0;

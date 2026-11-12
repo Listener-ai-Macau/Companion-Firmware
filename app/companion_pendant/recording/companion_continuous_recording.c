@@ -527,6 +527,11 @@ static void work(comp_cont_recording_t *r)
     }
     if (r->state==COMP_CONT_RUNNING||r->state==COMP_CONT_PAUSE_PENDING) {
         uint32_t frames=r->codec.frames_encoded-r->active_first_frame;
+        /* Validate the immutable successor when there is PCM to admit or
+         * the boundary is within one packet (including a staged half).
+         * An empty poll below that horizon cannot consume the successor.
+         * Background preparation/consumer I/O still advances below. */
+        if(r->ring_count || frames+1u>=r->active_frame_limit) {
         const comp_segment_entry_t *e;comp_segment_audio_t *writer;
         comp_segment_result_t next=next_extent(r,false,&e,&writer);
         if (next!=COMP_SEG_OK && next!=COMP_SEG_PENDING && next!=COMP_SEG_FULL) {
@@ -542,6 +547,7 @@ static void work(comp_cont_recording_t *r)
                                  r->codec.pcm_fill+319u)/320u;
         if (next==COMP_SEG_PENDING && frames+queued_packets>=r->active_frame_limit) {
             (void)request_stop(r,COMP_CONT_STOP_PREPARE_DELAYED);return;
+        }
         }
         if (r->stage_length>PACKET_OFFSET) {(void)program_stage(r,false);return;}
         if (r->ring_count && !(frames>=r->active_frame_limit && r->closing_pending)) {(void)encode_one(r);return;}
