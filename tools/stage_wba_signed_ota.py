@@ -1,8 +1,8 @@
-"""Transport one complete signed CUP to resident Boot over the fixed V3.
+"""Signed maintenance transport over the fixed V3; no operation on import.
 
-This is maintenance transport for an application unable to accept OTA BEGIN.
-It never writes internal Flash, UI, a current receipt, bonds, or audio. The
-resident Boot alone validates and installs the package. No operation on import.
+Default mode stages a CUP for resident Boot. Explicit development-in-place
+services a signed App/current receipt with unchanged UI and no audio access;
+Boot is retained unless explicit lost-key replacement was requested.
 """
 from __future__ import annotations
 import argparse
@@ -88,12 +88,11 @@ def main():
     ap.add_argument('--execute',action='store_true',help='Stage full signed package, publish pending, then let original Boot install')
     ap.add_argument('--inspect-device',action='store_true',help='Read only metadata through fixed V3, then reset original application')
     ap.add_argument('--replace-development-boot',type=Path,help='Explicit lost-development-key recovery: matched Boot build directory; changes board trust, not ordinary OTA')
-    ap.add_argument('--development-in-place',action='store_true',help='Explicit authorized development service: unchanged UI, signed App/Boot/current record; no recording arena needed')
+    ap.add_argument('--development-in-place',action='store_true',help='Development service: signed App/current record with unchanged UI; retain resident Boot unless explicitly replacing its key')
     ap.add_argument('--previous-public-key',type=Path,help='Original installed raw public key, required with development Boot replacement')
     a=ap.parse_args();out=a.output.resolve();out.mkdir(parents=True,exist_ok=False)
     package=a.package.read_bytes();build=json.loads((a.build/'result.json').read_bytes())
     xy=bytes(int(x,16) for x in re.findall(r'0x([0-9a-fA-F]{2})',(a.build/'wba_update_trust_anchor.h').read_text()))
-    require(not a.development_in_place or a.replace_development_boot,'In-place service requires explicit development Boot replacement')
     replacement=None;replacement_report=None;previous_xy=None
     if a.replace_development_boot:
         require(a.previous_public_key is not None,'Lost development key recovery must identify the old trust anchor')
@@ -106,9 +105,10 @@ def main():
                 replacement_report['firmware_version']==a.current_version and
                 8<=len(replacement)<=TARGET.boot_bytes and xy in replacement,
                 'Replacement Boot is not bound to this exact development package/geometry')
+    if replacement or a.development_in_place:
         manifest=json.loads((a.package.parent/'ota_manifest.json').read_bytes())
-        require(manifest.get('dev_only') is True,'This recovery is only for the explicit development signing key')
-    info=verify_cup(package,xy,TARGET,sha(xy)) if replacement else verify_cup(package,xy,TARGET)
+        require(manifest.get('dev_only') is True,'This service is only for the explicit development signing key')
+    info=verify_cup(package,xy,TARGET,sha(xy)) if replacement or a.development_in_place else verify_cup(package,xy,TARGET)
     static=info['staticBytes'];data_base=static+131072
     require(static==950272 and info['ui']==85 and info['firmware']==build['firmware_version'] and info['firmware']>a.current_version,'Only current matched UI85 maintenance update is supported')
     require(sha(package[176:176+info['appBytes']])==build['bin_sha256'],'CUP does not contain the compiled application')
@@ -150,7 +150,7 @@ def main():
             state['catalog']=json.loads(cp.stdout)
             if a.development_in_place:
                 from wba_development_in_place import install
-                install(probe,out,package,info,system,boot,replacement,previous_xy,a.current_version,a.execute,state,save)
+                install(probe,out,package,info,system,boot,replacement,previous_xy or xy,a.current_version,a.execute,state,save)
             else:
                 base=free_staging_base(state['catalog']['entries'],data_base,claim)
                 state['tailBase']=base;state['stagingPolicy']='EXISTING_UNOWNED_GAP_NO_AUDIO_MOVE'

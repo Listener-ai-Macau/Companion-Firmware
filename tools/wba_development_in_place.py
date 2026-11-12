@@ -1,4 +1,4 @@
-"""Explicit lost-development-key service install when no CUP staging gap fits.
+"""Explicit signed development service when no CUP staging gap fits.
 
 Uses the existing signed CUP/current-record format. No NOR payload allocation,
 recording move, audio read, format or new firmware recovery mechanism.
@@ -29,7 +29,7 @@ def install(probe,out,package,info,system,old_boot,new_boot,previous_xy,current_
     old_app=probe.read(TARGET.app_address,extent,'original-app-pages.bin')
     matched=[]
     for bank,h,n in headers:
-        try:r=verify_cup(h+old_app[:n]+ui,previous_xy,TARGET)
+        try:r=verify_cup(h+old_app[:n]+ui,previous_xy,TARGET,sha(previous_xy))
         except (ValueError,InvalidSignature):continue
         if r['firmware']==current_version:matched.append(bank)
     require(bool(matched),'Actual old App/UI do not match their established signed receipt')
@@ -43,7 +43,8 @@ def install(probe,out,package,info,system,old_boot,new_boot,previous_xy,current_
     save(out/'result.json',state)
     if not execute:return
     app_path=out/'signed-new-app.bin';app_path.write_bytes(app)
-    boot_path=out/'signed-new-boot.bin';boot_path.write_bytes(new_boot)
+    boot_path=out/'signed-new-boot.bin'
+    if new_boot is not None:boot_path.write_bytes(new_boot)
     current_path=out/'signed-current-sector.bin';current_path.write_bytes(sector)
     old_sector=out/'original-current-sector.bin';old_sector.write_bytes(system[target_bank:target_bank+4096])
     state['writesStarted']=True;save(out/'result.json',state)
@@ -51,20 +52,24 @@ def install(probe,out,package,info,system,old_boot,new_boot,previous_xy,current_
     try:
         probe.checked(probe.api.downloadFile(str(app_path),TARGET.app_address,0,1,None),'authorized development App replacement')
         require(probe.read(TARGET.app_address,len(app),'new-app-readback.bin')==app,'New signed App readback differs')
-        probe.checked(probe.api.downloadFile(str(boot_path),TARGET.flash_base,0,1,None),'authorized development Boot trust replacement')
-        require(probe.read(TARGET.flash_base,TARGET.boot_bytes,'new-boot-readback.bin')==new_boot.ljust(TARGET.boot_bytes,b'\xff'),'New Boot readback differs')
+        if new_boot is not None:
+            probe.checked(probe.api.downloadFile(str(boot_path),TARGET.flash_base,0,1,None),'authorized development Boot trust replacement')
+            require(probe.read(TARGET.flash_base,TARGET.boot_bytes,'new-boot-readback.bin')==new_boot.ljust(TARGET.boot_bytes,b'\xff'),'New Boot readback differs')
+        else:
+            require(probe.read(TARGET.flash_base,TARGET.boot_bytes,'resident-boot-retained.bin')==old_boot,'Resident Boot changed during App-only service')
         published=True
         probe.checked(probe.api.downloadFile(str(current_path),nor+static+target_bank,0,1,None),'publish exact signed current record')
         expected=bytearray(system);expected[target_bank:target_bank+4096]=sector
         require(external_read(probe,nor+static,len(system),'private-system-after-in-place.bin')==expected,'Unrelated system/recording/bond metadata changed')
-        state.update(inPlaceCompleted=True,boardTrustChanged=True,bootWrites=1,hostInternalFlashWrites=2,
+        state.update(inPlaceCompleted=True,boardTrustChanged=new_boot is not None,bootWrites=int(new_boot is not None),hostInternalFlashWrites=1+int(new_boot is not None),
             currentReceiptPublished=True,pairingAndRecordingMetadataPreserved=True,result='DEVELOPMENT_IN_PLACE_SIGNED_IMAGES_VERIFIED_BEFORE_RESET')
         save(out/'result.json',state)
     except Exception:
         # Restore exact original pages, not a synthesized rescue firmware.
         if published:probe.checked(probe.api.downloadFile(str(old_sector),nor+static+target_bank,0,1,None),'restore original current record')
         probe.checked(probe.api.downloadFile(str(out/'original-app-pages.bin'),TARGET.app_address,0,1,None),'restore original App pages')
-        probe.checked(probe.api.downloadFile(str(out/'resident-boot-before.bin'),TARGET.flash_base,0,1,None),'restore original Boot')
+        if new_boot is not None:
+            probe.checked(probe.api.downloadFile(str(out/'resident-boot-before.bin'),TARGET.flash_base,0,1,None),'restore original Boot')
         require(probe.read(TARGET.flash_base,TARGET.boot_bytes,'restored-boot-readback.bin')==old_boot,'Old Boot rollback differs')
         require(probe.read(TARGET.app_address,extent,'restored-app-readback.bin')==old_app,'Old App rollback differs')
         state['originalImagesRestored']=True;save(out/'result.json',state)
