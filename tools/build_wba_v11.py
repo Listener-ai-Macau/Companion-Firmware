@@ -393,8 +393,12 @@ def main() -> int:
                             'Real-board full-chain accuracy acceptance and blocking owner handoff']}
     try:
         hardware=args.hardware_source_root.resolve()
-        if not hardware.is_dir():raise RuntimeError('Hardware source inputs are unavailable: '+str(hardware))
-        result['hardware_source_sha256']={p.name:digest(p) for p in sorted(hardware.iterdir()) if p.is_file()}
+        # Schematics are provenance documents, not compiler inputs. Archived
+        # documents must not prevent rebuilding unchanged board pin/power code.
+        # Keep their absence explicit; this never qualifies a hardware change.
+        result['hardware_source_sha256']={p.name:digest(p) for p in sorted(hardware.iterdir()) if p.is_file()} if hardware.is_dir() else {}
+        result['hardware_documents']={'path':str(hardware),'available':hardware.is_dir(),
+            'scope':'READ_ONLY_PROVENANCE_NOT_COMPILER_INPUT; no new hardware qualification'}
         result['power_profile']=write_power_profile(out,args.power_profile)
         audio_identity_header=write_audio_profile_identity(out,audio_profile)
         result['recording_audio_profile']={**audio_profile,'containerSchema':5 if audio_profile['enabled'] else None,
