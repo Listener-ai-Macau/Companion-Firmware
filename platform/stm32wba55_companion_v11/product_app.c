@@ -1522,6 +1522,25 @@ static void panel_key_observation_poll(comp_v11_product_app_t *app,uint32_t now)
     }
 }
 
+static bool product_service_due(const comp_v11_product_app_t *app,uint32_t now)
+{
+    /* Pointer sensors need a10ms poll; other quiet headless services do not
+     * need the whole product traversal on every1ms SysTick/radio wake.
+     * Keep BLE serviced on every turn, and dispatch physical/producer/storage
+     * work immediately. Recording and the display retain their old cadence. */
+    if(COMPANION_WBA_SCREEN_ENABLED || app->input.mode!=COMP_INPUT_POINTER ||
+       (int32_t)(now-app->pointer_service_due_ms)>=0)return true;
+    const comp_v11_hal_t *b=app->board;
+    return b->microphone.running || b->playback_active ||
+        b->wake_events.pending || b->wake_events.key_pending ||
+        app->runtime.prepare_pending || app->runtime.start_pending ||
+        app->runtime.command_pending || app->runtime.stop_pending || app->runtime.capture_active ||
+        !app->recording.ready || comp_wba_recording_pipeline_storage_busy(&app->recording.pipeline)
+#ifdef COMPANION_WBA_BLE_LINKED
+        || comp_v11_ota_gatt_foreground_pending() || comp_v11_ble_foreground_pending()
+#endif
+        ;
+}
 void comp_v11_product_app_poll(comp_v11_product_app_t *app)
 {
 #if COMPANION_WBA_DUAL_PAIR_CAPTURE
@@ -1537,6 +1556,13 @@ void comp_v11_product_app_poll(comp_v11_product_app_t *app)
     comp_runtime_frame_t frame;
 #endif
     uint32_t now=HAL_GetTick();
+    if(!product_service_due(app,now)) {
+#ifdef COMPANION_WBA_BLE_LINKED
+        comp_v11_ble_poll();
+#endif
+        return;
+    }
+    app->pointer_service_due_ms=now+5u;
     if(app->pet_profile.writing)comp_pet_profile_expire(&app->pet_profile,now);
     comp_v11_hal_t *board=app->board;
     bool was_sleeping=COMPANION_WBA_SCREEN_ENABLED && app->runtime.surface==COMP_SCREEN_SURFACE_LOW_POWER;

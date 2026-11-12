@@ -74,6 +74,7 @@ typedef struct {
     /* Maximum unserviced capture interval, including each indivisible task.
      * Resource reads may yield to audio without changing rendered pixels. */
     uint32_t capture_started_ms, capture_cycle_started_ms, max_capture_foreground_ms, capture_deadline_faults;
+    uint32_t pointer_service_due_ms;
     uint32_t max_capture_hal_ms,max_capture_recorder_ms,max_capture_ble_ms;
     uint32_t max_capture_runtime_ms,max_capture_presenter_ms,max_capture_render_ms;
     bool assets_ready, settings_ready, recording_ready;
