@@ -36,7 +36,9 @@ def uart(path, seconds=12, query=True):
     s.dtr=False;s.rts=False;s.port='COM9';raw=bytearray()
     try:
         s.open()
-        if query:s.write(b'?');s.flush()
+        # Stop1 RX wake may consume the first byte. A leading line boundary
+        # wakes the existing console before the idempotent read-only query.
+        if query:s.write(b'\n?\n');s.flush()
         until=time.monotonic()+seconds
         while time.monotonic()<until:raw.extend(s.read(8192))
     finally:s.close();path.write_bytes(raw)
