@@ -508,6 +508,21 @@ static void ota_gatt_poll_owned(void)
         queue_at((head+count)%queue_depth)->kind!=1u))return;
     for(unsigned i=0u;i<count;++i)
         if((*queue_at((head+i)%queue_depth)).kind!=1u)return;
+    /* With no transfer, command or partial write, the published idle/terminal
+     * transfer fields are unchanged. Keep controller metadata current, without
+     * rebuilding the whole status on every foreground turn. ACI rejection,
+     * connection/CCCD and asynchronous product transitions all invalidate it.
+     * RECEIVING always keeps the original durable-credit path below. */
+    if(!count&&!assembling&&!geometry_pending&&observation.valid&&
+       observation.length==COMP_V11_OTA_STATUS_BYTES&&
+       observation.status[5]!=DENZIC_OTA_V1_STATE_RECEIVING) {
+#ifdef COMPANION_WBA_BLE_LINKED
+        uint8_t budget[COMP_V11_LINK_BUDGET_BYTES];comp_v11_ble_link_budget(budget);
+        if(!memcmp(observation.status+44u,budget,sizeof(budget)))return;
+#else
+        return;
+#endif
+    }
     size_t size=ports.status(ports.context,status,sizeof(status));
     if(size==24u) {
         if(geometry_pending && !begin_queue_geometry(status)) {
@@ -651,3 +666,5 @@ void comp_v11_ota_gatt_identity(const uint8_t proof[COMP_V11_OTA_IDENTITY_BYTES]
         memcpy(receipt,proof,COMP_V11_OTA_IDENTITY_BYTES);receipt_length=COMP_V11_OTA_IDENTITY_BYTES;receipt_pending=true;
     }
 }
+void comp_v11_ota_gatt_status_changed(void)
+{observation.valid=false;}

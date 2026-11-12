@@ -4,6 +4,15 @@
 #include "clock_target.h"
 #include "cpu_duty_bound.h"
 #include "cpu_counter_clock.h"
+#include <stdio.h>
+extern bool comp_v11_hal_debug_write(const char *text);
+/* Optional foreground-only inclusive function envelopes. Reuse the owned
+ * Run-only counter; no new timer, IRQ hook, heap or retail-build storage.
+ * Nested rows overlap and are never summed as exclusive CPU time. */
+typedef struct {uint64_t ticks;uint32_t calls,max_ticks;} duty_stage_t;
+static duty_stage_t function_stages[COMP_DUTY_STAGE_COUNT];
+static bool function_report_pending;
+_Static_assert(sizeof(function_stages)==208u,"thirteen bounded diagnostic envelopes");
 
 /* RM0493 12.8.32: TIM2SMEN=0 gates both TIM2 clocks in Sleep/Stop, while
  * TIM2EN retains them in Run. Count Run time, including IRQs and this code,
@@ -77,6 +86,36 @@ static void timer_release(void)
     }else reject(CPU_TIMER_CONFIG);
     observer.timer_owned=false;
 }
+comp_cpu_duty_span_t comp_cpu_duty_span_begin(void)
+{
+    if(!observer.active || !observer.timer_owned || __get_IPSR())return (comp_cpu_duty_span_t){0};
+    return (comp_cpu_duty_span_t){TIM2->CNT,observer.token};
+}
+void comp_cpu_duty_span_end(unsigned stage,comp_cpu_duty_span_t span)
+{
+    if(!span.token || !observer.active || !observer.timer_owned || __get_IPSR() ||
+       span.token!=observer.token || stage>=COMP_DUTY_STAGE_COUNT)return;
+    uint32_t elapsed=TIM2->CNT-span.raw;duty_stage_t *s=&function_stages[stage];
+    s->ticks+=elapsed;++s->calls;if(elapsed>s->max_ticks)s->max_ticks=elapsed;
+}
+static uint64_t function_us(uint64_t ticks)
+{return observer.clock.timer_hz?ticks*observer.clock.divider*1000000u/observer.clock.timer_hz:0u;}
+void comp_cpu_duty_emit(void)
+{
+    if(observer.active || !function_report_pending || __get_IPSR())return;
+    function_report_pending=false;char line[224];
+    (void)snprintf(line,sizeof(line),"CPU2 SCOPE token=%lu hz=%lu wall_us=%lu active_us=%lu invalid=%lu windows=%lu irq_included=1 nested_rows_overlap=1\r\n",
+        (unsigned long)observer.token,(unsigned long)observer.core_hz,(unsigned long)observer.wall_us,
+        (unsigned long)observer.last_active_us,(unsigned long)observer.duty.invalid,(unsigned long)observer.duty.windows);
+    (void)comp_v11_hal_debug_write(line);
+    for(unsigned i=0u;i<COMP_DUTY_STAGE_COUNT;++i) {
+        const duty_stage_t *s=&function_stages[i];uint64_t us=function_us(s->ticks);
+        (void)snprintf(line,sizeof(line),"CPU2 FUNC stage=%u calls=%lu total_us_hi=%lu total_us_lo=%lu max_us=%lu\r\n",
+            i,(unsigned long)s->calls,(unsigned long)(us>>32u),(unsigned long)(uint32_t)us,
+            (unsigned long)function_us(s->max_ticks));
+        (void)comp_v11_hal_debug_write(line);
+    }
+}
 bool comp_cpu_duty_counter_owned(void){return observer.timer_owned;}
 void comp_cpu_duty_begin(uint32_t token,bool recording)
 {
@@ -88,6 +127,7 @@ void comp_cpu_duty_begin(uint32_t token,bool recording)
     }
     uint32_t mask=__get_PRIMASK();__disable_irq();
     memset(&observer,0,sizeof(observer));observer.token=token;
+    memset(function_stages,0,sizeof(function_stages));function_report_pending=false;
     observer.recording=recording;observer.active=true;observer.core_hz=SystemCoreClock;
     if(__HAL_RCC_TIM2_IS_CLK_ENABLED()||NVIC_GetEnableIRQ(TIM2_IRQn)){
         reject(CPU_FOREIGN_TIMER);__set_PRIMASK(mask);return;
@@ -117,7 +157,7 @@ void comp_cpu_duty_end(uint32_t token,bool recording)
 {
     if(!observer.active||observer.recording!=recording||(recording&&observer.token!=token)||__get_IPSR())return;
     uint32_t mask=__get_PRIMASK();__disable_irq();sample();
-    observer.active=false;timer_release();__set_PRIMASK(mask);
+    observer.active=false;timer_release();function_report_pending=true;__set_PRIMASK(mask);
 }
 void comp_cpu_duty_poll(void)
 {

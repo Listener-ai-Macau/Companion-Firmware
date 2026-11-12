@@ -434,7 +434,11 @@ static bool advertising_commands_allowed(void)
     return HAL_GetTick()-product->capture_cycle_started_ms<=2u &&
         comp_v11_microphone_hal_io_window(&product->board->microphone);
 }
+#if COMPANION_WBA_CPU_DUTY_OBSERVER
+static bool foreground_pending_body(void)
+#else
 bool comp_v11_ble_foreground_pending(void)
+#endif
 {
     if(!product || fatal_error)return false;
     /* PauseTask hides pending bits from IsSchedulableTask. One more ordinary
@@ -444,7 +448,8 @@ bool comp_v11_ble_foreground_pending(void)
     if(!stack_writes_allowed())tasks&=~(1u<<CFG_TASK_FLASH_MANAGER);
     /* The SDK checks ALL requested bits, so query one permitted task at a
      * time. No command, notification, Flash access or dispatch in this query. */
-    for(unsigned bit=0u;bit<32u;++bit) {
+    _Static_assert(CFG_TASK_NBR>0 && CFG_TASK_NBR<=32,"configured sequencer bitmap fits");
+    for(unsigned bit=0u;bit<(unsigned)CFG_TASK_NBR;++bit) {
         uint32_t task=1u<<bit;
         if((tasks&task) && UTIL_SEQ_IsSchedulableTask(task))return true;
     }
@@ -452,6 +457,14 @@ bool comp_v11_ble_foreground_pending(void)
         comp_link_heavy_io_allowed(&product_link) &&
         comp_v11_ble_tx_gate_ready(&notify_gate,HAL_GetTick());
 }
+#if COMPANION_WBA_CPU_DUTY_OBSERVER
+bool comp_v11_ble_foreground_pending(void)
+{
+    comp_cpu_duty_span_t span=comp_cpu_duty_span_begin();
+    bool ready=foreground_pending_body();
+    comp_cpu_duty_span_end(COMP_DUTY_READY,span);return ready;
+}
+#endif
 extern void (*radio_callback)(void);
 extern void (*low_isr_callback)(void);
 extern volatile uint8_t radio_sw_low_isr_is_running_high_prio;
@@ -1566,8 +1579,12 @@ uint32_t comp_v11_ble_transfer_backpressure(void)
 static void input_notify(void)
 {
     if(!input_client||!secured||!product_link.subscribed[COMPANION_GATT_CHAR_SETTINGS])return;
+    /* Compare the two notification signals before serializing/CRC'ing64B.
+     * Events remain sticky until publish succeeds; a changed packet updates
+     * the cache from its actual contents, not this earlier observation. */
+    const uint16_t signals=comp_v11_product_input_signals(product);
+    if(!product->input.events&&input_feedback==(uint8_t)(signals>>8u)&&input_flags==(uint8_t)signals)return;
     uint8_t response[64];comp_v11_product_input_status(product,0u,0u,response);
-    if(!product->input.events&&input_feedback==response[23]&&input_flags==response[7])return;
     if(publish(NULL,COMPANION_GATT_CHAR_SETTINGS,response,sizeof(response))) {
         product->input.events=0u;input_feedback=response[23];input_flags=response[7];
     }
@@ -1584,7 +1601,11 @@ static void pointer_notify(void)
     if(imu->state!=COMP_IMU_READY||imu->idle_accel_only||now-sample->timestamp_ms>100u||
        sample->timestamp_ms==pointer_sample_ms)return;
     comp_imu_fused_sample_t fused;
-    if(!comp_imu_fusion_update(&pointer_fusion,sample,&fused))return;
+    comp_cpu_duty_span_t pointer_span=comp_cpu_duty_span_begin();
+    comp_cpu_duty_span_t fusion_span=comp_cpu_duty_span_begin();
+    bool updated=comp_imu_fusion_update(&pointer_fusion,sample,&fused);
+    comp_cpu_duty_span_end(COMP_DUTY_FUSION,fusion_span);
+    if(!updated){comp_cpu_duty_span_end(COMP_DUTY_POINTER_SEND,pointer_span);return;}
     uint8_t packet[32];
     if(++pointer_sequence==0u)++pointer_sequence;
     comp_imu_pointer_fused_packet(&fused,pointer_sequence,
@@ -1593,8 +1614,13 @@ static void pointer_notify(void)
     /* One current sample, no retry queue: failed delivery is superseded by
      * the next sample, with the original sensor timestamp and button level. */
     (void)publish(NULL,COMPANION_GATT_CHAR_SETTINGS,packet,sizeof(packet));
+    comp_cpu_duty_span_end(COMP_DUTY_POINTER_SEND,pointer_span);
 }
+#if COMPANION_WBA_CPU_DUTY_OBSERVER
+static void ble_poll_body(void)
+#else
 void comp_v11_ble_poll(void)
+#endif
 {
     uint32_t tasks=UTIL_SEQ_DEFAULT;
     bool writes_allowed;
@@ -1604,8 +1630,12 @@ void comp_v11_ble_poll(void)
     writes_allowed=stack_writes_allowed();
     if(!writes_allowed)
         tasks &= ~(1u<<CFG_TASK_FLASH_MANAGER);
+    comp_cpu_duty_span_t nvm_span=comp_cpu_duty_span_begin();
     comp_v11_ble_nvm_poll(HAL_GetTick(),writes_allowed);
+    comp_cpu_duty_span_end(COMP_DUTY_NVM,nvm_span);
+    comp_cpu_duty_span_t seq_span=comp_cpu_duty_span_begin();
     run_foreground_tasks(tasks);
+    comp_cpu_duty_span_end(COMP_DUTY_SEQ,seq_span);
     comp_v11_ble_advertise_poll(HAL_GetTick(),advertising_commands_allowed());
     if(comp_v11_ble_host_ready()) {
         /* Stack initialization is independent of the cooperative media boot.
@@ -1675,7 +1705,9 @@ void comp_v11_ble_poll(void)
             comp_cpu_detail_end(COMP_CPU_STAGE_BLE_LINK,cpu_link,true);
         }
         schedule_sealed_transfer();
+        comp_cpu_duty_span_t update_span=comp_cpu_duty_span_begin();
         comp_v11_update_product_poll();
+        comp_cpu_duty_span_end(COMP_DUTY_UPDATE,update_span);
         comp_power_policy_set_blocker(&product->board->power,COMP_POWER_BLOCKER_RECORDING_TRANSFER,
             product_link.transfer.state==COMP_WBA_RECORDING_TRANSFER_ACTIVE ||
             product_link.transfer.state==COMP_WBA_RECORDING_TRANSFER_BACKPRESSURED);
@@ -1730,3 +1762,11 @@ void comp_v11_ble_poll(void)
     }
     menu_completions(HAL_GetTick());
 }
+#if COMPANION_WBA_CPU_DUTY_OBSERVER
+void comp_v11_ble_poll(void)
+{
+    comp_cpu_duty_span_t span=comp_cpu_duty_span_begin();
+    ble_poll_body();
+    comp_cpu_duty_span_end(COMP_DUTY_BLE,span);
+}
+#endif

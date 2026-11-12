@@ -967,10 +967,12 @@ int main(void)
         uint8_t wall_previous=comp_v11_ota_gatt_wall_context(COMP_OTA_WALL_PRODUCT_OTHER);
 #endif
         comp_cpu_stage_span_t bulk_product=comp_v11_cpu_transfer_stage_begin();
+        comp_cpu_duty_span_t function_product=comp_cpu_duty_span_begin();
 #if COMP_V11_DIAG_FLASH_ENABLED
         comp_v11_diag_flash_heartbeat(&companion_app,HAL_GetTick(),1u);
 #endif
         comp_v11_product_app_poll(&companion_app);
+        comp_cpu_duty_span_end(COMP_DUTY_PRODUCT,function_product);
 #if COMP_V11_DIAG_FLASH_ENABLED
         comp_v11_diag_flash_heartbeat(&companion_app,HAL_GetTick(),2u);
 #endif
@@ -986,6 +988,7 @@ int main(void)
          * queued product request; an inactive/old span cannot own a new token.
          * Preserve all original diagnostic/control guards and work order. */
         comp_cpu_stage_span_t cpu_main_services=comp_cpu_detail_begin();
+        comp_cpu_duty_span_t function_main=comp_cpu_duty_span_begin();
         panel_debug_service(&panel_debug,comp_v11_diag_console_take_panel(&diagnostic));
         bool safe=diagnostic_output_safe(false) && !panel_debug.dumping;
         bool pairing_safe=diagnostic_output_safe(true);
@@ -1150,6 +1153,7 @@ int main(void)
             diagnostic_emit(&diagnostic,reset_flags,boot_route,ble_initialized,COMP_V11_DIAG_PERIODIC,false);
         }
         comp_cpu_detail_end(COMP_CPU_STAGE_MAIN_SERVICES,cpu_main_services,true);
+        comp_cpu_duty_span_end(COMP_DUTY_MAIN,function_main);
         comp_v11_cpu_poll();
         comp_v11_low_power_idle(&companion_app);
     }

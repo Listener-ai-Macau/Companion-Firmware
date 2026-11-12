@@ -556,6 +556,7 @@ static bool imu_transfer(uint8_t reg, uint8_t *rx, const uint8_t *tx, size_t n)
         panel_holds_shared_bus(active_board)) { return false; }
     panel_busy_trace(false);
     spi_owned = true;
+    comp_cpu_duty_span_t span=comp_cpu_duty_span_begin();
     reg = rx != NULL ? (uint8_t)(reg | 0x80u) : reg;
 #if COMP_V11_SHARED_SPI_GPIO
     ok = imu_gpio_transfer(reg, rx, tx, n);
@@ -567,10 +568,12 @@ static bool imu_transfer(uint8_t reg, uint8_t *rx, const uint8_t *tx, size_t n)
     HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0, GPIO_PIN_SET);
     HAL_GPIO_WritePin(GPIOA, GPIO_PIN_11, GPIO_PIN_SET);
     HAL_GPIO_WritePin(GPIOB, GPIO_PIN_15, GPIO_PIN_RESET);
-    ok = transfer(&spi_shared, &reg, NULL, 1, 10) && transfer(&spi_shared, tx, rx, n, 10);
+    const uint32_t timeout=active_board&&active_board->microphone.running?1u:10u;
+    ok = transfer(&spi_shared, &reg, NULL, 1, timeout) && transfer(&spi_shared, tx, rx, n, timeout);
     HAL_GPIO_WritePin(GPIOB, GPIO_PIN_15, GPIO_PIN_SET);
 #endif
     panel_busy_trace(true);
+    comp_cpu_duty_span_end(COMP_DUTY_IMU_GPIO,span);
     spi_owned = false; return ok;
 }
 static bool imu_read(void *p, uint8_t reg, uint8_t *data, size_t n)

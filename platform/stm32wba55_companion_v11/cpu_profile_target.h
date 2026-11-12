@@ -63,6 +63,6 @@ static inline comp_cpu_stage_span_t comp_v11_cpu_transfer_stage_begin(void){retu
 static inline void comp_v11_cpu_transfer_stage_end(unsigned stage,comp_cpu_stage_span_t span){(void)stage;(void)span;}
 static inline void comp_v11_cpu_irq_enter(bool systick_entry){(void)systick_entry;}
 static inline void comp_v11_cpu_irq_exit(void){}
-static inline void comp_v11_cpu_emit(void){}
+static inline void comp_v11_cpu_emit(void){comp_cpu_duty_emit();}
 #endif
 #endif

@@ -129,6 +129,7 @@ comp_capture_feedback_t comp_v11_product_capture_feedback(const comp_v11_product
  * the connected host, has no flash preference, and cannot change mid-press. */
 size_t comp_v11_product_input_request(comp_v11_product_app_t *,const uint8_t *,size_t,
     bool busy,uint32_t now,uint8_t response[64]);
+uint16_t comp_v11_product_input_signals(const comp_v11_product_app_t *);
 void comp_v11_product_input_status(const comp_v11_product_app_t *,uint32_t request,
     uint8_t result,uint8_t response[64]);
 /* OTA owns a durable tail reservation; zero releases it. No implicit loss. */

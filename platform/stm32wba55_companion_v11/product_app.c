@@ -736,21 +736,28 @@ static void recording_input_apply(comp_v11_product_app_t *app,uint16_t events,ui
     comp_input_note(s,events,now);
     if(s->mode==COMP_INPUT_RECORDER&&!(s->flags&COMP_INPUT_HELD))s->flags=0u;
 }
-void comp_v11_product_input_status(const comp_v11_product_app_t *app,uint32_t request,
-    uint8_t result,uint8_t response[64])
+uint16_t comp_v11_product_input_signals(const comp_v11_product_app_t *app)
 {
     const comp_recorder_input_t *s=&app->input;
     const bool updating=(app->board->power.blockers&COMP_POWER_BLOCKER_UPDATE)!=0u;
     const comp_capture_feedback_t feedback=comp_v11_product_capture_feedback(app,updating);
-    memset(response,0,64u);memcpy(response,"CIN1",4u);
-    response[4]=1u;response[5]=result;response[6]=s->mode;
-    response[7]=(uint8_t)((s->flags&COMP_INPUT_HELD?1u:0u)|
+    const uint8_t flags=(uint8_t)((s->flags&COMP_INPUT_HELD?1u:0u)|
         (app->board->microphone.running?2u:0u)|(comp_runtime_recording_owned(&app->runtime)?4u:0u)|
         (feedback.flags&COMP_CAPTURE_MARK_PENDING?8u:0u)|(feedback.flags&COMP_CAPTURE_MARK_CONFIRMED?16u:0u));
+    return (uint16_t)(((uint16_t)feedback.state<<8u)|flags);
+}
+void comp_v11_product_input_status(const comp_v11_product_app_t *app,uint32_t request,
+    uint8_t result,uint8_t response[64])
+{
+    comp_cpu_duty_span_t span=comp_cpu_duty_span_begin();
+    const comp_recorder_input_t *s=&app->input;
+    const uint16_t signals=comp_v11_product_input_signals(app);
+    memset(response,0,64u);memcpy(response,"CIN1",4u);
+    response[4]=1u;response[5]=result;response[6]=s->mode;response[7]=(uint8_t)signals;
     comp_rec_put32(response+8u,request);comp_rec_put32(response+12u,s->sequence);
     comp_rec_put32(response+16u,s->event_ms);
     response[20]=(uint8_t)s->events;response[21]=(uint8_t)(s->events>>8u);
-    response[22]=s->options;response[23]=feedback.state;
+    response[22]=s->options;response[23]=(uint8_t)(signals>>8u);
     comp_rec_put32(response+24u,app->runtime.record_token);
     comp_rec_put64(response+28u,app->recording_session_id);
     comp_rec_put32(response+36u,app->recording.pipeline.engine_bound?
@@ -758,6 +765,7 @@ void comp_v11_product_input_status(const comp_v11_product_app_t *app,uint32_t re
     memcpy(response+40u,app->recording.catalog.uid,12u);
     comp_rec_put64(response+52u,app->recording.catalog.epoch);
     comp_rec_put32(response+60u,comp_rec_crc(response,60u));
+    comp_cpu_duty_span_end(COMP_DUTY_INPUT_STATUS,span);
 }
 size_t comp_v11_product_input_request(comp_v11_product_app_t *app,const uint8_t *p,size_t n,
     bool busy,uint32_t now,uint8_t response[64])
@@ -1526,18 +1534,23 @@ static bool product_service_due(const comp_v11_product_app_t *app,uint32_t now)
 {
     /* Pointer sensors need a10ms poll; other quiet headless services do not
      * need the whole product traversal on every1ms SysTick/radio wake.
-     * Keep BLE serviced on every turn, and dispatch physical/producer/storage
-     * work immediately. Recording and the display retain their old cadence. */
+     * Dispatch pending BLE and physical/producer/storage work immediately.
+     * Empty BLE traversals share this5ms deadline; recording/display and
+     * active update/NVM work retain their old cadence. */
     if(COMPANION_WBA_SCREEN_ENABLED || app->input.mode!=COMP_INPUT_POINTER ||
        (int32_t)(now-app->pointer_service_due_ms)>=0)return true;
     const comp_v11_hal_t *b=app->board;
-    return b->microphone.running || b->playback_active ||
+    /* Sensor time is independent of the quiet product-service deadline.
+     * Two delayed5ms turns must not turn the existing10ms IMU poll into12ms. */
+    return now-b->imu_poll_ms>=10u || b->microphone.running || b->playback_active ||
         b->wake_events.pending || b->wake_events.key_pending ||
         app->runtime.prepare_pending || app->runtime.start_pending ||
         app->runtime.command_pending || app->runtime.stop_pending || app->runtime.capture_active ||
-        !app->recording.ready || comp_wba_recording_pipeline_storage_busy(&app->recording.pipeline)
+        !app->recording.ready || app->pet_profile.writing ||
+        comp_wba_recording_pipeline_storage_busy(&app->recording.pipeline)
 #ifdef COMPANION_WBA_BLE_LINKED
-        || comp_v11_ota_gatt_foreground_pending() || comp_v11_ble_foreground_pending()
+        || comp_v11_update_product_busy() || comp_v11_ble_nvm_busy() ||
+        comp_v11_ota_gatt_foreground_pending() || comp_v11_ble_foreground_pending()
 #endif
         ;
 }
@@ -1556,12 +1569,7 @@ void comp_v11_product_app_poll(comp_v11_product_app_t *app)
     comp_runtime_frame_t frame;
 #endif
     uint32_t now=HAL_GetTick();
-    if(!product_service_due(app,now)) {
-#ifdef COMPANION_WBA_BLE_LINKED
-        comp_v11_ble_poll();
-#endif
-        return;
-    }
+    if(!product_service_due(app,now))return;
     app->pointer_service_due_ms=now+5u;
     if(app->pet_profile.writing)comp_pet_profile_expire(&app->pet_profile,now);
     comp_v11_hal_t *board=app->board;
@@ -1596,7 +1604,9 @@ void comp_v11_product_app_poll(comp_v11_product_app_t *app)
     uint8_t wall_hal=comp_v11_ota_gatt_wall_context(COMP_OTA_WALL_PRODUCT_HAL);
 #endif
     comp_cpu_stage_span_t bulk_hal=comp_v11_cpu_transfer_stage_begin();
+    comp_cpu_duty_span_t hal_span=comp_cpu_duty_span_begin();
     comp_v11_hal_poll(board);
+    comp_cpu_duty_span_end(COMP_DUTY_HAL,hal_span);
     comp_v11_cpu_transfer_stage_end(COMP_BULK_CPU_HAL,bulk_hal);
 #if defined(COMPANION_WBA_BLE_LINKED) && defined(__arm__)
     (void)comp_v11_ota_gatt_wall_context(wall_hal);
@@ -1848,7 +1858,9 @@ void comp_v11_product_app_poll(comp_v11_product_app_t *app)
          * this span; an inactive begin never acquires a later owner. */
         comp_cpu_stage_span_t cpu_service=(board->microphone.running||comp_cpu_bulk_owned())?
             comp_cpu_detail_begin():(comp_cpu_stage_span_t){0};
+    comp_cpu_duty_span_t runtime_span=comp_cpu_duty_span_begin();
     comp_runtime_service(&app->runtime,now);
+    comp_cpu_duty_span_end(COMP_DUTY_RUNTIME,runtime_span);
         comp_cpu_detail_end(COMP_CPU_STAGE_RUNTIME_SERVICE,cpu_service,true);
     }
 #if defined(COMPANION_WBA_BLE_LINKED) && defined(__arm__)

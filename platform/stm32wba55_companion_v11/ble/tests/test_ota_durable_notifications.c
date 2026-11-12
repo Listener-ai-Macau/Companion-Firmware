@@ -22,6 +22,7 @@ static FILE *wire_transcript;
 static unsigned phase_data_ms,phase_status_ms,phase_nested_offset,phase_status_offset;
 static bool slice_new_connection;
 static unsigned slice_control_calls;
+static unsigned status_builds;
 static void value(unsigned offset,unsigned n,unsigned marker);
 static void packet(unsigned kind,const uint8_t *bytes,unsigned length,unsigned offset);
 static uint32_t get32(const uint8_t *b)
@@ -102,7 +103,7 @@ static bool finish(void *c){(void)c;return true;}
 static void abort_write(void *c){(void)c;++abort_calls;}
 static bool control(void *c,const uint8_t *b,size_t n){(void)c;++slice_control_calls;return denzic_ota_v1_handle_control(&transfer,b,n);}
 static bool data(void *c,const uint8_t *b,size_t n){(void)c;return denzic_ota_v1_handle_data(&transfer,b,n);}
-static size_t status(void *c,uint8_t *b,size_t n){(void)c;return denzic_ota_v1_encode_status(&transfer,b,n);}
+static size_t status(void *c,uint8_t *b,size_t n){(void)c;++status_builds;return denzic_ota_v1_encode_status(&transfer,b,n);}
 static void *claim(void *c,size_t n){(void)c;assert(!borrowed&&n==8840);arena=companion_opus16_rt_workspace_borrow(n);assert(arena);borrowed=true;return arena;}
 static void release(void *c,void *p){(void)c;assert(borrowed&&p==arena);companion_opus16_rt_workspace_release(p);borrowed=false;arena=NULL;}
 static uint32_t clock_ms(void *c){(void)c;return now;}
@@ -254,6 +255,17 @@ int main(int argc,char **argv)
  denzic_ota_v1_storage_driver_t storage={begin,write_data,finish,abort_write};denzic_ota_v1_init(&transfer,storage,NULL,505,64);
  comp_v11_ota_gatt_ports_t ports={control,data,status,NULL,claim,release,clock_ms,NULL};assert(comp_v11_ota_gatt_init(&ports));comp_v11_ota_gatt_connection(true);
  comp_v11_ota_gatt_poll();assert(!notifications);uint8_t on[2]={1,0};cccd=true;packet(4,on,2,0);comp_v11_ota_gatt_poll();assert(notifications==1);
+ unsigned builds_before=status_builds;
+ for(unsigned i=0u;i<10000u;++i)comp_v11_ota_gatt_poll();
+ assert(status_builds==builds_before);
+ /* A mount/error transition outside a queued callback refreshes immediately.
+  * Rejected ACI publication retries, even without a successor command. */
+ transfer.last_error=DENZIC_OTA_V1_ERROR_STORAGE_BEGIN;
+ comp_v11_ota_gatt_status_changed();status_busy=1u;
+ comp_v11_ota_gatt_poll();assert(status_builds==builds_before+1u);
+ comp_v11_ota_gatt_poll();assert(status_builds==builds_before+2u&&published[6]==transfer.last_error);
+ transfer.last_error=0u;comp_v11_ota_gatt_status_changed();comp_v11_ota_gatt_poll();
+ puts("OTA_IDLE_STATUS unchanged10000_build0 asynchronous_refresh failed_publish_retry");
  if(!check_partial_data_does_not_hold_durable_credit())return 57;
  check_phase_wall_ledger();
  check_bounded_foreground_slice();

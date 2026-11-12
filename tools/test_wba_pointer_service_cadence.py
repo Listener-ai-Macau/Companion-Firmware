@@ -16,39 +16,41 @@ prefix=r"""#include <stdint.h>
 #define COMPANION_WBA_BLE_LINKED 1
 #define COMP_INPUT_POINTER 3u
 typedef struct { bool busy; } pipeline_t;
-typedef struct { struct {bool running;} microphone;bool playback_active;struct{uint32_t pending,key_pending;}wake_events;} comp_v11_hal_t;
-typedef struct {comp_v11_hal_t *board;struct{uint8_t mode;}input;uint32_t pointer_service_due_ms;struct{bool prepare_pending,start_pending,command_pending,stop_pending,capture_active;}runtime;struct{bool ready;pipeline_t pipeline;}recording;} comp_v11_product_app_t;
-static bool ota,ble;static uint32_t tick;static unsigned full,ble_fast;
+typedef struct { struct {bool running;} microphone;bool playback_active;uint32_t imu_poll_ms;struct{uint32_t pending,key_pending;}wake_events;} comp_v11_hal_t;
+typedef struct {comp_v11_hal_t *board;struct{uint8_t mode;}input;uint32_t pointer_service_due_ms;struct{bool writing;}pet_profile;struct{bool prepare_pending,start_pending,command_pending,stop_pending,capture_active;}runtime;struct{bool ready;pipeline_t pipeline;}recording;} comp_v11_product_app_t;
+static bool ota,ble,update,nvm;static uint32_t tick;static unsigned full;
 static uint32_t HAL_GetTick(void){return tick;}
 static bool comp_wba_recording_pipeline_storage_busy(const pipeline_t*p){return p->busy;}
 static bool comp_v11_ota_gatt_foreground_pending(void){return ota;}
 static bool comp_v11_ble_foreground_pending(void){return ble;}
-static void comp_v11_ble_poll(void){++ble_fast;}
+static bool comp_v11_update_product_busy(void){return update;}
+static bool comp_v11_ble_nvm_busy(void){return nvm;}
 """
 tests=r"""
 int main(void){
  comp_v11_hal_t board={0};comp_v11_product_app_t app={0};app.board=&board;app.input.mode=3;app.recording.ready=true;
  for(tick=0;tick<100;++tick)dispatch(&app);
 #if COMPANION_WBA_SCREEN_ENABLED
- assert(full==100&&ble_fast==0);
+ assert(full==100);
 #else
- assert(full==20&&ble_fast==80);
- app.pointer_service_due_ms=200;tick=101;
+ assert(full==20);
+ app.pointer_service_due_ms=200;tick=101;board.imu_poll_ms=tick;
  board.wake_events.pending=1;assert(product_service_due(&app,tick));board.wake_events.pending=0;
  board.wake_events.key_pending=1;assert(product_service_due(&app,tick));board.wake_events.key_pending=0;
  board.microphone.running=true;for(unsigned i=0;i<20;++i)assert(product_service_due(&app,tick));board.microphone.running=false;
  board.playback_active=true;assert(product_service_due(&app,tick));board.playback_active=false;
- bool *urgent[]={&app.runtime.prepare_pending,&app.runtime.start_pending,&app.runtime.command_pending,&app.runtime.stop_pending,&app.runtime.capture_active,&app.recording.pipeline.busy,&ota,&ble};
+ bool *urgent[]={&app.runtime.prepare_pending,&app.runtime.start_pending,&app.runtime.command_pending,&app.runtime.stop_pending,&app.runtime.capture_active,&app.recording.pipeline.busy,&app.pet_profile.writing,&ota,&ble,&update,&nvm};
  for(unsigned i=0;i<sizeof(urgent)/sizeof(urgent[0]);++i){*urgent[i]=true;assert(product_service_due(&app,tick));*urgent[i]=false;}
  app.recording.ready=false;assert(product_service_due(&app,tick));app.recording.ready=true;
  assert(!product_service_due(&app,tick));
  app.input.mode=0;assert(product_service_due(&app,tick));app.input.mode=3;
- app.pointer_service_due_ms=3;assert(!product_service_due(&app,UINT32_MAX-1u));assert(product_service_due(&app,3));
+ app.pointer_service_due_ms=200;board.imu_poll_ms=100;assert(!product_service_due(&app,109));assert(product_service_due(&app,110));
+ app.pointer_service_due_ms=3;board.imu_poll_ms=UINT32_MAX-1u;assert(!product_service_due(&app,UINT32_MAX-1u));assert(product_service_due(&app,3));
 #endif
- puts("PASS production quiet-pointer cadence: quiet5ms, BLE every skipped turn; physical wake, capture/playback, control, boot, storage/OTA/BLE immediate; recorder/display cadence and wrap retained. Software-only.");
+ puts("PASS production quiet-pointer cadence: quiet5ms without empty BLE polls; physical wake, capture/playback, control, boot, storage/update/NVM/queued-BLE immediate; independent10ms sensor, recorder/display cadence and wrap retained. Software-only.");
 }
 """
-model=out/"model.c";model.write_text(prefix+helper+"static void dispatch(comp_v11_product_app_t *app){\n"+dispatch+"\n++full; }\n"+tests)
+model=out/"model.c";model.write_text(prefix+helper+"static void dispatch(comp_v11_product_app_t *app){\n"+dispatch+"\nif(now-app->board->imu_poll_ms>=10u)app->board->imu_poll_ms=now;\n++full; }\n"+tests)
 results={}
 for screen in [0,1]:
  args=["cl.exe","/nologo","/TC","/std:c11","/O2","/W4","/WX","/wd4127","/wd4100","/wd4505","/utf-8","/DCOMPANION_WBA_SCREEN_ENABLED="+str(screen),str(model),"/Fe:"+str(out/("test"+str(screen)+".exe"))]

@@ -435,13 +435,17 @@ static void update_product_poll_owned(void)
     uint32_t now=HAL_GetTick();if(!product)return;
     if(disconnected&&!prepared) {
         abort_stream(NULL);denzic_ota_v1_reset(&transfer);disconnected=false;
+        comp_v11_ota_gatt_status_changed();
     }
     if(!initialization_done&&product->recording.media_ready&&comp_wba_recording_product_space_current(&product->recording)) {
         initialization_done=true;initializing=true;ready=mount_current();initializing=false;
+        comp_v11_ota_gatt_status_changed();
         comp_v11_product_recording_lease_result(product,ready);
     }
     comp_v11_ota_gatt_poll_slice();
+    bool failed_before=failed;
     ahead_background();
+    if(failed!=failed_before)comp_v11_ota_gatt_status_changed();
     /* Control/DATA callbacks update activity_ms (and FINISH prepared_ms).
      * NOR work can advance the tick during that poll. The earlier sample
      * minus a later callback timestamp wraps to ~UINT32_MAX and falsely
@@ -450,6 +454,7 @@ static void update_product_poll_owned(void)
     if(!ready)return;
     if(!prepared&&transfer.state==DENZIC_OTA_V1_STATE_RECEIVING&&now-activity_ms>120000u) {
         abort_stream(NULL);denzic_ota_v1_reset(&transfer);
+        comp_v11_ota_gatt_status_changed();
     }
     uint8_t identity[COMP_V11_OTA_IDENTITY_BYTES];
 #if COMP_V11_OTA_TARGET_BOUND_IDENTITY

@@ -86,6 +86,9 @@ bool comp_v11_ota_gatt_foreground_pending(void);
 /* WSI3: actual running App/UI versions, static extent, outstanding workspace,
  * ready flag, signed installed payload SHA. Read-only, never a host ACK. */
 void comp_v11_ota_gatt_identity(const uint8_t identity[COMP_V11_OTA_IDENTITY_BYTES]);
+/* Invalidate a cached terminal/idle status after an asynchronous product
+ * transition. Queued commands and connection/CCCD changes invalidate it here. */
+void comp_v11_ota_gatt_status_changed(void);
 /* At most one queued command per foreground poll; no NOR or signature work
  * inside the radio event callback. Status becomes visible after the ordered
  * window drains, so a host acknowledgement never outruns its queued SYNC. */
