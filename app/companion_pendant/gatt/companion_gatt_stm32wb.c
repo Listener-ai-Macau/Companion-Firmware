@@ -7,6 +7,11 @@
 #include "diag_log.h"
 #include "svc_ctl.h"
 extern void comp_v11_ble_observe_aci_resource_origin(bool notify,const uint32_t *generation);
+/* Payload overflow belongs to the existing ST event pool. The caller releases
+ * each loan before dispatching product work or retiring a connection. */
+extern uint8_t *comp_v11_ble_command_payload_claim(uint16_t bytes);
+extern void comp_v11_ble_command_payload_release(uint8_t *bytes);
+extern void comp_v11_ble_command_payload_resume(void);
 #define COMSVC_Notification 1u
 #else
 #include "common_blesvc.h"
@@ -48,7 +53,12 @@ typedef struct {
  * payload limits and exactly the same queue depth. */
 typedef struct {
     uint8_t type_and_offset,char_id,payload_len;
+#if defined(COMPANION_GATT_WBA_HOST)
+    uint8_t borrowed;
+    union {uint8_t *loan;uint16_t offset;} storage;
+#else
     uint8_t payload[COMPANION_GATT_MAX_PAYLOAD_BYTES];
+#endif
 } companion_gatt_queued_event_t;
 _Static_assert(COMPANION_GATT_EVENT_NOTIFY_DISABLED<=UINT8_MAX &&
     COMPANION_GATT_CHAR_COUNT<=UINT8_MAX && COMPANION_GATT_MAX_PAYLOAD_BYTES<=UINT8_MAX,
@@ -57,11 +67,21 @@ typedef struct {
     uint16_t char_service_handles[COMPANION_GATT_CHAR_COUNT];
     uint16_t char_handles[COMPANION_GATT_CHAR_COUNT];
     companion_gatt_queued_event_t queue[COMPANION_GATT_QUEUE_DEPTH];
+#if defined(COMPANION_GATT_WBA_HOST)
+    /* Common controls fit here without allocation. Rare long bursts keep the
+     * same eight slots and payload limit by borrowing ST's existing pool. */
+    uint8_t payload_arena[512u];
+    uint16_t payload_head,payload_used;
+    bool payload_waiting;
+#endif
     uint8_t head;
     uint8_t tail;
     uint8_t count;
     uint8_t overflow_count;
 } companion_gatt_context_t;
+#if defined(COMPANION_GATT_WBA_HOST) && defined(__arm__)
+_Static_assert(sizeof(companion_gatt_context_t)<=672u,"bounded pooled GATT queue");
+#endif
 
 #if defined(COMPANION_GATT_WBA_HOST)
 #define COMPANION_DEVICE_STATUS_VALUE_BYTES sizeof(companion_gatt_device_status_v1_wba_recording_t)
@@ -192,7 +212,8 @@ static const companion_gatt_char_def_t *companion_gatt_find_char_by_handle(
     return 0;
 }
 
-static bool companion_gatt_enqueue(companion_gatt_event_type_t type,
+typedef enum {GATT_QUEUE_REJECTED,GATT_QUEUE_ACCEPTED,GATT_QUEUE_RETRY} gatt_queue_result_t;
+static gatt_queue_result_t companion_gatt_enqueue(companion_gatt_event_type_t type,
                                    companion_gatt_char_id_t char_id,
                                    uint16_t attr_handle,
                                    const uint8_t *payload,
@@ -214,18 +235,42 @@ static bool companion_gatt_enqueue(companion_gatt_event_type_t type,
     uint16_t base=s_companion_gatt.char_handles[char_id];
     if(!base || attr_handle<base || (uint16_t)(attr_handle-base)>2u)return false;
     companion_gatt_queued_event_t *event = &s_companion_gatt.queue[s_companion_gatt.head];
+#if defined(COMPANION_GATT_WBA_HOST)
+    event->borrowed=payload_len>sizeof(s_companion_gatt.payload_arena)-s_companion_gatt.payload_used;
+    if(event->borrowed) {
+        event->storage.loan=comp_v11_ble_command_payload_claim(payload_len);
+        if(!event->storage.loan) {
+            /* SVCCTL keeps this exact source event at the HCI head. The
+             * existing queued commands are runnable and drain in foreground;
+             * their retirement resumes the source, without a lost command. */
+            s_companion_gatt.payload_waiting=true;
+            return GATT_QUEUE_RETRY;
+        }
+        memcpy(event->storage.loan,payload,payload_len);
+    } else {
+        unsigned first=sizeof(s_companion_gatt.payload_arena)-s_companion_gatt.payload_head;
+        if(first>payload_len)first=payload_len;
+        event->storage.offset=s_companion_gatt.payload_head;
+        if(first)memcpy(s_companion_gatt.payload_arena+s_companion_gatt.payload_head,payload,first);
+        if(payload_len>first)memcpy(s_companion_gatt.payload_arena,payload+first,payload_len-first);
+        s_companion_gatt.payload_head=(uint16_t)((s_companion_gatt.payload_head+payload_len)%sizeof(s_companion_gatt.payload_arena));
+        s_companion_gatt.payload_used=(uint16_t)(s_companion_gatt.payload_used+payload_len);
+    }
+#endif
     event->type_and_offset=(uint8_t)((uint8_t)type | ((uint8_t)(attr_handle-base)<<2u));
     event->char_id=(uint8_t)char_id;
     event->payload_len=(uint8_t)payload_len;
+    #if !defined(COMPANION_GATT_WBA_HOST)
     if (payload_len != 0u) {
         memcpy(event->payload, payload, payload_len);
     }
+    #endif
 
     s_companion_gatt.head =
         (uint8_t)((s_companion_gatt.head + 1u) % COMPANION_GATT_QUEUE_DEPTH);
     s_companion_gatt.count++;
     companion_gatt_stm32wb_schedule_task();
-    return true;
+    return GATT_QUEUE_ACCEPTED;
 }
 
 static tBleStatus companion_gatt_add_char(uint16_t service_handle,
@@ -353,25 +398,26 @@ static SVCCTL_EvtAckStatus_t companion_gatt_stm32wb_event_handler(void *event)
             (attribute_modified->Attr_Data[0] & COMSVC_Notification) != 0u) {
             enabled = 1u;
         }
-        (void)companion_gatt_enqueue(
+        gatt_queue_result_t result=companion_gatt_enqueue(
             enabled != 0u ? COMPANION_GATT_EVENT_NOTIFY_ENABLED
                           : COMPANION_GATT_EVENT_NOTIFY_DISABLED,
             def->id,
             attribute_modified->Attr_Handle,
             attribute_modified->Attr_Data,
             attribute_modified->Attr_Data_Length);
-        return SVCCTL_EvtAckFlowEnable;
+        return result==GATT_QUEUE_RETRY?SVCCTL_EvtAckFlowDisable:SVCCTL_EvtAckFlowEnable;
     }
 
     if ((def->properties & (CHAR_PROP_WRITE | CHAR_PROP_WRITE_WITHOUT_RESP)) == 0u) {
         return SVCCTL_EvtNotAck;
     }
 
-    bool queued=companion_gatt_enqueue(COMPANION_GATT_EVENT_WRITE,
+    gatt_queue_result_t queue_result=companion_gatt_enqueue(COMPANION_GATT_EVENT_WRITE,
                                  def->id,
                                  attribute_modified->Attr_Handle,
                                  attribute_modified->Attr_Data,
                                  attribute_modified->Attr_Data_Length);
+    bool queued=queue_result==GATT_QUEUE_ACCEPTED;
 #if defined(COMPANION_GATT_WBA_HOST)
     /* A successful ATT write only means the stack received the bytes. The
      * cooperative event queue may still be retired on disconnect. Log one
@@ -399,7 +445,7 @@ static SVCCTL_EvtAckStatus_t companion_gatt_stm32wb_event_handler(void *event)
 #else
     (void)queued;
 #endif
-    return SVCCTL_EvtAckFlowEnable;
+    return queue_result==GATT_QUEUE_RETRY?SVCCTL_EvtAckFlowDisable:SVCCTL_EvtAckFlowEnable;
 }
 
 static companion_gatt_parse_result_t companion_gatt_copy_fixed(
@@ -427,6 +473,9 @@ static companion_gatt_parse_result_t companion_gatt_copy_fixed(
 
 tBleStatus companion_gatt_stm32wb_init(void)
 {
+#if defined(COMPANION_GATT_WBA_HOST)
+    (void)companion_gatt_stm32wb_drain(0,0);
+#endif
     memset(&s_companion_gatt, 0, sizeof(s_companion_gatt));
     SVCCTL_RegisterSvcHandler(companion_gatt_stm32wb_event_handler);
 
@@ -451,7 +500,20 @@ size_t companion_gatt_stm32wb_drain(companion_gatt_event_fn_t handler,
         event.char_id=(companion_gatt_char_id_t)queued->char_id;
         event.attr_handle=(uint16_t)(s_companion_gatt.char_handles[queued->char_id]+(queued->type_and_offset>>2u));
         event.payload_len=queued->payload_len;
+#if defined(COMPANION_GATT_WBA_HOST)
+        if(queued->borrowed) {
+            memcpy(event.payload,queued->storage.loan,event.payload_len);
+            comp_v11_ble_command_payload_release(queued->storage.loan);
+        } else {
+            unsigned first=sizeof(s_companion_gatt.payload_arena)-queued->storage.offset;
+            if(first>event.payload_len)first=event.payload_len;
+            if(first)memcpy(event.payload,s_companion_gatt.payload_arena+queued->storage.offset,first);
+            if(event.payload_len>first)memcpy(event.payload+first,s_companion_gatt.payload_arena,event.payload_len-first);
+            s_companion_gatt.payload_used=(uint16_t)(s_companion_gatt.payload_used-event.payload_len);
+        }
+#else
         if(event.payload_len)memcpy(event.payload,queued->payload,event.payload_len);
+#endif
         s_companion_gatt.tail =
             (uint8_t)((s_companion_gatt.tail + 1u) % COMPANION_GATT_QUEUE_DEPTH);
         s_companion_gatt.count--;
@@ -460,6 +522,12 @@ size_t companion_gatt_stm32wb_drain(companion_gatt_event_fn_t handler,
             handler(&event, context);
         }
     }
+#if defined(COMPANION_GATT_WBA_HOST)
+    if(s_companion_gatt.payload_waiting) {
+        s_companion_gatt.payload_waiting=false;
+        comp_v11_ble_command_payload_resume();
+    }
+#endif
     return drained;
 }
 

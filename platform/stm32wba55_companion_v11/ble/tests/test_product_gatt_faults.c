@@ -3,7 +3,14 @@
 #include "diag_log.h"
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
+
+uint8_t *comp_v11_ble_command_payload_claim(uint16_t bytes){return malloc(bytes);}
+void comp_v11_ble_command_payload_release(uint8_t *p){free(p);}
+void comp_v11_ble_command_payload_resume(void){}
+void comp_v11_ble_observe_aci_resource_origin(bool notify,const uint32_t *generation)
+{(void)notify;(void)generation;}
 
 #define CHECK(x) do { if(!(x)){fprintf(stderr,"FAIL line=%d %s\n",__LINE__,#x);return 1;} } while(0)
 

@@ -593,6 +593,7 @@ void UTIL_SEQ_PostTask(uint32_t id)
      * from outside our Run; that dispatch must retain its semaphore tasks. */
     if(notify_pump.foreground_run && !sequencer_depth && product &&
        (product->board->microphone.running || sealed_transfer_work() ||
+        companion_gatt_stm32wb_has_pending() ||
         comp_v11_ota_gatt_foreground_pending()) &&
        HAL_GetTick()-sequencer_started_ms>=2u) {
         /* A complete queued OTA command is a foreground consumer too.

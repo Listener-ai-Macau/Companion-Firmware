@@ -7,6 +7,7 @@
 #define MAX(a,b) ((a)>(b)?(a):(b))
 #include "ble_bufsize.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 #define CHECK(x) do {if(!(x)){printf("FAIL %d: %s\n",__LINE__,#x);return 1;}}while(0)
@@ -25,6 +26,19 @@ static bool fail_middle;
 static uint32_t *invalidate_generation;
 static uint16_t *invalidate_progress;
 static unsigned short_publish_length;
+static SVCCTL_EvtAckStatus_t (*product_handler)(void *);
+static unsigned payload_loans,payload_peak,payload_claims,payload_resumes;
+static bool deny_payload_loan;
+uint8_t *comp_v11_ble_command_payload_claim(uint16_t bytes)
+{
+    if(deny_payload_loan)return NULL;
+    uint8_t *p=malloc(bytes);
+    if(p){++payload_claims;++payload_loans;if(payload_loans>payload_peak)payload_peak=payload_loans;}
+    return p;
+}
+void comp_v11_ble_command_payload_release(uint8_t *p)
+{if(!payload_loans)abort();--payload_loans;free(p);}
+void comp_v11_ble_command_payload_resume(void){++payload_resumes;}
 tBleStatus reference_companion_gatt_stm32wb_init(void);
 
 uint8_t aci_gatt_add_service(uint8_t type,const Service_UUID_t *uuid,uint8_t primary,
@@ -58,7 +72,7 @@ uint8_t aci_gatt_update_char_value(uint16_t service,uint16_t handle,uint8_t offs
     short_publish_length=size;return BLE_STATUS_SUCCESS;
 }
 void SVCCTL_RegisterSvcHandler(SVCCTL_EvtAckStatus_t (*fn)(void *))
-{if(fn)++callbacks;}
+{if(fn){if(!callbacks)product_handler=fn;++callbacks;}}
 void comp_diag_log_record_code(uint16_t code,uint8_t severity,uint32_t a,
     uint32_t b,uint32_t c,uint32_t d)
 {(void)code;(void)severity;(void)a;(void)b;(void)c;(void)d;}
@@ -87,6 +101,71 @@ static bool accept(void *context,const uint8_t *bytes,size_t n)
 {(void)context;(void)bytes;(void)n;return false;}
 static size_t status(void *context,uint8_t *bytes,size_t n)
 {(void)context;(void)bytes;(void)n;return 0u;}
+static uint8_t queued_bytes[8][245],received_bytes[8][245];
+static uint16_t queued_lengths[8],received_lengths[8];
+static unsigned received_count;
+static SVCCTL_EvtAckStatus_t queue_packet(unsigned slot,unsigned n)
+{
+    uint8_t packet[260]={4u,255u,0u};
+    packet[2]=(uint8_t)(10u+n);packet[3]=1u;packet[4]=12u;
+    aci_gatt_attribute_modified_event_rp0 *a=(void*)(packet+5);
+    a->Connection_Handle=1u;a->Attr_Handle=0x207u;a->Attr_Data_Length=(uint16_t)n;
+    memcpy(a->Attr_Data,queued_bytes[slot],n);
+    return product_handler(packet);
+}
+static void receive_queued(const companion_gatt_event_t *e,void *context)
+{
+    (void)context;if(received_count>=8u)abort();
+    if(e->char_id!=COMPANION_GATT_CHAR_E_PAPER_CARD_WRITE ||e->attr_handle!=0x207u)abort();
+    received_lengths[received_count]=e->payload_len;
+    memcpy(received_bytes[received_count++],e->payload,e->payload_len);
+}
+static int check_queue(void)
+{
+    /* The WBA ACI payload ceiling is245, independently of the unchanged
+     * portable248 limit. Exercise every slot at the actual event ceiling. */
+    const unsigned shapes[3][8]={{245,245,245,245,245,245,245,245},
+        {84,84,84,84,84,84,84,84},{245,84,36,196,2,220,32,64}};
+    for(unsigned round=0;round<120u;++round) {
+        received_count=0u;
+        for(unsigned i=0;i<8u;++i) {
+            unsigned n=shapes[round%3u][i];queued_lengths[i]=(uint16_t)n;
+            for(unsigned k=0;k<n;++k)queued_bytes[i][k]=(uint8_t)(round+i*17u+k);
+            CHECK(queue_packet(i,n)==SVCCTL_EvtAckFlowEnable);
+        }
+        CHECK(companion_gatt_stm32wb_has_pending());
+        CHECK(queue_packet(0,queued_lengths[0])==SVCCTL_EvtAckFlowEnable);
+        CHECK(companion_gatt_stm32wb_drain(receive_queued,NULL)==8u);
+        CHECK(received_count==8u && !payload_loans && !companion_gatt_stm32wb_has_pending());
+        for(unsigned i=0;i<8u;++i)CHECK(received_lengths[i]==queued_lengths[i] &&
+            !memcmp(received_bytes[i],queued_bytes[i],queued_lengths[i]));
+    }
+    /* Exhaust the secondary pool. ST retains the third source event while
+     * the first two retire; a retry must preserve it exactly, once. */
+    CHECK(queue_packet(0,245u)==SVCCTL_EvtAckFlowEnable);
+    CHECK(queue_packet(1,245u)==SVCCTL_EvtAckFlowEnable);
+    deny_payload_loan=true;
+    CHECK(queue_packet(2,245u)==SVCCTL_EvtAckFlowDisable);
+    received_count=0u;
+    CHECK(companion_gatt_stm32wb_drain(receive_queued,NULL)==2u);
+    CHECK(payload_resumes==1u && !payload_loans);
+    deny_payload_loan=false;
+    CHECK(queue_packet(2,245u)==SVCCTL_EvtAckFlowEnable);
+    received_count=0u;
+    CHECK(companion_gatt_stm32wb_drain(receive_queued,NULL)==1u);
+    CHECK(received_lengths[0]==245u && !memcmp(received_bytes[0],queued_bytes[2],245u));
+    /* Disconnect/retirement has no consumer but must return every loan. */
+    for(unsigned i=0;i<8u;++i)CHECK(queue_packet(i,245u)==SVCCTL_EvtAckFlowEnable);
+    CHECK(payload_loans>0u);
+    CHECK(companion_gatt_stm32wb_drain(NULL,NULL)==8u && !payload_loans);
+    CHECK(payload_peak==6u);
+    for(unsigned i=0;i<8u;++i)CHECK(queue_packet(i,245u)==SVCCTL_EvtAckFlowEnable);
+    services=attributes=chars=callbacks=bad_range=service_records=service_used=reserved_attributes=0u;
+    CHECK(companion_gatt_stm32wb_init()==BLE_STATUS_SUCCESS);
+    CHECK(!payload_loans && !companion_gatt_stm32wb_has_pending());
+    printf("POOLED_QUEUE eight_slots_max245_mixed_wrap_rounds=120 loan_peak=%u claims=%u retry_preserved=1 disconnect_and_reinit_freed=1 loans_remaining=%u\n",payload_peak,payload_claims,payload_loans);
+    return 0;
+}
 bool comp_wba_update_open(comp_wba_update_service_t *s,const comp_wba_update_manifest_t *m,
     const uint8_t *a,uint8_t n)
 {(void)s;(void)m;(void)a;(void)n;return false;}
@@ -193,6 +272,7 @@ int main(void)
     comp_v11_ble_mtu_open(&mtu,0u);
     CHECK(comp_v11_ble_mtu_agreed(&mtu,139u,COMP_V11_BLE_ATT_MTU_MAX));
     CHECK(mtu.mtu==139u && comp_v11_ble_mtu_value_capacity(&mtu)==136u);
+    CHECK(check_queue()==0);
     printf("BLE_POOL_BYTES official_p2p_host=%u official_p2p_gatt=%u official_one_link_host=%u companion_host=%u companion_gatt=%u\n",sdk_p2p_host,sdk_p2p_gatt,sdk_one_link_host,after_host,after_gatt);
     puts("PASS_CE_BLE_BUDGET_SOFTWARE_ONLY: five_read_only_reservations_saved216; unchanged_wire_lengths_UUID_properties_handle_order_all_writable_capacities; long509_retry_and_generation_kept; OTA4_kept; services13_attributes81_callbacks2_queue8; host3880_MTU512_dual509_unchanged; physical_registration_required");
     return 0;

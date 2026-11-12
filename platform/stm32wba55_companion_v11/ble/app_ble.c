@@ -73,7 +73,14 @@ static comp_v11_peer_indication_t peer_indication;
 /* Preserve the pinned254-word host cache independently of SNVMA pages.
  * Changing persistence must not shrink the live pairing/GATT database. */
 #define BLE_HOST_NVM_SIZE_U64 254u
-static uint32_t host_buffer[DIVC(BLE_DYN_ALLOC_SIZE,4)];
+/* CPU-owned host/ACL state can use either retained SRAM bank. Keep its exact
+ * size and move it away from the audio stack in CE's tight SRAM2; the existing
+ * startup table clears .sram1.bss and automatic Stop1 retains this bank. */
+static uint32_t host_buffer[DIVC(BLE_DYN_ALLOC_SIZE,4)]
+#if COMPANION_WBA_CE_SHARED_CAPTURE && defined(__GNUC__)
+    __attribute__((section(".sram1.bss.ble_host"),aligned(8)))
+#endif
+    ;
 static uint32_t gatt_buffer[DIVC(BLE_GATT_BUF_SIZE,4)];
 bool comp_v11_ble_complete_public_hash_input(uint8_t *out,size_t capacity,size_t *length)
 {
@@ -1359,6 +1366,21 @@ static uint8_t HOST_BLE_Init(void)
   };
   return (uint8_t)BleStack_Init(&pInitParams);
 }
+
+/* Share the existing event allocation with rare long product commands. The
+ * normal short-command ring allocates nothing. Never borrow audio/OTA memory,
+ * shrink ACL pools, or allocate another heap. */
+uint8_t *comp_v11_ble_command_payload_claim(uint16_t bytes)
+{
+  uint32_t *payload=NULL;
+  if(AMM_Alloc(CFG_AMM_VIRTUAL_BLE_EVENTS,DIVC(bytes,sizeof(uint32_t)),&payload,NULL)!=AMM_ERROR_OK)
+    return NULL;
+  return (uint8_t *)payload;
+}
+void comp_v11_ble_command_payload_release(uint8_t *payload)
+{(void)AMM_Free((uint32_t *)payload);}
+void comp_v11_ble_command_payload_resume(void)
+{UTIL_SEQ_SetTask(1U<<CFG_TASK_HCI_ASYNCH_EVT_ID,CFG_SEQ_PRIO_0);}
 
 void Ble_UserEvtRx( void)
 {
