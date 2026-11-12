@@ -92,6 +92,37 @@ int main(void)
     comp_imu_pointer_fused_packet(&fused,7u,true,255u,packet);
     assert(packet[4]==3u&&packet[6]==3u);
     printf("CIM3_GOLDEN ");for(unsigned i=0;i<32u;++i)printf("%02x",packet[i]);puts("");
+    comp_imu_pointer_aim_packet(&fused,7u,true,255u,12.34f,-23.45f,packet);
+    assert(packet[4]==4u&&packet[16]==0xd2u&&packet[17]==4u);
+    printf("CIM4_GOLDEN ");for(unsigned i=0;i<32u;++i)printf("%02x",packet[i]);puts("");
+    fused=(comp_imu_fused_sample_t){.gravity_q14={0,0,16384},.gyro_mdps={0,0,90000},.ready=true};
+    float heading=0.0f;unsigned delivered=0u;
+    for(unsigned i=1u;i<=100u;++i){
+        heading=comp_imu_pointer_heading(heading,comp_imu_pointer_yaw(&fused),10u);
+        /* Radio cannot accept the middle80 samples. Heading still advances. */
+        if(i<=10u||i>90u){comp_imu_pointer_aim_packet(&fused,i,false,0u,heading,90.0f,packet);++delivered;}
+    }
+    assert(delivered==20u&&heading>89.99f&&heading<90.01f&&packet[16]==0x28u&&packet[17]==0x23u);
+    assert(comp_imu_pointer_heading(179.0f,100.0f,100u)==-176.0f);
+    assert(comp_input_mode(&s,COMP_INPUT_POINTER,COMP_INPUT_POINTER_V4,false,false));
+    assert(!comp_input_mode(&s,COMP_INPUT_DICTATION,COMP_INPUT_POINTER_V4,false,false));
+    uint16_t edge_events=comp_input_key(&s,COMP_WBA_BUTTON_DOWN,false);
+    assert(edge_events==COMP_INPUT_DOWN);comp_input_note(&s,edge_events,200u);
+    uint32_t down_sequence=s.sequence;
+    edge_events=comp_input_key(&s,COMP_WBA_BUTTON_UP,false);
+    assert(edge_events==COMP_INPUT_UP);comp_input_note(&s,edge_events,280u);
+    const comp_pointer_event_t *edge=comp_input_pointer_event(&s);
+    assert(edge&&edge->sequence==down_sequence&&edge->event_ms==200u&&(edge->flags&COMP_INPUT_HELD));
+    comp_input_pointer_ack(&s,down_sequence+1u);assert(s.pointer_count==2u); /* Cannot ACK out of order. */
+    s.events=0u;assert(comp_input_pointer_event(&s)); /* publish is not consumption */
+    comp_input_pointer_ack(&s,down_sequence);edge=comp_input_pointer_event(&s);
+    assert(edge&&edge->event_ms==280u&&!(edge->flags&COMP_INPUT_HELD));
+    comp_input_pointer_ack(&s,down_sequence);assert(s.pointer_count==1u); /* repeated ACK */
+    comp_input_pointer_ack(&s,edge->sequence);assert(!comp_input_pointer_event(&s));
+    for(unsigned i=0;i<9u;++i)comp_input_note(&s,COMP_INPUT_CLICK,300u+i);
+    edge=comp_input_pointer_event(&s);assert(s.pointer_count==1u&&(edge->events&COMP_INPUT_OVERFLOW)&&(edge->events&COMP_INPUT_UP));
+    comp_input_connection(&s,false);assert(!s.pointer_count);
+    puts("PASS Watch device heading survives80 missing aim samples; reliable control head retries, ACK order/duplicate, bounded overflow, mode isolation and legacy schemas retained");
     puts("PASS pointer mode: keys/motion never start MIC; disconnect restores recorder; timestamp/centidegree precision and bounded saturation");
     puts("SOFTWARE_ONLY: real enclosure thresholds, wake, audio first-word and Mac insertion not qualified");
     return 0;

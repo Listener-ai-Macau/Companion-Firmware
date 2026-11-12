@@ -4,6 +4,7 @@
 #include "imu_fusion.h"
 #include "companion_crc32.h"
 #include <string.h>
+#include <math.h>
 
 /* CIM1 is opt-in on the existing encrypted CIN1 settings subscription.
  * 32B, integer data only. Sensor time, not BLE arrival time, drives mapping.
@@ -33,4 +34,35 @@ static inline void comp_imu_pointer_packet(const comp_imu_sample_t *s,uint32_t s
 static inline void comp_imu_pointer_fused_packet(const comp_imu_fused_sample_t *s,uint32_t sequence,
     bool held,uint8_t tap_serial,uint8_t packet[32])
 {comp_imu_pointer_pack(s->timestamp_ms,sequence,held,tap_serial,3u,s->ready,s->gravity_q14,s->gyro_mdps,packet);}
+/* WatchPointer computes heading at EVERY device sample, before testing radio
+ * readiness. Sending a later absolute heading cannot lose an intervening turn.
+ * Gravity/elevation stays absolute; only the platform/wire adapter changes. */
+static inline float comp_imu_pointer_yaw(const comp_imu_fused_sample_t *s)
+{
+    float yaw=0.0f,norm=0.0f;
+    for(unsigned i=0;i<3u;++i){const float g=(float)s->gravity_q14[i];yaw+=(float)s->gyro_mdps[i]*g;norm+=g*g;}
+    return norm>0.0f?yaw/sqrtf(norm)*0.001f:0.0f;
+}
+static inline float comp_imu_pointer_heading(float heading,float yaw,uint32_t dt_ms)
+{
+    heading+=yaw*(float)(dt_ms>50u?50u:dt_ms)*0.001f;
+    if(heading>180.0f)heading-=360.0f;
+    else if(heading< -180.0f)heading+=360.0f;
+    return heading;
+}
+static inline int16_t comp_imu_pointer_centidegrees(float value)
+{
+    value*=100.0f;if(value>32767.0f)value=32767.0f;else if(value< -32768.0f)value=-32768.0f;
+    return (int16_t)(value+(value>=0.0f?0.5f:-0.5f));
+}
+static inline void comp_imu_pointer_aim_packet(const comp_imu_fused_sample_t *s,uint32_t sequence,
+    bool held,uint8_t tap_serial,float heading,float yaw,uint8_t packet[32])
+{
+    comp_imu_pointer_fused_packet(s,sequence,held,tap_serial,packet);packet[4]=4u;
+    comp_imu_pointer_put16(packet+16u,comp_imu_pointer_centidegrees(heading));
+    for(unsigned i=0;i<3u;++i)comp_imu_pointer_put16(packet+18u+2u*i,s->gravity_q14[i]);
+    comp_imu_pointer_put16(packet+24u,comp_imu_pointer_centidegrees(yaw));
+    comp_imu_pointer_put16(packet+26u,comp_imu_pointer_centidegrees((float)s->gyro_mdps[0]*0.001f));
+    comp_imu_pointer_put32(packet+28u,companion_crc32(0u,packet,28u));
+}
 #endif

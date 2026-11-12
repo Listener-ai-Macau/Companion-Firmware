@@ -53,6 +53,8 @@ static bool linked,secured,link_ready;
 static bool input_client;
 static uint8_t input_feedback,input_flags;
 static uint32_t pointer_sample_ms,pointer_sequence;
+static float pointer_heading;
+static uint32_t pointer_event_sequence,pointer_event_sent_ms;
 static comp_imu_fusion_t pointer_fusion;
 
 /* CAPTURE_RADIO_MODEL_BEGIN */
@@ -620,6 +622,7 @@ void comp_v11_ble_link(bool connected,bool encrypted)
         #endif
         input_client=false;input_feedback=input_flags=255u;
         pointer_sample_ms=pointer_sequence=0u;
+        pointer_heading=0.0f;pointer_event_sequence=0u;
         pointer_fusion.active=false;
     }
     /* Queue only; the product foreground owner performs any NOR operation. */
@@ -1396,8 +1399,9 @@ static void event(const companion_gatt_event_t *e,void *context)
         size_t n=comp_v11_product_input_request(product,e->payload,e->payload_len,
             comp_v11_update_product_busy()||!link_ready,HAL_GetTick(),response);
         if(!n){++product_link.rejected_writes;return;}
-        if(e->payload_len>=7u&&e->payload[5]==1u&&response[5]==0u&&response[6]==COMP_INPUT_POINTER)
-            pointer_fusion.active=false;
+        if(e->payload_len>=7u&&e->payload[5]==1u&&response[5]==0u&&response[6]==COMP_INPUT_POINTER){
+            pointer_fusion.active=false;pointer_sample_ms=0u;pointer_heading=0.0f;pointer_event_sequence=0u;
+        }
         input_client=true;
         (void)companion_gatt_stm32wb_set_read_value(COMPANION_GATT_CHAR_SETTINGS,response,(uint16_t)n);
         if(product_link.subscribed[COMPANION_GATT_CHAR_SETTINGS])
@@ -1599,10 +1603,14 @@ static void input_notify(void)
      * Events remain sticky until publish succeeds; a changed packet updates
      * the cache from its actual contents, not this earlier observation. */
     const uint16_t signals=comp_v11_product_input_signals(product);
-    if(!product->input.events&&input_feedback==(uint8_t)(signals>>8u)&&input_flags==(uint8_t)signals)return;
+    const comp_pointer_event_t *edge=comp_input_pointer_event(&product->input);
+    const uint32_t now=HAL_GetTick();
+    if(edge){if(edge->sequence==pointer_event_sequence&&now-pointer_event_sent_ms<40u)return;}
+    else if(!product->input.events&&input_feedback==(uint8_t)(signals>>8u)&&input_flags==(uint8_t)signals)return;
     uint8_t response[64];comp_v11_product_input_status(product,0u,0u,response);
     if(publish(NULL,COMPANION_GATT_CHAR_SETTINGS,response,sizeof(response))) {
         product->input.events=0u;input_feedback=response[23];input_flags=response[7];
+        if(edge){pointer_event_sequence=edge->sequence;pointer_event_sent_ms=now;}
     }
 }
 static void pointer_notify(void)
@@ -1624,7 +1632,11 @@ static void pointer_notify(void)
     if(!updated){comp_cpu_duty_span_end(COMP_DUTY_POINTER_SEND,pointer_span);return;}
     uint8_t packet[32];
     if(++pointer_sequence==0u)++pointer_sequence;
-    comp_imu_pointer_fused_packet(&fused,pointer_sequence,
+    const float yaw=comp_imu_pointer_yaw(&fused);
+    pointer_heading=comp_imu_pointer_heading(pointer_heading,yaw,pointer_sample_ms?sample->timestamp_ms-pointer_sample_ms:0u);
+    if(comp_input_pointer_v4(&product->input))comp_imu_pointer_aim_packet(&fused,pointer_sequence,
+        (product->input.flags&COMP_INPUT_HELD)!=0u,(uint8_t)product->input.flick_sample_ms,pointer_heading,yaw,packet);
+    else comp_imu_pointer_fused_packet(&fused,pointer_sequence,
         (product->input.flags&COMP_INPUT_HELD)!=0u,(uint8_t)product->input.flick_sample_ms,packet);
     pointer_sample_ms=sample->timestamp_ms;
     /* One current sample, no retry queue: failed delivery is superseded by

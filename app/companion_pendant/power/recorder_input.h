@@ -4,36 +4,59 @@
 #include "motion_events.h"
 
 enum { COMP_INPUT_RECORDER,COMP_INPUT_DICTATION,COMP_INPUT_PRESENTATION,COMP_INPUT_POINTER };
-enum { COMP_INPUT_FLICK=1u,COMP_INPUT_SHAKE=2u,COMP_INPUT_UNDO=4u };
+enum { COMP_INPUT_FLICK=1u,COMP_INPUT_SHAKE=2u,COMP_INPUT_UNDO=4u,COMP_INPUT_POINTER_V4=8u };
 enum { COMP_INPUT_START=1u,COMP_INPUT_STOP=2u,COMP_INPUT_MARK=4u,
        COMP_INPUT_UNDO_LAST=8u,COMP_INPUT_CANCEL=16u,COMP_INPUT_SUBMIT=32u,
-       COMP_INPUT_NEXT=64u,COMP_INPUT_PREVIOUS=128u,COMP_INPUT_WAKE=256u };
+       COMP_INPUT_NEXT=64u,COMP_INPUT_PREVIOUS=128u,COMP_INPUT_WAKE=256u,
+       COMP_INPUT_CLICK=512u,COMP_INPUT_DOWN=1024u,COMP_INPUT_UP=2048u,COMP_INPUT_OVERFLOW=4096u };
 enum { COMP_INPUT_HELD=1u,COMP_INPUT_DETACHED=2u,COMP_INPUT_FINISHED=4u };
+/* Aim may be superseded; physical edges must survive until the host ACKs.
+ * Eight entries cover four complete presses without borrowing audio memory. */
+typedef struct {uint32_t sequence,event_ms;uint16_t events;uint8_t flags,reserved;} comp_pointer_event_t;
 typedef struct {
     uint32_t sequence,event_ms,record_token;
     uint32_t flick_sample_ms; /* Pointer mode reuses this as a tap serial. */
     int32_t flick_angle_md;
     uint16_t events;
     uint8_t mode,options,flags,flick_axis;
+    comp_pointer_event_t pointer_events[8];
+    uint8_t pointer_head,pointer_count;
 } comp_recorder_input_t;
-_Static_assert(sizeof(comp_recorder_input_t)<=28u,"bounded shared input state");
+_Static_assert(sizeof(comp_recorder_input_t)<=128u,"bounded shared input and reliable pointer edges");
+static inline bool comp_input_pointer_v4(const comp_recorder_input_t *s)
+{return s->mode==COMP_INPUT_POINTER&&(s->options&COMP_INPUT_POINTER_V4);}
+static inline const comp_pointer_event_t *comp_input_pointer_event(const comp_recorder_input_t *s)
+{return comp_input_pointer_v4(s)&&s->pointer_count?&s->pointer_events[s->pointer_head]:NULL;}
+static inline void comp_input_pointer_ack(comp_recorder_input_t *s,uint32_t sequence)
+{
+    const comp_pointer_event_t *event=comp_input_pointer_event(s);
+    if(event&&event->sequence==sequence){s->pointer_head=(s->pointer_head+1u)&7u;--s->pointer_count;}
+}
 
 static inline void comp_input_note(comp_recorder_input_t *s,uint16_t events,uint32_t now)
 {
     if(!events)return;
     if(++s->sequence==0u)++s->sequence;
     s->event_ms=now;s->events|=events;
+    if(comp_input_pointer_v4(s)) {
+        /* A stalled host cannot grow memory or silently leave a drag held.
+         * Overflow is an explicit terminal control event, never a fake click. */
+        if(s->pointer_count==8u){s->pointer_head=s->pointer_count=0u;events=COMP_INPUT_OVERFLOW|COMP_INPUT_UP;}
+        comp_pointer_event_t *event=&s->pointer_events[(s->pointer_head+s->pointer_count)&7u];
+        *event=(comp_pointer_event_t){s->sequence,now,events,s->flags,0u};++s->pointer_count;
+    }
 }
 static inline bool comp_input_mode(comp_recorder_input_t *s,uint8_t mode,uint8_t options,
                                     bool capture_owned,bool key_busy)
 {
-    if(mode>COMP_INPUT_POINTER||(options&~7u)||capture_owned||key_busy)return false;
+    if(mode>COMP_INPUT_POINTER||(options&~(mode==COMP_INPUT_POINTER?15u:7u))||capture_owned||key_busy)return false;
     s->mode=mode;s->options=options;s->flags=0u;s->record_token=0u;
-    s->events=0u;s->flick_angle_md=0;s->flick_sample_ms=0u;return true;
+    s->events=0u;s->flick_angle_md=0;s->flick_sample_ms=0u;s->pointer_head=s->pointer_count=0u;return true;
 }
 static inline void comp_input_connection(comp_recorder_input_t *s,bool connected)
 {
     if(connected)return;
+    s->pointer_head=s->pointer_count=0u;
     if(s->mode!=COMP_INPUT_RECORDER&&(s->flags&COMP_INPUT_HELD))s->flags|=COMP_INPUT_DETACHED;
     else {s->mode=COMP_INPUT_RECORDER;s->options=0u;s->record_token=0u;s->events=0u;}
 }
@@ -45,8 +68,10 @@ static inline uint16_t comp_input_key(comp_recorder_input_t *s,uint8_t key,bool 
         s->flick_angle_md=0;
         if(s->mode!=COMP_INPUT_POINTER)s->flick_sample_ms=0u;
         if(s->mode==COMP_INPUT_DICTATION&&!capture_owned)events|=COMP_INPUT_START;
+        if(comp_input_pointer_v4(s))events|=COMP_INPUT_DOWN;
     }
     if(key&COMP_WBA_BUTTON_UP) {
+        if(comp_input_pointer_v4(s))events|=COMP_INPUT_UP;
         if(s->mode==COMP_INPUT_RECORDER)events|=capture_owned?COMP_INPUT_STOP:COMP_INPUT_START;
         else if(s->mode==COMP_INPUT_DICTATION&&!(s->flags&COMP_INPUT_FINISHED)&&
                 (s->record_token||(events&COMP_INPUT_START)))events|=COMP_INPUT_STOP;
@@ -60,8 +85,8 @@ static inline uint16_t comp_input_motion(comp_recorder_input_t *s,uint8_t motion
 {
     if(s->mode==COMP_INPUT_RECORDER)return capture_owned&&(motion&COMP_MOTION_DOUBLE_TAP)?COMP_INPUT_MARK:0u;
     if(s->mode==COMP_INPUT_POINTER) {
-        if(motion&COMP_MOTION_DOUBLE_TAP)++s->flick_sample_ms;
-        return 0u; /* Host owns click; this can never start/stop MIC. */
+        if(motion&COMP_MOTION_DOUBLE_TAP){++s->flick_sample_ms;return comp_input_pointer_v4(s)&&!(s->flags&COMP_INPUT_HELD)?COMP_INPUT_CLICK:0u;}
+        return 0u; /* This can never start/stop MIC. */
     }
     if(s->mode==COMP_INPUT_PRESENTATION) {
         if(!(s->flags&COMP_INPUT_HELD)||!(motion&COMP_MOTION_TILT_CHANGED))return 0u;

@@ -757,6 +757,12 @@ void comp_v11_product_input_status(const comp_v11_product_app_t *app,uint32_t re
     comp_rec_put32(response+8u,request);comp_rec_put32(response+12u,s->sequence);
     comp_rec_put32(response+16u,s->event_ms);
     response[20]=(uint8_t)s->events;response[21]=(uint8_t)(s->events>>8u);
+    const comp_pointer_event_t *edge=comp_input_pointer_event(s);
+    if(edge){
+        comp_rec_put32(response+12u,edge->sequence);comp_rec_put32(response+16u,edge->event_ms);
+        response[20]=(uint8_t)edge->events;response[21]=(uint8_t)(edge->events>>8u);
+        response[7]=(uint8_t)((response[7]&~1u)|(edge->flags&COMP_INPUT_HELD?1u:0u));
+    }
     response[22]=s->options;response[23]=(uint8_t)(signals>>8u);
     comp_rec_put32(response+24u,app->runtime.record_token);
     comp_rec_put64(response+28u,app->recording_session_id);
@@ -771,19 +777,22 @@ size_t comp_v11_product_input_request(comp_v11_product_app_t *app,const uint8_t 
     bool busy,uint32_t now,uint8_t response[64])
 {
     (void)now;
-    if(!app||!p||n!=36u||memcmp(p,"CIN1",4u)||p[4]!=1u||p[5]>1u||
+    if(!app||!p||n!=36u||memcmp(p,"CIN1",4u)||p[4]!=1u||p[5]>2u||
        !comp_rec_get32(p+8u)||memcmp(p+12u,app->recording.catalog.uid,12u)||
        comp_rec_get64(p+24u)!=app->recording.catalog.epoch||comp_rec_get32(p+32u)!=comp_rec_crc(p,32u))return 0u;
     uint8_t result=0u;
-    if(p[5]) {
-        if(p[6]>COMP_INPUT_POINTER||(p[7]&~7u))result=2u;
+    if(p[5]==2u) {
+        if(p[6]||p[7]||!comp_input_pointer_v4(&app->input))result=2u;
+        else comp_input_pointer_ack(&app->input,comp_rec_get32(p+8u));
+    } else if(p[5]==1u) {
+        if(p[6]>COMP_INPUT_POINTER||(p[7]&~(p[6]==COMP_INPUT_POINTER?15u:7u)))result=2u;
         else if(busy||!comp_input_mode(&app->input,p[6],p[7],
             comp_runtime_recording_owned(&app->runtime),comp_wba_button_busy(&app->button)))result=1u;
     } else if(p[6]||p[7])result=2u;
     #if COMPANION_WBA_CPU_DUTY_OBSERVER
     /* Reuse the existing compact observer only in the explicit engineering
      * build. This is a pointer scope, not an audio/capture measurement. */
-    if(!result&&p[5]) {
+    if(!result&&p[5]==1u) {
         if(p[6]==COMP_INPUT_POINTER)comp_cpu_duty_begin(comp_rec_get32(p+8u),false);
         else comp_cpu_duty_end(0u,false);
     }
@@ -1791,6 +1800,7 @@ void comp_v11_product_app_poll(comp_v11_product_app_t *app)
         app->runtime.surface==COMP_SCREEN_SURFACE_HOME && !app->runtime.menu_pending &&
         (app->runtime.status_packed&COMP_SCREEN_STATUS_UPDATING)==0u;
     (void)pressed;(void)double_refresh;(void)was_sleeping; /* Screen-only branch may fold away. */
+    const uint32_t pointer_down_ms=(key_edges.flags&COMP_WBA_BUTTON_EDGE_DOWN)?key_edges.down_ms:app->button.changed_ms;
     uint8_t key=!recorder_key?
         comp_wba_button_poll_with_hold(&app->button,pressed,was_sleeping,double_refresh,700u,now):
         comp_wba_button_poll_transitions(&app->button,&key_edges,now);
@@ -1804,7 +1814,14 @@ void comp_v11_product_app_poll(comp_v11_product_app_t *app)
            !comp_runtime_recording_owned(&app->runtime)&&!comp_v11_ble_linked())
             (void)comp_v11_ble_menu(COMP_SCREEN_MENU_ACTION_BROWSER_PAIR);
 #endif
-        recording_input_apply(app,comp_input_key(&app->input,key,comp_runtime_recording_owned(&app->runtime)),now);
+        if(comp_input_pointer_v4(&app->input)) {
+            /* Preserve actual debounced IRQ timing, including a complete
+             * press whose DOWN and UP are replayed in the same foreground. */
+            if(key&COMP_WBA_BUTTON_DOWN)recording_input_apply(app,
+                comp_input_key(&app->input,COMP_WBA_BUTTON_DOWN,false),pointer_down_ms);
+            if(key&COMP_WBA_BUTTON_UP)recording_input_apply(app,
+                comp_input_key(&app->input,COMP_WBA_BUTTON_UP,false),key_edges.flags&COMP_WBA_BUTTON_EDGE_UP?key_edges.up_ms:now);
+        } else recording_input_apply(app,comp_input_key(&app->input,key,comp_runtime_recording_owned(&app->runtime)),now);
     }
     if ((key & (COMP_WBA_BUTTON_CONFIRM|COMP_WBA_BUTTON_DOUBLE_CONFIRM)) && !comp_runtime_recording_hold(&app->runtime)) {
         if(!COMPANION_WBA_SCREEN_ENABLED) {

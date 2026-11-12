@@ -7,7 +7,9 @@ root=Path(__file__).resolve().parents[1];out=a.output.resolve();out.mkdir(parent
 platform=root/"platform/stm32wba55_companion_v11"
 old=subprocess.check_output(["git","show","04a7f86:platform/stm32wba55_companion_v11/product_app.c"],cwd=root).decode()
 old=old[old.index("void comp_v11_product_input_status("):old.index("size_t comp_v11_product_input_request(")].replace("comp_v11_product_input_status","old_status")
-new=(platform/"product_app.c").read_text();new=new[new.index("uint16_t comp_v11_product_input_signals("):new.index("size_t comp_v11_product_input_request(")]
+product_source=(platform/"product_app.c").read_text()
+request=product_source[product_source.index("size_t comp_v11_product_input_request("):product_source.index("comp_segment_result_t comp_v11_product_recording_bookmark_result(")]
+new=product_source[product_source.index("uint16_t comp_v11_product_input_signals("):product_source.index("size_t comp_v11_product_input_request(")]
 new=new.replace("void comp_v11_product_input_status(","void actual_status(")
 ble=(platform/"ble/ble_product.c").read_text();notify=ble[ble.index("static void input_notify("):ble.index("static void pointer_notify(")]
 pre=r"""
@@ -23,7 +25,7 @@ pre=r"""
 #define COMP_POWER_BLOCKER_UPDATE 1u
 #define COMPANION_GATT_CHAR_SETTINGS 1u
 typedef struct {bool owned;uint32_t record_token;} runtime_t;
-typedef struct {comp_recorder_input_t input;struct {struct {uint32_t blockers;}power;struct {bool running;}microphone;} *board;runtime_t runtime;uint64_t recording_session_id;struct{struct{bool engine_bound;}pipeline;struct{struct{uint32_t bookmark_sequence;}engine;}capture;struct{uint8_t uid[12];uint64_t epoch;}catalog;}recording;} comp_v11_product_app_t;
+typedef struct {comp_recorder_input_t input;comp_wba_button_t button;struct {struct {uint32_t blockers;}power;struct {bool running;}microphone;} *board;runtime_t runtime;uint64_t recording_session_id;struct{struct{bool engine_bound;}pipeline;struct{struct{uint32_t bookmark_sequence;}engine;}capture;struct{uint8_t uid[12];uint64_t epoch;}catalog;}recording;} comp_v11_product_app_t;
 static comp_capture_feedback_t feedback;
 static comp_capture_feedback_t comp_v11_product_capture_feedback(const comp_v11_product_app_t*a,bool updating){(void)a;(void)updating;return feedback;}
 static bool comp_runtime_recording_owned(const runtime_t*r){return r->owned;}
@@ -32,6 +34,8 @@ static struct{bool subscribed[3];}product_link;
 static bool input_client,secured,publication_ok;
 static uint8_t input_feedback,input_flags,published[64];
 static unsigned builds,publishes;
+static uint32_t pointer_event_sequence,pointer_event_sent_ms,now_ms;
+static uint32_t HAL_GetTick(void){return now_ms;}
 """
 post=r"""
 static void comp_v11_product_input_status(const comp_v11_product_app_t*a,uint32_t req,uint8_t result,uint8_t p[64]){++builds;actual_status(a,req,result,p);}
@@ -65,12 +69,33 @@ int main(void){
  publication_ok=true;input_notify();assert(!app.input.events&&builds==3&&publishes==3);
  input_notify();assert(builds==3&&publishes==3);
  input_client=false;app.input.events=1;input_notify();assert(builds==3&&app.input.events==1);
+ input_client=true;app.runtime.owned=false;app.input=(comp_recorder_input_t){0};
+ assert(comp_input_mode(&app.input,COMP_INPUT_POINTER,COMP_INPUT_POINTER_V4,false,false));
+ app.input.flags=COMP_INPUT_HELD;comp_input_note(&app.input,COMP_INPUT_DOWN,100u);
+ app.input.flags=0u;comp_input_note(&app.input,COMP_INPUT_UP,180u);
+ now_ms=200u;input_notify();assert(app.input.pointer_count==2u&&comp_rec_get32(published+12u)==1u);
+ assert(comp_rec_get32(published+16u)==100u&&(published[7]&1u)&&published[21]==4u);
+ unsigned count=publishes;now_ms=239u;input_notify();assert(publishes==count);
+ now_ms=240u;input_notify();assert(publishes==count+1u&&comp_rec_get32(published+12u)==1u);
+ uint8_t ack[36]={0},reply[64];memcpy(ack,"CIN1",4u);ack[4]=1u;ack[5]=2u;
+ memcpy(ack+12u,app.recording.catalog.uid,12u);comp_rec_put64(ack+24u,app.recording.catalog.epoch);
+ comp_rec_put32(ack+8u,1u);comp_rec_put32(ack+32u,comp_rec_crc(ack,32u));
+ assert(comp_v11_product_input_request(&app,ack,36u,true,now_ms,reply)==64u&&reply[5]==0u);
+ assert(app.input.mode==COMP_INPUT_POINTER&&app.input.pointer_count==1u);
+ now_ms=241u;input_notify();assert(comp_rec_get32(published+12u)==2u&&!(published[7]&1u)&&published[21]==8u);
+ assert(comp_rec_get32(published+16u)==180u); /* Exact edge, not retry time. */
+ assert(comp_v11_product_input_request(&app,ack,36u,false,now_ms,reply)==64u&&app.input.pointer_count==1u);
+ ack[12]^=1u;comp_rec_put32(ack+32u,comp_rec_crc(ack,32u));
+ assert(!comp_v11_product_input_request(&app,ack,36u,false,now_ms,reply)); /* Wrong recorder cannot consume. */
+ ack[12]^=1u;comp_rec_put32(ack+8u,2u);comp_rec_put32(ack+32u,comp_rec_crc(ack,32u));
+ assert(comp_v11_product_input_request(&app,ack,36u,false,now_ms,reply)==64u&&!app.input.pointer_count);
+ puts("PASS actual pointer CIN: retry keeps original edge/flags/time, ACK works while busy without mode/MIC command, duplicate/wrong UID cannot consume next edge");
  puts("PASS real CIN1 builders1000 byte-identical packets;10000 idle turns serialize0; held change, sticky event, failed publication retry and subscription preserved. Software only.");
 }
 """.replace("typeof_unused:","")
-model=out/"model.c";model.write_text(re.sub(r"\bfeedback\b","fixture_feedback",pre)+old+new+post+notify+re.sub(r"\bfeedback\b","fixture_feedback",tests))
+model=out/"model.c";model.write_text(re.sub(r"\bfeedback\b","fixture_feedback",pre)+old+new+post+request+notify+re.sub(r"\bfeedback\b","fixture_feedback",tests))
 app=root/"app/companion_pendant";includes=[platform,app/"recording",app/"power",app/"imu"]
-cmd=["cl.exe","/nologo","/TC","/std:c11","/O2","/W4","/WX","/wd4100","/wd4505",*["/I"+str(p)for p in includes],str(model),"/Fe:"+str(out/"test.exe")]
+cmd=["cl.exe","/nologo","/TC","/std:c11","/O2","/W4","/WX","/wd4100","/wd4505",*["/I"+str(p)for p in includes],str(model),str(app/"power/wba_button.c"),"/Fe:"+str(out/"test.exe")]
 batch=out/"compile.cmd";batch.write_text('@echo off\ncall "'+str(find_vsdevcmd())+'" -arch=amd64 -host_arch=amd64 >nul\nif errorlevel 1 exit /b %errorlevel%\n'+subprocess.list2cmdline(cmd)+'\n')
 for name,cmd in [("compile",["cmd","/d","/c",str(batch)]),("run",[str(out/"test.exe")])]:
  r=subprocess.run(cmd,cwd=out,capture_output=True,text=True,encoding="utf-8",errors="replace");(out/(name+".log")).write_text(r.stdout+r.stderr);print(name,r.returncode,r.stdout+r.stderr);r.check_returncode()
