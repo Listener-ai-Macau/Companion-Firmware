@@ -1668,6 +1668,10 @@ void comp_v11_product_app_poll(comp_v11_product_app_t *app)
         comp_input_note(&app->input,COMP_INPUT_CLICK,board->imu_sample.timestamp_ms);
         comp_pointer_event_t *edge=&app->input.pointer_events[(app->input.pointer_head+app->input.pointer_count-1u)&7u];
         edge->reserved=board->imu.tap_source;++app->input.flick_sample_ms;
+        /* HAL reads TAP_SRC at most once per sensor poll. Product service
+         * can run many times before that next read: consume this observation
+         * here, after copying it to the reliable queue, not on every loop. */
+        board->imu.tap_source=0u;
     }
     comp_cpu_duty_span_end(COMP_DUTY_HAL,hal_span);
     comp_v11_cpu_transfer_stage_end(COMP_BULK_CPU_HAL,bulk_hal);

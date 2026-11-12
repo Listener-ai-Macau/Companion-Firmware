@@ -34,6 +34,7 @@ parser.add_argument('--late-button-release-only',action='store_true')
 parser.add_argument('--capture-controls-only',action='store_true')
 parser.add_argument('--imu-highlight-only',action='store_true')
 parser.add_argument('--input-interaction-only',action='store_true')
+parser.add_argument('--pointer-single-tap-only',action='store_true')
 parser.add_argument('--idle-prime-only',action='store_true')
 parser.add_argument('--auto-fault-recovery-only',action='store_true')
 parser.add_argument('--opus-lib',type=pathlib.Path)
@@ -219,6 +220,11 @@ def main() -> int:
         return result.stdout
     try:
         stage(['cmd.exe','/d','/c',str(script)],'compile.txt')
+        if options.pointer_single_tap_only:
+            output=stage([str(exe),str(cop1),'--pointer-single-tap-only'],'result.txt')
+            assert output.startswith('PASS_POINTER_SINGLE_TAP_PRODUCT_ONLY'),output
+            result=dict(result='PASS_POINTER_SINGLE_TAP_PRODUCT_ONLY',output=output,physicalBoard=False,installed=False)
+            (OUT/'result.json').write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8');print(json.dumps(result));return 0
         output=stage([str(exe),str(cop1),*(['--input-interaction-only'] if options.input_interaction_only else ['--imu-highlight-only'] if options.imu_highlight_only else ['--auto-fault-recovery-only'] if options.auto_fault_recovery_only else ['--idle-prime-only'] if options.idle_prime_only else ['--capture-controls-only'] if options.capture_controls_only else (['--late-button-release-only'] if options.late_button_release_only else (['--idle-display-failure-only'] if options.idle_display_failure_only else (['--resource-uncertain-only'] if options.resource_uncertain_only else (['--resource-timeout-only'] if options.resource_timeout_only else (['--power-guard-only'] if POWER_GUARD_ONLY else []))))))],'result.txt')
         if options.auto_fault_recovery_only:
             assert output.startswith('PASS_AUTOMATIC_FAILED_ORIGINAL_SOFTWARE_ONLY'),output

@@ -1924,8 +1924,41 @@ static int imu_highlight_journey(const char *path,bool desktop)
         "PASS IMU highlight: fresh double-tap persists one offline mark without pause; idle, duplicate, expired, pre-start and shake ignored; original survives reboot");
     free(fixture.flash);return 0;
 }
+static int pointer_single_tap_journey(void)
+{
+    comp_v11_hal_t board;comp_v11_product_app_t app;
+    memset(&fixture,0,sizeof(fixture));fixture.flash=malloc(FLASH_BYTES);
+    REQUIRE(fixture.flash,"pointer NOR allocation");memset(fixture.flash,255u,FLASH_BYTES);layout_root();
+    init_board(&app,&board);REQUIRE(wait_state(&app,COMP_WBA_RECORDING_IDLE,20000u),"pointer recorder boot");
+    board.imu.state=COMP_IMU_READY;board.imu.pointer_mode=true;
+    REQUIRE(comp_input_mode(&app.input,COMP_INPUT_POINTER,
+        COMP_INPUT_POINTER_V4|COMP_INPUT_POINTER_RAW,false,false),"raw pointer admission");
+    comp_v11_product_app_poll(&app); /* Apply the single-tap sensor mode. */
+    board.imu_sample.timestamp_ms=++fixture.tick;board.imu.tap_source=0x61u;
+    comp_v11_product_app_poll(&app);
+    REQUIRE(app.input.pointer_count==1u,"one sensor contact did not queue one click");
+    const comp_pointer_event_t first=*comp_input_pointer_event(&app.input);
+    for(unsigned i=0;i<100u;i++){++fixture.tick;comp_v11_product_app_poll(&app);}
+    REQUIRE(app.input.pointer_count==1u&&app.input.flick_sample_ms==1u&&
+        comp_input_pointer_event(&app.input)->sequence==first.sequence&&
+        comp_input_pointer_event(&app.input)->events==COMP_INPUT_CLICK,
+        "one held sensor latch flooded clicks/overflow before the next sensor read");
+    /* A second contact is not merged into the first even at a natural double-click interval. */
+    board.imu_sample.timestamp_ms=++fixture.tick;board.imu.tap_source=0x64u;
+    comp_v11_product_app_poll(&app);
+    REQUIRE(app.input.pointer_count==2u&&app.input.flick_sample_ms==2u,"second contact lost");
+    comp_input_pointer_ack(&app.input,first.sequence);
+    const comp_pointer_event_t *second=comp_input_pointer_event(&app.input);
+    REQUIRE(second&&second->events==COMP_INPUT_CLICK&&second->reserved==0x64u,
+        "per-contact tap source/order changed");
+    REQUIRE(!board.microphone.running&&fixture.mic_starts==0u,"pointer tap opened microphone");
+    free(fixture.flash);fixture.flash=NULL;
+    puts("PASS_POINTER_SINGLE_TAP_PRODUCT_ONLY one contact once across100 product polls; two contacts preserved");
+    return 0;
+}
 int main(int argc,char **argv)
 {
+    if(argc==3&&!strcmp(argv[2],"--pointer-single-tap-only"))return pointer_single_tap_journey();
     if(argc==3&&!strcmp(argv[2],"--imu-highlight-only"))return imu_highlight_journey(argv[1],false);
     if(argc==3&&!strcmp(argv[2],"--input-interaction-only"))return imu_highlight_journey(argv[1],true);
     if(argc==3&&!strcmp(argv[2],"--auto-fault-recovery-only"))return automatic_fault_original_journey();
