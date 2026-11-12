@@ -87,10 +87,27 @@ def main():
     ap.add_argument('--output',type=Path,required=True)
     ap.add_argument('--execute',action='store_true',help='Stage full signed package, publish pending, then let original Boot install')
     ap.add_argument('--inspect-device',action='store_true',help='Read only metadata through fixed V3, then reset original application')
+    ap.add_argument('--replace-development-boot',type=Path,help='Explicit lost-development-key recovery: matched Boot build directory; changes board trust, not ordinary OTA')
+    ap.add_argument('--previous-public-key',type=Path,help='Original installed raw public key, required with development Boot replacement')
     a=ap.parse_args();out=a.output.resolve();out.mkdir(parents=True,exist_ok=False)
     package=a.package.read_bytes();build=json.loads((a.build/'result.json').read_bytes())
     xy=bytes(int(x,16) for x in re.findall(r'0x([0-9a-fA-F]{2})',(a.build/'wba_update_trust_anchor.h').read_text()))
-    info=verify_cup(package,xy,TARGET);static=info['staticBytes'];data_base=static+131072
+    replacement=None;replacement_report=None;previous_xy=None
+    if a.replace_development_boot:
+        require(a.previous_public_key is not None,'Lost development key recovery must identify the old trust anchor')
+        replacement_report=json.loads((a.replace_development_boot/'result.json').read_bytes())
+        replacement=Path(replacement_report['bin']).read_bytes();previous_xy=a.previous_public_key.read_bytes()
+        require(len(previous_xy)==64 and previous_xy!=xy and replacement_report['result']=='PASS' and
+                replacement_report['key_id']==build['update_trust_anchor']['key_id'] and
+                replacement_report['public_key_sha256']==sha(xy) and sha(replacement)==replacement_report['bin_sha256'] and
+                replacement_report['internal_flash_geometry']==build['internal_flash_geometry'] and
+                replacement_report['firmware_version']==a.current_version and
+                8<=len(replacement)<=TARGET.boot_bytes and xy in replacement,
+                'Replacement Boot is not bound to this exact development package/geometry')
+        manifest=json.loads((a.package.parent/'ota_manifest.json').read_bytes())
+        require(manifest.get('dev_only') is True,'This recovery is only for the explicit development signing key')
+    info=verify_cup(package,xy,TARGET,sha(xy)) if replacement else verify_cup(package,xy,TARGET)
+    static=info['staticBytes'];data_base=static+131072
     require(static==950272 and info['ui']==85 and info['firmware']==build['firmware_version'] and info['firmware']>a.current_version,'Only current matched UI85 maintenance update is supported')
     require(sha(package[176:176+info['appBytes']])==build['bin_sha256'],'CUP does not contain the compiled application')
     loader=a.loader_directory/'Companion_V11_WBA55_UI.stldr';lr=json.loads((a.loader_directory/'result.json').read_bytes())
@@ -101,6 +118,8 @@ def main():
     state=dict(result='OFFLINE_SIGNED_PACKAGE_VALID',package=info,tailBase=base,tailBytes=claim,
                hostInternalFlashWrites=0,bootWrites=0,originalAudioReads=0,originalAudioWrites=0,originalReads='SYSTEM_METADATA_ONLY',
                inspectorSha256=sha(a.inspector.read_bytes()),writesStarted=False,pendingPublished=False)
+    state['developmentBootReplacementPrepared']=bool(replacement)
+    if replacement:state['replacementBootSha256']=sha(replacement)
     save(out/'result.json',state)
     if not(a.execute or a.inspect_device):print(json.dumps(state));return
     def lease():
@@ -118,7 +137,7 @@ def main():
             require(validate_identity(probe.read(0xE0044000,4,'device-id.bin'),probe.read(0x0BF907A0,2,'flash-size.bin'),probe.read(0x40022040,4,'options.bin'),uid,TARGET)==UID,'Wrong fixed target')
             freeze=int.from_bytes(probe.read(0xE0044008,4,'freeze-before.bin'),'little');probe.word(0xE0044008,freeze|(1<<12))
             boot=probe.read(TARGET.flash_base,TARGET.boot_bytes,'resident-boot-before.bin')
-            require(xy in boot,'Resident Boot does not contain the established trust anchor')
+            require((previous_xy if replacement else xy) in boot,'Resident Boot does not contain the established trust anchor')
             state['residentBootSha256']=sha(boot)
             loader_name=open_bound_loader(probe,out,loader,lr)
             system=external_read(probe,NOR+static,131072,'private-system-before.bin')
@@ -153,6 +172,27 @@ def main():
                 require(external_read(probe,NOR+static,131072,'private-system-after-stage.bin')==expected,'Unrelated system metadata changed')
                 state['pendingPublished']=True;state['pairingAndRecordingMetadataPreserved']=True
                 state['result']='SIGNED_PACKAGE_STAGED_FOR_RESIDENT_BOOT';save(out/'result.json',state)
+                if replacement:
+                    # Only after the signed payload and normal pending record
+                    # are durable: replace the 24KiB Boot prefix, never App,
+                    # audio, bonds or current receipts. Resident Boot still
+                    # performs the signed application installation itself.
+                    lease();boot_path=Path(replacement_report['bin'])
+                    state['bootWriteStarted']=True;save(out/'result.json',state)
+                    try:
+                        probe.checked(probe.api.downloadFile(str(boot_path),TARGET.flash_base,0,1,None),'explicit development Boot trust replacement')
+                        observed_boot=probe.read(TARGET.flash_base,TARGET.boot_bytes,'resident-boot-after.bin')
+                        require(observed_boot==replacement+b'\xff'*(TARGET.boot_bytes-len(replacement)),'Replacement Boot readback differs')
+                    except Exception:
+                        # Reversible service operation: restore the exact old
+                        # prefix before allowing its normal reset on failure.
+                        previous_boot=out/'resident-boot-before.bin'
+                        probe.checked(probe.api.downloadFile(str(previous_boot),TARGET.flash_base,0,1,None),'restore original development Boot after failed replacement')
+                        require(probe.read(TARGET.flash_base,TARGET.boot_bytes,'resident-boot-restored.bin')==boot,'Original Boot restore readback differs')
+                        state['originalBootRestored']=True;save(out/'result.json',state)
+                        raise
+                    state['bootWrites']=1;state['hostInternalFlashWrites']=1
+                    state['boardTrustChanged']=True;save(out/'result.json',state)
             else:
                 state['result']='READ_ONLY_TAIL_QUALIFIED';save(out/'result.json',state)
         finally:

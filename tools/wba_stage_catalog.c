@@ -36,7 +36,7 @@ int main(int argc,char **argv)
     /* Keep the exact physical addresses encoded in both committed roots.
      * The bounded callback never permits a read of audio. */
     catalog_base=base-(uint32_t)sizeof(catalog);
-    comp_segment_catalog_t c;comp_segment_port_t cp={cat_read,cat_write,cat_erase,NULL,0u};
+    comp_segment_catalog_t c;comp_segment_port_t cp={cat_read,cat_write,cat_erase,NULL};
     comp_segment_result_t r=comp_segment_catalog_mount_begin(&c,&cp,catalog_base,catalog_base+24576u,base,bytes,uid,id.record.format_epoch);
     unsigned polls=0;
     while(r==COMP_SEG_PENDING&&++polls<20000u)r=comp_segment_catalog_mount_poll(&c);

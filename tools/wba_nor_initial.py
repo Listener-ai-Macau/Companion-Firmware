@@ -159,9 +159,9 @@ def inspect_pairing(internal: bytes, system: bytes, uid: bytes) -> dict:
                 cryptographicAtRestSecurityQualified=False, liveAcquisitionProven=False)
 
 
-def verify_cup(file: bytes, public_xy: bytes, geometry) -> dict:
+def verify_cup(file: bytes, public_xy: bytes, geometry, expected_trust_sha256: str = TRUST_SHA256) -> dict:
     require(len(file) >= 184 and len(public_xy) == 64, 'Incomplete CUP/public key')
-    require(sha(public_xy) == TRUST_SHA256, 'Unexpected product trust anchor')
+    require(sha(public_xy) == expected_trust_sha256, 'Unexpected product trust anchor')
     prefix = file[:76]
     values = struct.unpack('<4sBBHIIIIIII32sBBHI', prefix)
     magic, component, target, fmt, family, board, version, low, high, count, crc, digest, alg, r0, r1, key_id = values
