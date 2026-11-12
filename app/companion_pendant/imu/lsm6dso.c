@@ -37,7 +37,7 @@ static bool configure_idle(comp_lsm6dso_t *imu, bool idle, uint32_t now_ms)
     const uint8_t ctrl2 = idle ? 0x00u : imu->pointer_mode ? 0x40u : 0x30u;
     const uint8_t low_power = idle ? 0x10u : 0x00u; /* CTRL6_C XL_HM_MODE */
     const uint8_t route = idle || imu->recording_taps ? 0u : 0x03u;
-    const uint8_t event_route = !idle && imu->recording_taps ? 8u : 0u;
+    const uint8_t event_route = !idle && imu->recording_taps ? (imu->pointer_single_taps?64u:8u) : 0u;
 
     /* Power down the accelerometer before changing its operating mode. This
      * also gives one deterministic restore path after a partial transaction. */
@@ -177,6 +177,7 @@ bool comp_lsm6dso_set_recording_taps(comp_lsm6dso_t *imu, bool enabled)
 {
     uint8_t ctrl,route,drdy,discard;
     if(!imu || imu->state!=COMP_IMU_READY)return false;
+    if(!enabled&&imu->pointer_single_taps&&!comp_lsm6dso_set_pointer_single_taps(imu,false))return false;
     if(imu->recording_taps==enabled)return true;
     if(enabled && imu->idle_accel_only && !configure_idle(imu,false,0u))return false;
     const uint8_t rate=enabled?0x68u:0x38u;
@@ -193,6 +194,7 @@ bool comp_lsm6dso_set_recording_taps(comp_lsm6dso_t *imu, bool enabled)
 bool comp_lsm6dso_set_pointer(comp_lsm6dso_t *imu,bool enabled)
 {
     if(!imu||imu->state!=COMP_IMU_READY)return false;
+    if(!enabled&&imu->pointer_single_taps&&!comp_lsm6dso_set_pointer_single_taps(imu,false))return false;
     if(imu->pointer_mode==enabled)return true;
     /* Recording keeps its original52Hz gyro. The higher ODR and tap engine
      * belong only to active pointing and use the same verified driver. */
@@ -202,6 +204,18 @@ bool comp_lsm6dso_set_pointer(comp_lsm6dso_t *imu,bool enabled)
         (void)fail(imu);return false;
     }
     imu->pointer_mode=enabled;return true;
+}
+bool comp_lsm6dso_set_pointer_single_taps(comp_lsm6dso_t *imu,bool enabled)
+{
+    if(!imu||imu->state!=COMP_IMU_READY||(enabled&&!imu->pointer_mode))return false;
+    if(imu->pointer_single_taps==enabled)return true;
+    /* AN5192: single-only recognition latches each tap until TAP_SRC read.
+     * Do not read first-tap state while the recording double-tap engine runs. */
+    uint8_t threshold,route,discard;const uint8_t ths=enabled?0x02u:0x82u,md1=enabled?0x40u:0x08u;
+    if(!write_byte(imu,0x5Bu,ths)||!write_byte(imu,0x5Eu,md1)||
+       !imu->read(imu->context,0x5Bu,&threshold,1u)||!imu->read(imu->context,0x5Eu,&route,1u)||
+       !imu->read(imu->context,0x1Cu,&discard,1u)||threshold!=ths||route!=md1){(void)fail(imu);return false;}
+    imu->pointer_single_taps=enabled;imu->tap_source=0u;imu->event_irq_pending=false;return true;
 }
 bool comp_lsm6dso_stop(comp_lsm6dso_t *imu)
 {
@@ -215,6 +229,7 @@ bool comp_lsm6dso_stop(comp_lsm6dso_t *imu)
     imu->tap_source=0u;
     imu->recording_taps=false;
     imu->pointer_mode=false;
+    imu->pointer_single_taps=false;
     imu->event_irq_pending=false;
     imu->wake_source=0u;
     return true;
@@ -247,6 +262,7 @@ bool comp_lsm6dso_recover(comp_lsm6dso_t *imu, uint32_t now_ms)
     imu->idle_accel_only = false;
     imu->recording_taps=false;
     imu->pointer_mode=false;
+    imu->pointer_single_taps=false;
     imu->event_irq_pending=false;
     imu->wake_source=0u;
     return true;

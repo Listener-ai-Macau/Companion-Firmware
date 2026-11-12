@@ -768,6 +768,9 @@ void comp_v11_product_input_status(const comp_v11_product_app_t *app,uint32_t re
     comp_rec_put64(response+28u,app->recording_session_id);
     comp_rec_put32(response+36u,app->recording.pipeline.engine_bound?
         app->recording.capture.engine.bookmark_sequence:0u);
+    /* Raw desktop qualification retains the chip's axis/sign at the reliable
+     * event's own timestamp. It is not labelled left/right contact position. */
+    if(edge&&(s->options&COMP_INPUT_POINTER_RAW))comp_rec_put32(response+36u,edge->reserved);
     memcpy(response+40u,app->recording.catalog.uid,12u);
     comp_rec_put64(response+52u,app->recording.catalog.epoch);
     comp_rec_put32(response+60u,comp_rec_crc(response,60u));
@@ -785,7 +788,8 @@ size_t comp_v11_product_input_request(comp_v11_product_app_t *app,const uint8_t 
         if(p[6]||p[7]||!comp_input_pointer_v4(&app->input))result=2u;
         else comp_input_pointer_ack(&app->input,comp_rec_get32(p+8u));
     } else if(p[5]==1u) {
-        if(p[6]>COMP_INPUT_POINTER||(p[7]&~(p[6]==COMP_INPUT_POINTER?15u:7u)))result=2u;
+        if(p[6]>COMP_INPUT_POINTER||(p[7]&~(p[6]==COMP_INPUT_POINTER?31u:7u))||
+           ((p[7]&COMP_INPUT_POINTER_RAW)&&!(p[7]&COMP_INPUT_POINTER_V4)))result=2u;
         else if(busy||!comp_input_mode(&app->input,p[6],p[7],
             comp_runtime_recording_owned(&app->runtime),comp_wba_button_busy(&app->button)))result=1u;
     } else if(p[6]||p[7])result=2u;
@@ -1619,6 +1623,9 @@ void comp_v11_product_app_poll(comp_v11_product_app_t *app)
     board->input_pointer_requested=app->input.mode==COMP_INPUT_POINTER;
     board->input_taps_requested=board->input_pointer_requested ||
         (app->input.mode==COMP_INPUT_DICTATION&&(app->input.options&COMP_INPUT_UNDO)!=0u);
+    if(board->imu.state==COMP_IMU_READY&&board->imu.pointer_mode&&!board->microphone.running)
+        (void)comp_lsm6dso_set_pointer_single_taps(&board->imu,
+            board->input_pointer_requested&&(app->input.options&COMP_INPUT_POINTER_RAW)!=0u);
     if(board->microphone.running)(void)capture_progress(app,20u);
     uint32_t phase_started=HAL_GetTick();
 #if defined(COMPANION_WBA_BLE_LINKED) && defined(__arm__)
@@ -1627,6 +1634,12 @@ void comp_v11_product_app_poll(comp_v11_product_app_t *app)
     comp_cpu_stage_span_t bulk_hal=comp_v11_cpu_transfer_stage_begin();
     comp_cpu_duty_span_t hal_span=comp_cpu_duty_span_begin();
     comp_v11_hal_poll(board);
+    if(comp_input_pointer_v4(&app->input)&&(app->input.options&COMP_INPUT_POINTER_RAW)&&
+       (board->imu.tap_source&COMP_LSM6DSO_SINGLE_TAP)==COMP_LSM6DSO_SINGLE_TAP) {
+        comp_input_note(&app->input,COMP_INPUT_CLICK,board->imu_sample.timestamp_ms);
+        comp_pointer_event_t *edge=&app->input.pointer_events[(app->input.pointer_head+app->input.pointer_count-1u)&7u];
+        edge->reserved=board->imu.tap_source;++app->input.flick_sample_ms;
+    }
     comp_cpu_duty_span_end(COMP_DUTY_HAL,hal_span);
     comp_v11_cpu_transfer_stage_end(COMP_BULK_CPU_HAL,bulk_hal);
 #if defined(COMPANION_WBA_BLE_LINKED) && defined(__arm__)

@@ -28,12 +28,14 @@ typedef struct {
     bool recording_taps;
     bool event_irq_pending; /* Fresh physical INT1: idle motion or recording double tap. */
     bool pointer_mode; /* Active desktop only:104Hz gyro,417Hz hardware taps. */
+    bool pointer_single_taps; /* Opt-in raw desktop qualification, no recording change. */
     uint8_t wake_source; /* Last WU source low7; high bit means idle route armed. */
     uint8_t wake_sequence; /* Mod256 event generation, consumed once per product pass. */
     uint32_t tap_reads;
     uint32_t tap_counts; /* Saturated SINGLE low16 / DOUBLE high16, TAP_IA required. */
 } comp_lsm6dso_t;
 #define COMP_LSM6DSO_DOUBLE_TAP 0x50u /* TAP_IA and DOUBLE_TAP, AN5192 */
+#define COMP_LSM6DSO_SINGLE_TAP 0x60u
 #define COMP_LSM6DSO_WAKE_ARMED 0x80u
 #define COMP_LSM6DSO_WAKE_DETECTED 0x08u
 static inline bool comp_lsm6dso_idle_settling(const comp_lsm6dso_t *imu)
@@ -56,6 +58,7 @@ bool comp_lsm6dso_set_idle(comp_lsm6dso_t *imu, bool idle, uint32_t now_ms);
  * Ordinary awake/idle modes remain52/12.5Hz with the tap route disabled. */
 bool comp_lsm6dso_set_recording_taps(comp_lsm6dso_t *imu, bool enabled);
 bool comp_lsm6dso_set_pointer(comp_lsm6dso_t *imu,bool enabled);
+bool comp_lsm6dso_set_pointer_single_taps(comp_lsm6dso_t *imu,bool enabled);
 /* Idle-only product recovery. Wait at least 1 s before each reset; stop after
  * three attempts without a valid sample. No loop, delay or sample is emitted
  * here. Poll RESET_WAIT normally; only a real sample clears the retry budget.

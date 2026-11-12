@@ -89,6 +89,10 @@ int main(void){
  assert(!comp_v11_product_input_request(&app,ack,36u,false,now_ms,reply)); /* Wrong recorder cannot consume. */
  ack[12]^=1u;comp_rec_put32(ack+8u,2u);comp_rec_put32(ack+32u,comp_rec_crc(ack,32u));
  assert(comp_v11_product_input_request(&app,ack,36u,false,now_ms,reply)==64u&&!app.input.pointer_count);
+ assert(comp_input_mode(&app.input,COMP_INPUT_POINTER,24u,false,false));
+ comp_input_note(&app.input,COMP_INPUT_CLICK,300u);app.input.pointer_events[app.input.pointer_head].reserved=0x6Cu;
+ now_ms=301u;input_notify();assert(comp_rec_get32(published+36u)==0x6Cu&&comp_rec_get32(published+16u)==300u);
+ now_ms=341u;input_notify();assert(comp_rec_get32(published+36u)==0x6Cu); /* Axis/sign survives retry. */
  puts("PASS actual pointer CIN: retry keeps original edge/flags/time, ACK works while busy without mode/MIC command, duplicate/wrong UID cannot consume next edge");
  puts("PASS real CIN1 builders1000 byte-identical packets;10000 idle turns serialize0; held change, sticky event, failed publication retry and subscription preserved. Software only.");
 }

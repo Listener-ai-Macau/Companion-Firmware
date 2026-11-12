@@ -122,6 +122,12 @@ int main(void)
     for(unsigned i=0;i<9u;++i)comp_input_note(&s,COMP_INPUT_CLICK,300u+i);
     edge=comp_input_pointer_event(&s);assert(s.pointer_count==1u&&(edge->events&COMP_INPUT_OVERFLOW)&&(edge->events&COMP_INPUT_UP));
     comp_input_connection(&s,false);assert(!s.pointer_count);
+    assert(!comp_input_mode(&s,COMP_INPUT_POINTER,COMP_INPUT_POINTER_RAW,false,false));
+    assert(comp_input_mode(&s,COMP_INPUT_POINTER,COMP_INPUT_POINTER_V4|COMP_INPUT_POINTER_RAW,false,false));
+    assert(!comp_input_mode(&s,COMP_INPUT_RECORDER,24u,false,false));
+    comp_imu_pointer_pack(sample.timestamp_ms,8u,false,1u,5u,true,sample.accel_mg,sample.gyro_mdps,packet);
+    assert(packet[4]==5u&&packet[6]==2u&&packet[16]==1u&&packet[18]==0xfeu&&packet[20]==0xe8u);
+    printf("CIM5_RAW_GOLDEN ");for(unsigned i=0;i<32u;++i)printf("%02x",packet[i]);puts("");
     puts("PASS Watch device heading survives80 missing aim samples; reliable control head retries, ACK order/duplicate, bounded overflow, mode isolation and legacy schemas retained");
     puts("PASS pointer mode: keys/motion never start MIC; disconnect restores recorder; timestamp/centidegree precision and bounded saturation");
     puts("SOFTWARE_ONLY: real enclosure thresholds, wake, audio first-word and Mac insertion not qualified");

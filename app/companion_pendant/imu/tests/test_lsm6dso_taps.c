@@ -71,6 +71,19 @@ int main(void)
     assert(comp_lsm6dso_set_pointer(&imu,false)&&b.reg[0x11]==0u);
     assert(comp_lsm6dso_set_pointer(&imu,true));b.corrupt=0x11;
     assert(!comp_lsm6dso_set_pointer(&imu,false)&&imu.state==COMP_IMU_FAULT);
+    start(&imu,&b);assert(!comp_lsm6dso_set_pointer_single_taps(&imu,true));
+    assert(comp_lsm6dso_set_pointer(&imu,true));
+    assert(comp_lsm6dso_set_pointer_single_taps(&imu,true));
+    assert(b.reg[0x5B]==0x02u&&b.reg[0x5E]==0x40u&&b.reg[0x10]==0x68u&&b.reg[0x11]==0x40u);
+    b.reg[0x1E]=3u;b.reg[0x1C]=0x6Cu;imu.event_irq_pending=true;
+    unsigned tap_reads=b.taps_read;
+    assert(comp_lsm6dso_poll(&imu,100u,&sample)==COMP_IMU_SAMPLE&&imu.tap_source==0x6Cu&&b.taps_read==tap_reads+1u);
+    assert(comp_lsm6dso_poll(&imu,110u,&sample)==COMP_IMU_SAMPLE&&imu.tap_source==0u&&b.taps_read==tap_reads+1u);
+    b.reg[0x1C]=0x64u;imu.event_irq_pending=true;
+    assert(comp_lsm6dso_poll(&imu,180u,&sample)==COMP_IMU_SAMPLE&&imu.tap_source==0x64u);
+    assert(comp_lsm6dso_set_pointer(&imu,false)&&!imu.pointer_single_taps&&b.reg[0x5B]==0x82u&&b.reg[0x5E]==8u);
+    assert(comp_lsm6dso_set_recording_taps(&imu,false)&&b.reg[0x5E]==0u);
+    puts("PASS opt-in desktop single tap: source axis/sign retained once per impact, fast second tap separate, pointer exit restores recording double-tap engine");
     /* Configuration failures do not report READY with a missing gesture route. */
     for(unsigned i=0u;i<3u;i++) {
         start(&imu,&b);assert(comp_lsm6dso_start(&imu,read_reg,write_reg,&b,2000u));b.reg[0x12]=0u;
