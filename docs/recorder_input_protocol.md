@@ -10,7 +10,7 @@ mode at6, options at7, nonzero request nonce u32 at8, device UID12 at12,
 format epoch u64 at24, CRC32 of bytes0..31 at32. Query requires mode/options0.
 Wrong identity/CRC/schema/size is rejected without changing state.
 
-Modes: 0=recorder,1=desktop dictation,2=presentation. Optional gestures:
+Modes: 0=recorder,1=desktop dictation,2=presentation,3=air pointer. Optional gestures:
 bit0=flick to submit, bit1=shake to cancel, bit2=double tap to undo. Default
 recorder mode has no optional gestures. Mode change is refused while recording,
 preparing, saving, holding a key or updating. Mode is volatile, not a preference.
@@ -57,7 +57,19 @@ Disconnect never stops a held dictation. Physical release still ends and saves
 it locally, then recorder mode returns. New connections do not inherit a desktop
 mode. Desktop undo is scoped to the host's last insertion and original target;
 it must not issue a blind global Undo. Presentation uses verified mounting axes;
-held left/right tilt emits previous/next. Air pointer is not implemented here.
+held left/right tilt emits previous/next. Pointer mode never starts the microphone;
+the existing button level is sent to its host for click/drag interpretation.
+
+Pointer mode alone keeps the existing52Hz accel/gyro configuration awake and
+publishes a latest-only CIM1 packet at most every38ms on the same encrypted4001
+subscription. Legacy9001 remains the1Hz diagnostic interface. CIM1 is32 bytes:
+magic0..3, schema1 at4, mode3 at5, held bit0 at6, reserved0 at7, u32 sequence at8,
+u32 original sensor milliseconds at12, three i16 acceleration mg at16, three i16
+angular rates in0.01deg/s at22, IEEE CRC32 at28. The peer UID/epoch are already
+validated by the CIN1 handshake. No buffered old samples are replayed after loss.
+Disconnect returns mode0 and the existing low-power policy. Clients must stop
+pointer output on stale samples and release an owned drag. The optional compact
+CPU observer can measure pointer-only scopes; these are not recording CPU results.
 
 Audio remains the existing CRV2/COP1/CMC3 path. CIN1 does not introduce a second
 microphone, codec, audio format or raw six-axis stream. Existing 9001 IMU raw

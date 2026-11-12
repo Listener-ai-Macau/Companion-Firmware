@@ -3,7 +3,7 @@
 #include "wba_button.h"
 #include "motion_events.h"
 
-enum { COMP_INPUT_RECORDER,COMP_INPUT_DICTATION,COMP_INPUT_PRESENTATION };
+enum { COMP_INPUT_RECORDER,COMP_INPUT_DICTATION,COMP_INPUT_PRESENTATION,COMP_INPUT_POINTER };
 enum { COMP_INPUT_FLICK=1u,COMP_INPUT_SHAKE=2u,COMP_INPUT_UNDO=4u };
 enum { COMP_INPUT_START=1u,COMP_INPUT_STOP=2u,COMP_INPUT_MARK=4u,
        COMP_INPUT_UNDO_LAST=8u,COMP_INPUT_CANCEL=16u,COMP_INPUT_SUBMIT=32u,
@@ -27,7 +27,7 @@ static inline void comp_input_note(comp_recorder_input_t *s,uint16_t events,uint
 static inline bool comp_input_mode(comp_recorder_input_t *s,uint8_t mode,uint8_t options,
                                     bool capture_owned,bool key_busy)
 {
-    if(mode>COMP_INPUT_PRESENTATION||(options&~7u)||capture_owned||key_busy)return false;
+    if(mode>COMP_INPUT_POINTER||(options&~7u)||capture_owned||key_busy)return false;
     s->mode=mode;s->options=options;s->flags=0u;s->record_token=0u;
     s->events=0u;s->flick_angle_md=0;s->flick_sample_ms=0u;return true;
 }
@@ -58,6 +58,7 @@ static inline uint16_t comp_input_motion(comp_recorder_input_t *s,uint8_t motion
     const comp_imu_sample_t *sample,uint8_t tilt,bool capture_owned)
 {
     if(s->mode==COMP_INPUT_RECORDER)return capture_owned&&(motion&COMP_MOTION_DOUBLE_TAP)?COMP_INPUT_MARK:0u;
+    if(s->mode==COMP_INPUT_POINTER)return 0u; /* Host owns pointing/clicks; never MIC. */
     if(s->mode==COMP_INPUT_PRESENTATION) {
         if(!(s->flags&COMP_INPUT_HELD)||!(motion&COMP_MOTION_TILT_CHANGED))return 0u;
         return tilt==COMP_MOTION_TILT_RIGHT?COMP_INPUT_NEXT:tilt==COMP_MOTION_TILT_LEFT?COMP_INPUT_PREVIOUS:0u;

@@ -7,6 +7,7 @@
 #include "dual_mic_capture.h"
 #endif
 #include "../cpu_profile_target.h"
+#include "imu_pointer_wire.h"
 #include "ll_sys_if.h"
 #include "clock_target.h"
 #include "main.h"
@@ -50,6 +51,7 @@ static comp_v11_product_app_t *product;
 static bool linked,secured,link_ready;
 static bool input_client;
 static uint8_t input_feedback,input_flags;
+static uint32_t pointer_published_ms,pointer_sample_ms,pointer_sequence;
 
 /* CAPTURE_RADIO_MODEL_BEGIN */
 #if COMPANION_WBA_CPU_RESIDENCE_PROFILE
@@ -597,7 +599,13 @@ void comp_v11_ble_link(bool connected,bool encrypted)
         observe_gate_close(0u);comp_v11_ble_tx_gate_available(&notify_gate);
     }
     linked=connected; secured=connected&&encrypted;
-    if(!secured){input_client=false;input_feedback=input_flags=255u;}
+    if(!secured){
+        #if COMPANION_WBA_CPU_DUTY_OBSERVER
+        if(product&&product->input.mode==COMP_INPUT_POINTER)comp_cpu_duty_end(0u,false);
+        #endif
+        input_client=false;input_feedback=input_flags=255u;
+        pointer_published_ms=pointer_sample_ms=pointer_sequence=0u;
+    }
     /* Queue only; the product foreground owner performs any NOR operation. */
     if(product) {
         comp_v11_product_recording_link_change(product,secured,new_secure);
@@ -1559,6 +1567,25 @@ static void input_notify(void)
         product->input.events=0u;input_feedback=response[23];input_flags=response[7];
     }
 }
+static void pointer_notify(void)
+{
+    if(!input_client||!secured||product->input.mode!=COMP_INPUT_POINTER||
+       !product_link.subscribed[COMPANION_GATT_CHAR_SETTINGS]||
+       comp_runtime_recording_owned(&product->runtime)||comp_v11_update_product_busy())return;
+    const uint32_t now=HAL_GetTick();
+    const comp_lsm6dso_t *imu=&product->board->imu;
+    const comp_imu_sample_t *sample=&product->board->imu_sample;
+    if(imu->state!=COMP_IMU_READY||imu->idle_accel_only||now-sample->timestamp_ms>100u||
+       now-pointer_published_ms<38u||sample->timestamp_ms==pointer_sample_ms)return;
+    uint8_t packet[32];
+    if(++pointer_sequence==0u)++pointer_sequence;
+    comp_imu_pointer_packet(sample,pointer_sequence,
+        (product->input.flags&COMP_INPUT_HELD)!=0u,packet);
+    pointer_published_ms=now;pointer_sample_ms=sample->timestamp_ms;
+    /* One current sample, no retry queue: failed delivery is superseded by
+     * the next sample, with the original sensor timestamp and button level. */
+    (void)publish(NULL,COMPANION_GATT_CHAR_SETTINGS,packet,sizeof(packet));
+}
 void comp_v11_ble_poll(void)
 {
     uint32_t tasks=UTIL_SEQ_DEFAULT;
@@ -1610,6 +1637,7 @@ void comp_v11_ble_poll(void)
         (void)companion_gatt_stm32wb_drain(event,&product_link);
         maintenance_poll();
         input_notify();
+        pointer_notify();
         bool measuring=sealed_transfer_work();
         if(measuring)start_download_observation();
         if(!measuring && download_timing_enabled) {

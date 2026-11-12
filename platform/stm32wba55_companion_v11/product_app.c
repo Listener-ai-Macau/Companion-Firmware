@@ -768,10 +768,18 @@ size_t comp_v11_product_input_request(comp_v11_product_app_t *app,const uint8_t 
        comp_rec_get64(p+24u)!=app->recording.catalog.epoch||comp_rec_get32(p+32u)!=comp_rec_crc(p,32u))return 0u;
     uint8_t result=0u;
     if(p[5]) {
-        if(p[6]>COMP_INPUT_PRESENTATION||(p[7]&~7u))result=2u;
+        if(p[6]>COMP_INPUT_POINTER||(p[7]&~7u))result=2u;
         else if(busy||!comp_input_mode(&app->input,p[6],p[7],
             comp_runtime_recording_owned(&app->runtime),comp_wba_button_busy(&app->button)))result=1u;
     } else if(p[6]||p[7])result=2u;
+    #if COMPANION_WBA_CPU_DUTY_OBSERVER
+    /* Reuse the existing compact observer only in the explicit engineering
+     * build. This is a pointer scope, not an audio/capture measurement. */
+    if(!result&&p[5]) {
+        if(p[6]==COMP_INPUT_POINTER)comp_cpu_duty_begin(comp_rec_get32(p+8u),false);
+        else comp_cpu_duty_end(0u,false);
+    }
+    #endif
     comp_v11_product_input_status(app,comp_rec_get32(p+8u),result,response);return 64u;
 }
 comp_segment_result_t comp_v11_product_recording_bookmark_result(const comp_v11_product_app_t *app,uint32_t token,uint32_t request)
@@ -1331,7 +1339,7 @@ bool comp_v11_product_update_idle_policy(comp_v11_product_app_t *app)
     bool idle= r->menu.browser.auto_sleep_minutes!=0u &&
         HAL_GetTick()-r->last_activity_ms >= (uint32_t)r->menu.browser.auto_sleep_minutes*60000u;
     comp_power_policy_set_blocker(p,COMP_POWER_BLOCKER_MENU_TIMER,
-        unavailable ? !idle : r->surface!=COMP_SCREEN_SURFACE_LOW_POWER);
+        app->input.mode==COMP_INPUT_POINTER || (unavailable ? !idle : r->surface!=COMP_SCREEN_SURFACE_LOW_POWER));
     comp_power_policy_set_blocker(p,COMP_POWER_BLOCKER_UI_PENDING,unavailable ? !idle :
         (r->frame_outstanding || r->visible_revision!=r->revision || r->visible_surface!=COMP_SCREEN_SURFACE_LOW_POWER));
     comp_power_policy_set_blocker(p,COMP_POWER_BLOCKER_SCREEN_WAIT,

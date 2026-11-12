@@ -1,4 +1,5 @@
 #include "recorder_input.h"
+#include "imu_pointer_wire.h"
 #include <assert.h>
 #include <stdio.h>
 
@@ -63,6 +64,21 @@ int main(void)
     comp_input_note(&s,COMP_INPUT_MARK,123u);assert(s.sequence==1u&&s.event_ms==123u&&s.events==COMP_INPUT_MARK);
     s.sequence=UINT32_MAX;comp_input_note(&s,COMP_INPUT_WAKE,124u);assert(s.sequence==1u);
     puts("PASS shared IMU dispatch: recorder tap marks, idle cannot start, optional flick requires fresh coherent angular samples; duplicate samples do not integrate");
+    assert(comp_input_mode(&s,COMP_INPUT_POINTER,0u,false,false));
+    assert(comp_input_key(&s,COMP_WBA_BUTTON_DOWN,false)==0u);
+    assert(s.flags&COMP_INPUT_HELD);
+    assert(comp_input_motion(&s,255u,&sample,COMP_MOTION_TILT_RIGHT,false)==0u);
+    assert(comp_input_key(&s,COMP_WBA_BUTTON_UP,false)==0u&&!(s.flags&COMP_INPUT_HELD));
+    assert(!comp_input_mode(&s,4u,0u,false,false));
+    assert(!comp_input_mode(&s,COMP_INPUT_POINTER,0u,true,false));
+    comp_input_connection(&s,false);assert(s.mode==COMP_INPUT_RECORDER);
+    sample=(comp_imu_sample_t){.timestamp_ms=0xfffffff0u,.accel_mg={1,-2,1000},.gyro_mdps={8750,-250000,500000}};
+    uint8_t packet[32];comp_imu_pointer_packet(&sample,7u,true,packet);
+    assert(!memcmp(packet,"CIM1",4u)&&packet[4]==1u&&packet[5]==3u&&packet[6]==1u);
+    assert(packet[22]==0x6bu&&packet[23]==3u&&packet[24]==0x58u&&packet[25]==0x9eu);
+    assert(packet[26]==0xffu&&packet[27]==0x7fu);
+    printf("CIM1_GOLDEN ");for(unsigned i=0;i<32u;++i)printf("%02x",packet[i]);puts("");
+    puts("PASS pointer mode: keys/motion never start MIC; disconnect restores recorder; timestamp/centidegree precision and bounded saturation");
     puts("SOFTWARE_ONLY: real enclosure thresholds, wake, audio first-word and Mac insertion not qualified");
     return 0;
 }
