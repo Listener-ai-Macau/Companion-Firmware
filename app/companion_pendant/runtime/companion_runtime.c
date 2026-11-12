@@ -11,7 +11,12 @@
 #if COMPANION_WBA_RESOURCE_PROFILE
 #include "companion_wba_resource_contract.h"
 #endif
-#if COMPANION_WBA_RESOURCE_PROFILE && COMPANION_WBA_RESOURCE_GENERATION >= 64u
+#if defined(COMPANION_WBA_SCREEN_ENABLED) && !COMPANION_WBA_SCREEN_ENABLED
+#define COMP_RUNTIME_VISUAL 0
+#else
+#define COMP_RUNTIME_VISUAL 1
+#endif
+#if COMP_RUNTIME_VISUAL && COMPANION_WBA_RESOURCE_PROFILE && COMPANION_WBA_RESOURCE_GENERATION >= 64u
 #define COMP_RUNTIME_PET_MOTION 1
 #else
 #define COMP_RUNTIME_PET_MOTION 0
@@ -123,6 +128,7 @@ static unsigned motion_priority(uint8_t events)
     return (events&COMP_MOTION_SHAKE)?3u:(events&COMP_MOTION_PICKUP)?2u:
         (events&COMP_MOTION_TILT_CHANGED)?1u:0u;
 }
+#if COMP_RUNTIME_VISUAL
 static unsigned active_motion_priority(const comp_runtime_t *r)
 {
 #if COMP_PET_PROCEDURAL
@@ -133,6 +139,7 @@ static unsigned active_motion_priority(const comp_runtime_t *r)
     (void)r;return 0u;
 #endif
 }
+#endif
 static void defer_motion(comp_runtime_t *r,uint8_t events,uint8_t tilt,uint32_t now)
 {
     /* One latest semantic intention shares the existing deferred slot. Touch
@@ -1009,6 +1016,7 @@ static bool play_tap(comp_runtime_t *r,uint16_t x,uint16_t y,uint32_t now)
     r->pet_play.generation=r->reaction_generation;
     return true;
 }
+#if COMP_RUNTIME_VISUAL
 static void play_service(comp_runtime_t *r,uint32_t now)
 {
     if(!r->pet_play.phase)return;
@@ -1039,6 +1047,7 @@ static void play_service(comp_runtime_t *r,uint32_t now)
     r->pet_play.generation=r->reaction_generation;
     r->pet_play.phase=orient?COMP_PET_PLAY_ORIENT:COMP_PET_PLAY_CUE;
 }
+#endif
 static void release_gaze(comp_runtime_t *r,uint32_t now)
 {
     if(r->pet_play.phase)return;
@@ -1944,7 +1953,9 @@ void comp_runtime_motion_pose(comp_runtime_t *r, uint8_t events, uint8_t orienta
 }
 void comp_runtime_service(comp_runtime_t *r, uint32_t now)
 {
+#if COMP_RUNTIME_VISUAL
     comp_touch_tap_arbiter_event_t tap;
+#endif
     comp_audio_feedback_outcome_t outcome;
     if (!r) return;
     if(r->temporary_quiet_active) {
@@ -1966,6 +1977,10 @@ void comp_runtime_service(comp_runtime_t *r, uint32_t now)
                 r->menu.view==COMP_SCREEN_MENU_VIEW_BROWSER_QUICK))dirty(r);
         }
     }
+#if COMP_RUNTIME_VISUAL
+    /* A no-screen build has no touch, caption or visual reply producer.
+     * Keep recording/audio/quiet/sleep below live, but do not retain the
+     * entire deferred touch/reaction graph merely through this poller. */
     comp_pet_chat_service(r,now,record_busy(r) || r->menu_pending);
     if((r->record_saved_state==RECORD_NOTICE_SAVED_VISIBLE ||
         r->record_saved_state==RECORD_NOTICE_STOP_VISIBLE) && (int32_t)(now-r->record_saved_due_ms)>=0)
@@ -2012,6 +2027,7 @@ void comp_runtime_service(comp_runtime_t *r, uint32_t now)
 #endif
     if(pet_carried(r) && (int32_t)(now-r->family_retry_ms)>=0)
         r->orientation &= 7u;
+#endif
     /* A visible pet reply belongs to HOME. A later menu/sleep/recording
      * transition must not let its queued sound follow the user into that
      * different activity; keep functional confirmation/start/stop cues. */
@@ -2052,8 +2068,10 @@ void comp_runtime_service(comp_runtime_t *r, uint32_t now)
         }
         dirty(r);
     }
+#if COMP_RUNTIME_VISUAL
     play_service(r,now);
     if (r->surface == COMP_SCREEN_SURFACE_HOME) comp_epaper_motion_coordinator_keep_awake(&r->life, now);
+#endif
     /* control(true) can synchronously report a fresh HAL tick while this
      * service call still holds its earlier tick. A small future start must
      * not wrap into a 49-day duration and stop the capture immediately.
@@ -2071,6 +2089,7 @@ void comp_runtime_service(comp_runtime_t *r, uint32_t now)
 #endif
         dirty(r);
     }
+#if COMP_RUNTIME_VISUAL
     if (comp_touch_tap_arbiter_poll(&r->taps, now, r->gesture.active,
         r->gesture.tap_pending && now - r->gesture.last_tap_ms <= r->gesture.config.double_tap_max_gap_ms, &tap))
         { react(r, tap.x, tap.y, now); }
@@ -2119,6 +2138,7 @@ void comp_runtime_service(comp_runtime_t *r, uint32_t now)
         else if(kind==COMP_RUNTIME_PET_INPUT_STROKE)stroke_reply(r,x,(comp_browser_tap_zone_t)y,now);
         else react(r,x,y,now);
     }
+#endif
     if (r->capture_active && !r->stop_pending &&
         r->record_limit_seconds != 0u &&
         recording_elapsed >= r->record_limit_seconds*1000u)

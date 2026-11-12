@@ -59,6 +59,17 @@ uint32_t HAL_GetTick(void)
     return fixture.tick;
 }
 
+/* This product fixture replaces the physical HAL/sensor bus. Register writes
+ * and readback remain covered by the real LSM6DSO driver fixture. */
+bool comp_lsm6dso_set_pointer_single_taps(comp_lsm6dso_t *imu,bool enabled)
+{
+    if(!imu||imu->state!=COMP_IMU_READY||(enabled&&!imu->pointer_mode))return false;
+    if(imu->pointer_single_taps!=enabled){
+        imu->pointer_single_taps=enabled;imu->tap_source=0u;imu->event_irq_pending=false;
+    }
+    return true;
+}
+
 bool comp_v11_hal_key_pressed(void)
 {
     return fixture.key_pressed;

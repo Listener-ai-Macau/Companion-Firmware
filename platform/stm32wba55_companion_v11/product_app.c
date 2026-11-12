@@ -1779,9 +1779,11 @@ void comp_v11_product_app_poll(comp_v11_product_app_t *app)
                 input_motion&=127u;
             recording_input_apply(app,comp_input_motion(&app->input,input_motion,&board->imu_sample,
                 board->motion.tilt,comp_runtime_recording_owned(&app->runtime)),now);
+#if COMPANION_WBA_SCREEN_ENABLED
             uint8_t pose=(uint8_t)(board->motion_event_flags&~COMP_MOTION_DOUBLE_TAP);
             if(pose)comp_runtime_motion_pose(&app->runtime,pose,board->motion.orientation,
                 board->motion.tilt,board->motion_event_ms,now);
+#endif
         }
     }
     if(app->input.mode==COMP_INPUT_DICTATION&&now-board->imu_sample.timestamp_ms<100u)
