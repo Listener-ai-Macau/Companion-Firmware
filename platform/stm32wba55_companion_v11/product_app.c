@@ -1652,7 +1652,7 @@ void comp_v11_product_app_poll(comp_v11_product_app_t *app)
     comp_v11_hal_poll(board);
     #if COMPANION_WBA_IMU_RAW_UART
     if(imu_uart.until&&!board->microphone.running&&board->imu_sample.timestamp_ms!=imu_uart.last_ms&&
-       now-board->imu_sample.timestamp_ms<100u&&board->imu.state==COMP_IMU_READY){
+       HAL_GetTick()-board->imu_sample.timestamp_ms<100u&&board->imu.state==COMP_IMU_READY){
         uint8_t packet[32];const comp_imu_sample_t *s=&board->imu_sample;
         comp_imu_pointer_pack(s->timestamp_ms,++imu_uart.sequence,false,board->imu.tap_source,
             5u,false,s->accel_mg,s->gyro_mdps,packet);
