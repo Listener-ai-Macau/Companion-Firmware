@@ -24,6 +24,7 @@ static bool fail_final;
 static bool fail_middle;
 static uint32_t *invalidate_generation;
 static uint16_t *invalidate_progress;
+static unsigned short_publish_length;
 tBleStatus reference_companion_gatt_stm32wb_init(void);
 
 uint8_t aci_gatt_add_service(uint8_t type,const Service_UUID_t *uuid,uint8_t primary,
@@ -50,7 +51,12 @@ uint8_t aci_gatt_add_char(uint16_t service,uint8_t type,const Char_UUID_t *uuid,
 }
 uint8_t aci_gatt_update_char_value(uint16_t service,uint16_t handle,uint8_t offset,
     uint8_t size,const uint8_t *bytes)
-{(void)service;(void)handle;(void)offset;(void)size;(void)bytes;return BLE_STATUS_SUCCESS;}
+{
+    (void)service;(void)bytes;
+    unsigned index=(unsigned)(handle-0x200u)/3u;
+    if(index>=chars || (unsigned)offset+size>declarations[index].size)return BLE_STATUS_INVALID_PARAMS;
+    short_publish_length=size;return BLE_STATUS_SUCCESS;
+}
 void SVCCTL_RegisterSvcHandler(SVCCTL_EvtAckStatus_t (*fn)(void *))
 {if(fn)++callbacks;}
 void comp_diag_log_record_code(uint16_t code,uint8_t severity,uint32_t a,
@@ -60,6 +66,8 @@ static uint8_t workspace[2048];
 static void *claim(void *c,size_t n){(void)c;return n<=sizeof(workspace)?workspace:NULL;}
 static void release(void *c,void *p){(void)c;(void)p;}
 static uint32_t clock_ms(void *c){(void)c;return 0u;}
+void comp_v11_ble_observe_aci_resource_origin(bool notify,const uint32_t *generation)
+{(void)notify;(void)generation;}
 uint8_t aci_gatt_update_char_value_ext(uint16_t c,uint16_t s,uint16_t h,uint8_t u,
     uint16_t n,uint16_t o,uint8_t b,const uint8_t *p)
 {
@@ -93,17 +101,35 @@ int main(void)
     memset(declarations,0,sizeof(declarations));
     CHECK(companion_gatt_stm32wb_init()==BLE_STATUS_SUCCESS);
     for(unsigned i=0u;i<21u;++i) {
-        if(i==6u||i==7u)reference[i].size=509u;
+        /* Only five read-only value reservations change. Compare every
+         * property, event mask, UUID, order and all writable/stream sizes. */
+        if(i==1u) {CHECK(reference[i].size==16u);reference[i].size=8u;}
+        if(i==3u) {CHECK(reference[i].size==32u);reference[i].size=16u;}
+        if(i==13u) {CHECK(reference[i].size==128u);reference[i].size=24u;}
+        if(i==18u) {CHECK(reference[i].size==64u);reference[i].size=16u;}
+        if(i==20u) {CHECK(reference[i].size==64u);reference[i].size=24u;}
         CHECK(memcmp(&reference[i],&declarations[i],sizeof(reference[i]))==0);
     }
-    comp_v11_ota_gatt_ports_t ports={accept,accept,accept,status,NULL,claim,release,clock_ms};
+    comp_v11_ota_gatt_ports_t ports={.control=accept,.data=accept,.status=status,
+        .workspace_claim=claim,.workspace_release=release,.now_ms=clock_ms};
     CHECK(comp_v11_ota_gatt_init(&ports));
     CHECK(!bad_range && service_used<=service_records && chars==25u);
     CHECK(services+2u==COMP_V11_BLE_GATT_SERVICES);
-    CHECK(attributes+9u==79u);
+    CHECK(attributes+9u==80u);
     CHECK(reserved_attributes+9u==COMP_V11_BLE_GATT_ATTRIBUTES);
     CHECK(callbacks==COMP_V11_BLE_SERVICE_CALLBACKS);
     uint8_t packet[509];for(unsigned i=0u;i<sizeof(packet);++i)packet[i]=(uint8_t)i;
+    const struct {companion_gatt_char_id_t id;uint8_t size;} status_values[]={
+        {COMPANION_GATT_CHAR_BATTERY_CHARGE,8u},
+        {COMPANION_GATT_CHAR_E_PAPER_CARD_STATUS,16u},
+        {COMPANION_GATT_CHAR_OTA_READINESS,24u},
+        {COMPANION_GATT_CHAR_SPEAKER_STATUS,16u},
+        {COMPANION_GATT_CHAR_WAKE_WORD_STATUS,24u}};
+    for(unsigned i=0u;i<sizeof(status_values)/sizeof(status_values[0]);++i) {
+        CHECK(companion_gatt_stm32wb_publish(status_values[i].id,packet,status_values[i].size)==BLE_STATUS_SUCCESS);
+        CHECK(short_publish_length==status_values[i].size);
+        CHECK(companion_gatt_stm32wb_publish(status_values[i].id,packet,(uint16_t)(status_values[i].size+1u))==BLE_STATUS_INVALID_PARAMS);
+    }
     fail_final=true;
     CHECK(companion_gatt_stm32wb_publish(COMPANION_GATT_CHAR_RECORDING_CHUNK_PULL,packet,509u)==0x64u);
     CHECK(long_calls==3u&&!long_notifies);
@@ -137,16 +163,22 @@ int main(void)
         packet,509u,&staged,&generation)==BLE_STATUS_SUCCESS);
     CHECK(long_calls==4u&&long_notifies==1u&&!memcmp(packet,long_value,509u));
     CHECK(companion_gatt_stm32wb_publish(COMPANION_GATT_CHAR_RECORDING_CONTROL,packet,509u)==BLE_STATUS_INVALID_PARAMS);
-    _Static_assert(COMP_V11_BLE_GATT_SERVICES==13u && COMP_V11_BLE_GATT_ATTRIBUTES==80u,"full native service/attribute reservation budget");
-    _Static_assert(COMP_V11_BLE_ATT_VALUE_BYTES==4692u && COMPANION_GATT_QUEUE_DEPTH==8u,"complete paired values/retain queue capacity");
+    _Static_assert(COMP_V11_BLE_GATT_SERVICES==13u && COMP_V11_BLE_GATT_ATTRIBUTES==81u,"full native service/attribute reservation budget");
+    _Static_assert(COMP_V11_BLE_ATT_VALUE_BYTES==3996u && COMPANION_GATT_QUEUE_DEPTH==8u,"complete paired values/retain queue capacity");
     unsigned before_gatt=BLE_TOTAL_BUFFER_SIZE_GATT(100u,13u,3584u);
     unsigned after_gatt=BLE_TOTAL_BUFFER_SIZE_GATT(COMP_V11_BLE_GATT_ATTRIBUTES,
         COMP_V11_BLE_GATT_SERVICES,COMP_V11_BLE_ATT_VALUE_BYTES);
     unsigned before_host=BLE_TOTAL_BUFFER_SIZE(1u,BLE_MBLOCKS_CALC(30u,251u,1u)+16u,0u);
     unsigned after_host=BLE_TOTAL_BUFFER_SIZE(1u,
         BLE_MBLOCKS_CALC(30u,COMP_V11_BLE_ATT_MTU_MAX,1u)+16u,0u);
-    CHECK(before_gatt==8208u && after_gatt==8516u && before_host==3160u && after_host==3880u);
-    CHECK(after_host+after_gatt==12396u); /* complete paired values, unchanged radio buffers */
+    CHECK(before_gatt==8208u && after_gatt==7860u && before_host==3160u && after_host==3880u);
+    CHECK(after_host+after_gatt==11740u); /* complete paired values, unchanged radio buffers */
+    /* Same pinned SDK macros, official p2pServer app_conf.h defaults. These
+     * are only two pools, not an official full-application RAM measurement. */
+    unsigned sdk_p2p_host=BLE_TOTAL_BUFFER_SIZE(8u,BLE_MBLOCKS_CALC(30u,251u,8u)+21u,0u);
+    unsigned sdk_p2p_gatt=BLE_TOTAL_BUFFER_SIZE_GATT(68u,8u,1344u);
+    unsigned sdk_one_link_host=BLE_TOTAL_BUFFER_SIZE(1u,BLE_MBLOCKS_CALC(30u,251u,1u)+21u,0u);
+    CHECK(sdk_p2p_host==7784u && sdk_p2p_gatt==4448u && sdk_one_link_host==3360u);
     comp_v11_ble_mtu_t mtu;
     comp_v11_ble_mtu_open(&mtu,0u);
     CHECK(mtu.mtu==23u && comp_v11_ble_mtu_value_capacity(&mtu)==20u);
@@ -161,6 +193,7 @@ int main(void)
     comp_v11_ble_mtu_open(&mtu,0u);
     CHECK(comp_v11_ble_mtu_agreed(&mtu,139u,COMP_V11_BLE_ATT_MTU_MAX));
     CHECK(mtu.mtu==139u && comp_v11_ble_mtu_value_capacity(&mtu)==136u);
-    puts("PASS_CE_BLE_BUDGET_SOFTWARE_ONLY: long509_final_retry_one_ACI_middle_retry_two_ACI_no_stale_generation; only3003_3004_length509_other19_bitexact, OTA4_kept, services13, attributes80_preserve_reserved_handles, callbacks2, paired_value_pool4692, queue8, host512_fits_recovered_RAM, actual_MTU_min_peer, recording_values509; physical_registration_required");
+    printf("BLE_POOL_BYTES official_p2p_host=%u official_p2p_gatt=%u official_one_link_host=%u companion_host=%u companion_gatt=%u\n",sdk_p2p_host,sdk_p2p_gatt,sdk_one_link_host,after_host,after_gatt);
+    puts("PASS_CE_BLE_BUDGET_SOFTWARE_ONLY: five_read_only_reservations_saved216; unchanged_wire_lengths_UUID_properties_handle_order_all_writable_capacities; long509_retry_and_generation_kept; OTA4_kept; services13_attributes81_callbacks2_queue8; host3880_MTU512_dual509_unchanged; physical_registration_required");
     return 0;
 }
