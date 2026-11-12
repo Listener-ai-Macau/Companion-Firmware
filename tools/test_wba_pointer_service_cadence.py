@@ -18,11 +18,13 @@ prefix=r"""#include <stdint.h>
 typedef struct { bool busy; } pipeline_t;
 typedef struct { struct {bool running;} microphone;bool playback_active,speaker;uint32_t imu_poll_ms;struct{uint32_t pending,key_pending;}wake_events;} comp_v11_hal_t;
 typedef struct {comp_v11_hal_t *board;struct{uint8_t mode;}input;uint32_t pointer_service_due_ms;struct{bool writing;}pet_profile;struct{bool audio,prepare_pending,start_pending,command_pending,stop_pending,capture_active;}runtime;struct{bool ready;pipeline_t pipeline;}recording;} comp_v11_product_app_t;
-static bool ota,ble,update,nvm;static uint32_t tick;static unsigned full;
+static bool ota,ble,update,nvm,start_from_ble;static uint32_t tick;static unsigned full,ble_only;
+static comp_v11_product_app_t *callback_app;
 static uint32_t HAL_GetTick(void){return tick;}
 static bool comp_wba_recording_pipeline_storage_busy(const pipeline_t*p){return p->busy;}
 static bool comp_v11_ota_gatt_foreground_pending(void){return ota;}
 static bool comp_v11_ble_foreground_pending(void){return ble;}
+static void comp_v11_ble_poll(void){++ble_only;ble=false;if(start_from_ble)callback_app->runtime.start_pending=true;}
 static bool comp_v11_update_product_busy(void){return update;}
 static bool comp_v11_ble_nvm_busy(void){return nvm;}
 static bool comp_speaker_active(const bool *active){return *active;}
@@ -41,10 +43,14 @@ int main(void){
  board.wake_events.key_pending=1;assert(product_service_due(&app,tick));board.wake_events.key_pending=0;
  board.microphone.running=true;for(unsigned i=0;i<20;++i)assert(product_service_due(&app,tick));board.microphone.running=false;
  board.playback_active=true;assert(product_service_due(&app,tick));board.playback_active=false;
- bool *urgent[]={&app.runtime.prepare_pending,&app.runtime.start_pending,&app.runtime.command_pending,&app.runtime.stop_pending,&app.runtime.capture_active,&app.runtime.audio,&board.speaker,&app.recording.pipeline.busy,&app.pet_profile.writing,&ota,&ble,&update,&nvm};
+ bool *urgent[]={&app.runtime.prepare_pending,&app.runtime.start_pending,&app.runtime.command_pending,&app.runtime.stop_pending,&app.runtime.capture_active,&app.runtime.audio,&board.speaker,&app.recording.pipeline.busy,&app.pet_profile.writing,&ota,&update,&nvm};
  for(unsigned i=0;i<sizeof(urgent)/sizeof(urgent[0]);++i){*urgent[i]=true;assert(product_service_due(&app,tick));*urgent[i]=false;}
  app.recording.ready=false;assert(product_service_due(&app,tick));app.recording.ready=true;
  assert(!product_service_due(&app,tick));
+ callback_app=&app;unsigned previous_full=full;
+ ble=true;dispatch(&app);assert(ble_only==1u&&full==previous_full);
+ ble=true;start_from_ble=true;dispatch(&app);assert(ble_only==2u&&full==previous_full+1u);
+ app.runtime.start_pending=false;start_from_ble=false;app.pointer_service_due_ms=200;
  for(unsigned mode=0;mode<4u;++mode){app.input.mode=(uint8_t)mode;assert(!product_service_due(&app,tick));}
  app.input.mode=3;
  app.pointer_service_due_ms=200;board.imu_poll_ms=100;assert(!product_service_due(&app,109));assert(product_service_due(&app,110));

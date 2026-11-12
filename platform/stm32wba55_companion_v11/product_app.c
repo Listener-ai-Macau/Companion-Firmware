@@ -1551,7 +1551,7 @@ static bool product_service_due(const comp_v11_product_app_t *app,uint32_t now)
         comp_wba_recording_pipeline_storage_busy(&app->recording.pipeline)
 #ifdef COMPANION_WBA_BLE_LINKED
         || comp_v11_update_product_busy() || comp_v11_ble_nvm_busy() ||
-        comp_v11_ota_gatt_foreground_pending() || comp_v11_ble_foreground_pending()
+        comp_v11_ota_gatt_foreground_pending()
 #endif
         ;
 }
@@ -1570,7 +1570,18 @@ void comp_v11_product_app_poll(comp_v11_product_app_t *app)
     comp_runtime_frame_t frame;
 #endif
     uint32_t now=HAL_GetTick();
-    if(!product_service_due(app,now))return;
+    if(!product_service_due(app,now)) {
+#ifdef COMPANION_WBA_BLE_LINKED
+        if(!comp_v11_ble_foreground_pending())return;
+        /* A ready radio task needs the radio, not an extra peripheral/catalog
+         * traversal. Recheck after dispatch: a received START/STOP/control or
+         * elapsed sensor deadline still gets this same product turn. */
+        comp_v11_ble_poll();now=HAL_GetTick();
+        if(!product_service_due(app,now))return;
+#else
+        return;
+#endif
+    }
     app->pointer_service_due_ms=now+5u;
     if(app->pet_profile.writing)comp_pet_profile_expire(&app->pet_profile,now);
     comp_v11_hal_t *board=app->board;
