@@ -9,6 +9,7 @@ pre=next(ast.literal_eval(n.value)for n in old.body if isinstance(n,ast.Assign)a
 pre=pre.replace('static void __WFI(void){assert(mask==1u||!timer_on);tim.CNT+=1000u;dwt.CYCCNT+=100u;}','static void __WFI(void){}')
 extra=r"""
 #include <string.h>
+#include "companion_cpu_stage.h"
 static struct {uint32_t APB1LFZR;} debug_registers;
 #define DBGMCU (&debug_registers)
 #define DBGMCU_APB1LFZR_DBG_TIM2_STOP 1u
@@ -37,11 +38,25 @@ int main(void){
  comp_cpu_duty_span_end(COMP_DUTY_FUSION,a);assert(function_stages[COMP_DUTY_FUSION].ticks==31);
  ipsr=16;assert(!comp_cpu_duty_span_begin().token);comp_cpu_duty_span_end(COMP_DUTY_FUSION,a);
  assert(function_stages[COMP_DUTY_FUSION].calls==1);ipsr=0;
+ /* Compact audio uses only the existing PDM/Opus/NOR hooks, with no detailed
+  * capture-checkpoint spans or changing the normal encoder/storage paths. */
+ for(unsigned i=0u;i<3u;++i){
+  comp_cpu_stage_span_t audio=comp_cpu_stage_begin();TIM2->CNT+=11u+i;
+  comp_cpu_stage_end(i,audio,true);
+  assert(function_stages[COMP_DUTY_PDM+i].calls==1u&&function_stages[COMP_DUTY_PDM+i].ticks==11u+i);
+ }
+ assert(!comp_cpu_detail_begin().token);
+ comp_cpu_duty_poll();assert(function_stages[COMP_DUTY_OBSERVER].calls==1u);
+ ipsr=16;TIM2->CNT=200;comp_cpu_duty_irq_enter();TIM2->CNT=210;comp_cpu_duty_irq_enter();
+ TIM2->CNT=230;comp_cpu_duty_irq_exit();TIM2->CNT=240;comp_cpu_duty_irq_exit();ipsr=0;
+ assert(irq_summary.ticks==40u&&irq_summary.calls==1u&&!irq_summary.depth&&!mask);
+ irq_summary.waiting=true;ipsr=16;TIM2->CNT=250;comp_cpu_duty_irq_enter();TIM2->CNT=270;comp_cpu_duty_irq_exit();ipsr=0;irq_summary.waiting=false;
+ assert(irq_summary.ticks==60u&&irq_summary.wfi_ticks==20u&&irq_summary.calls==2u);
  a=comp_cpu_duty_span_begin();comp_cpu_duty_emit();assert(!writes);
  TIM2->CNT=1000000;RTC->SSR=UINT32_MAX-1024u;comp_cpu_duty_end(0,false);
  assert(!observer.active&&!timer_on&&!observer.duty.invalid);
  comp_cpu_duty_span_end(COMP_DUTY_FUSION,a);assert(function_stages[COMP_DUTY_FUSION].calls==1);
- comp_cpu_duty_emit();assert(writes==COMP_DUTY_STAGE_COUNT+1u&&strstr(output,"nested_rows_overlap=1")&&strstr(output,"stage=2 calls=1"));
+ comp_cpu_duty_emit();assert(writes==COMP_DUTY_STAGE_COUNT+2u&&strstr(output,"nested_rows_overlap=1")&&strstr(output,"stage=2 calls=1")&&strstr(output,"CPU2 IRQ"));
  unsigned previous=writes;comp_cpu_duty_emit();assert(writes==previous);
  comp_cpu_duty_begin(8,false);TIM2->CNT=100;comp_cpu_duty_span_end(COMP_DUTY_INPUT_STATUS,a);
  assert(!function_stages[COMP_DUTY_INPUT_STATUS].calls);

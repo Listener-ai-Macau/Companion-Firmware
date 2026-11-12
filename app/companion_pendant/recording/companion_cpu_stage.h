@@ -31,10 +31,27 @@ static inline bool comp_cpu_bulk_owned(void){return false;}
 static inline void comp_cpu_codec_cache_begin(void){}
 static inline void comp_cpu_panel_stage_end(comp_cpu_stage_span_t s,bool completed,uint16_t bytes)
 {(void)s;(void)completed;(void)bytes;}
+#if COMPANION_WBA_CPU_DUTY_OBSERVER
+#include "cpu_duty_target.h"
+/* Reuse only the existing three audio envelopes. Detailed checkpoint hooks
+ * below stay off; compact measurements do not inherit the17-stage observer. */
+static inline comp_cpu_stage_span_t comp_cpu_stage_begin(void)
+{
+    comp_cpu_duty_span_t s=comp_cpu_duty_span_begin();
+    return (comp_cpu_stage_span_t){.at_us=s.raw,.token=s.token};
+}
+static inline void comp_cpu_stage_end(unsigned stage,comp_cpu_stage_span_t span,bool completed)
+{
+    (void)completed;
+    if(stage<=COMP_CPU_STAGE_NOR_PROGRAM)
+        comp_cpu_duty_span_end(COMP_DUTY_PDM+stage,(comp_cpu_duty_span_t){span.at_us,span.token});
+}
+#else
 static inline comp_cpu_stage_span_t comp_cpu_stage_begin(void)
 {return (comp_cpu_stage_span_t){0};}
 static inline void comp_cpu_stage_end(unsigned stage,comp_cpu_stage_span_t span,bool completed)
 {(void)stage;(void)span;(void)completed;}
+#endif
 #endif
 
 static inline comp_cpu_stage_span_t comp_cpu_detail_begin(void)
@@ -42,7 +59,7 @@ static inline comp_cpu_stage_span_t comp_cpu_detail_begin(void)
 #if COMPANION_WBA_CPU_RESIDENCE_PROFILE
     if(comp_cpu_bulk_owned())return comp_cpu_bulk_stage_begin();
 #endif
-#if COMPANION_WBA_CPU_DETAILED_PROFILE
+#if COMPANION_WBA_CPU_DETAILED_PROFILE && !COMPANION_WBA_CPU_DUTY_OBSERVER
     return comp_cpu_stage_begin();
 #else
     return (comp_cpu_stage_span_t){0};
@@ -53,7 +70,7 @@ static inline void comp_cpu_detail_end(unsigned stage,comp_cpu_stage_span_t span
 #if COMPANION_WBA_CPU_RESIDENCE_PROFILE
     if(comp_cpu_bulk_owned()){comp_cpu_bulk_stage_end(stage,span);return;}
 #endif
-#if COMPANION_WBA_CPU_DETAILED_PROFILE
+#if COMPANION_WBA_CPU_DETAILED_PROFILE && !COMPANION_WBA_CPU_DUTY_OBSERVER
     comp_cpu_stage_end(stage,span,completed);
 #else
     (void)stage;(void)span;(void)completed;

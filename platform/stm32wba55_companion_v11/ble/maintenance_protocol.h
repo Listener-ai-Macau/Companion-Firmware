@@ -9,6 +9,11 @@ enum { COMP_MAINT_QUERY=0,COMP_MAINT_PAIR_WINDOW=1,COMP_MAINT_DEFAULTS=2,COMP_MA
         COMP_MAINT_AUDIO_FAULTS=7,COMP_MAINT_AUDIO_SERVICE=8,COMP_MAINT_CPU_DUTY=9,COMP_MAINT_STORAGE=10,
          COMP_MAINT_IMU_TAPS=16,COMP_MAINT_IMU_MARKS=17,COMP_MAINT_IMU_POWER=18 };
 enum { COMP_MAINT_OK=0,COMP_MAINT_PENDING=1,COMP_MAINT_BUSY=2,COMP_MAINT_INVALID=3,COMP_MAINT_FAILED=4 };
+#if COMPANION_WBA_CPU_DUTY_OBSERVER
+/* Source-bound diagnostic firmware only. No microphone or product-mode
+ * change: measure connected idle services with the existing counter. */
+enum {COMP_MAINT_CPU_BEGIN=32,COMP_MAINT_CPU_END=33};
+#endif
 #if defined(COMPANION_WBA_CPU_RESIDENCE_PROFILE) && COMPANION_WBA_CPU_RESIDENCE_PROFILE
 /* Engineering-only cached pages on the existing encrypted characteristic.
  * Normal builds reject these operations; no product protocol/owner changes. */
@@ -16,6 +21,9 @@ enum {COMP_MAINT_CODEC_FIRST=32,COMP_MAINT_CODEC_LAST=38};
 #endif
 static inline bool comp_maint_operation_supported(uint8_t operation)
 {
+#if COMPANION_WBA_CPU_DUTY_OBSERVER
+    if(operation==COMP_MAINT_CPU_BEGIN||operation==COMP_MAINT_CPU_END)return true;
+#endif
 #if defined(COMPANION_WBA_CPU_RESIDENCE_PROFILE) && COMPANION_WBA_CPU_RESIDENCE_PROFILE
     if(operation>=COMP_MAINT_CODEC_FIRST && operation<=COMP_MAINT_CODEC_LAST)return true;
 #endif

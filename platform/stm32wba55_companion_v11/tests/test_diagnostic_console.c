@@ -38,14 +38,18 @@ int main(void)
     sink_t sink={0},failed={.fail_call=4u};
     comp_v11_diag_console_init(&console);
     CHECK(console.sequence==0u&&!console.query_pending);
+    CHECK(!comp_v11_diag_console_has_work(&console));
     comp_v11_diag_console_accept(&console,(uint8_t)'s');
     CHECK(!console.query_pending);
+    CHECK(!comp_v11_diag_console_has_work(&console));
     comp_v11_diag_console_accept(&console,(uint8_t)'\n');
     const char *battery="BATTERY\r\n";
     for(const char *p=battery;*p;++p)comp_v11_diag_console_accept(&console,(uint8_t)*p);
     CHECK(console.battery_pending && !comp_v11_diag_console_take_battery(&console,false));
+    CHECK(comp_v11_diag_console_has_work(&console));
     CHECK(comp_v11_diag_console_take_battery(&console,true));
     CHECK(!comp_v11_diag_console_take_battery(&console,true));
+    CHECK(!comp_v11_diag_console_has_work(&console));
     CHECK(!comp_v11_diag_console_take_pair(&console));
     for(const char *p="BLE RECONNECT\r\n";*p;++p) {
         comp_v11_diag_console_accept(&console,(uint8_t)*p);
@@ -90,6 +94,7 @@ int main(void)
             comp_v11_diag_console_accept(&console,(uint8_t)*command_byte);
             if(*command_byte!='\n')CHECK(comp_v11_diag_console_take_record(&console)==COMP_V11_DIAG_RECORD_NONE);
         }
+        CHECK(comp_v11_diag_console_has_work(&console));
         CHECK(comp_v11_diag_console_take_record(&console)==(comp_v11_diag_record_command_t)(i+1u));
         CHECK(comp_v11_diag_console_take_record(&console)==COMP_V11_DIAG_RECORD_NONE);
     }

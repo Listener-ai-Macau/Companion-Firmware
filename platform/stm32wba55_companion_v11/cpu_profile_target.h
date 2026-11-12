@@ -61,8 +61,13 @@ static inline void comp_v11_cpu_poll(void){}
 static inline bool comp_v11_cpu_arm_cache_off_trial(void){return false;}
 static inline comp_cpu_stage_span_t comp_v11_cpu_transfer_stage_begin(void){return (comp_cpu_stage_span_t){0};}
 static inline void comp_v11_cpu_transfer_stage_end(unsigned stage,comp_cpu_stage_span_t span){(void)stage;(void)span;}
+#if COMPANION_WBA_CPU_DUTY_OBSERVER
+static inline void comp_v11_cpu_irq_enter(bool systick_entry){(void)systick_entry;comp_cpu_duty_irq_enter();}
+static inline void comp_v11_cpu_irq_exit(void){comp_cpu_duty_irq_exit();}
+#else
 static inline void comp_v11_cpu_irq_enter(bool systick_entry){(void)systick_entry;}
 static inline void comp_v11_cpu_irq_exit(void){}
+#endif
 static inline void comp_v11_cpu_emit(void){comp_cpu_duty_emit();}
 #endif
 #endif

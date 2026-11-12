@@ -65,6 +65,14 @@ typedef struct {
     uint8_t command_match, panel_command;
     uint8_t imu_candidate_axes,imu_axes,imu_command,record_command;
 } comp_v11_diag_console_t;
+/* Partial UART input is not a dispatch request. Call expensive product/radio
+ * readiness checks only for a complete command, pending reply or periodic job. */
+static inline bool comp_v11_diag_console_has_work(const comp_v11_diag_console_t *c)
+{
+    return c&&(c->query_pending||c->pair_pending||c->battery_pending||c->reconnect_pending||
+        c->record_command!=COMP_V11_DIAG_RECORD_NONE||c->imu_command||
+        c->panel_command!=COMP_V11_DIAG_PANEL_NONE);
+}
 
 typedef struct {
     /* UI_PENDING only means that a normal visible surface blocks sleep. It is

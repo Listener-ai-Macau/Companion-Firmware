@@ -616,7 +616,7 @@ void comp_v11_ble_link(bool connected,bool encrypted)
     linked=connected; secured=connected&&encrypted;
     if(!secured){
         #if COMPANION_WBA_CPU_DUTY_OBSERVER
-        if(product&&product->input.mode==COMP_INPUT_POINTER)comp_cpu_duty_end(0u,false);
+        comp_cpu_duty_end(0u,false); /* Never retires a recording-owned scope. */
         #endif
         input_client=false;input_feedback=input_flags=255u;
         pointer_sample_ms=pointer_sequence=0u;
@@ -1130,6 +1130,9 @@ static void maintenance_codec_fields(uint8_t operation,uint8_t response[32])
 #endif
 static void maintenance_runtime_fields(uint8_t operation,uint8_t response[32])
 {
+#if COMPANION_WBA_CPU_DUTY_OBSERVER
+    if(operation==COMP_MAINT_CPU_BEGIN||operation==COMP_MAINT_CPU_END)operation=COMP_MAINT_CPU_DUTY;
+#endif
     response[6]=0u;response[7]=1u;
     if(operation==COMP_MAINT_IMU_POWER){maintenance_imu_power_fields(response);return;}
     if(operation==COMP_MAINT_IMU_TAPS || operation==COMP_MAINT_IMU_MARKS) {
@@ -1235,6 +1238,19 @@ static void maintenance_request(const companion_gatt_event_t *e)
     /* Read-only cached scalars remain useful during recording/storage work.
      * Keep the existing queued-reply owner and secured subscription checks. */
     if(operation==COMP_MAINT_BLE_DIAGNOSTICS){maintenance.result=COMP_MAINT_OK;return;}
+#if COMPANION_WBA_CPU_DUTY_OBSERVER
+    if(operation==COMP_MAINT_CPU_BEGIN||operation==COMP_MAINT_CPU_END) {
+        comp_cpu_duty_snapshot_t s=comp_cpu_duty_snapshot();
+        if(s.recording&&s.active)return;
+        if(operation==COMP_MAINT_CPU_BEGIN) {
+            if(s.active||!maintenance_idle()||product->input.mode!=COMP_INPUT_RECORDER)return;
+            comp_cpu_duty_begin(request,false);
+        } else comp_cpu_duty_end(0u,false);
+        s=comp_cpu_duty_snapshot();
+        maintenance.result=s.enabled&&!s.invalid?COMP_MAINT_OK:COMP_MAINT_FAILED;
+        return;
+    }
+#endif
     if(operation>=COMP_MAINT_MEMORY) {
         /* Only a stack scan needs a stopped/idle owner; cached audio scalars
          * remain readable without pausing capture or erasing/resetting state. */

@@ -13,6 +13,8 @@ typedef struct {
 enum {COMP_DUTY_PRODUCT=0,COMP_DUTY_BLE,COMP_DUTY_INPUT_STATUS,
     COMP_DUTY_IMU_GPIO,COMP_DUTY_FUSION,COMP_DUTY_POINTER_SEND,COMP_DUTY_MAIN,
     COMP_DUTY_READY,COMP_DUTY_SEQ,COMP_DUTY_NVM,COMP_DUTY_HAL,COMP_DUTY_RUNTIME,COMP_DUTY_UPDATE,
+    COMP_DUTY_PREFIX,COMP_DUTY_OBSERVER,COMP_DUTY_LOW_POWER,
+    COMP_DUTY_PDM,COMP_DUTY_OPUS,COMP_DUTY_NOR_PROGRAM,COMP_DUTY_POST_PRODUCT,COMP_DUTY_WFI_RUN,
     COMP_DUTY_STAGE_COUNT};
 typedef struct {uint32_t raw,token;} comp_cpu_duty_span_t;
 #if COMPANION_WBA_CPU_DUTY_OBSERVER
@@ -25,6 +27,8 @@ void comp_cpu_duty_wait_enter(void);
 void comp_cpu_duty_wait_exit(void);
 void comp_cpu_duty_wfi(void);
 void comp_cpu_duty_poll(void);
+void comp_cpu_duty_irq_enter(void);
+void comp_cpu_duty_irq_exit(void);
 bool comp_cpu_duty_counter_owned(void);
 comp_cpu_duty_snapshot_t comp_cpu_duty_snapshot(void);
 #else

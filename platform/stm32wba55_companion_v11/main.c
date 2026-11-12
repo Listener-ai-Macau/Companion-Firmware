@@ -948,6 +948,7 @@ int main(void)
     comp_v11_reset_witness_emit(previous_reset,reset_flags);
     diagnostic_emit(&diagnostic,reset_flags,boot_route,ble_initialized,COMP_V11_DIAG_BOOT,false);
     for (;;) {
+        comp_cpu_duty_span_t function_prefix=comp_cpu_duty_span_begin();
 #ifdef COMPANION_WBA_BLE_LINKED
         LL_IWDG_ReloadCounter(IWDG);
 #endif
@@ -970,6 +971,7 @@ int main(void)
 #if defined(COMPANION_WBA_BLE_LINKED) && defined(__arm__)
         uint8_t wall_previous=comp_v11_ota_gatt_wall_context(COMP_OTA_WALL_PRODUCT_OTHER);
 #endif
+        comp_cpu_duty_span_end(COMP_DUTY_PREFIX,function_prefix);
         comp_cpu_stage_span_t bulk_product=comp_v11_cpu_transfer_stage_begin();
         comp_cpu_duty_span_t function_product=comp_cpu_duty_span_begin();
 #if COMP_V11_DIAG_FLASH_ENABLED
@@ -977,6 +979,7 @@ int main(void)
 #endif
         comp_v11_product_app_poll(&companion_app);
         comp_cpu_duty_span_end(COMP_DUTY_PRODUCT,function_product);
+        comp_cpu_duty_span_t function_post=comp_cpu_duty_span_begin();
 #if COMP_V11_DIAG_FLASH_ENABLED
         comp_v11_diag_flash_heartbeat(&companion_app,HAL_GetTick(),2u);
 #endif
@@ -991,11 +994,15 @@ int main(void)
          * owner inside that app, before this scope starts. START is still a
          * queued product request; an inactive/old span cannot own a new token.
          * Preserve all original diagnostic/control guards and work order. */
+        comp_cpu_duty_span_end(COMP_DUTY_POST_PRODUCT,function_post);
         comp_cpu_stage_span_t cpu_main_services=comp_cpu_detail_begin();
         comp_cpu_duty_span_t function_main=comp_cpu_duty_span_begin();
         panel_debug_service(&panel_debug,comp_v11_diag_console_take_panel(&diagnostic));
-        bool safe=diagnostic_output_safe(false) && !panel_debug.dumping;
-        bool pairing_safe=diagnostic_output_safe(true);
+        bool console_work=comp_v11_diag_console_has_work(&diagnostic)||pair_reply_pending||
+            imu_reply||record_reply||reconnect_reply||
+            (COMPANION_WBA_PERIODIC_DIAGNOSTICS&&tick-logged>=10000u);
+        bool safe=console_work&&diagnostic_output_safe(false) && !panel_debug.dumping;
+        bool pairing_safe=console_work&&diagnostic_output_safe(true);
         comp_v11_diag_record_command_t record_command=comp_v11_diag_console_take_record(&diagnostic);
         if(record_command!=COMP_V11_DIAG_RECORD_NONE) {
             /* Local wired service uses the real product runtime/encoder/NOR.
@@ -1094,7 +1101,7 @@ int main(void)
                 "BLE1 RECONNECT_REJECTED busy_linked_or_not_ready\r\n");
             reconnect_reply=0u;
         }
-        const uint32_t pair_request_blockers=diagnostic_output_blockers(true);
+        const uint32_t pair_request_blockers=diagnostic.pair_pending?diagnostic_output_blockers(true):0u;
         if(comp_v11_diag_console_take_pair_guarded(&diagnostic,HAL_GetTick(),
                 pair_request_blockers,&pair_battery_deadline)) {
             /* This physical service-port request uses the same window as the
@@ -1159,6 +1166,8 @@ int main(void)
         comp_cpu_detail_end(COMP_CPU_STAGE_MAIN_SERVICES,cpu_main_services,true);
         comp_cpu_duty_span_end(COMP_DUTY_MAIN,function_main);
         comp_v11_cpu_poll();
+        comp_cpu_duty_span_t function_idle=comp_cpu_duty_span_begin();
         comp_v11_low_power_idle(&companion_app);
+        comp_cpu_duty_span_end(COMP_DUTY_LOW_POWER,function_idle);
     }
 }

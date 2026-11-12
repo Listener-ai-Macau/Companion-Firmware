@@ -12,7 +12,11 @@ extern bool comp_v11_hal_debug_write(const char *text);
 typedef struct {uint64_t ticks;uint32_t calls,max_ticks;} duty_stage_t;
 static duty_stage_t function_stages[COMP_DUTY_STAGE_COUNT];
 static bool function_report_pending;
-_Static_assert(sizeof(function_stages)==208u,"thirteen bounded diagnostic envelopes");
+_Static_assert(sizeof(function_stages)==336u,"twenty-one bounded diagnostic envelopes");
+/* One inclusive outer-IRQ summary. It distinguishes real wake handlers from
+ * foreground sleep admission without changing priorities or masking WFI. */
+static volatile struct {uint64_t ticks,wfi_ticks;uint32_t raw,calls;uint16_t depth;bool waiting;} irq_summary;
+_Static_assert(sizeof(irq_summary)<=32u,"bounded optional IRQ summary");
 
 /* RM0493 12.8.32: TIM2SMEN=0 gates both TIM2 clocks in Sleep/Stop, while
  * TIM2EN retains them in Run. Count Run time, including IRQs and this code,
@@ -115,6 +119,10 @@ void comp_cpu_duty_emit(void)
             (unsigned long)function_us(s->max_ticks));
         (void)comp_v11_hal_debug_write(line);
     }
+    (void)snprintf(line,sizeof(line),"CPU2 IRQ total_us=%lu wfi_us=%lu calls=%lu inclusive_nested=1\r\n",
+        (unsigned long)function_us(irq_summary.ticks),(unsigned long)function_us(irq_summary.wfi_ticks),
+        (unsigned long)irq_summary.calls);
+    (void)comp_v11_hal_debug_write(line);
 }
 bool comp_cpu_duty_counter_owned(void){return observer.timer_owned;}
 void comp_cpu_duty_begin(uint32_t token,bool recording)
@@ -128,6 +136,7 @@ void comp_cpu_duty_begin(uint32_t token,bool recording)
     uint32_t mask=__get_PRIMASK();__disable_irq();
     memset(&observer,0,sizeof(observer));observer.token=token;
     memset(function_stages,0,sizeof(function_stages));function_report_pending=false;
+    memset((void *)&irq_summary,0,sizeof(irq_summary));
     observer.recording=recording;observer.active=true;observer.core_hz=SystemCoreClock;
     if(__HAL_RCC_TIM2_IS_CLK_ENABLED()||NVIC_GetEnableIRQ(TIM2_IRQn)){
         reject(CPU_FOREIGN_TIMER);__set_PRIMASK(mask);return;
@@ -162,11 +171,36 @@ void comp_cpu_duty_end(uint32_t token,bool recording)
 void comp_cpu_duty_poll(void)
 {
     if(!observer.active||__get_IPSR())return;
+    comp_cpu_duty_span_t self=comp_cpu_duty_span_begin();
     uint32_t mask=__get_PRIMASK();__disable_irq();sample();__set_PRIMASK(mask);
+    comp_cpu_duty_span_end(COMP_DUTY_OBSERVER,self);
 }
 void comp_cpu_duty_wait_enter(void){}
 void comp_cpu_duty_wait_exit(void){}
-void comp_cpu_duty_wfi(void){if(observer.active)++observer.duty.waits;__WFI();}
+void comp_cpu_duty_irq_enter(void)
+{
+    if(!observer.active||!observer.timer_owned)return;
+    uint32_t mask=__get_PRIMASK();__disable_irq();
+    if(!irq_summary.depth++)irq_summary.raw=TIM2->CNT;
+    __set_PRIMASK(mask);
+}
+void comp_cpu_duty_irq_exit(void)
+{
+    if(!observer.active||!observer.timer_owned)return;
+    uint32_t mask=__get_PRIMASK();__disable_irq();
+    if(irq_summary.depth&&!--irq_summary.depth) {
+        uint32_t elapsed=TIM2->CNT-irq_summary.raw;irq_summary.ticks+=elapsed;++irq_summary.calls;
+        if(irq_summary.waiting)irq_summary.wfi_ticks+=elapsed;
+    }
+    __set_PRIMASK(mask);
+}
+void comp_cpu_duty_wfi(void)
+{
+    comp_cpu_duty_span_t span=comp_cpu_duty_span_begin();
+    if(observer.active)++observer.duty.waits;
+    irq_summary.waiting=span.token!=0u;__WFI();irq_summary.waiting=false;
+    comp_cpu_duty_span_end(COMP_DUTY_WFI_RUN,span);
+}
 comp_cpu_duty_snapshot_t comp_cpu_duty_snapshot(void)
 {
     uint32_t mask=__get_PRIMASK();__disable_irq();

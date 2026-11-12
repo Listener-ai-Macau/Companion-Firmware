@@ -1537,12 +1537,13 @@ static bool product_service_due(const comp_v11_product_app_t *app,uint32_t now)
      * Dispatch pending BLE and physical/producer/storage work immediately.
      * Empty BLE traversals share this5ms deadline; recording/display and
      * active update/NVM work retain their old cadence. */
-    if(COMPANION_WBA_SCREEN_ENABLED || app->input.mode!=COMP_INPUT_POINTER ||
+    if(COMPANION_WBA_SCREEN_ENABLED ||
        (int32_t)(now-app->pointer_service_due_ms)>=0)return true;
     const comp_v11_hal_t *b=app->board;
     /* Sensor time is independent of the quiet product-service deadline.
      * Two delayed5ms turns must not turn the existing10ms IMU poll into12ms. */
     return now-b->imu_poll_ms>=10u || b->microphone.running || b->playback_active ||
+        comp_speaker_active(&b->speaker) || comp_audio_feedback_busy(&app->runtime.audio) ||
         b->wake_events.pending || b->wake_events.key_pending ||
         app->runtime.prepare_pending || app->runtime.start_pending ||
         app->runtime.command_pending || app->runtime.stop_pending || app->runtime.capture_active ||
