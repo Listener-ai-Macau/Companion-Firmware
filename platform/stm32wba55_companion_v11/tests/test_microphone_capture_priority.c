@@ -4,9 +4,9 @@
 #include <stdio.h>
 #include <string.h>
 static uint32_t tick_us,irq_mask;
-static unsigned frames;
+static unsigned frames,critical_entries;
 #define __get_PRIMASK() (irq_mask)
-#define __disable_irq() ((void)(irq_mask=1u))
+#define __disable_irq() ((void)(++critical_entries,irq_mask=1u))
 #define __set_PRIMASK(v) ((void)(irq_mask=(v)))
 #define __DMB() ((void)0)
 #define __HAL_DMA_GET_COUNTER(d) ((d)->counter)
@@ -34,6 +34,14 @@ static bool busy_radio(uint32_t remaining,uint32_t half)
 int main(void)
 {
  comp_v11_microphone_hal_t m={0};m.running=m.initialized=true;
+ /* Empty polling neither masks IRQs nor mutates the producer's sequence.
+  * A later real event/error still takes the existing checked path. */
+ for(unsigned i=0u;i<10000u;++i)assert(microphone_hal_poll_body(&m)==COMP_V11_MIC_POLL_IDLE);
+ assert(!critical_entries && !frames && !m.event_head && !m.event_tail);
+ irq_mask=1u;assert(microphone_hal_poll_body(&m)==COMP_V11_MIC_POLL_IDLE&&irq_mask==1u);irq_mask=0u;
+ m.error_pending=true;
+ assert(microphone_hal_poll_body(&m)==COMP_V11_MIC_POLL_ERROR&&!m.error_pending&&!m.running&&critical_entries==1u);
+ m.running=true;
  m.event_head=1u;m.events[0].sequence=42u;m.events[0].half=1u;
 #ifdef OLD_RADIO_CONVERT_GATE
  m.conversion_window=busy_radio;

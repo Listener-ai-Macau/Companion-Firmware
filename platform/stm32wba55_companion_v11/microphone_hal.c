@@ -380,6 +380,12 @@ static comp_v11_microphone_poll_result_t microphone_hal_poll_body(
         }
         return COMP_V11_MIC_POLL_ERROR;
     }
+    /* ISR publishes event_head/error_pending; foreground alone owns tail.
+     * An empty observation consumes nothing. An IRQ racing these volatile
+     * reads stays queued for the next checkpoint, just as one arriving after
+     * the old pop_event check did. Avoid two critical sections on idle polls. */
+    if(!microphone->error_pending && microphone->event_head==microphone->event_tail)
+        return COMP_V11_MIC_POLL_IDLE;
     primask = __get_PRIMASK();
     __disable_irq();
     error = microphone->error_pending;
