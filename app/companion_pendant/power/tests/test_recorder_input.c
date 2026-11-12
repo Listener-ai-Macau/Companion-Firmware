@@ -68,6 +68,8 @@ int main(void)
     assert(comp_input_key(&s,COMP_WBA_BUTTON_DOWN,false)==0u);
     assert(s.flags&COMP_INPUT_HELD);
     assert(comp_input_motion(&s,255u,&sample,COMP_MOTION_TILT_RIGHT,false)==0u);
+    assert(s.flick_sample_ms==1u);
+    assert(comp_input_key(&s,COMP_WBA_BUTTON_DOWN,false)==0u&&s.flick_sample_ms==1u);
     assert(comp_input_key(&s,COMP_WBA_BUTTON_UP,false)==0u&&!(s.flags&COMP_INPUT_HELD));
     assert(!comp_input_mode(&s,4u,0u,false,false));
     assert(!comp_input_mode(&s,COMP_INPUT_POINTER,0u,true,false));
@@ -78,10 +80,13 @@ int main(void)
     assert(s.mode==COMP_INPUT_POINTER&&(s.flags&COMP_INPUT_DETACHED));
     assert(comp_input_key(&s,COMP_WBA_BUTTON_UP,false)==0u&&s.mode==COMP_INPUT_RECORDER);
     sample=(comp_imu_sample_t){.timestamp_ms=0xfffffff0u,.accel_mg={1,-2,1000},.gyro_mdps={8750,-250000,500000}};
-    uint8_t packet[32];comp_imu_pointer_packet(&sample,7u,true,packet);
+    uint8_t packet[32];comp_imu_pointer_packet(&sample,7u,true,0u,false,packet);
     assert(!memcmp(packet,"CIM1",4u)&&packet[4]==1u&&packet[5]==3u&&packet[6]==1u);
     assert(packet[22]==0x6bu&&packet[23]==3u&&packet[24]==0x58u&&packet[25]==0x9eu);
     assert(packet[26]==0xffu&&packet[27]==0x7fu);
+    comp_imu_pointer_packet(&sample,7u,true,255u,true,packet);assert(packet[7]==255u&&packet[4]==2u);
+    printf("CIM2_GOLDEN ");for(unsigned i=0;i<32u;++i)printf("%02x",packet[i]);puts("");
+    comp_imu_pointer_packet(&sample,7u,true,0u,false,packet);
     printf("CIM1_GOLDEN ");for(unsigned i=0;i<32u;++i)printf("%02x",packet[i]);puts("");
     puts("PASS pointer mode: keys/motion never start MIC; disconnect restores recorder; timestamp/centidegree precision and bounded saturation");
     puts("SOFTWARE_ONLY: real enclosure thresholds, wake, audio first-word and Mac insertion not qualified");

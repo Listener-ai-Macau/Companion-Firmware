@@ -60,13 +60,18 @@ it must not issue a blind global Undo. Presentation uses verified mounting axes;
 held left/right tilt emits previous/next. Pointer mode never starts the microphone;
 the existing button level is sent to its host for click/drag interpretation.
 
-Pointer mode alone keeps the existing52Hz accel/gyro configuration awake and
-publishes a latest-only CIM1 packet at most every38ms on the same encrypted4001
-subscription. Legacy9001 remains the1Hz diagnostic interface. CIM1 is32 bytes:
-magic0..3, schema1 at4, mode3 at5, held bit0 at6, reserved0 at7, u32 sequence at8,
+Pointer mode alone uses104Hz gyro/417Hz hardware-tap accel, polled near100Hz.
+It reuses upstream Fusion AHRS/bias on the MCU at61.44MHz and publishes each
+fresh sample on the same encrypted4001 subscription. Recorder gyro remains52Hz.
+The existing bulk interval hint is shared and restored on exit. Legacy9001 remains the1Hz diagnostic interface. CIM1 is32 bytes:
+magic0..3, schema1(raw) or2(fused) at4, mode3 at5, held bit0 at6,
+mod256 hardware-double-tap serial at7, u32 sequence at8,
 u32 original sensor milliseconds at12, three i16 acceleration mg at16, three i16
 angular rates in0.01deg/s at22, IEEE CRC32 at28. The peer UID/epoch are already
-validated by the CIN1 handshake. No buffered old samples are replayed after loss.
+validated by the CIN1 handshake. Schema2 substitutes fused gravity in mg for
+raw acceleration and bias-corrected gyro rates; hosts must not fuse it again.
+The first tap serial establishes a baseline; advance1 means one click. Repeats,
+paused/stale events, held-button taps and multi-event loss are never replayed. No buffered old samples are replayed after loss.
 Disconnect returns mode0 and the existing low-power policy. Clients must stop
 pointer output on stale samples and release an owned drag. The optional compact
 CPU observer can measure pointer-only scopes; these are not recording CPU results.

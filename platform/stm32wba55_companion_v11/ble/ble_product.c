@@ -8,6 +8,7 @@
 #endif
 #include "../cpu_profile_target.h"
 #include "imu_pointer_wire.h"
+#include "imu_fusion.h"
 #include "ll_sys_if.h"
 #include "clock_target.h"
 #include "main.h"
@@ -51,7 +52,8 @@ static comp_v11_product_app_t *product;
 static bool linked,secured,link_ready;
 static bool input_client;
 static uint8_t input_feedback,input_flags;
-static uint32_t pointer_published_ms,pointer_sample_ms,pointer_sequence;
+static uint32_t pointer_sample_ms,pointer_sequence;
+static comp_imu_fusion_t pointer_fusion;
 
 /* CAPTURE_RADIO_MODEL_BEGIN */
 #if COMPANION_WBA_CPU_RESIDENCE_PROFILE
@@ -604,7 +606,8 @@ void comp_v11_ble_link(bool connected,bool encrypted)
         if(product&&product->input.mode==COMP_INPUT_POINTER)comp_cpu_duty_end(0u,false);
         #endif
         input_client=false;input_feedback=input_flags=255u;
-        pointer_published_ms=pointer_sample_ms=pointer_sequence=0u;
+        pointer_sample_ms=pointer_sequence=0u;
+        pointer_fusion.active=false;
     }
     /* Queue only; the product foreground owner performs any NOR operation. */
     if(product) {
@@ -1569,6 +1572,7 @@ static void input_notify(void)
 }
 static void pointer_notify(void)
 {
+    if(product->input.mode!=COMP_INPUT_POINTER){pointer_fusion.active=false;return;}
     if(!input_client||!secured||product->input.mode!=COMP_INPUT_POINTER||
        !product_link.subscribed[COMPANION_GATT_CHAR_SETTINGS]||
        comp_runtime_recording_owned(&product->runtime)||comp_v11_update_product_busy())return;
@@ -1576,12 +1580,14 @@ static void pointer_notify(void)
     const comp_lsm6dso_t *imu=&product->board->imu;
     const comp_imu_sample_t *sample=&product->board->imu_sample;
     if(imu->state!=COMP_IMU_READY||imu->idle_accel_only||now-sample->timestamp_ms>100u||
-       now-pointer_published_ms<38u||sample->timestamp_ms==pointer_sample_ms)return;
+       sample->timestamp_ms==pointer_sample_ms)return;
+    comp_imu_sample_t fused;
+    if(!comp_imu_fusion_update(&pointer_fusion,sample,&fused))return;
     uint8_t packet[32];
     if(++pointer_sequence==0u)++pointer_sequence;
-    comp_imu_pointer_packet(sample,pointer_sequence,
-        (product->input.flags&COMP_INPUT_HELD)!=0u,packet);
-    pointer_published_ms=now;pointer_sample_ms=sample->timestamp_ms;
+    comp_imu_pointer_packet(&fused,pointer_sequence,
+        (product->input.flags&COMP_INPUT_HELD)!=0u,(uint8_t)product->input.flick_sample_ms,true,packet);
+    pointer_sample_ms=sample->timestamp_ms;
     /* One current sample, no retry queue: failed delivery is superseded by
      * the next sample, with the original sensor timestamp and button level. */
     (void)publish(NULL,COMPANION_GATT_CHAR_SETTINGS,packet,sizeof(packet));
@@ -1628,7 +1634,8 @@ void comp_v11_ble_poll(void)
         const comp_v11_ble_bulk_direction_t bulk_direction=ota_bulk?
             COMP_V11_BLE_BULK_HOST_TO_DEVICE:(sealed_transfer_work()||interval_hint)?
             COMP_V11_BLE_BULK_DEVICE_TO_HOST:COMP_V11_BLE_BULK_NONE;
-        comp_v11_ble_bulk_profile(bulk_direction,interval_hint||ota_bulk,
+        const bool pointer_hint=input_client&&secured&&product->input.mode==COMP_INPUT_POINTER;
+        comp_v11_ble_bulk_profile(bulk_direction,interval_hint||ota_bulk||pointer_hint,
             writes_allowed||(ota_bulk&&update_idle),
             !product->board->microphone.running&&(!update_busy||update_idle));
         product_link.maintenance=comp_v11_update_product_busy();

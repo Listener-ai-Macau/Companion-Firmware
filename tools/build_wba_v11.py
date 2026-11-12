@@ -603,6 +603,8 @@ def main() -> int:
                    device / 'Source/Templates/system_stm32wbaxx.c',
                    device / 'Source/Templates/gcc/startup_stm32wba55xx.s',
                    *(hal / f'Src/stm32wbaxx_{name}.c' for name in HAL_MODULES)]
+        sources += [APP/'imu/imu_fusion.c', *(ROOT/'third_party/imu-fusion/Fusion'/n for n in
+                    ('FusionAhrs.c','FusionBias.c','FusionConvention.c'))]
         if args.microphone_dual_pair_source is not None:
             sources.append(PLATFORM / 'dual_mic_capture.c')
         result['diag_flash_logging_enabled']=args.diag_flash_log

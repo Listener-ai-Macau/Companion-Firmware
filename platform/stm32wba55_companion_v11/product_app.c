@@ -1561,8 +1561,9 @@ void comp_v11_product_app_poll(comp_v11_product_app_t *app)
         comp_audio_feedback_busy(&app->runtime.audio);
     board->power_sampling_inhibited=app->runtime.prepare_pending || app->runtime.start_pending ||
         app->runtime.command_pending;
-    board->input_taps_requested=app->input.mode==COMP_INPUT_DICTATION&&
-        (app->input.options&COMP_INPUT_UNDO)!=0u;
+    board->input_pointer_requested=app->input.mode==COMP_INPUT_POINTER;
+    board->input_taps_requested=board->input_pointer_requested ||
+        (app->input.mode==COMP_INPUT_DICTATION&&(app->input.options&COMP_INPUT_UNDO)!=0u);
     if(board->microphone.running)(void)capture_progress(app,20u);
     uint32_t phase_started=HAL_GetTick();
 #if defined(COMPANION_WBA_BLE_LINKED) && defined(__arm__)
@@ -1674,7 +1675,8 @@ void comp_v11_product_app_poll(comp_v11_product_app_t *app)
              * starts/stops capture, and an idle/pre-START latch cannot become
              * a mark in the next session. Consume each HAL event only once. */
             uint8_t input_motion=board->motion_event_flags;
-            if((int32_t)(board->motion_event_ms-app->capture_started_ms)<0)
+            if(app->input.mode!=COMP_INPUT_POINTER &&
+               (int32_t)(board->motion_event_ms-app->capture_started_ms)<0)
                 input_motion&=127u;
             recording_input_apply(app,comp_input_motion(&app->input,input_motion,&board->imu_sample,
                 board->motion.tilt,comp_runtime_recording_owned(&app->runtime)),now);

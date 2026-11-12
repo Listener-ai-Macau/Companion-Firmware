@@ -13,9 +13,9 @@ static inline void comp_imu_pointer_put16(uint8_t *p,int16_t v)
 static inline void comp_imu_pointer_put32(uint8_t *p,uint32_t v)
 {for(unsigned i=0;i<4u;++i)p[i]=(uint8_t)(v>>(8u*i));}
 static inline void comp_imu_pointer_packet(const comp_imu_sample_t *s,uint32_t sequence,
-                                         bool held,uint8_t packet[32])
+                                         bool held,uint8_t tap_serial,bool fused,uint8_t packet[32])
 {
-    memcpy(packet,"CIM1",4u);packet[4]=1u;packet[5]=3u;packet[6]=held?1u:0u;packet[7]=0u;
+    memcpy(packet,"CIM1",4u);packet[4]=fused?2u:1u;packet[5]=3u;packet[6]=held?1u:0u;packet[7]=tap_serial;
     comp_imu_pointer_put32(packet+8u,sequence);
     comp_imu_pointer_put32(packet+12u,s->timestamp_ms);
     for(unsigned i=0;i<3u;++i) {

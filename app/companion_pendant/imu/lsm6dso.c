@@ -34,7 +34,7 @@ static bool configure_idle(comp_lsm6dso_t *imu, bool idle, uint32_t now_ms)
 {
     uint8_t ctrl[2], ctrl6, int1,md1;
     const uint8_t ctrl1 = idle ? 0x18u : imu->recording_taps ? 0x68u : 0x38u;
-    const uint8_t ctrl2 = idle ? 0x00u : 0x30u; /* gyro off / 52 Hz +/-250 dps */
+    const uint8_t ctrl2 = idle ? 0x00u : imu->pointer_mode ? 0x40u : 0x30u;
     const uint8_t low_power = idle ? 0x10u : 0x00u; /* CTRL6_C XL_HM_MODE */
     const uint8_t route = idle || imu->recording_taps ? 0u : 0x03u;
     const uint8_t event_route = !idle && imu->recording_taps ? 8u : 0u;
@@ -190,6 +190,19 @@ bool comp_lsm6dso_set_recording_taps(comp_lsm6dso_t *imu, bool enabled)
     imu->recording_taps=enabled;imu->tap_source=0u;imu->event_irq_pending=false;imu->wake_source=0u;
     return true;
 }
+bool comp_lsm6dso_set_pointer(comp_lsm6dso_t *imu,bool enabled)
+{
+    if(!imu||imu->state!=COMP_IMU_READY)return false;
+    if(imu->pointer_mode==enabled)return true;
+    /* Recording keeps its original52Hz gyro. The higher ODR and tap engine
+     * belong only to active pointing and use the same verified driver. */
+    if(enabled && !comp_lsm6dso_set_recording_taps(imu,true))return false;
+    uint8_t actual,rate=enabled?0x40u:imu->idle_accel_only?0u:0x30u;
+    if(!write_byte(imu,0x11u,rate)||!imu->read(imu->context,0x11u,&actual,1u)||actual!=rate) {
+        (void)fail(imu);return false;
+    }
+    imu->pointer_mode=enabled;return true;
+}
 bool comp_lsm6dso_stop(comp_lsm6dso_t *imu)
 {
     if (imu == NULL || imu->write == NULL) { return false; }
@@ -201,6 +214,7 @@ bool comp_lsm6dso_stop(comp_lsm6dso_t *imu)
     imu->idle_accel_only = false;
     imu->tap_source=0u;
     imu->recording_taps=false;
+    imu->pointer_mode=false;
     imu->event_irq_pending=false;
     imu->wake_source=0u;
     return true;
@@ -232,6 +246,7 @@ bool comp_lsm6dso_recover(comp_lsm6dso_t *imu, uint32_t now_ms)
     imu->reset_ms = now_ms;
     imu->idle_accel_only = false;
     imu->recording_taps=false;
+    imu->pointer_mode=false;
     imu->event_irq_pending=false;
     imu->wake_source=0u;
     return true;

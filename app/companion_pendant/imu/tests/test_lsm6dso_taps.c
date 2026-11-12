@@ -58,6 +58,19 @@ int main(void)
     b.reg[0x12]=0u;b.reg[0x56]=0u;b.reg[0x5E]=0u;
     assert(comp_lsm6dso_poll(&imu,1090u,&sample)==COMP_IMU_NO_SAMPLE&&imu.state==COMP_IMU_READY&&b.reg[0x56]==0x4Fu&&b.reg[0x5E]==0u&&!imu.recording_taps);
     assert(comp_lsm6dso_stop(&imu)&&b.reg[0x5E]==0u&&b.reg[0x0D]==0u&&b.reg[0x10]==0u&&b.reg[0x11]==0u&&imu.tap_source==0u);
+    /* Pointer ownership changes only gyro ODR; recording/idle restore exactly. */
+    start(&imu,&b);
+    assert(comp_lsm6dso_set_idle(&imu,true,2000u));
+    assert(comp_lsm6dso_set_pointer(&imu,true)&&imu.pointer_mode&&!imu.idle_accel_only);
+    assert(b.reg[0x10]==0x68u&&b.reg[0x11]==0x40u&&b.reg[0x5E]==8u);
+    assert(!comp_lsm6dso_set_idle(&imu,true,2001u));
+    assert(comp_lsm6dso_set_pointer(&imu,false)&&!imu.pointer_mode&&b.reg[0x11]==0x30u);
+    assert(imu.recording_taps); /* Recording keeps417Hz accel /52Hz gyro. */
+    assert(comp_lsm6dso_set_recording_taps(&imu,false));
+    assert(comp_lsm6dso_set_idle(&imu,true,2002u)&&b.reg[0x11]==0u);
+    assert(comp_lsm6dso_set_pointer(&imu,false)&&b.reg[0x11]==0u);
+    assert(comp_lsm6dso_set_pointer(&imu,true));b.corrupt=0x11;
+    assert(!comp_lsm6dso_set_pointer(&imu,false)&&imu.state==COMP_IMU_FAULT);
     /* Configuration failures do not report READY with a missing gesture route. */
     for(unsigned i=0u;i<3u;i++) {
         start(&imu,&b);assert(comp_lsm6dso_start(&imu,read_reg,write_reg,&b,2000u));b.reg[0x12]=0u;

@@ -11,7 +11,7 @@ enum { COMP_INPUT_START=1u,COMP_INPUT_STOP=2u,COMP_INPUT_MARK=4u,
 enum { COMP_INPUT_HELD=1u,COMP_INPUT_DETACHED=2u,COMP_INPUT_FINISHED=4u };
 typedef struct {
     uint32_t sequence,event_ms,record_token;
-    uint32_t flick_sample_ms;
+    uint32_t flick_sample_ms; /* Pointer mode reuses this as a tap serial. */
     int32_t flick_angle_md;
     uint16_t events;
     uint8_t mode,options,flags,flick_axis;
@@ -42,7 +42,8 @@ static inline uint16_t comp_input_key(comp_recorder_input_t *s,uint8_t key,bool 
     uint16_t events=0u;
     if(key&COMP_WBA_BUTTON_DOWN) {
         s->flags=(uint8_t)((s->flags&COMP_INPUT_DETACHED)|COMP_INPUT_HELD);
-        s->flick_angle_md=0;s->flick_sample_ms=0u;
+        s->flick_angle_md=0;
+        if(s->mode!=COMP_INPUT_POINTER)s->flick_sample_ms=0u;
         if(s->mode==COMP_INPUT_DICTATION&&!capture_owned)events|=COMP_INPUT_START;
     }
     if(key&COMP_WBA_BUTTON_UP) {
@@ -58,7 +59,10 @@ static inline uint16_t comp_input_motion(comp_recorder_input_t *s,uint8_t motion
     const comp_imu_sample_t *sample,uint8_t tilt,bool capture_owned)
 {
     if(s->mode==COMP_INPUT_RECORDER)return capture_owned&&(motion&COMP_MOTION_DOUBLE_TAP)?COMP_INPUT_MARK:0u;
-    if(s->mode==COMP_INPUT_POINTER)return 0u; /* Host owns pointing/clicks; never MIC. */
+    if(s->mode==COMP_INPUT_POINTER) {
+        if(motion&COMP_MOTION_DOUBLE_TAP)++s->flick_sample_ms;
+        return 0u; /* Host owns click; this can never start/stop MIC. */
+    }
     if(s->mode==COMP_INPUT_PRESENTATION) {
         if(!(s->flags&COMP_INPUT_HELD)||!(motion&COMP_MOTION_TILT_CHANGED))return 0u;
         return tilt==COMP_MOTION_TILT_RIGHT?COMP_INPUT_NEXT:tilt==COMP_MOTION_TILT_LEFT?COMP_INPUT_PREVIOUS:0u;

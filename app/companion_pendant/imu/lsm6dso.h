@@ -27,6 +27,7 @@ typedef struct {
     uint8_t tap_source; /* Fresh TAP_SRC of the last successful sample; tail padding. */
     bool recording_taps;
     bool event_irq_pending; /* Fresh physical INT1: idle motion or recording double tap. */
+    bool pointer_mode; /* Active desktop only:104Hz gyro,417Hz hardware taps. */
     uint8_t wake_source; /* Last WU source low7; high bit means idle route armed. */
     uint8_t wake_sequence; /* Mod256 event generation, consumed once per product pass. */
     uint32_t tap_reads;
@@ -54,6 +55,7 @@ bool comp_lsm6dso_set_idle(comp_lsm6dso_t *imu, bool idle, uint32_t now_ms);
  * the AN5192 recommended417Hz accel rate; gyro and host polling stay52Hz.
  * Ordinary awake/idle modes remain52/12.5Hz with the tap route disabled. */
 bool comp_lsm6dso_set_recording_taps(comp_lsm6dso_t *imu, bool enabled);
+bool comp_lsm6dso_set_pointer(comp_lsm6dso_t *imu,bool enabled);
 /* Idle-only product recovery. Wait at least 1 s before each reset; stop after
  * three attempts without a valid sample. No loop, delay or sample is emitted
  * here. Poll RESET_WAIT normally; only a real sample clears the retry budget.

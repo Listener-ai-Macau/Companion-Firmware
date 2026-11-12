@@ -1106,6 +1106,8 @@ bool comp_v11_hal_microphone_enable(comp_v11_hal_t *b, bool enabled)
     /* Optional gestures configure before PDM starts, never reset/configure the
      * shared SPI sensor in live capture. Missing IMU must not lose a recording. */
     if(enabled && b->imu.state==COMP_IMU_READY && !panel_holds_shared_bus(b) &&
+       !comp_lsm6dso_set_pointer(&b->imu,false))b->faults|=COMP_V11_FAULT_IMU;
+    if(enabled && b->imu.state==COMP_IMU_READY && !panel_holds_shared_bus(b) &&
        !comp_lsm6dso_set_recording_taps(&b->imu,true))b->faults|=COMP_V11_FAULT_IMU;
     ok = enabled ? comp_v11_microphone_hal_start(&b->microphone) : comp_v11_microphone_hal_stop(&b->microphone);
     if(!b->microphone.running && b->imu.state==COMP_IMU_READY && !panel_holds_shared_bus(b) &&
@@ -1411,6 +1413,8 @@ static void imu_poll_with_recovery(comp_v11_hal_t *b, uint32_t tick)
     /* A recording may begin between reset and the next poll. Defer the
      * recovery configuration burst too, not just the initial reset write. */
     if (b->imu.recovery_attempts != 0u && !recovery_allowed) return;
+    if(recovery_allowed&&b->imu.state==COMP_IMU_READY&&b->imu.pointer_mode!=b->input_pointer_requested)
+        (void)comp_lsm6dso_set_pointer(&b->imu,b->input_pointer_requested);
     if(recovery_allowed&&b->imu.state==COMP_IMU_READY&&
        b->imu.recording_taps!=b->input_taps_requested)
         (void)comp_lsm6dso_set_recording_taps(&b->imu,b->input_taps_requested);
