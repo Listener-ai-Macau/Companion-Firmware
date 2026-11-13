@@ -125,6 +125,13 @@ int main(void)
     assert(!comp_input_mode(&s,COMP_INPUT_POINTER,COMP_INPUT_POINTER_RAW,false,false));
     assert(comp_input_mode(&s,COMP_INPUT_POINTER,COMP_INPUT_POINTER_V4|COMP_INPUT_POINTER_RAW,false,false));
     assert(!comp_input_mode(&s,COMP_INPUT_RECORDER,24u,false,false));
+    assert(!comp_input_mode(&s,COMP_INPUT_POINTER,COMP_INPUT_POINTER_FUSED_RATES,false,false));
+    assert(!comp_input_mode(&s,COMP_INPUT_POINTER,COMP_INPUT_POINTER_V4|COMP_INPUT_POINTER_RAW|COMP_INPUT_POINTER_FUSED_RATES,false,false));
+    assert(comp_input_mode(&s,COMP_INPUT_POINTER,COMP_INPUT_POINTER_V4|COMP_INPUT_POINTER_FUSED_RATES,false,false));
+    assert(comp_input_pointer_v4(&s));
+    edge_events=comp_input_key(&s,COMP_WBA_BUTTON_DOWN,false);assert(edge_events==COMP_INPUT_DOWN);
+    comp_input_note(&s,edge_events,500u);assert(comp_input_pointer_event(&s));
+    comp_imu_pointer_fused_packet(&fused,9u,true,0u,packet);assert(packet[4]==3u&&packet[6]==3u);
     comp_imu_pointer_pack(sample.timestamp_ms,8u,false,1u,5u,true,sample.accel_mg,sample.gyro_mdps,packet);
     assert(packet[4]==5u&&packet[6]==2u&&packet[16]==1u&&packet[18]==0xfeu&&packet[20]==0xe8u);
     printf("CIM5_RAW_GOLDEN ");for(unsigned i=0;i<32u;++i)printf("%02x",packet[i]);puts("");

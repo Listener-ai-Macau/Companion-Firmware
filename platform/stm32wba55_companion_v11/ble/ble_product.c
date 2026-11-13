@@ -1638,7 +1638,7 @@ static void pointer_notify(void)
     if(product->input.options&COMP_INPUT_POINTER_RAW)comp_imu_pointer_pack(sample->timestamp_ms,pointer_sequence,
         (product->input.flags&COMP_INPUT_HELD)!=0u,(uint8_t)product->input.flick_sample_ms,
         5u,fused.ready,sample->accel_mg,sample->gyro_mdps,packet);
-    else if(comp_input_pointer_v4(&product->input))comp_imu_pointer_aim_packet(&fused,pointer_sequence,
+    else if(comp_input_pointer_v4(&product->input)&&!(product->input.options&COMP_INPUT_POINTER_FUSED_RATES))comp_imu_pointer_aim_packet(&fused,pointer_sequence,
         (product->input.flags&COMP_INPUT_HELD)!=0u,(uint8_t)product->input.flick_sample_ms,pointer_heading,yaw,packet);
     else comp_imu_pointer_fused_packet(&fused,pointer_sequence,
         (product->input.flags&COMP_INPUT_HELD)!=0u,(uint8_t)product->input.flick_sample_ms,packet);
