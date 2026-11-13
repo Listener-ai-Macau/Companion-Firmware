@@ -800,8 +800,7 @@ size_t comp_v11_product_input_request(comp_v11_product_app_t *app,const uint8_t 
         if(p[6]||p[7]||!comp_input_pointer_v4(&app->input))result=2u;
         else comp_input_pointer_ack(&app->input,comp_rec_get32(p+8u));
     } else if(p[5]==1u) {
-        if(p[6]>COMP_INPUT_POINTER||(p[7]&~(p[6]==COMP_INPUT_POINTER?31u:7u))||
-           ((p[7]&COMP_INPUT_POINTER_RAW)&&!(p[7]&COMP_INPUT_POINTER_V4)))result=2u;
+        if(!comp_input_options_valid(p[6],p[7]))result=2u;
         else if(busy||!comp_input_mode(&app->input,p[6],p[7],
             comp_runtime_recording_owned(&app->runtime),comp_wba_button_busy(&app->button)))result=1u;
     } else if(p[6]||p[7])result=2u;

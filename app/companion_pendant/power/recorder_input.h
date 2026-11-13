@@ -62,12 +62,16 @@ static inline bool comp_input_pointer_contact(comp_recorder_input_t *s,uint8_t *
     edge->reserved=observed;++s->flick_sample_ms;
     return true;
 }
+static inline bool comp_input_options_valid(uint8_t mode,uint8_t options)
+{
+    return !(mode>COMP_INPUT_POINTER||(options&~(mode==COMP_INPUT_POINTER?63u:7u))||
+       ((options&(COMP_INPUT_POINTER_RAW|COMP_INPUT_POINTER_FUSED_RATES))&&!(options&COMP_INPUT_POINTER_V4))||
+       ((options&COMP_INPUT_POINTER_RAW)&&(options&COMP_INPUT_POINTER_FUSED_RATES)));
+}
 static inline bool comp_input_mode(comp_recorder_input_t *s,uint8_t mode,uint8_t options,
                                     bool capture_owned,bool key_busy)
 {
-    if(mode>COMP_INPUT_POINTER||(options&~(mode==COMP_INPUT_POINTER?63u:7u))||
-       ((options&(COMP_INPUT_POINTER_RAW|COMP_INPUT_POINTER_FUSED_RATES))&&!(options&COMP_INPUT_POINTER_V4))||
-       ((options&COMP_INPUT_POINTER_RAW)&&(options&COMP_INPUT_POINTER_FUSED_RATES))||capture_owned||key_busy)return false;
+    if(!comp_input_options_valid(mode,options)||capture_owned||key_busy)return false;
     s->mode=mode;s->options=options;s->flags=0u;s->record_token=0u;
     s->events=0u;s->flick_angle_md=0;s->flick_sample_ms=0u;s->pointer_head=s->pointer_count=0u;return true;
 }
