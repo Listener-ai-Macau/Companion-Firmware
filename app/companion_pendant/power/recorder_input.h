@@ -55,8 +55,9 @@ static inline bool comp_input_pointer_contact(comp_recorder_input_t *s,uint8_t *
     if(!comp_input_pointer_single_taps(s)||
        (*source&COMP_LSM6DSO_SINGLE_TAP)!=COMP_LSM6DSO_SINGLE_TAP)return false;
     const uint8_t observed=*source;*source=0u;
-    /* A tap while the physical key owns a drag is not another click. */
-    if(s->flags&COMP_INPUT_HELD)return false;
+    /* Report fresh physical taps even while the key is held. The host knows
+     * whether the key owns a drag or a gyro clutch; only it can decide which
+     * taps become clicks. Suppressing here broke steady/clutched shell taps. */
     comp_input_note(s,COMP_INPUT_CLICK,now);
     comp_pointer_event_t *edge=&s->pointer_events[(s->pointer_head+s->pointer_count-1u)&7u];
     edge->reserved=observed;++s->flick_sample_ms;

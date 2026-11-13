@@ -28,6 +28,8 @@ SOURCES = [
     SOURCE,
     pathlib.Path(__file__).resolve(),
 ]
+if TAPS:
+    SOURCES.append(ROOT / "app/companion_pendant/power/recorder_input.h")
 
 
 def write_result(stdout: str) -> None:
