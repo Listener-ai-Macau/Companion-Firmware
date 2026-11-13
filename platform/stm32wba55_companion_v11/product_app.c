@@ -1641,7 +1641,7 @@ void comp_v11_product_app_poll(comp_v11_product_app_t *app)
         (app->input.mode==COMP_INPUT_DICTATION&&(app->input.options&COMP_INPUT_UNDO)!=0u);
     if(board->imu.state==COMP_IMU_READY&&board->imu.pointer_mode&&!board->microphone.running)
         (void)comp_lsm6dso_set_pointer_single_taps(&board->imu,
-            board->input_pointer_requested&&(app->input.options&COMP_INPUT_POINTER_RAW)!=0u);
+            comp_input_pointer_single_taps(&app->input));
     if(board->microphone.running)(void)capture_progress(app,20u);
     uint32_t phase_started=HAL_GetTick();
 #if defined(COMPANION_WBA_BLE_LINKED) && defined(__arm__)
@@ -1659,20 +1659,10 @@ void comp_v11_product_app_poll(comp_v11_product_app_t *app)
         imu_uart.last_ms=s->timestamp_ms;(void)comp_v11_hal_debug_raw(packet,sizeof(packet));
     }
     #endif
-    if(comp_input_pointer_v4(&app->input)&&(app->input.options&COMP_INPUT_POINTER_RAW)&&
-       (board->imu.tap_source&COMP_LSM6DSO_SINGLE_TAP)==COMP_LSM6DSO_SINGLE_TAP
-       #if COMPANION_WBA_IMU_RAW_UART
-       && !imu_uart.until
-       #endif
-       ) {
-        comp_input_note(&app->input,COMP_INPUT_CLICK,board->imu_sample.timestamp_ms);
-        comp_pointer_event_t *edge=&app->input.pointer_events[(app->input.pointer_head+app->input.pointer_count-1u)&7u];
-        edge->reserved=board->imu.tap_source;++app->input.flick_sample_ms;
-        /* HAL reads TAP_SRC at most once per sensor poll. Product service
-         * can run many times before that next read: consume this observation
-         * here, after copying it to the reliable queue, not on every loop. */
-        board->imu.tap_source=0u;
-    }
+    #if COMPANION_WBA_IMU_RAW_UART
+    if(!imu_uart.until)
+    #endif
+    (void)comp_input_pointer_contact(&app->input,&board->imu.tap_source,board->imu_sample.timestamp_ms);
     comp_cpu_duty_span_end(COMP_DUTY_HAL,hal_span);
     comp_v11_cpu_transfer_stage_end(COMP_BULK_CPU_HAL,bulk_hal);
 #if defined(COMPANION_WBA_BLE_LINKED) && defined(__arm__)

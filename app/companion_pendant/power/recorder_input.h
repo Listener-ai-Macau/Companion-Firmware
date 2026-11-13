@@ -25,6 +25,10 @@ typedef struct {
 _Static_assert(sizeof(comp_recorder_input_t)<=128u,"bounded shared input and reliable pointer edges");
 static inline bool comp_input_pointer_v4(const comp_recorder_input_t *s)
 {return s->mode==COMP_INPUT_POINTER&&(s->options&COMP_INPUT_POINTER_V4);}
+/* Current pointer controls use the chip's single-tap engine for both fused
+ * aim and raw desktop motion. Recorder/dictation retain double-tap semantics. */
+static inline bool comp_input_pointer_single_taps(const comp_recorder_input_t *s)
+{return comp_input_pointer_v4(s);}
 static inline const comp_pointer_event_t *comp_input_pointer_event(const comp_recorder_input_t *s)
 {return comp_input_pointer_v4(s)&&s->pointer_count?&s->pointer_events[s->pointer_head]:NULL;}
 static inline void comp_input_pointer_ack(comp_recorder_input_t *s,uint32_t sequence)
@@ -45,6 +49,18 @@ static inline void comp_input_note(comp_recorder_input_t *s,uint16_t events,uint
         comp_pointer_event_t *event=&s->pointer_events[(s->pointer_head+s->pointer_count)&7u];
         *event=(comp_pointer_event_t){s->sequence,now,events,s->flags,0u};++s->pointer_count;
     }
+}
+static inline bool comp_input_pointer_contact(comp_recorder_input_t *s,uint8_t *source,uint32_t now)
+{
+    if(!comp_input_pointer_single_taps(s)||
+       (*source&COMP_LSM6DSO_SINGLE_TAP)!=COMP_LSM6DSO_SINGLE_TAP)return false;
+    const uint8_t observed=*source;*source=0u;
+    /* A tap while the physical key owns a drag is not another click. */
+    if(s->flags&COMP_INPUT_HELD)return false;
+    comp_input_note(s,COMP_INPUT_CLICK,now);
+    comp_pointer_event_t *edge=&s->pointer_events[(s->pointer_head+s->pointer_count-1u)&7u];
+    edge->reserved=observed;++s->flick_sample_ms;
+    return true;
 }
 static inline bool comp_input_mode(comp_recorder_input_t *s,uint8_t mode,uint8_t options,
                                     bool capture_owned,bool key_busy)

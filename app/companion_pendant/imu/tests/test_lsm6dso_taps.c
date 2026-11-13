@@ -1,4 +1,5 @@
 #include "lsm6dso.h"
+#include "../../power/recorder_input.h"
 #include <assert.h>
 #include <stdio.h>
 #include <string.h>
@@ -83,7 +84,37 @@ int main(void)
     assert(comp_lsm6dso_poll(&imu,180u,&sample)==COMP_IMU_SAMPLE&&imu.tap_source==0x64u);
     assert(comp_lsm6dso_set_pointer(&imu,false)&&!imu.pointer_single_taps&&b.reg[0x5B]==0x82u&&b.reg[0x5E]==8u);
     assert(comp_lsm6dso_set_recording_taps(&imu,false)&&b.reg[0x5E]==0u);
-    puts("PASS opt-in desktop single tap: source axis/sign retained once per impact, fast second tap separate, pointer exit restores recording double-tap engine");
+    puts("PASS opt-in pointer single tap: source axis/sign retained once per impact, fast second tap separate, pointer exit restores recording double-tap engine");
+    /* Both real pointer wire modes must select the same ST single-tap
+     * registers and forward each latched source to the reliable queue once. */
+    for(unsigned raw=0u;raw<2u;++raw) {
+        comp_recorder_input_t input={0};start(&imu,&b);
+        assert(comp_input_mode(&input,COMP_INPUT_POINTER,
+            (uint8_t)(COMP_INPUT_POINTER_V4|(raw?COMP_INPUT_POINTER_RAW:0u)),false,false));
+        assert(comp_input_pointer_single_taps(&input));
+        assert(comp_lsm6dso_set_pointer(&imu,true));
+        assert(comp_lsm6dso_set_pointer_single_taps(&imu,comp_input_pointer_single_taps(&input)));
+        assert(b.reg[0x5B]==0x02u&&b.reg[0x5E]==0x40u);
+        for(unsigned tap=0u;tap<2u;++tap) {
+            b.reg[0x1E]=3u;b.reg[0x1C]=0x64u;imu.event_irq_pending=true;
+            assert(comp_lsm6dso_poll(&imu,100u+tap*150u,&sample)==COMP_IMU_SAMPLE);
+            assert(comp_input_pointer_contact(&input,&imu.tap_source,sample.timestamp_ms));
+            const comp_pointer_event_t *edge=comp_input_pointer_event(&input);
+            assert(edge&&edge->events==COMP_INPUT_CLICK&&edge->reserved==0x64u);
+            assert(!comp_input_pointer_contact(&input,&imu.tap_source,sample.timestamp_ms));
+            comp_input_pointer_ack(&input,edge->sequence);assert(input.pointer_count==0u);
+        }
+        assert(input.flick_sample_ms==2u);
+        input.flags|=COMP_INPUT_HELD;imu.tap_source=0x64u;
+        assert(!comp_input_pointer_contact(&input,&imu.tap_source,500u));
+        assert(imu.tap_source==0u&&input.pointer_count==0u);
+        input.flags=0u;assert(comp_input_mode(&input,COMP_INPUT_RECORDER,0u,false,false));
+        assert(!comp_input_pointer_single_taps(&input));
+        assert(comp_lsm6dso_set_pointer_single_taps(&imu,false));
+        assert(b.reg[0x5B]==0x82u&&b.reg[0x5E]==8u);
+        assert(comp_input_motion(&input,COMP_MOTION_DOUBLE_TAP,&sample,0u,true)==COMP_INPUT_MARK);
+    }
+    puts("PASS fused/raw pointer single taps reach reliable clicks once; held-key taps cannot add clicks; recorder double-tap marking retained");
     /* Configuration failures do not report READY with a missing gesture route. */
     for(unsigned i=0u;i<3u;i++) {
         start(&imu,&b);assert(comp_lsm6dso_start(&imu,read_reg,write_reg,&b,2000u));b.reg[0x12]=0u;
