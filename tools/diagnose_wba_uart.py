@@ -66,7 +66,7 @@ def _tokens(line):
     return parts[1], int(seq), values
 
 
-def parse_frames(raw: bytes):
+def parse_frames(raw: bytes, *, screen_enabled=True):
     """Return complete frames and rejection reasons; never combine two sequences."""
     frames, rejected, active = [], [], None
     for line in raw.decode('ascii', errors='replace').splitlines():
@@ -85,7 +85,8 @@ def parse_frames(raw: bytes):
             if active is None or seq != active['seq']:
                 raise ValueError('section has no matching BEGIN sequence')
             if section == 'END':
-                if values or not set(FIELDS) <= set(active['sections']):
+                required = set(FIELDS) if screen_enabled else set(FIELDS) - {'DISPLAY'}
+                if values or not required <= set(active['sections']):
                     raise ValueError('incomplete frame at END')
                 frames.append(active)
                 active = None
@@ -203,7 +204,7 @@ def diagnose(frame, expected_fw='00010128', expected_ui=58, expected_uid=None, s
         issue('IDENTITY_MISMATCH', '固件、编译身份、板型或已挂载 UI 与本候选不匹配；核对配套安装包。')
     if identity['uid'] in {'0' * 24, 'f' * 24} or (expected_uid and identity['uid'] != expected_uid.lower()):
         issue('UID_MISMATCH', 'MCU UID 无效或与指定目标板不一致。')
-    core, display, storage = sections['CORE'], sections['DISPLAY'], sections['STORAGE']
+    core, display, storage = sections['CORE'], sections.get('DISPLAY'), sections['STORAGE']
     audio, ble, power = sections['AUDIO'], sections['BLE'], sections['POWER']
     if int(core['faults'], 16):
         modules = {'clock': '主时钟', 'lse': '低速时钟', 'io': 'IO 扩展器', 'imu': 'IMU',
@@ -214,7 +215,7 @@ def diagnose(frame, expected_fw='00010128', expected_ui=58, expected_uid=None, s
         issue('WATCHDOG_RESET', '本次启动含独立看门狗复位标志；保留串口日志，排查阻塞或崩溃，不能仅靠重启判定恢复。')
     if core['stack_low'] or core['stack_guard']:
         issue('STACK_FAULT', '栈水位过低或保护区已破坏；需保留日志并修复，不能继续以初始化成功判定运行可靠。')
-    if screen_enabled and (not display['bound'] or display['driver'] not in (1, 2, 3) or display['presenter'] not in (0, 1)
+    if screen_enabled and (not display or not display['bound'] or display['driver'] not in (1, 2, 3) or display['presenter'] not in (0, 1)
             or display['error'] or not display['assets'] or display['failed']):
         issue('DISPLAY_NOT_READY', '屏幕、显示资源或刷新存在异常；检查 EPD_RES 接线和配套 UI，仍需实物显示验收。')
     if (storage['jedec'] in {'000000', 'ffffff'} or not storage['size'] or not storage['layout'] or
@@ -241,7 +242,7 @@ def diagnose(frame, expected_fw='00010128', expected_ui=58, expected_uid=None, s
         'result': 'ISSUES_DETECTED' if issues else 'NO_REPORTED_FAULTS_ONLY',
         'exercise': {
             'microphone': 'FRAMES_OBSERVED_NOT_ACOUSTIC_ACCEPTANCE' if audio['frames'] else 'NOT_EXERCISED',
-            'display': 'REFRESH_COUNTER_ONLY' if display['rendered'] else 'NOT_EXERCISED',
+            'display': 'REFRESH_COUNTER_ONLY' if display and display['rendered'] else 'NOT_EXERCISED',
             'bleLink': 'CONNECTED_AT_SNAPSHOT_ONLY' if ble['linked'] else 'NOT_CONNECTED',
             'speaker': 'INITIALIZED_NOT_ACOUSTIC_ACCEPTANCE' if audio['speaker_ready'] else 'NOT_READY',
         },

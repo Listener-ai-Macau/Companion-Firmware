@@ -33,6 +33,18 @@ def fixture(reason='query', seq=7):
 
 
 class UartDiagnostics(unittest.TestCase):
+    def test_display_disabled_frame_may_omit_only_display(self):
+        raw = b'\r\n'.join(line for line in fixture().splitlines() if not line.startswith(b'DIAG1 DISPLAY')) + b'\r\n'
+        self.assertFalse(diag.parse_frames(raw)[0])
+        frames, errors = diag.parse_frames(raw, screen_enabled=False)
+        self.assertFalse(errors)
+        self.assertEqual(len(frames), 1)
+        self.assertNotIn('DISPLAY_NOT_READY', {i['code'] for i in diag.diagnose(frames[0], screen_enabled=False)['issues']})
+        self.assertIn('DISPLAY_NOT_READY', {i['code'] for i in diag.diagnose(frames[0])['issues']})
+        for section in ('ID', 'CORE', 'STORAGE', 'AUDIO', 'BLE', 'POWER'):
+            broken = b'\r\n'.join(line for line in raw.splitlines() if not line.startswith(('DIAG1 '+section+' ').encode())) + b'\r\n'
+            self.assertFalse(diag.parse_frames(broken, screen_enabled=False)[0])
+
     def test_disabled_screen_is_reported_without_requiring_a_panel(self):
         raw=fixture().replace(b'bound=1',b'bound=0').replace(b'driver=1',b'driver=0')
         frame=diag.parse_frames(raw)[0][0]
