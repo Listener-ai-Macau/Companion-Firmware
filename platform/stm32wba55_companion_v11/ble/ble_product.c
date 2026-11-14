@@ -1636,11 +1636,15 @@ static void pointer_notify(void)
     bool updated=comp_imu_fusion_update(&pointer_fusion,sample,&fused);
     comp_cpu_duty_span_end(COMP_DUTY_FUSION,fusion_span);
     if(!updated){comp_cpu_duty_span_end(COMP_DUTY_POINTER_SEND,pointer_span);return;}
-    uint8_t packet[32];
+    uint8_t packet[40];uint16_t packet_bytes=32u;
     if(++pointer_sequence==0u)++pointer_sequence;
     const float yaw=comp_imu_pointer_yaw(&fused);
     pointer_heading=comp_imu_pointer_heading(pointer_heading,yaw,pointer_sample_ms?sample->timestamp_ms-pointer_sample_ms:0u);
-    if(product->input.options&COMP_INPUT_POINTER_RAW)comp_imu_pointer_pack(sample->timestamp_ms,pointer_sequence,
+    if(product->input.options&COMP_INPUT_POINTER_CONTACT){
+        comp_imu_pointer_contact_packet(&fused,sample,pointer_sequence,
+            (product->input.flags&COMP_INPUT_HELD)!=0u,(uint8_t)product->input.flick_sample_ms,packet);
+        packet_bytes=40u;
+    }else if(product->input.options&COMP_INPUT_POINTER_RAW)comp_imu_pointer_pack(sample->timestamp_ms,pointer_sequence,
         (product->input.flags&COMP_INPUT_HELD)!=0u,(uint8_t)product->input.flick_sample_ms,
         5u,fused.ready,sample->accel_mg,sample->gyro_mdps,packet);
     else if(comp_input_pointer_v4(&product->input)&&!(product->input.options&COMP_INPUT_POINTER_FUSED_RATES))comp_imu_pointer_aim_packet(&fused,pointer_sequence,
@@ -1650,7 +1654,7 @@ static void pointer_notify(void)
     pointer_sample_ms=sample->timestamp_ms;
     /* One current sample, no retry queue: failed delivery is superseded by
      * the next sample, with the original sensor timestamp and button level. */
-    (void)publish(NULL,COMPANION_GATT_CHAR_SETTINGS,packet,sizeof(packet));
+    (void)publish(NULL,COMPANION_GATT_CHAR_SETTINGS,packet,packet_bytes);
     comp_cpu_duty_span_end(COMP_DUTY_POINTER_SEND,pointer_span);
 }
 #if COMPANION_WBA_CPU_DUTY_OBSERVER

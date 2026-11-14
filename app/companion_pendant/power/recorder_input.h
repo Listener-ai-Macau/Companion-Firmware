@@ -4,7 +4,7 @@
 #include "motion_events.h"
 
 enum { COMP_INPUT_RECORDER,COMP_INPUT_DICTATION,COMP_INPUT_PRESENTATION,COMP_INPUT_POINTER };
-enum { COMP_INPUT_FLICK=1u,COMP_INPUT_SHAKE=2u,COMP_INPUT_UNDO=4u,COMP_INPUT_POINTER_V4=8u,COMP_INPUT_POINTER_RAW=16u,COMP_INPUT_POINTER_FUSED_RATES=32u };
+enum { COMP_INPUT_FLICK=1u,COMP_INPUT_SHAKE=2u,COMP_INPUT_UNDO=4u,COMP_INPUT_POINTER_V4=8u,COMP_INPUT_POINTER_RAW=16u,COMP_INPUT_POINTER_FUSED_RATES=32u,COMP_INPUT_POINTER_CONTACT=64u };
 enum { COMP_INPUT_START=1u,COMP_INPUT_STOP=2u,COMP_INPUT_MARK=4u,
        COMP_INPUT_UNDO_LAST=8u,COMP_INPUT_CANCEL=16u,COMP_INPUT_SUBMIT=32u,
        COMP_INPUT_NEXT=64u,COMP_INPUT_PREVIOUS=128u,COMP_INPUT_WAKE=256u,
@@ -65,9 +65,10 @@ static inline bool comp_input_pointer_contact(comp_recorder_input_t *s,uint8_t *
 }
 static inline bool comp_input_options_valid(uint8_t mode,uint8_t options)
 {
-    return !(mode>COMP_INPUT_POINTER||(options&~(mode==COMP_INPUT_POINTER?63u:7u))||
+    return !(mode>COMP_INPUT_POINTER||(options&~(mode==COMP_INPUT_POINTER?127u:7u))||
        ((options&(COMP_INPUT_POINTER_RAW|COMP_INPUT_POINTER_FUSED_RATES))&&!(options&COMP_INPUT_POINTER_V4))||
-       ((options&COMP_INPUT_POINTER_RAW)&&(options&COMP_INPUT_POINTER_FUSED_RATES)));
+       ((options&COMP_INPUT_POINTER_RAW)&&(options&COMP_INPUT_POINTER_FUSED_RATES))||
+       ((options&COMP_INPUT_POINTER_CONTACT)&&((options&(COMP_INPUT_POINTER_V4|COMP_INPUT_POINTER_RAW|COMP_INPUT_POINTER_FUSED_RATES))!=COMP_INPUT_POINTER_V4)));
 }
 static inline bool comp_input_mode(comp_recorder_input_t *s,uint8_t mode,uint8_t options,
                                     bool capture_owned,bool key_busy)

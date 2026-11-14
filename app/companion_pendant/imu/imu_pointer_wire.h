@@ -34,6 +34,17 @@ static inline void comp_imu_pointer_packet(const comp_imu_sample_t *s,uint32_t s
 static inline void comp_imu_pointer_fused_packet(const comp_imu_fused_sample_t *s,uint32_t sequence,
     bool held,uint8_t tap_serial,uint8_t packet[32])
 {comp_imu_pointer_pack(s->timestamp_ms,sequence,held,tap_serial,3u,s->ready,s->gravity_q14,s->gyro_mdps,packet);}
+/* CIM6 opt-in72: keep the exact CIM3 fused gravity/rates for angular motion,
+ * append raw acceleration for contact recognition. One fusion, one sequence,
+ * one40B notification; no additional queue, sample rate or persistent RAM. */
+static inline void comp_imu_pointer_contact_packet(const comp_imu_fused_sample_t *s,const comp_imu_sample_t *raw,
+    uint32_t sequence,bool held,uint8_t tap_serial,uint8_t packet[40])
+{
+    comp_imu_pointer_fused_packet(s,sequence,held,tap_serial,packet);packet[4]=6u;
+    for(unsigned i=0;i<3u;++i)comp_imu_pointer_put16(packet+28u+2u*i,raw->accel_mg[i]);
+    packet[34]=packet[35]=0u;
+    comp_imu_pointer_put32(packet+36u,companion_crc32(0u,packet,36u));
+}
 /* WatchPointer computes heading at EVERY device sample, before testing radio
  * readiness. Sending a later absolute heading cannot lose an intervening turn.
  * Gravity/elevation stays absolute; only the platform/wire adapter changes. */
