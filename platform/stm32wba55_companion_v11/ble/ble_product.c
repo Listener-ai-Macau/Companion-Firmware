@@ -1405,7 +1405,12 @@ static void event(const companion_gatt_event_t *e,void *context)
         }
         input_client=true;
         (void)companion_gatt_stm32wb_set_read_value(COMPANION_GATT_CHAR_SETTINGS,response,(uint16_t)n);
-        if(product_link.subscribed[COMPANION_GATT_CHAR_SETTINGS])
+        /* Pointer ACK is one-way. Echoing another64B notification for every
+         * ACK/retry competes with live CIM samples and is ignored by the host.
+         * Keep query/mode/error replies; input_notify sends the next actual
+         * queued edge with request0 after the acknowledged head is removed. */
+        if(product_link.subscribed[COMPANION_GATT_CHAR_SETTINGS]&&
+           (e->payload[5]!=2u||response[5]!=0u))
             (void)publish(NULL,COMPANION_GATT_CHAR_SETTINGS,response,(uint16_t)n);
         return;
     }

@@ -12,6 +12,10 @@ request=product_source[product_source.index("size_t comp_v11_product_input_reque
 new=product_source[product_source.index("uint16_t comp_v11_product_input_signals("):product_source.index("size_t comp_v11_product_input_request(")]
 new=new.replace("void comp_v11_product_input_status(","void actual_status(")
 ble=(platform/"ble/ble_product.c").read_text();notify=ble[ble.index("static void input_notify("):ble.index("static void pointer_notify(")]
+start=ble.index('    if(e->type==COMPANION_GATT_EVENT_WRITE&&e->char_id==COMPANION_GATT_CHAR_SETTINGS&&',ble.index('static void event('))
+end=ble.index('    if(e->type==COMPANION_GATT_EVENT_WRITE&&e->char_id==COMPANION_GATT_CHAR_REPAIR_CONTROL)',start)
+actual_event='static void actual_input_event(const companion_gatt_event_t *e){\n'+ble[start:end]+'}\n'
+
 pre=r"""
 #include <stdint.h>
 #include <stdbool.h>
@@ -30,12 +34,22 @@ static comp_capture_feedback_t feedback;
 static comp_capture_feedback_t comp_v11_product_capture_feedback(const comp_v11_product_app_t*a,bool updating){(void)a;(void)updating;return feedback;}
 static bool comp_runtime_recording_owned(const runtime_t*r){return r->owned;}
 static comp_v11_product_app_t *product;
-static struct{bool subscribed[3];}product_link;
+static struct{bool subscribed[3];unsigned rejected_writes;}product_link;
 static bool input_client,secured,publication_ok;
 static uint8_t input_feedback,input_flags,published[64];
 static unsigned builds,publishes;
 static uint32_t pointer_event_sequence,pointer_event_sent_ms,now_ms;
 static uint32_t HAL_GetTick(void){return now_ms;}
+#define COMPANION_GATT_EVENT_WRITE 1u
+typedef struct{unsigned type,char_id;const uint8_t *payload;size_t payload_len;} companion_gatt_event_t;
+static bool link_ready=true;
+static struct{bool active;}pointer_fusion;
+static uint32_t pointer_sample_ms;
+static float pointer_heading;
+static bool comp_v11_update_product_busy(void){return false;}
+static unsigned read_cache_updates;
+static bool companion_gatt_stm32wb_set_read_value(unsigned id,const uint8_t *p,uint16_t n){(void)p;assert(id==1u&&n==64u);++read_cache_updates;return true;}
+
 """
 post=r"""
 static void comp_v11_product_input_status(const comp_v11_product_app_t*a,uint32_t req,uint8_t result,uint8_t p[64]){++builds;actual_status(a,req,result,p);}
@@ -93,11 +107,33 @@ int main(void){
  comp_input_note(&app.input,COMP_INPUT_CLICK,300u);app.input.pointer_events[app.input.pointer_head].reserved=0x6Cu;
  now_ms=301u;input_notify();assert(comp_rec_get32(published+36u)==0x6Cu&&comp_rec_get32(published+16u)==300u);
  now_ms=341u;input_notify();assert(comp_rec_get32(published+36u)==0x6Cu); /* Axis/sign survives retry. */
+ /* Drive the REAL CIN GATT event branch, not a duplicate reply-policy function. */
+ memset(&app.input,0,sizeof(app.input));app.runtime.owned=false;link_ready=true;
+ uint8_t wire[36]={0};memcpy(wire,"CIN1",4);wire[4]=1u;
+ memcpy(wire+12u,app.recording.catalog.uid,12u);comp_rec_put64(wire+24u,app.recording.catalog.epoch);
+ comp_rec_put32(wire+8u,77u);comp_rec_put32(wire+32u,comp_rec_crc(wire,32u));
+ companion_gatt_event_t e={COMPANION_GATT_EVENT_WRITE,COMPANION_GATT_CHAR_SETTINGS,wire,36u};
+ count=publishes;actual_input_event(&e);
+ assert(publishes==count+1u&&comp_rec_get32(published+8u)==77u); /* Query replies remain visible. */
+ wire[5]=1u;wire[6]=COMP_INPUT_POINTER;wire[7]=COMP_INPUT_POINTER_V4;
+ comp_rec_put32(wire+8u,78u);comp_rec_put32(wire+32u,comp_rec_crc(wire,32u));
+ actual_input_event(&e);assert(app.input.mode==COMP_INPUT_POINTER&&publishes==count+2u);
+ comp_input_note(&app.input,COMP_INPUT_CLICK,1000u);comp_input_note(&app.input,COMP_INPUT_CLICK,1100u);
+ uint32_t head=comp_input_pointer_event(&app.input)->sequence;
+ wire[5]=2u;wire[6]=wire[7]=0u;comp_rec_put32(wire+8u,head);comp_rec_put32(wire+32u,comp_rec_crc(wire,32u));
+ count=publishes;unsigned cached=read_cache_updates;actual_input_event(&e);
+ if(publishes!=count){fputs("FAIL successful ACK generated an unnecessary ACK-of-ACK notification\n",stderr);return 1;}
+ assert(app.input.pointer_count==1u&&read_cache_updates==cached+1u);
+ now_ms=1101u;input_notify();assert(publishes==count+1u&&comp_rec_get32(published+8u)==0u&&comp_rec_get32(published+12u)!=head);
+ count=publishes;actual_input_event(&e);assert(publishes==count&&app.input.pointer_count==1u); /* Retried old ACK cannot consume next edge or create a notification loop. */
+ wire[12]^=1u;comp_rec_put32(wire+32u,comp_rec_crc(wire,32u));count=product_link.rejected_writes;
+ actual_input_event(&e);assert(product_link.rejected_writes==count+1u&&app.input.pointer_count==1u);
+ puts("PASS actual CIN GATT dispatcher: query/mode responses retained; successful/duplicate ACK does not echo; next physical edge alone notifies; wrong peer rejected");
  puts("PASS actual pointer CIN: retry keeps original edge/flags/time, ACK works while busy without mode/MIC command, duplicate/wrong UID cannot consume next edge");
  puts("PASS real CIN1 builders1000 byte-identical packets;10000 idle turns serialize0; held change, sticky event, failed publication retry and subscription preserved. Software only.");
 }
 """.replace("typeof_unused:","")
-model=out/"model.c";model.write_text(re.sub(r"\bfeedback\b","fixture_feedback",pre)+old+new+post+request+notify+re.sub(r"\bfeedback\b","fixture_feedback",tests))
+model=out/"model.c";model.write_text(re.sub(r"\bfeedback\b","fixture_feedback",pre)+old+new+post+request+notify+actual_event+re.sub(r"\bfeedback\b","fixture_feedback",tests))
 app=root/"app/companion_pendant";includes=[platform,app/"recording",app/"power",app/"imu"]
 cmd=["cl.exe","/nologo","/TC","/std:c11","/O2","/W4","/WX","/wd4100","/wd4505",*["/I"+str(p)for p in includes],str(model),str(app/"power/wba_button.c"),"/Fe:"+str(out/"test.exe")]
 batch=out/"compile.cmd";batch.write_text('@echo off\ncall "'+str(find_vsdevcmd())+'" -arch=amd64 -host_arch=amd64 >nul\nif errorlevel 1 exit /b %errorlevel%\n'+subprocess.list2cmdline(cmd)+'\n')

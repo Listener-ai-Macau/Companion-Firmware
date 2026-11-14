@@ -5,7 +5,7 @@ settings characteristic. Legacy settings and PMP1 are unchanged. There are no ne
 GATT attributes. Clients opt in by sending CIN1; legacy clients receive no CIN1
 notifications. All integers are little endian; CRC is the existing IEEE CRC32.
 
-The 36-byte request is `CIN1`, schema1 at4, operation at5 (0=query,1=set mode),
+The 36-byte request is `CIN1`, schema1 at4, operation at5 (0=query,1=set mode,2=pointer ACK),
 mode at6, options at7, nonzero request nonce u32 at8, device UID12 at12,
 format epoch u64 at24, CRC32 of bytes0..31 at32. Query requires mode/options0.
 Wrong identity/CRC/schema/size is rejected without changing state.
@@ -81,3 +81,20 @@ Audio remains the existing CRV2/COP1/CMC3 path. CIN1 does not introduce a second
 microphone, codec, audio format or raw six-axis stream. Existing 9001 IMU raw
 status remains unchanged. Enclosure sensitivity, first-word capture, real Mac
 insertion, power and physical gestures require separate actual-device evidence.
+
+
+### Reliable pointer ACK
+
+In opted-in pointer mode, operation2 uses the nonzero event sequence at8 as
+the ACK; mode/options at6/7 must be0 and UID/epoch/CRC remain required. It removes
+only the exact queued head, never a later gesture or microphone state. An old
+duplicate ACK is idempotent. Query/mode replies are still notified normally.
+
+Successful pointer ACKs update the cached readable CIN status but do not emit an
+ACK-of-ACK notification. Hosts do not await that echo: the next queued physical
+edge is notified separately with request0, and can be acknowledged in turn.
+Invalid/unsupported ACK operations retain their error reply. ATT write success
+alone is not evidence that the application applied an ACK: a genuinely new
+device retry after a completed write may still need another ACK. Client-side
+coalescing is limited to duplicates already received during that same in-flight
+ACK, and an older callback must not replace a newer pending sequence.
