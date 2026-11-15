@@ -7,6 +7,9 @@
 #include "wba_recording_crc.h"
 #include "wba_ota_power_gate.h"
 #include "ota_page_stream.h"
+#if defined(COMP_V11_DIAG_FLASH_ENABLED) && COMP_V11_DIAG_FLASH_ENABLED
+#include "../diag_flash_target.h"
+#endif
 #include <string.h>
 
 #if COMPANION_WBA_CE_SHARED_CAPTURE && defined(__GNUC__)
@@ -428,7 +431,16 @@ static void reboot_when_nvm_durable(uint32_t now)
         reboot_gatt_stored=comp_v11_ble_store_gatt_for_reboot();
         return;
     }
-    if(!comp_v11_ble_nvm_busy())NVIC_SystemReset();
+    if(!comp_v11_ble_nvm_busy()) {
+#if defined(COMP_V11_DIAG_FLASH_ENABLED) && COMP_V11_DIAG_FLASH_ENABLED
+        /* Failure diagnosis only: preserve this actual reset caller in the
+         * existing heartbeat record. Phase3 distinguishes planned OTA reset
+         * from a reset while the ordinary product/IMU loop was running.
+         * No extra NOR write, static allocation or output in the hot path. */
+        comp_v11_diag_flash_heartbeat(product,now,3u);
+#endif
+        NVIC_SystemReset();
+    }
 }
 static void update_product_poll_owned(void)
 {
